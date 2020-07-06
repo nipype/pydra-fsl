@@ -16,7 +16,8 @@ jobs:
     strategy:
       matrix:
         python-version: [3.7, 3.8]
-        pip-flags: ['', '-e']
+        pip-flags: ['', '--editable']
+        pydra: ['pydra', '--editable git+https://github.com/nipype/pydra.git@0.6.1#egg=pydra']
 
     steps:
     - uses: actions/checkout@v2
@@ -27,6 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
+        pip install ${{ matrix.pydra }}
         pip install ${{ matrix.pip-flags }} ".[dev]"
     - name: Test with pytest
       run: |
