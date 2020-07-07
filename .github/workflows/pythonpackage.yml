@@ -17,7 +17,9 @@ jobs:
       matrix:
         python-version: [3.7, 3.8]
         pip-flags: ['', '--editable']
-        pydra: ['pydra', '--editable git+https://github.com/nipype/pydra.git@0.6.1#egg=pydra']
+        pydra:
+        - 'git+https://github.com/effigies/pydra.git@fix/namespace#egg=pydra'
+        - '--editable git+https://github.com/effigies/pydra.git@fix/namespace#egg=pydra'
 
     steps:
     - uses: actions/checkout@v2
