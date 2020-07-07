@@ -36,6 +36,7 @@ jobs:
       run: |
         pip install ${{ matrix.pip-flags }} ".[dev]"
         python -c "import pydra.tasks.TODO as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
     - name: Test with pytest
       run: |
         pytest -sv --doctest-modules pydra/tasks/TODO
