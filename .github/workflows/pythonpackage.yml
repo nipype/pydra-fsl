@@ -3,6 +3,10 @@
 
 name: Python package
 
+# Set once
+env:
+  SUBPACKAGE: TODO
+
 on:
   push:
     branches: [ master ]
@@ -11,7 +15,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -37,8 +40,8 @@ jobs:
     - name: Install task package
       run: |
         pip install ${{ matrix.pip-flags }} ".[dev]"
-        python -c "import pydra.tasks.TODO as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import pydra.tasks.$SUBPACKAGE as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
         python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
     - name: Test with pytest
       run: |
-        pytest -sv --doctest-modules pydra/tasks/TODO
+        pytest -sv --doctest-modules pydra/tasks/$SUBPACKAGE
