@@ -21,8 +21,8 @@ jobs:
         python-version: [3.7, 3.8]
         pip-flags: ['', '--editable']
         pydra:
-        - 'git+https://github.com/effigies/pydra.git@fix/namespace#egg=pydra'
-        - '--editable git+https://github.com/effigies/pydra.git@fix/namespace#egg=pydra'
+        - 'pydra'
+        - '--editable git+https://github.com/nipype/pydra.git#egg=pydra'
 
     steps:
     - uses: actions/checkout@v2
