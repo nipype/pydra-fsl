@@ -1,22 +1,82 @@
 # Intent of this template
 
-The intent of this repo is to help you get started with creating Pydra tasks.
-All tasks will be inserted into pydra.tasks.<yourtaskpackagename> namespace.
+The intent of this repository is to help you get started with creating Pydra tasks.
+All tasks will be inserted into the `pydra.tasks.<yourtaskpackagename>` namespace.
 
-# To use this template:
+# To use this template
 
 1. Click on new repo.
-2. Select this template from the repository template drop down list.
-3. Give your repo a name.
-4. Once the repo is created and cloned, search for TODO (`grep -rn TODO . `) and
-  replace with appropriate name.
-5. One of the folders is called TODO. This should also be renamed to your package
+1. Select this template from the repository template drop down list.
+1. Give your repo a name.
+1. Once the repo is created and cloned, search for TODO (`grep -rn TODO . `) and
+   replace with appropriate name.
+1. One of the folders is called TODO. This should also be renamed to your package
    name.
-6. Add tasks to the pydra/tasks/<yourpackagename> folder.
-7. You may want to initialize a sphinx docs directory.
+1. Add tasks to the `pydra/tasks/<yourpackagename>` folder.
+1. You may want to initialize a [Sphinx] docs directory.
+1. **Update this README after creating the new repository.**
 
-# TODO: Change this README after creating your new repo.
+[Sphinx]: https://www.sphinx-doc.org/en/master/usage/quickstart.html
 
+# Features of this template
+
+## Versioneer
+
+The [versioneer](https://github.com/warner/python-versioneer) tool allows for versioning based
+on the most recent git tag. The release process can thus be:
+
+```Shell
+git tag -a 1.0.0
+python setup.py sdist bdist_wheel
+twine upload dist/*
+```
+
+Note that we assume tags will be version numbers and not be prefixed with `v` or some other
+string. See Versioneer documentation for alternative configurations.
+
+## Namespace packages
+
+[Namespace packages] allow multiple packages to be installed in such a way that they can be
+imported from a common namespace. In this case, the base namespace is `pydra.tasks`, and each
+task package installs a new module, such as `pydra.tasks.afni`.
+
+To do correctly, task packages **must not** interfere with files higher in the hierarchy.
+This includes adding `__init__.py` files in either `pydra` or `pydra/tasks`.
+
+[Namespace packages]: https://www.python.org/dev/peps/pep-0420/
+
+## Tests
+
+This package comes with a default set of test modules, and we encourage users to use pytest.
+Tests can be discovered and run using:
+
+```
+pytest --doctest-modules pydra/tasks/*
+```
+
+## Continuous integration
+
+This template uses [GitHub Actions](https://docs.github.com/en/actions/) to run tests. To simulate
+several plausible development or installation environments, we test over all Python versions
+supported by Pydra, and install Pydra and the current package in both standard and
+[editable](https://pip.pypa.io/en/stable/reference/pip_install/#editable-installs) modes.
+
+The combination of standard/editable is in particular designed to ensure that namespace packaging
+does not break. We strongly recommend keeping these tests in place for this reason, as one
+non-compliant package can potentially affect Pydra or other task packages.
+
+In addition to verifying installations do not break or conflict, pytest is run on the package,
+including all tests found in `test/` directories and [doctests].
+
+[doctests]: https://docs.python.org/3/library/doctest.html
+
+# Contributing to this template
+
+This template repository is periodically updated as we establish and best practices for task
+packages. We welcome contributions from the community to help set a solid baseline for all
+task packages.
+
+# Sample post-setup README contents
 
 ## For developers
 
