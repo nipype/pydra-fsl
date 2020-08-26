@@ -1,0 +1,29 @@
+BET:
+  cmd: bet
+  output_files:
+    out_file: [in_file]
+    mask_file: [in_file, mask]
+    outline_file: [in_file, outline]
+    meshfile: [in_file, mesh]
+    inskull_mask_file: [in_file, mask, skull]
+    inskull_mesh_file: [in_file, mesh, skull]
+    outskull_mask_file: [in_file, mask, skull]
+    outskull_mesh_file: [in_file, mesh, skull]
+    #outskin_mask_file:
+    #outskin_mesh_file:
+    #skull_mask_file
+    #skull_file
+
+  output_templates:
+    out_file: "{in_file}_brain"
+    mask_file: "{out_file}_mask"
+    outline_file: "{out_file}_overlay"
+    meshfile: "{out_file}_mesh.vtk"
+    inskull_mask_file: "{out_file}_inskull_mask"
+    inskull_mesh_file: "{out_file}_inskull_mesh"
+    outskull_mask_file: "{out_file}_outskull_mask"
+    outskull_mesh_file: "{out_file}_outskull_mesh"
+    #outskin_mask_file: "{out_file}_outskin_mask"
+    #outskin_mesh_file: "{out_file}_outskin_mesh"
+    #skull_mask_file
+    #skull_file
