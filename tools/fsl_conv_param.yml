@@ -1,4 +1,5 @@
 BET:
+  name: bet
   cmd: bet
   output_files:
     out_file: [in_file]

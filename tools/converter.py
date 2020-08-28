@@ -19,6 +19,9 @@ TRAITS_IRREL = ['output_type', 'args', 'environ', 'environ_items', '__all__',
 
 INTERFACE = "BET"
 
+TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"),
+                ("\'int\'", "int"), ("\'float\'", "float"), ("\'list\'", "list"), ("\'dict\'", "dict")]
+
 with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
     INTERF_PARAMS = yaml.safe_load(f)[INTERFACE]
 
@@ -50,16 +53,19 @@ def write_file(filename, input_fields, output_fields):
     input_fields_str = types_to_names(spec_fields=input_fields)
     output_fields_str = types_to_names(spec_fields=output_fields)
     cmd = INTERF_PARAMS["cmd"]
+    name = INTERF_PARAMS["name"]
 
-    spec_str = "from pydra.engine import specs \nimport traits \nimport attr \n"
+    spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \nimport traits \nimport attr \n"
     spec_str += f"input_fields = {input_fields_str}\n"
-    spec_str += f"input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=specs.ShellSpec)\n\n"
+    spec_str += f"input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
     spec_str += f"output_fields = {output_fields_str}\n"
-    spec_str += f"output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=specs.ShellOutSpec)\n\n"
-    spec_str += f"cmd = '{cmd}'\n"
+    spec_str += f"output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
+    spec_str += f"{name} = ShellCommandTask(name='{name}', executable='{cmd}', input_spec=input_spec, output_spec=output_spec)"
+
+    for tp_repl in TYPE_REPLACE:
+        spec_str = spec_str.replace(*tp_repl)
 
     spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
-
 
     with open(filename, "w") as f:
         f.write(spec_str_black)
@@ -249,12 +255,8 @@ def test_spec_from_file(tmpdir):
     imp.load_source("bet_module", str(filename_spec))
     import bet_module as bm
 
-    breakpoint()
 
-    shelly = pydra.ShellCommandTask(
-        name="bet_task", executable=bm.cmd,
-        input_spec=bm.input_spec, output_spec=bm.output_spec
-    )
+    shelly = bm.bet
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
     assert shelly.cmdline == f"bet {in_file} {out_file}"
@@ -262,11 +264,9 @@ def test_spec_from_file(tmpdir):
     print("\n Result: ", res)
 
 
-    # shelly_mask = pydra.ShellCommandTask(
-    #     name="bet_task", executable=INTERF_PARAMS["cmd"], input_spec=input_spec_pydra, output_spec=output_spec_pydra
-    # )
-    # shelly_mask.inputs.in_file = in_file
-    # shelly_mask.inputs.mask = True
-    # assert shelly_mask.cmdline == f"bet {in_file} {out_file} -m"
-    # res = shelly_mask()
-    # print("\n Result: ", res)
+    shelly_mask = bm.bet
+    shelly_mask.inputs.in_file = in_file
+    shelly_mask.inputs.mask = True
+    assert shelly_mask.cmdline == f"bet {in_file} {out_file} -m"
+    res = shelly_mask()
+    print("\n Result: ", res)

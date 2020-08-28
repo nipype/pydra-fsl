@@ -1,11 +1,12 @@
 from pydra.engine import specs
+from pydra import ShellCommandTask
 import traits
 import attr
 
 input_fields = [
     (
         "in_file",
-        "File",
+        specs.File,
         {
             "argstr": "{in_file}",
             "help_string": "input file to skull strip",
@@ -15,7 +16,7 @@ input_fields = [
     ),
     (
         "out_file",
-        "str",
+        str,
         {
             "argstr": "{out_file}",
             "help_string": "name of output skull stripped image",
@@ -23,40 +24,36 @@ input_fields = [
             "output_file_template": "{in_file}_brain",
         },
     ),
-    (
-        "outline",
-        "bool",
-        {"argstr": "-o", "help_string": "create surface outline image"},
-    ),
-    ("mask", "bool", {"argstr": "-m", "help_string": "create binary mask image"}),
-    ("skull", "bool", {"argstr": "-s", "help_string": "create skull image"}),
+    ("outline", bool, {"argstr": "-o", "help_string": "create surface outline image"}),
+    ("mask", bool, {"argstr": "-m", "help_string": "create binary mask image"}),
+    ("skull", bool, {"argstr": "-s", "help_string": "create skull image"}),
     (
         "no_output",
-        "bool",
+        bool,
         {"argstr": "-n", "help_string": "Don't generate segmented output"},
     ),
     (
         "frac",
-        "float",
+        float,
         {"argstr": "-f {frac}", "help_string": "fractional intensity threshold"},
     ),
     (
         "vertical_gradient",
-        "float",
+        float,
         {
             "argstr": "-g {vertical_gradient}",
             "help_string": "vertical gradient in fractional intensity threshold (-1, 1)",
         },
     ),
-    ("radius", "int", {"argstr": "-r {radius}", "help_string": "head radius"}),
+    ("radius", int, {"argstr": "-r {radius}", "help_string": "head radius"}),
     (
         "center",
-        "list",
+        list,
         {"argstr": "-c {center}", "help_string": "center of gravity in voxels"},
     ),
     (
         "threshold",
-        "bool",
+        bool,
         {
             "argstr": "-t",
             "help_string": "apply thresholding to segmented brain image and mask",
@@ -64,12 +61,12 @@ input_fields = [
     ),
     (
         "mesh",
-        "bool",
+        bool,
         {"argstr": "-e", "help_string": "generate a vtk mesh brain surface"},
     ),
     (
         "robust",
-        "bool",
+        bool,
         {
             "argstr": "-R",
             "help_string": "robust brain centre estimation (iterates BET several times)",
@@ -86,7 +83,7 @@ input_fields = [
     ),
     (
         "padding",
-        "bool",
+        bool,
         {
             "argstr": "-Z",
             "help_string": "improve BET if FOV is very small in Z (by temporarily padding end slices)",
@@ -103,7 +100,7 @@ input_fields = [
     ),
     (
         "remove_eyes",
-        "bool",
+        bool,
         {
             "argstr": "-S",
             "help_string": "eye & optic nerve cleanup (can be useful in SIENA)",
@@ -120,7 +117,7 @@ input_fields = [
     ),
     (
         "surfaces",
-        "bool",
+        bool,
         {
             "argstr": "-A",
             "help_string": "run bet2 and then betsurf to get additional skull and scalp surfaces (includes registrations)",
@@ -137,7 +134,7 @@ input_fields = [
     ),
     (
         "t2_guided",
-        "File",
+        specs.File,
         {
             "argstr": "-A2 {t2_guided}",
             "help_string": "as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)",
@@ -154,7 +151,7 @@ input_fields = [
     ),
     (
         "functional",
-        "bool",
+        bool,
         {
             "argstr": "-F",
             "help_string": "apply to 4D fMRI data",
@@ -171,7 +168,7 @@ input_fields = [
     ),
     (
         "reduce_bias",
-        "bool",
+        bool,
         {
             "argstr": "-B",
             "help_string": "bias field and neck cleanup",
@@ -187,12 +184,12 @@ input_fields = [
         },
     ),
 ]
-input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=specs.ShellSpec)
+input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (
         "out_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of skullstripped file (if generated)",
             "requires": ["in_file"],
@@ -201,7 +198,7 @@ output_fields = [
     ),
     (
         "mask_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of binary brain mask (if generated)",
             "requires": ["in_file", "mask"],
@@ -210,7 +207,7 @@ output_fields = [
     ),
     (
         "outline_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of outline file (if generated)",
             "requires": ["in_file", "outline"],
@@ -219,7 +216,7 @@ output_fields = [
     ),
     (
         "meshfile",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of vtk mesh file (if generated)",
             "requires": ["in_file", "mesh"],
@@ -228,7 +225,7 @@ output_fields = [
     ),
     (
         "inskull_mask_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of inskull mask (if generated)",
             "requires": ["in_file", "mask", "skull"],
@@ -237,7 +234,7 @@ output_fields = [
     ),
     (
         "inskull_mesh_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of inskull mesh outline (if generated)",
             "requires": ["in_file", "mesh", "skull"],
@@ -246,7 +243,7 @@ output_fields = [
     ),
     (
         "outskull_mask_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of outskull mask (if generated)",
             "requires": ["in_file", "mask", "skull"],
@@ -255,7 +252,7 @@ output_fields = [
     ),
     (
         "outskull_mesh_file",
-        "File",
+        specs.File,
         {
             "help_string": "path/name of outskull mesh outline (if generated)",
             "requires": ["in_file", "mesh", "skull"],
@@ -264,7 +261,9 @@ output_fields = [
     ),
 ]
 output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=specs.ShellOutSpec
+    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )
 
-cmd = "bet"
+bet = ShellCommandTask(
+    name="bet", executable="bet", input_spec=input_spec, output_spec=output_spec
+)
