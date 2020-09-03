@@ -43,3 +43,38 @@ BET:
     - out_file
     - [out_file, mask_file]
     - [out_file, inskull_mask_file, inskull_mesh_file, skull_mask_file]
+
+
+MCFLIRT:
+  name: MCFLIRT
+  filename: mcflirt
+  cmd: mcflirt
+  output_files:
+    out_file: [in_file]
+    variance_img: [in_file, stats_imgs: True]
+    std_img: [in_file, stats_imgs: True]
+    mean_img: [in_file, mean_vol: True]
+    par_file: [save_plots]
+#    mat_file:
+#    rms_files: [save_rms]
+
+
+  output_templates:
+    out_file: "{in_file}_mcf"
+    variance_img: "{out_file}_variance.ext"
+    std_img: "{out_file}_sigma.ext"
+    mean_img: "{out_file}_mean_reg.ext"
+    par_file: "{out_file}.par"
+#    mat_file:
+#    rms_files:
+
+
+  tests_inputs:
+    -
+#    - stats_imgs: True
+#    - mean_vol: True
+
+  tests_outputs:
+    - out_file
+#    - [out_file, variance_img, std_img]
+#    - [out_file, mean_img]

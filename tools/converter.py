@@ -7,6 +7,7 @@ import os, sys, yaml, black, imp
 import traits
 import attr
 from pathlib import Path
+import typing as ty
 import pytest
 
 
@@ -20,7 +21,7 @@ TRAITS_IRREL = ['output_type', 'args', 'environ', 'environ_items', '__all__',
 
 INTERFACE = "BET"
 
-TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"),
+TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"), ("\'Any\'", "ty.Any"),
                 ("\'int\'", "int"), ("\'float\'", "float"), ("\'list\'", "list"), ("\'dict\'", "dict")]
 
 with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
@@ -53,7 +54,10 @@ def write_file(filename, input_fields, output_fields, interf_params):
         spec_fields_str = []
         for el in spec_fields:
             el = list(el)
-            el[1] = el[1].__name__
+            try:
+                el[1] = el[1].__name__
+            except(AttributeError):
+                el[1] = el[1]._name
             spec_fields_str.append(tuple(el))
         return spec_fields_str
 
@@ -62,8 +66,9 @@ def write_file(filename, input_fields, output_fields, interf_params):
     cmd = interf_params["cmd"]
     name = interf_params["name"]
 
-    spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \nimport traits \nimport attr \n"
+    spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \n"
     spec_str += f"from pydra.utils.messenger import AuditFlag\n"
+    spec_str += f"import traits \nimport attr \nimport typing as ty\n"
     spec_str += f"input_fields = {input_fields_str}\n"
     spec_str += f"bet_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
     spec_str += f"output_fields = {output_fields_str}\n"
@@ -104,7 +109,7 @@ def write_test(filename_test, interf_params):
     tests_inp_outp = list(zip(tests_inputs, tests_outputs))
 
     print("\FILENAME TEST", filename_test)
-    in_file = str(Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz')
+    in_file = str(filename_test.parent / 'data_tests/test.nii.gz')
 
     spec_str = f"import pytest \nfrom ..{filename} import {name} \n\n"
     spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
@@ -280,7 +285,7 @@ def string_formats(argstr, name):
     return " ".join(argstr_l)
 
 
-@pytest.mark.parametrize("interface_name", ["BET"])
+@pytest.mark.parametrize("interface_name", ["BET", "MCFLIRT"])
 def test_convert_file(interface_name):
     interface = getattr(fsl, interface_name)
     input_spec = interface.input_spec()

@@ -1,8 +1,9 @@
 from pydra.engine import specs
 from pydra import ShellCommandTask
+from pydra.utils.messenger import AuditFlag
 import traits
 import attr
-from pydra.utils.messenger import AuditFlag
+import typing as ty
 
 input_fields = [
     (

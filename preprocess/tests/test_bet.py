@@ -16,7 +16,9 @@ from ..bet import BET
 def test_BET(inputs, outputs):
     if inputs is None:
         inputs = {}
-    task = BET(in_file="/pydra_fsl/tools/data_tests/test.nii.gz", **inputs)
+    task = BET(
+        in_file="/pydra_fsl/tools/../preprocess/tests/data_tests/test.nii.gz", **inputs
+    )
     res = task()
     print("RESULT: ", res)
     if isinstance(outputs, str):
