@@ -7,6 +7,7 @@ import os, sys, yaml, black, imp
 import traits
 import attr
 from pathlib import Path
+import pytest
 
 
 INPUT_KEYS = ["allowed_values", "argstr", "container_path", "copyfile", "desc",
@@ -26,22 +27,28 @@ with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
     INTERF_PARAMS = yaml.safe_load(f)[INTERFACE]
 
 
-def converter_specs(input_spec, output_spec, write=False, filename=None):
-    input_fields_pdr = converter_input_fields(input_spec=input_spec)
-    output_fields_pdr = converter_output_spec(output_spec=output_spec)
+def converter_specs(input_spec, output_spec, interf_params=INTERF_PARAMS, write=False, dirname=None):
+    input_fields_pdr = converter_input_fields(input_spec=input_spec, interf_params=interf_params)
+    output_fields_pdr = converter_output_spec(output_spec=output_spec, interf_params=interf_params)
 
     input_spec_pydra = specs.SpecInfo(name="Input", fields=input_fields_pdr, bases=(specs.ShellSpec,))
     output_spec_pydra = specs.SpecInfo(name="Output", fields=output_fields_pdr, bases=(specs.ShellOutSpec,))
 
 
-    if write and filename:
+    if write and dirname:
+        filename = dirname / f"{interf_params['filename']}.py"
+        filename_test = dirname / "tests" / f"test_{filename.name}"
+
         print("\n FILENAME", filename)
-        write_file(filename, input_fields_pdr, output_fields_pdr)
+        write_file(filename, input_fields_pdr, output_fields_pdr, interf_params=interf_params)
+
+        # fielname_test = filename.parent / f"test_{filename.name}"
+        write_test(filename_test=filename_test, interf_params=interf_params)
 
     return input_spec_pydra, output_spec_pydra
 
 
-def write_file(filename, input_fields, output_fields):
+def write_file(filename, input_fields, output_fields, interf_params):
     def types_to_names(spec_fields):
         spec_fields_str = []
         for el in spec_fields:
@@ -52,15 +59,27 @@ def write_file(filename, input_fields, output_fields):
 
     input_fields_str = types_to_names(spec_fields=input_fields)
     output_fields_str = types_to_names(spec_fields=output_fields)
-    cmd = INTERF_PARAMS["cmd"]
-    name = INTERF_PARAMS["name"]
+    cmd = interf_params["cmd"]
+    name = interf_params["name"]
 
     spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \nimport traits \nimport attr \n"
+    spec_str += f"from pydra.utils.messenger import AuditFlag\n"
     spec_str += f"input_fields = {input_fields_str}\n"
-    spec_str += f"input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
+    spec_str += f"bet_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
     spec_str += f"output_fields = {output_fields_str}\n"
-    spec_str += f"output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
-    spec_str += f"{name} = ShellCommandTask(name='{name}', executable='{cmd}', input_spec=input_spec, output_spec=output_spec)"
+    spec_str += f"bet_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
+
+    spec_str += f"class {name}(ShellCommandTask):\n"
+    spec_str += f"    def __init__(self, audit_flags: AuditFlag = AuditFlag.NONE, cache_dir=None, " \
+                f"input_spec=None, messenger_args=None, messengers=None, name=None, output_spec=None," \
+            f"rerun=False, strip=False, **kwargs):\n"
+    spec_str += f"        if input_spec is None: input_spec = bet_input_spec\n"
+    spec_str += f"        if output_spec is None: output_spec = bet_output_spec\n"
+    spec_str += f"        if name is None: name = '{name}'\n"
+    spec_str += f"        super().__init__(name='{name}', input_spec=input_spec, output_spec=output_spec, " \
+                f"audit_flags=audit_flags, messengers=messengers, messenger_args=messenger_args, " \
+                f"cache_dir=cache_dir, strip=strip, rerun=rerun, executable='{cmd}', **kwargs)\n"
+
 
     for tp_repl in TYPE_REPLACE:
         spec_str = spec_str.replace(*tp_repl)
@@ -71,15 +90,47 @@ def write_file(filename, input_fields, output_fields):
         f.write(spec_str_black)
 
 
+def write_test(filename_test, interf_params):
+    cmd = interf_params["cmd"]
+    name = interf_params["name"]
+    filename = interf_params["filename"]
+    tests_inputs = interf_params["tests_inputs"]
+    if "tests_outputs" in interf_params:
+        tests_outputs = interf_params["tests_outputs"]
+        if len(tests_inputs) != len(tests_outputs):
+            raise Exception("tests and tests_outputs should have the same length")
+    else:
+        tests_outputs = len(tests_inputs) * [[]]
+    tests_inp_outp = list(zip(tests_inputs, tests_outputs))
 
-def converter_input_fields(input_spec):
+    print("\FILENAME TEST", filename_test)
+    in_file = str(Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz')
+
+    spec_str = f"import pytest \nfrom ..{filename} import {name} \n\n"
+    spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
+    spec_str += f"def test_{name}(inputs, outputs):\n"
+    spec_str += f"    if inputs is None: inputs = {{}}\n"
+    spec_str += f"    task = {name}(in_file='{in_file}', **inputs)\n"
+    spec_str += f"    res = task()\n"
+    spec_str += f"    print('RESULT: ', res)\n"
+    spec_str += f"    if isinstance(outputs, str): outputs = [outputs]\n"
+    spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
+
+    spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
+
+    with open(filename_test, "w") as f:
+        f.write(spec_str_black)
+
+
+
+def converter_input_fields(input_spec, interf_params):
     """creating fields list for pydra input spec """
     fields_pdr_dict = {}
     position_dict = {}
     for name, fld in input_spec.traits().items():
         if name in TRAITS_IRREL:
             continue
-        fld_pdr, pos = pydra_fld_input(fld, name)
+        fld_pdr, pos = pydra_fld_input(fld, name, interf_params=interf_params)
         fields_pdr_dict[name] = (name,) + fld_pdr
         if pos is not None:
             position_dict[name] = pos
@@ -91,7 +142,7 @@ def converter_input_fields(input_spec):
     return fields_pdr_l
 
 
-def pydra_fld_input(field, nm):
+def pydra_fld_input(field, nm, interf_params):
     """converting a single nipype field to one element of fields for pydra input_spec"""
     tp = field.trait_type
     tp_pdr = pydra_type_converter(tp)
@@ -111,8 +162,8 @@ def pydra_fld_input(field, nm):
             metadata_pdr[key_nm_pdr] = val
 
     if getattr(field, "genfile"):
-        if nm in INTERF_PARAMS["output_templates"]:
-            metadata_pdr["output_file_template"] = INTERF_PARAMS["output_templates"][nm]
+        if nm in interf_params["output_templates"]:
+            metadata_pdr["output_file_template"] = interf_params["output_templates"][nm]
             if tp_pdr in [specs.File, specs.Directory]: # since this is a template, the file doesn't exist
                 tp_pdr = str
         else:
@@ -126,17 +177,17 @@ def pydra_fld_input(field, nm):
         return (tp_pdr, metadata_pdr), pos
 
 
-def converter_output_spec(output_spec):
+def converter_output_spec(output_spec, interf_params):
     """creating fields list for pydra input spec """
     fields_pdr_l = []
     for name, fld in output_spec.traits().items():
-        if name in INTERF_PARAMS["output_files"]:
-            fld_pdr = pydra_fld_output(fld, name)
+        if name in interf_params["output_files"]:
+            fld_pdr = pydra_fld_output(fld, name, interf_params=interf_params)
             fields_pdr_l.append((name,) + fld_pdr)
     return fields_pdr_l
 
 
-def pydra_fld_output(field, name):
+def pydra_fld_output(field, name, interf_params):
     """converting a single nipype field to one element of fields for pydra output_spec"""
     tp = field.trait_type
     tp_pdr = pydra_type_converter(tp)
@@ -148,9 +199,30 @@ def pydra_fld_output(field, name):
         if val:
             metadata_pdr[key_nm_pdr] = val
 
-    metadata_pdr["requires"] = INTERF_PARAMS["output_files"][name]
-    if name in INTERF_PARAMS["output_templates"]:
-        metadata_pdr["output_file_template"] = INTERF_PARAMS["output_templates"][name]
+    if interf_params["output_files"][name]:
+        if all([isinstance(el, list) for el in interf_params["output_files"][name]]):
+            requires_l = interf_params["output_files"][name]
+            nested_flag = True
+        elif all([isinstance(el, (str, dict)) for el in interf_params["output_files"][name]]):
+            requires_l = [interf_params["output_files"][name]]
+            nested_flag = False
+        else:
+            Exception("has to be either list of list or list of str/dict")
+
+        metadata_pdr["requires"] = []
+        for requires in requires_l:
+            requires_mod = []
+            for el in requires:
+                if isinstance(el, str):
+                    requires_mod.append(el)
+                elif isinstance(el, dict):
+                    requires_mod += list(el.items())
+            metadata_pdr["requires"].append(requires_mod)
+        if nested_flag is False:
+            metadata_pdr["requires"] = metadata_pdr["requires"][0]
+
+    if name in interf_params["output_templates"]:
+        metadata_pdr["output_file_template"] = interf_params["output_templates"][name]
 
     return (tp_pdr, metadata_pdr)
 
@@ -208,7 +280,21 @@ def string_formats(argstr, name):
     return " ".join(argstr_l)
 
 
+@pytest.mark.parametrize("interface_name", ["BET"])
+def test_convert_file(interface_name):
+    interface = getattr(fsl, interface_name)
+    input_spec = interface.input_spec()
+    output_spec = interface.output_spec()
 
+    with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
+        interf_params = yaml.safe_load(f)[interface_name]
+
+    dirname_interf = Path(os.path.dirname(__file__)) / "../preprocess"
+
+    _, _ = converter_specs(input_spec, output_spec, interf_params=interf_params, write=True, dirname=dirname_interf)
+
+
+@pytest.mark.skip()
 def test_spec(tmpdir):
     interface_name = INTERFACE
     interface = getattr(fsl, interface_name)
@@ -225,8 +311,9 @@ def test_spec(tmpdir):
     )
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
-    assert shelly.cmdline == f"bet {in_file} {out_file}"
+    assert shelly.cmdline == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
     res = shelly()
+    assert res.output.out_file.exists()
     print("\n Result: ", res)
 
 
@@ -235,38 +322,55 @@ def test_spec(tmpdir):
     )
     shelly_mask.inputs.in_file = in_file
     shelly_mask.inputs.mask = True
-    assert shelly_mask.cmdline == f"bet {in_file} {out_file} -m"
+    assert shelly_mask.cmdline == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
     res = shelly_mask()
+    assert res.output.out_file.exists()
+    assert res.output.mask_file.exists()
     print("\n Result: ", res)
 
 
+@pytest.mark.skip()
 def test_spec_from_file(tmpdir):
     interface_name = INTERFACE
     interface = getattr(fsl, interface_name)
     in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
-    out_file = Path(os.path.dirname(__file__)) / "data_tests/test_brain.nii.gz"
 
-    filename_spec = tmpdir.join("spec.py")
+    dirname_spec = Path(tmpdir)
+    (dirname_spec / "tests").mkdir()
 
     input_spec = interface.input_spec()
     output_spec = interface.output_spec()
-    _, _ = converter_specs(input_spec, output_spec, write=True, filename=filename_spec)
+    _, _ = converter_specs(input_spec, output_spec, write=True, dirname=dirname_spec)
 
-    imp.load_source("bet_module", str(filename_spec))
+    imp.load_source("bet_module", str(dirname_spec / "bet.py"))
     import bet_module as bm
 
 
-    shelly = bm.bet
+    shelly = bm.BET(name="my_bet")
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
-    assert shelly.cmdline == f"bet {in_file} {out_file}"
+    assert shelly.cmdline == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
     res = shelly()
+    assert res.output.out_file.exists()
     print("\n Result: ", res)
 
 
-    shelly_mask = bm.bet
+    shelly_mask = bm.BET(name="my_bet")
     shelly_mask.inputs.in_file = in_file
     shelly_mask.inputs.mask = True
-    assert shelly_mask.cmdline == f"bet {in_file} {out_file} -m"
+    assert shelly_mask.cmdline == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
     res = shelly_mask()
+    assert res.output.out_file.exists()
+    assert res.output.mask_file.exists()
+    print("\n Result: ", res)
+
+
+    shelly_surf = bm.BET(name="my_bet")
+    shelly_surf.inputs.in_file = in_file
+    shelly_surf.inputs.surfaces = True
+    assert shelly_surf.cmdline == f"bet {in_file} {str(shelly_surf.output_dir / 'test_brain.nii.gz')} -A"
+    res = shelly_surf()
+    assert res.output.out_file.exists()
+    assert res.output.inskull_mask_file.exists()
+    assert res.output.skull_mask_file.exists()
     print("\n Result: ", res)

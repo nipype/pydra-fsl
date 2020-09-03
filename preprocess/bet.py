@@ -2,6 +2,7 @@ from pydra.engine import specs
 from pydra import ShellCommandTask
 import traits
 import attr
+from pydra.utils.messenger import AuditFlag
 
 input_fields = [
     (
@@ -184,7 +185,9 @@ input_fields = [
         },
     ),
 ]
-input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+bet_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = [
     (
@@ -201,7 +204,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of binary brain mask (if generated)",
-            "requires": ["in_file", "mask"],
+            "requires": [[("mask", True)], [("reduce_bias", True)]],
             "output_file_template": "{out_file}_mask",
         },
     ),
@@ -210,7 +213,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of outline file (if generated)",
-            "requires": ["in_file", "outline"],
+            "requires": [("outline", True)],
             "output_file_template": "{out_file}_overlay",
         },
     ),
@@ -219,7 +222,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of vtk mesh file (if generated)",
-            "requires": ["in_file", "mesh"],
+            "requires": [[("mesh", True)], [("surfaces", True)]],
             "output_file_template": "{out_file}_mesh.vtk",
         },
     ),
@@ -228,7 +231,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of inskull mask (if generated)",
-            "requires": ["in_file", "mask", "skull"],
+            "requires": [("surfaces", True)],
             "output_file_template": "{out_file}_inskull_mask",
         },
     ),
@@ -237,7 +240,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of inskull mesh outline (if generated)",
-            "requires": ["in_file", "mesh", "skull"],
+            "requires": [("surfaces", True)],
             "output_file_template": "{out_file}_inskull_mesh",
         },
     ),
@@ -246,7 +249,7 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of outskull mask (if generated)",
-            "requires": ["in_file", "mask", "skull"],
+            "requires": [("surfaces", True)],
             "output_file_template": "{out_file}_outskull_mask",
         },
     ),
@@ -255,15 +258,82 @@ output_fields = [
         specs.File,
         {
             "help_string": "path/name of outskull mesh outline (if generated)",
-            "requires": ["in_file", "mesh", "skull"],
+            "requires": [("surfaces", True)],
             "output_file_template": "{out_file}_outskull_mesh",
         },
     ),
+    (
+        "outskin_mask_file",
+        specs.File,
+        {
+            "help_string": "path/name of outskin mask (if generated)",
+            "requires": [("surfaces", True)],
+            "output_file_template": "{out_file}_outskin_mask",
+        },
+    ),
+    (
+        "outskin_mesh_file",
+        specs.File,
+        {
+            "help_string": "path/name of outskin mesh outline (if generated)",
+            "requires": [("surfaces", True)],
+            "output_file_template": "{out_file}_outskin_mesh",
+        },
+    ),
+    (
+        "skull_mask_file",
+        specs.File,
+        {
+            "help_string": "path/name of skull mask (if generated)",
+            "requires": [("surfaces", True)],
+            "output_file_template": "{out_file}_skull_mask",
+        },
+    ),
+    (
+        "skull_file",
+        specs.File,
+        {
+            "help_string": "path/name of skull file (if generated)",
+            "requires": [("skull", True)],
+            "output_file_template": "{out_file}_skull",
+        },
+    ),
 ]
-output_spec = specs.SpecInfo(
+bet_output_spec = specs.SpecInfo(
     name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )
 
-bet = ShellCommandTask(
-    name="bet", executable="bet", input_spec=input_spec, output_spec=output_spec
-)
+
+class BET(ShellCommandTask):
+    def __init__(
+        self,
+        audit_flags: AuditFlag = AuditFlag.NONE,
+        cache_dir=None,
+        input_spec=None,
+        messenger_args=None,
+        messengers=None,
+        name=None,
+        output_spec=None,
+        rerun=False,
+        strip=False,
+        **kwargs
+    ):
+        if input_spec is None:
+            input_spec = bet_input_spec
+        if output_spec is None:
+            output_spec = bet_output_spec
+        if name is None:
+            name = "BET"
+        super().__init__(
+            name="BET",
+            input_spec=input_spec,
+            output_spec=output_spec,
+            audit_flags=audit_flags,
+            messengers=messengers,
+            messenger_args=messenger_args,
+            cache_dir=cache_dir,
+            strip=strip,
+            rerun=rerun,
+            executable="bet",
+            **kwargs
+        )
