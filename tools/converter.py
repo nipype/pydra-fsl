@@ -75,15 +75,9 @@ def write_file(filename, input_fields, output_fields, interf_params):
     spec_str += f"bet_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
 
     spec_str += f"class {name}(ShellCommandTask):\n"
-    spec_str += f"    def __init__(self, audit_flags: AuditFlag = AuditFlag.NONE, cache_dir=None, " \
-                f"input_spec=None, messenger_args=None, messengers=None, name=None, output_spec=None," \
-            f"rerun=False, strip=False, **kwargs):\n"
-    spec_str += f"        if input_spec is None: input_spec = bet_input_spec\n"
-    spec_str += f"        if output_spec is None: output_spec = bet_output_spec\n"
-    spec_str += f"        if name is None: name = '{name}'\n"
-    spec_str += f"        super().__init__(name='{name}', input_spec=input_spec, output_spec=output_spec, " \
-                f"audit_flags=audit_flags, messengers=messengers, messenger_args=messenger_args, " \
-                f"cache_dir=cache_dir, strip=strip, rerun=rerun, executable='{cmd}', **kwargs)\n"
+    spec_str += f"    input_spec = bet_input_spec\n"
+    spec_str += f"    output_spec = bet_output_spec\n"
+    spec_str += f"    executable='{cmd}'\n"
 
 
     for tp_repl in TYPE_REPLACE:
@@ -109,13 +103,13 @@ def write_test(filename_test, interf_params):
     tests_inp_outp = list(zip(tests_inputs, tests_outputs))
 
     print("\FILENAME TEST", filename_test)
-    in_file = str(filename_test.parent / 'data_tests/test.nii.gz')
 
-    spec_str = f"import pytest \nfrom ..{filename} import {name} \n\n"
+    spec_str = f"import os, pytest \nfrom pathlib import Path\nfrom ..{filename} import {name} \n\n"
     spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
     spec_str += f"def test_{name}(inputs, outputs):\n"
     spec_str += f"    if inputs is None: inputs = {{}}\n"
-    spec_str += f"    task = {name}(in_file='{in_file}', **inputs)\n"
+    spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+    spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
     spec_str += f"    res = task()\n"
     spec_str += f"    print('RESULT: ', res)\n"
     spec_str += f"    if isinstance(outputs, str): outputs = [outputs]\n"

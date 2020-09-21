@@ -194,35 +194,6 @@ bet_output_spec = specs.SpecInfo(
 
 
 class MCFLIRT(ShellCommandTask):
-    def __init__(
-        self,
-        audit_flags: AuditFlag = AuditFlag.NONE,
-        cache_dir=None,
-        input_spec=None,
-        messenger_args=None,
-        messengers=None,
-        name=None,
-        output_spec=None,
-        rerun=False,
-        strip=False,
-        **kwargs
-    ):
-        if input_spec is None:
-            input_spec = bet_input_spec
-        if output_spec is None:
-            output_spec = bet_output_spec
-        if name is None:
-            name = "MCFLIRT"
-        super().__init__(
-            name="MCFLIRT",
-            input_spec=input_spec,
-            output_spec=output_spec,
-            audit_flags=audit_flags,
-            messengers=messengers,
-            messenger_args=messenger_args,
-            cache_dir=cache_dir,
-            strip=strip,
-            rerun=rerun,
-            executable="mcflirt",
-            **kwargs
-        )
+    input_spec = bet_input_spec
+    output_spec = bet_output_spec
+    executable = "mcflirt"

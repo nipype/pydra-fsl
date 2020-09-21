@@ -1,4 +1,5 @@
-import pytest
+import os, pytest
+from pathlib import Path
 from ..mcflirt import MCFLIRT
 
 
@@ -6,9 +7,8 @@ from ..mcflirt import MCFLIRT
 def test_MCFLIRT(inputs, outputs):
     if inputs is None:
         inputs = {}
-    task = MCFLIRT(
-        in_file="/pydra_fsl/tools/../preprocess/tests/data_tests/test.nii.gz", **inputs
-    )
+    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+    task = MCFLIRT(in_file=in_file, **inputs)
     res = task()
     print("RESULT: ", res)
     if isinstance(outputs, str):
