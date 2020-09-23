@@ -67,8 +67,7 @@ def write_file(filename, input_fields, output_fields, interf_params):
     name = interf_params["name"]
 
     spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \n"
-    spec_str += f"from pydra.utils.messenger import AuditFlag\n"
-    spec_str += f"import traits \nimport attr \nimport typing as ty\n"
+    spec_str += f"import typing as ty\n"
     spec_str += f"input_fields = {input_fields_str}\n"
     spec_str += f"bet_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
     spec_str += f"output_fields = {output_fields_str}\n"
