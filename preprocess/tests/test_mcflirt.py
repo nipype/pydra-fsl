@@ -7,11 +7,8 @@ from ..mcflirt import MCFLIRT
 def test_MCFLIRT(inputs, outputs):
     if inputs is None:
         inputs = {}
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
-    task = MCFLIRT(in_file=in_file, **inputs)
-    res = task()
-    print("RESULT: ", res)
     if isinstance(outputs, str):
         outputs = [outputs]
-    for out_nm in outputs:
-        assert getattr(res.output, out_nm).exists()
+    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+    task = MCFLIRT(in_file=in_file, **inputs)
+    assert task.generated_output_names == ["return_code", "stdout", "stderr"] + outputs

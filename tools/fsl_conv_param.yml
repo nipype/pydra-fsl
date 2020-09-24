@@ -42,7 +42,8 @@ BET:
   tests_outputs:
     - out_file
     - [out_file, mask_file]
-    - [out_file, inskull_mask_file, inskull_mesh_file, skull_mask_file]
+    - [out_file, meshfile, inskull_mask_file, inskull_mesh_file, outskull_mask_file,
+       outskull_mesh_file, outskin_mask_file, outskin_mesh_file, skull_mask_file]
 
 
 MCFLIRT:

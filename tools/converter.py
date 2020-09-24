@@ -89,7 +89,6 @@ def write_file(filename, input_fields, output_fields, interf_params):
 
 
 def write_test(filename_test, interf_params):
-    cmd = interf_params["cmd"]
     name = interf_params["name"]
     filename = interf_params["filename"]
     tests_inputs = interf_params["tests_inputs"]
@@ -107,12 +106,13 @@ def write_test(filename_test, interf_params):
     spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
     spec_str += f"def test_{name}(inputs, outputs):\n"
     spec_str += f"    if inputs is None: inputs = {{}}\n"
+    spec_str += f"    if isinstance(outputs, str): outputs = [outputs]\n"
     spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
     spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
-    spec_str += f"    res = task()\n"
-    spec_str += f"    print('RESULT: ', res)\n"
-    spec_str += f"    if isinstance(outputs, str): outputs = [outputs]\n"
-    spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
+    spec_str += f"    assert task.generated_output_names == ['return_code', 'stdout', 'stderr'] + outputs\n"
+    #spec_str += f"    res = task()\n"
+    #spec_str += f"    print('RESULT: ', res)\n"
+    #spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
 
     spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
 
