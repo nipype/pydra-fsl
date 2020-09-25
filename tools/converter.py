@@ -24,7 +24,7 @@ INTERFACE = "BET"
 TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"), ("\'Any\'", "ty.Any"),
                 ("\'int\'", "int"), ("\'float\'", "float"), ("\'list\'", "list"), ("\'dict\'", "dict")]
 
-with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
+with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
     INTERF_PARAMS = yaml.safe_load(f)[INTERFACE]
 
 
@@ -88,7 +88,7 @@ def write_file(filename, input_fields, output_fields, interf_params):
         f.write(spec_str_black)
 
 
-def write_test(filename_test, interf_params):
+def write_test(filename_test, interf_params, run=False):
     name = interf_params["name"]
     filename = interf_params["filename"]
     tests_inputs = interf_params["tests_inputs"]
@@ -110,9 +110,11 @@ def write_test(filename_test, interf_params):
     spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
     spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
     spec_str += f"    assert task.generated_output_names == ['return_code', 'stdout', 'stderr'] + outputs\n"
-    #spec_str += f"    res = task()\n"
-    #spec_str += f"    print('RESULT: ', res)\n"
-    #spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
+
+    if run:
+        spec_str += f"    res = task()\n"
+        spec_str += f"    print('RESULT: ', res)\n"
+        spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
 
     spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
 
@@ -284,7 +286,7 @@ def test_convert_file(interface_name):
     input_spec = interface.input_spec()
     output_spec = interface.output_spec()
 
-    with (Path(os.path.dirname(__file__)) / "fsl_conv_param.yml").open() as f:
+    with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
         interf_params = yaml.safe_load(f)[interface_name]
 
     dirname_interf = Path(os.path.dirname(__file__)) / "../preprocess"
