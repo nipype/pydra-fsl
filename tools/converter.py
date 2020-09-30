@@ -29,8 +29,9 @@ with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as
 
 
 def converter_specs(input_spec, output_spec, interf_params=INTERF_PARAMS, write=False, dirname=None):
-    input_fields_pdr = converter_input_fields(input_spec=input_spec, interf_params=interf_params)
-    output_fields_pdr = converter_output_spec(output_spec=output_spec, interf_params=interf_params)
+    input_fields_pdr, inp_templates = converter_input_fields(input_spec=input_spec, interf_params=interf_params)
+    output_fields_pdr = converter_output_spec(output_spec=output_spec, interf_params=interf_params,
+                                              fields_from_template=inp_templates)
 
     input_spec_pydra = specs.SpecInfo(name="Input", fields=input_fields_pdr, bases=(specs.ShellSpec,))
     output_spec_pydra = specs.SpecInfo(name="Output", fields=output_fields_pdr, bases=(specs.ShellOutSpec,))
@@ -38,13 +39,15 @@ def converter_specs(input_spec, output_spec, interf_params=INTERF_PARAMS, write=
 
     if write and dirname:
         filename = dirname / f"{interf_params['filename']}.py"
-        filename_test = dirname / "tests" / f"test_{filename.name}"
+        filename_test = dirname / "tests" / f"test_spec_{filename.name}"
+        filename_test_run = dirname / "tests" / f"test_run_{filename.name}"
 
         print("\n FILENAME", filename)
         write_file(filename, input_fields_pdr, output_fields_pdr, interf_params=interf_params)
 
         # fielname_test = filename.parent / f"test_{filename.name}"
         write_test(filename_test=filename_test, interf_params=interf_params)
+        write_test(filename_test=filename_test_run, interf_params=interf_params, run=True)
 
     return input_spec_pydra, output_spec_pydra
 
@@ -92,13 +95,20 @@ def write_test(filename_test, interf_params, run=False):
     name = interf_params["name"]
     filename = interf_params["filename"]
     tests_inputs = interf_params["tests_inputs"]
-    if "tests_outputs" in interf_params:
-        tests_outputs = interf_params["tests_outputs"]
-        if len(tests_inputs) != len(tests_outputs):
-            raise Exception("tests and tests_outputs should have the same length")
-    else:
-        tests_outputs = len(tests_inputs) * [[]]
-    tests_inp_outp = list(zip(tests_inputs, tests_outputs))
+    tests_outputs = interf_params["tests_outputs"]
+    if len(tests_inputs) != len(tests_outputs):
+        raise Exception("tests and tests_outputs should have the same length")
+
+    tests_inp_outp = []
+    tests_inp_error = []
+    for i, out in enumerate(tests_outputs):
+        if isinstance(out, list):
+            tests_inp_outp.append((tests_inputs[i], out))
+        # allowing for incomplete or incorrect inputs that should raise an exception
+        elif out not in ["AttributeError", "Exception"]:
+            tests_inp_outp.append((tests_inputs[i], [out]))
+        else:
+            tests_inp_error.append((tests_inputs[i], out))
 
     print("\FILENAME TEST", filename_test)
 
@@ -106,15 +116,18 @@ def write_test(filename_test, interf_params, run=False):
     spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
     spec_str += f"def test_{name}(inputs, outputs):\n"
     spec_str += f"    if inputs is None: inputs = {{}}\n"
-    spec_str += f"    if isinstance(outputs, str): outputs = [outputs]\n"
     spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
     spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
-    spec_str += f"    assert task.generated_output_names == ['return_code', 'stdout', 'stderr'] + outputs\n"
+    spec_str += f"    assert set(task.generated_output_names) == set(['return_code', 'stdout', 'stderr'] + outputs)\n"
 
     if run:
         spec_str += f"    res = task()\n"
         spec_str += f"    print('RESULT: ', res)\n"
         spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
+
+    # if test_inp_error is not empty, than additional test function will be created
+    if tests_inp_error:
+        spec_str += write_test_error(name=name, input_error=tests_inp_error)
 
     spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
 
@@ -122,15 +135,33 @@ def write_test(filename_test, interf_params, run=False):
         f.write(spec_str_black)
 
 
+def write_test_error(name, input_error):
+    """ creating a tests for incorrect or incomplete inputs
+        checking if the exceptions are raised
+    """
+    spec_str = "\n\n"
+    spec_str += f"@pytest.mark.parametrize('inputs, error', {input_error})\n"
+    spec_str += f"def test_{name}_exception(inputs, error):\n"
+    spec_str += f"    if inputs is None: inputs = {{}}\n"
+    spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+    spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
+    spec_str += f"    with pytest.raises(eval(error)):\n"
+    spec_str += f"        task.generated_output_names\n"
+
+    return spec_str
 
 def converter_input_fields(input_spec, interf_params):
     """creating fields list for pydra input spec """
     fields_pdr_dict = {}
     position_dict = {}
+    has_template =[]
     for name, fld in input_spec.traits().items():
         if name in TRAITS_IRREL:
             continue
         fld_pdr, pos = pydra_fld_input(fld, name, interf_params=interf_params)
+        meta_pdr = fld_pdr[-1]
+        if "output_file_template" in meta_pdr:
+            has_template.append(name)
         fields_pdr_dict[name] = (name,) + fld_pdr
         if pos is not None:
             position_dict[name] = pos
@@ -139,7 +170,7 @@ def converter_input_fields(input_spec, interf_params):
         fields_pdr_dict = fix_position(fields_pdr_dict, position_dict)
 
     fields_pdr_l = list(fields_pdr_dict.values())
-    return fields_pdr_l
+    return fields_pdr_l, has_template
 
 
 def pydra_fld_input(field, nm, interf_params):
@@ -161,7 +192,12 @@ def pydra_fld_input(field, nm, interf_params):
                 val = string_formats(argstr=val, name=nm)
             metadata_pdr[key_nm_pdr] = val
 
-    if getattr(field, "genfile"):
+    if getattr(field, "name_template"):
+        template = getattr(field, "name_template")
+        metadata_pdr["output_file_template"] = string_formats(argstr=template, name=getattr(field, "name_source")[0])
+        if tp_pdr in [specs.File, specs.Directory]:
+            tp_pdr = str
+    elif getattr(field, "genfile"):
         if nm in interf_params["output_templates"]:
             metadata_pdr["output_file_template"] = interf_params["output_templates"][nm]
             if tp_pdr in [specs.File, specs.Directory]: # since this is a template, the file doesn't exist
@@ -177,11 +213,11 @@ def pydra_fld_input(field, nm, interf_params):
         return (tp_pdr, metadata_pdr), pos
 
 
-def converter_output_spec(output_spec, interf_params):
+def converter_output_spec(output_spec, interf_params, fields_from_template):
     """creating fields list for pydra input spec """
     fields_pdr_l = []
     for name, fld in output_spec.traits().items():
-        if name in interf_params["output_files"]:
+        if name in interf_params["output_files"] and name not in fields_from_template:
             fld_pdr = pydra_fld_output(fld, name, interf_params=interf_params)
             fields_pdr_l.append((name,) + fld_pdr)
     return fields_pdr_l
@@ -272,12 +308,19 @@ def fix_position(fields_dict, positions):
 
 
 def string_formats(argstr, name):
-    argstr_l = argstr.split(" ")
-    for ii, el in enumerate(argstr_l):
-        if "%" in el:
-            #argstr_l[ii] = "{" + el.replace("%", "{}:".format(name)) + "}"
-            argstr_l[ii] = "{" + name + "}"
-    return " ".join(argstr_l)
+    import re
+    if "%s" in argstr:
+        argstr_new = argstr.replace("%s", f"{{{name}}}")
+    elif "%d" in argstr:
+        argstr_new = argstr.replace("%d", f"{{{name}}}")
+    elif "%f" in argstr:
+        argstr_new = argstr.replace("%f", f"{{{name}}}")
+    elif len(re.findall("%[0-9.]+f", argstr)) == 1:
+        old_format = re.findall("%[0-9.]+f", argstr)[0]
+        argstr_new = argstr.replace(old_format, f"{{{name}:{old_format[1:]}}}")
+    else:
+        raise Exception(f"format from {argstr} is not supported TODO")
+    return argstr_new
 
 
 @pytest.mark.parametrize("interface_name", ["BET", "MCFLIRT"])

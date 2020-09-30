@@ -6,7 +6,7 @@ from ..bet import BET
 @pytest.mark.parametrize(
     "inputs, outputs",
     [
-        (None, "out_file"),
+        (None, ["out_file"]),
         ({"mask": True}, ["out_file", "mask_file"]),
         (
             {"surfaces": True},
@@ -27,8 +27,8 @@ from ..bet import BET
 def test_BET(inputs, outputs):
     if inputs is None:
         inputs = {}
-    if isinstance(outputs, str):
-        outputs = [outputs]
     in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
     task = BET(in_file=in_file, **inputs)
-    assert task.generated_output_names == ["return_code", "stdout", "stderr"] + outputs
+    assert set(task.generated_output_names) == set(
+        ["return_code", "stdout", "stderr"] + outputs
+    )

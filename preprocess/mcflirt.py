@@ -48,13 +48,13 @@ input_fields = [
     (
         "scaling",
         float,
-        {"argstr": "-scaling {scaling}", "help_string": "scaling factor to use"},
+        {"argstr": "-scaling {scaling:.2f}", "help_string": "scaling factor to use"},
     ),
     (
         "smooth",
         float,
         {
-            "argstr": "-smooth {smooth}",
+            "argstr": "-smooth {smooth:.2f}",
             "help_string": "smoothing factor for the cost function",
         },
     ),
@@ -83,7 +83,7 @@ input_fields = [
         "interpolation",
         ty.Any,
         {
-            "argstr": "{interpolation}",
+            "argstr": "-{interpolation}_final",
             "help_string": "interpolation method for transformation",
         },
     ),
@@ -139,15 +139,6 @@ bet_input_spec = specs.SpecInfo(
 )
 
 output_fields = [
-    (
-        "out_file",
-        specs.File,
-        {
-            "help_string": "motion-corrected timeseries",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_mcf",
-        },
-    ),
     (
         "variance_img",
         specs.File,

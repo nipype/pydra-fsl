@@ -34,13 +34,13 @@ input_fields = [
     (
         "frac",
         float,
-        {"argstr": "-f {frac}", "help_string": "fractional intensity threshold"},
+        {"argstr": "-f {frac:.2f}", "help_string": "fractional intensity threshold"},
     ),
     (
         "vertical_gradient",
         float,
         {
-            "argstr": "-g {vertical_gradient}",
+            "argstr": "-g {vertical_gradient:.2f}",
             "help_string": "vertical gradient in fractional intensity threshold (-1, 1)",
         },
     ),
@@ -188,15 +188,6 @@ bet_input_spec = specs.SpecInfo(
 )
 
 output_fields = [
-    (
-        "out_file",
-        specs.File,
-        {
-            "help_string": "path/name of skullstripped file (if generated)",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_brain",
-        },
-    ),
     (
         "mask_file",
         specs.File,
