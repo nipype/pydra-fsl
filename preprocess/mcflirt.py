@@ -134,7 +134,7 @@ input_fields = [
         },
     ),
 ]
-bet_input_spec = specs.SpecInfo(
+MCFLIRT_input_spec = specs.SpecInfo(
     name="Input", fields=input_fields, bases=(specs.ShellSpec,)
 )
 
@@ -176,12 +176,12 @@ output_fields = [
         },
     ),
 ]
-bet_output_spec = specs.SpecInfo(
+MCFLIRT_output_spec = specs.SpecInfo(
     name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )
 
 
 class MCFLIRT(ShellCommandTask):
-    input_spec = bet_input_spec
-    output_spec = bet_output_spec
+    input_spec = MCFLIRT_input_spec
+    output_spec = MCFLIRT_output_spec
     executable = "mcflirt"

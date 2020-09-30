@@ -19,16 +19,18 @@ NAME_MAPPING = {"desc": "help_string"}
 TRAITS_IRREL = ['output_type', 'args', 'environ', 'environ_items', '__all__',
                 'trait_added', 'trait_modified']
 
-INTERFACE = "BET"
+#INTERFACE = "BET"
 
 TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"), ("\'Any\'", "ty.Any"),
                 ("\'int\'", "int"), ("\'float\'", "float"), ("\'list\'", "list"), ("\'dict\'", "dict")]
 
-with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
-    INTERF_PARAMS = yaml.safe_load(f)[INTERFACE]
+#with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
+#    INTERF_PARAMS = yaml.safe_load(f)[INTERFACE]
 
 
-def converter_specs(input_spec, output_spec, interf_params=INTERF_PARAMS, write=False, dirname=None):
+def converter_specs(input_spec, output_spec, interf_params, write=False, dirname=None):
+    if interf_params.get("output_files") is None:
+        interf_params["output_files"] = []
     input_fields_pdr, inp_templates = converter_input_fields(input_spec=input_spec, interf_params=interf_params)
     output_fields_pdr = converter_output_spec(output_spec=output_spec, interf_params=interf_params,
                                               fields_from_template=inp_templates)
@@ -72,13 +74,13 @@ def write_file(filename, input_fields, output_fields, interf_params):
     spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \n"
     spec_str += f"import typing as ty\n"
     spec_str += f"input_fields = {input_fields_str}\n"
-    spec_str += f"bet_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
+    spec_str += f"{name}_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
     spec_str += f"output_fields = {output_fields_str}\n"
-    spec_str += f"bet_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
+    spec_str += f"{name}_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
 
     spec_str += f"class {name}(ShellCommandTask):\n"
-    spec_str += f"    input_spec = bet_input_spec\n"
-    spec_str += f"    output_spec = bet_output_spec\n"
+    spec_str += f"    input_spec = {name}_input_spec\n"
+    spec_str += f"    output_spec = {name}_output_spec\n"
     spec_str += f"    executable='{cmd}'\n"
 
 
@@ -323,7 +325,7 @@ def string_formats(argstr, name):
     return argstr_new
 
 
-@pytest.mark.parametrize("interface_name", ["BET", "MCFLIRT"])
+@pytest.mark.parametrize("interface_name", ["BET", "MCFLIRT", "FLIRT"])
 def test_convert_file(interface_name):
     interface = getattr(fsl, interface_name)
     input_spec = interface.input_spec()
@@ -337,19 +339,22 @@ def test_convert_file(interface_name):
     _, _ = converter_specs(input_spec, output_spec, interf_params=interf_params, write=True, dirname=dirname_interf)
 
 
-@pytest.mark.skip()
+#@pytest.mark.skip()
 def test_spec(tmpdir):
-    interface_name = INTERFACE
+    interface_name = "BET"
+    with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
+        interf_params = yaml.safe_load(f)[interface_name]
+
     interface = getattr(fsl, interface_name)
     in_file =  Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
     out_file = Path(os.path.dirname(__file__)) / "data_tests/test_brain.nii.gz"
 
     input_spec = interface.input_spec()
     output_spec = interface.output_spec()
-    input_spec_pydra, output_spec_pydra = converter_specs(input_spec, output_spec)
+    input_spec_pydra, output_spec_pydra = converter_specs(input_spec, output_spec, interf_params=interf_params)
 
     shelly = pydra.ShellCommandTask(
-        name="bet_task", executable=INTERF_PARAMS["cmd"],
+        name="bet_task", executable=interf_params["cmd"],
         input_spec=input_spec_pydra, output_spec=output_spec_pydra
     )
     shelly.inputs.in_file = in_file
@@ -361,7 +366,7 @@ def test_spec(tmpdir):
 
 
     shelly_mask = pydra.ShellCommandTask(
-        name="bet_task", executable=INTERF_PARAMS["cmd"], input_spec=input_spec_pydra, output_spec=output_spec_pydra
+        name="bet_task", executable=interf_params["cmd"], input_spec=input_spec_pydra, output_spec=output_spec_pydra
     )
     shelly_mask.inputs.in_file = in_file
     shelly_mask.inputs.mask = True
@@ -372,9 +377,12 @@ def test_spec(tmpdir):
     print("\n Result: ", res)
 
 
-@pytest.mark.skip()
+#@pytest.mark.skip()
 def test_spec_from_file(tmpdir):
-    interface_name = INTERFACE
+    interface_name = "BET"
+    with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
+        interf_params = yaml.safe_load(f)[interface_name]
+
     interface = getattr(fsl, interface_name)
     in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
 
@@ -383,7 +391,7 @@ def test_spec_from_file(tmpdir):
 
     input_spec = interface.input_spec()
     output_spec = interface.output_spec()
-    _, _ = converter_specs(input_spec, output_spec, write=True, dirname=dirname_spec)
+    _, _ = converter_specs(input_spec, output_spec, write=True, dirname=dirname_spec, interf_params=interf_params)
 
     imp.load_source("bet_module", str(dirname_spec / "bet.py"))
     import bet_module as bm

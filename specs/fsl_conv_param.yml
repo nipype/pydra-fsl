@@ -72,10 +72,22 @@ MCFLIRT:
 
   tests_inputs:
     -
-#    - stats_imgs: True
-#    - mean_vol: True
 
   tests_outputs:
     - out_file
-#    - [out_file, variance_img, std_img]
-#    - [out_file, mean_img]
+
+
+FLIRT:
+  name: FLIRT
+  filename: flirt
+  cmd: flirt
+  output_files:
+
+  output_templates:
+
+
+  tests_inputs:
+    -
+
+  tests_outputs:
+    - AttributeError
