@@ -1,10 +1,12 @@
 import os, pytest
 from pathlib import Path
-from ..mcflirt import MCFLIRT
+from ..applywarp import ApplyWarp
 
 
-@pytest.mark.parametrize("inputs, outputs", [(None, ["out_file"])])
-def test_MCFLIRT(inputs, outputs):
+@pytest.mark.parametrize(
+    "inputs, outputs", [({"ref_file": 'f"{in_file}"'}, ["out_file"])]
+)
+def test_ApplyWarp(inputs, outputs):
     in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
     if inputs is None:
         inputs = {}
@@ -13,7 +15,7 @@ def test_MCFLIRT(inputs, outputs):
             inputs[key] = eval(val)
         except:
             pass
-    task = MCFLIRT(in_file=in_file, **inputs)
+    task = ApplyWarp(in_file=in_file, **inputs)
     assert set(task.generated_output_names) == set(
         ["return_code", "stdout", "stderr"] + outputs
     )

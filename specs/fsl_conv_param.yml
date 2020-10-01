@@ -91,3 +91,135 @@ FLIRT:
 
   tests_outputs:
     - AttributeError
+
+
+FNIRT:
+  name: FNIRT
+  filename: fnirt
+  cmd: fnirt
+
+  output_files:
+    warped_file: [in_file]
+    field_file: [in_file]
+    jacobian_file: [in_file]
+    modulatedref_file: [in_file]
+    #out_intensitymap_file: [in_file]
+    log_file: [in_file]
+    fieldcoeff_file: [in_file]
+
+
+  output_templates:
+    warped_file: "{in_file}_warped"
+    field_file: "{in_file}_field"
+    jacobian_file: "{in_file}_field_jacobian"
+    modulatedref_file: "{in_file}_modulated"
+    #out_intensitymap_file: "{in_file}_intmap"
+    log_file: "{in_file}_log.txt"
+    fieldcoeff_file: "{in_file}_fieldwarp"
+
+  tests_inputs:
+    -
+    - ref_file: f"{in_file}"
+
+  tests_outputs:
+    - AttributeError
+    - [warped_file, field_file, jacobian_file, modulatedref_file, log_file, fieldcoeff_file]
+
+
+ApplyWarp:
+  name: ApplyWarp
+  filename: applywarp
+  cmd: applywarp
+
+  output_templates:
+    out_file: "{in_file}_warp"
+
+  tests_inputs:
+    - ref_file: f"{in_file}"
+
+  tests_outputs:
+    - out_file
+
+
+SliceTimer:
+  name: SliceTimer
+  filename: slicetime
+  cmd: slicetimer
+
+  output_files:
+    slice_time_corrected_file: [out_file]
+
+  output_templates:
+    out_file: "{in_file}_st"
+    slice_time_corrected_file: "{out_file}"
+
+  tests_inputs:
+    - ref_file: f"{in_file}"
+
+  tests_outputs:
+    - [out_file, slice_time_corrected_file]
+
+
+SUSAN:
+  name: SUSAN
+  filename: susan
+  cmd: susan
+
+  output_files:
+    smoothed_file: [out_file]
+
+  output_templates:
+    out_file: "{in_file}_smooth"
+    smoothed_file: "{out_file}"
+
+  tests_inputs:
+    -
+    -
+      brightness_threshold: 0.01
+      fwhm: 2
+
+  tests_outputs:
+    - AttributeError
+    - [out_file, smoothed_file]
+
+
+PRELUDE:
+  name: PRELUDE
+  filename: prelude
+  cmd: prelude
+
+  output_files:
+    unwrapped_phase_file: [phase_file]
+
+  output_templates:
+    unwrapped_phase_file: "{phase_file}_unwrapped"
+
+  tests_inputs:
+    -
+
+  tests_outputs:
+    - AttributeError
+
+
+FIRST:
+  name: FIRST
+  filename: first
+  cmd: run_first_all
+
+  output_files:
+    original_segmentations: [in_file]
+    segmentation_file: [in_file]
+    vtk_surfaces: [in_file]
+    bvars: [in_file]
+
+  output_templates:
+    original_segmentations: "{in_file}_original_segmentations"
+    segmentation_file: "{in_file}_segmentation_file"
+    vtk_surfaces: "{in_file}_vtk_surfaces"
+    bvars: "{in_file}_bvars"
+
+  tests_inputs:
+    -
+
+  tests_outputs:
+    - AttributeError

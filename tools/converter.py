@@ -106,6 +106,8 @@ def write_test(filename_test, interf_params, run=False):
     for i, out in enumerate(tests_outputs):
         if isinstance(out, list):
             tests_inp_outp.append((tests_inputs[i], out))
+        elif out is None:
+            tests_inp_outp.append((tests_inputs[i], []))
         # allowing for incomplete or incorrect inputs that should raise an exception
         elif out not in ["AttributeError", "Exception"]:
             tests_inp_outp.append((tests_inputs[i], [out]))
@@ -117,8 +119,11 @@ def write_test(filename_test, interf_params, run=False):
     spec_str = f"import os, pytest \nfrom pathlib import Path\nfrom ..{filename} import {name} \n\n"
     spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
     spec_str += f"def test_{name}(inputs, outputs):\n"
-    spec_str += f"    if inputs is None: inputs = {{}}\n"
     spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+    spec_str += f"    if inputs is None: inputs = {{}}\n"
+    spec_str += f"    for key, val in inputs.items():\n"
+    spec_str += f"        try: inputs[key] = eval(val)\n"
+    spec_str += f"        except: pass\n"
     spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
     spec_str += f"    assert set(task.generated_output_names) == set(['return_code', 'stdout', 'stderr'] + outputs)\n"
 
@@ -144,8 +149,11 @@ def write_test_error(name, input_error):
     spec_str = "\n\n"
     spec_str += f"@pytest.mark.parametrize('inputs, error', {input_error})\n"
     spec_str += f"def test_{name}_exception(inputs, error):\n"
-    spec_str += f"    if inputs is None: inputs = {{}}\n"
     spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+    spec_str += f"    if inputs is None: inputs = {{}}\n"
+    spec_str += f"    for key, val in inputs.items():\n"
+    spec_str += f"        try: inputs[key] = eval(val)\n"
+    spec_str += f"        except: pass\n"
     spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
     spec_str += f"    with pytest.raises(eval(error)):\n"
     spec_str += f"        task.generated_output_names\n"
@@ -291,9 +299,9 @@ def fix_position(fields_dict, positions):
     """ fixing positions all of the fields"""
     positions_list = list(positions.values())
     positions_list.sort()
-    if positions_list[0] < -1:
-        raise Exception("position in nipype interface < -1")
-    if positions_list[0] == -1:
+#    if positions_list[0] < -1:
+#        raise Exception("position in nipype interface < -1")
+    if positions_list[0] <= -1:
         positions_list.append(positions_list.pop(0))
 
     positions_map = {}
@@ -325,7 +333,9 @@ def string_formats(argstr, name):
     return argstr_new
 
 
-@pytest.mark.parametrize("interface_name", ["BET", "MCFLIRT", "FLIRT"])
+@pytest.mark.parametrize("interface_name",
+                         ["BET", "MCFLIRT", "FLIRT", "FNIRT", "ApplyWarp", "SliceTimer",
+                          "SUSAN", "PRELUDE", "FIRST"])
 def test_convert_file(interface_name):
     interface = getattr(fsl, interface_name)
     input_spec = interface.input_spec()
@@ -339,7 +349,7 @@ def test_convert_file(interface_name):
     _, _ = converter_specs(input_spec, output_spec, interf_params=interf_params, write=True, dirname=dirname_interf)
 
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_spec(tmpdir):
     interface_name = "BET"
     with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
@@ -377,7 +387,7 @@ def test_spec(tmpdir):
     print("\n Result: ", res)
 
 
-#@pytest.mark.skip()
+@pytest.mark.skip()
 def test_spec_from_file(tmpdir):
     interface_name = "BET"
     with (Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml").open() as f:
