@@ -28,8 +28,9 @@ class FSLConverter:
 
     def __init__(self, interface_name,
                  interface_spec_file=Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml"):
+        self.interface_name = interface_name
         with interface_spec_file.open() as f:
-            self.interface_spec = yaml.safe_load(f)[interface_name]
+            self.interface_spec = yaml.safe_load(f)[self.interface_name]
         if self.interface_spec.get("output_requirements") is None:
             self.interface_spec["output_requirements"] = []
         if self.interface_spec.get("inputs_metadata") is None:
@@ -42,9 +43,9 @@ class FSLConverter:
                 self.interface_spec["output_templates"].keys()):
             raise Exception("output_callables and output_templates have the same keys")
 
-
         # getting input/output spec from nipype
-        nipype_interface = getattr(fsl, interface_name)
+        nipype_interface = getattr(fsl, self.interface_name)
+        self.cmd = nipype_interface._cmd
         self.nipype_input_spec = nipype_interface.input_spec()
         self.nipype_output_spec = nipype_interface.output_spec()
 
@@ -69,7 +70,7 @@ class FSLConverter:
 
     def write_pydra_files(self, dirname, pydra_input_spec, pydra_output_spec):
         """writing pydra task and tests to the files """
-        filename = dirname / f"{self.interface_spec['filename']}.py"
+        filename = dirname / f"{self.interface_name.lower()}.py"
         filename_test = dirname / "tests" / f"test_spec_{filename.name}"
         filename_test_run = dirname / "tests" / f"test_run_{filename.name}"
 
@@ -96,21 +97,19 @@ class FSLConverter:
 
         input_fields_str = types_to_names(spec_fields=input_fields)
         output_fields_str = types_to_names(spec_fields=output_fields)
-        cmd = self.interface_spec["cmd"] # TODO: remove?
-        name = self.interface_spec["name"]
         functions_str = self.function_callables()
         spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \n"
         spec_str += f"import typing as ty\n"
         spec_str += functions_str
         spec_str += f"input_fields = {input_fields_str}\n"
-        spec_str += f"{name}_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
+        spec_str += f"{self.interface_name}_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
         spec_str += f"output_fields = {output_fields_str}\n"
-        spec_str += f"{name}_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
+        spec_str += f"{self.interface_name}_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
 
-        spec_str += f"class {name}(ShellCommandTask):\n"
-        spec_str += f"    input_spec = {name}_input_spec\n"
-        spec_str += f"    output_spec = {name}_output_spec\n"
-        spec_str += f"    executable='{cmd}'\n"
+        spec_str += f"class {self.interface_name}(ShellCommandTask):\n"
+        spec_str += f"    input_spec = {self.interface_name}_input_spec\n"
+        spec_str += f"    output_spec = {self.interface_name}_output_spec\n"
+        spec_str += f"    executable='{self.cmd}'\n"
 
         for tp_repl in self.TYPE_REPLACE:
             spec_str = spec_str.replace(*tp_repl)
@@ -125,8 +124,6 @@ class FSLConverter:
         """writing tests for the specific interface based on the test spec (from interface_spec)
            if run is True the test contains task run, if run is False only the spec is check by teh test
         """
-        name = self.interface_spec["name"]
-        filename = self.interface_spec["filename"]
         tests_inputs = self.interface_spec["tests_inputs"]
         tests_outputs = self.interface_spec["tests_outputs"]
         if len(tests_inputs) != len(tests_outputs):
@@ -147,15 +144,16 @@ class FSLConverter:
 
         print("\FILENAME TEST", filename_test)
 
-        spec_str = f"import os, pytest \nfrom pathlib import Path\nfrom ..{filename} import {name} \n\n"
+        spec_str = f"import os, pytest \nfrom pathlib import Path\n"
+        spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
-        spec_str += f"def test_{name}(inputs, outputs):\n"
+        spec_str += f"def test_{self.interface_name}(inputs, outputs):\n"
         spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
         spec_str += f"    if inputs is None: inputs = {{}}\n"
         spec_str += f"    for key, val in inputs.items():\n"
         spec_str += f"        try: inputs[key] = eval(val)\n"
         spec_str += f"        except: pass\n"
-        spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
+        spec_str += f"    task = {self.interface_name}(in_file=in_file, **inputs)\n"
         spec_str += f"    assert set(task.generated_output_names) == set(['return_code', 'stdout', 'stderr'] + outputs)\n"
 
         if run:
@@ -165,7 +163,7 @@ class FSLConverter:
 
         # if test_inp_error is not empty, than additional test function will be created
         if tests_inp_error:
-            spec_str += self.write_test_error(name=name, input_error=tests_inp_error)
+            spec_str += self.write_test_error(input_error=tests_inp_error)
 
         spec_str_black = black.format_file_contents(spec_str, fast=False, mode=black.FileMode())
 
@@ -173,19 +171,19 @@ class FSLConverter:
             f.write(spec_str_black)
 
 
-    def write_test_error(self, name, input_error):
+    def write_test_error(self, input_error):
         """ creating a tests for incorrect or incomplete inputs
             checking if the exceptions are raised
         """
         spec_str = "\n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, error', {input_error})\n"
-        spec_str += f"def test_{name}_exception(inputs, error):\n"
+        spec_str += f"def test_{self.interface_name}_exception(inputs, error):\n"
         spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
         spec_str += f"    if inputs is None: inputs = {{}}\n"
         spec_str += f"    for key, val in inputs.items():\n"
         spec_str += f"        try: inputs[key] = eval(val)\n"
         spec_str += f"        except: pass\n"
-        spec_str += f"    task = {name}(in_file=in_file, **inputs)\n"
+        spec_str += f"    task = {self.interface_name}(in_file=in_file, **inputs)\n"
         spec_str += f"    with pytest.raises(eval(error)):\n"
         spec_str += f"        task.generated_output_names\n"
 
@@ -410,7 +408,7 @@ def test_spec(tmpdir):
 
     in_file =  Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
     out_file = Path(os.path.dirname(__file__)) / "data_tests/test_brain.nii.gz"
-    cmd = converter.interface_spec["cmd"]
+    cmd = "bet"
 
     shelly = pydra.ShellCommandTask(
         name="bet_task", executable=cmd,

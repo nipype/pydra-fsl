@@ -1,7 +1,4 @@
 BET:
-  name: BET
-  filename: bet
-  cmd: bet
   output_requirements:
     out_file: [in_file]
     mask_file:
@@ -47,10 +44,6 @@ BET:
 
 
 FAST:
-  name: FAST
-  filename: fast
-  cmd: fast
-
   inputs_metadata:
     number_classes:
       default: 3
@@ -72,7 +65,6 @@ FAST:
     bias_field: FAST_output_infile
     probability_maps: FAST_output_nclass
 
-
   tests_inputs:
     -
 
@@ -81,9 +73,6 @@ FAST:
 
 
 MCFLIRT:
-  name: MCFLIRT
-  filename: mcflirt
-  cmd: mcflirt
   output_requirements:
     out_file: [in_file]
     variance_img: [in_file, stats_imgs: True]
@@ -111,13 +100,9 @@ MCFLIRT:
 
 
 FLIRT:
-  name: FLIRT
-  filename: flirt
-  cmd: flirt
   output_requirements:
 
   output_templates:
-
 
   tests_inputs:
     -
@@ -127,10 +112,6 @@ FLIRT:
 
 
 FNIRT:
-  name: FNIRT
-  filename: fnirt
-  cmd: fnirt
-
   output_requirements:
     warped_file: [in_file]
     field_file: [in_file]
@@ -160,10 +141,6 @@ FNIRT:
 
 
 ApplyWarp:
-  name: ApplyWarp
-  filename: applywarp
-  cmd: applywarp
-
   output_templates:
     out_file: "{in_file}_warp"
 
@@ -175,10 +152,6 @@ ApplyWarp:
 
 
 SliceTimer:
-  name: SliceTimer
-  filename: slicetime
-  cmd: slicetimer
-
   output_requirements:
     slice_time_corrected_file: [out_file]
 
@@ -194,10 +167,6 @@ SliceTimer:
 
 
 SUSAN:
-  name: SUSAN
-  filename: susan
-  cmd: susan
-
   output_requirements:
     smoothed_file: [out_file]
 
@@ -217,10 +186,6 @@ SUSAN:
 
 
 PRELUDE:
-  name: PRELUDE
-  filename: prelude
-  cmd: prelude
-
   output_requirements:
     unwrapped_phase_file: [phase_file]
 
@@ -235,10 +200,6 @@ PRELUDE:
 
 
 FIRST:
-  name: FIRST
-  filename: first
-  cmd: run_first_all
-
   output_requirements:
     original_segmentations: [in_file]
     segmentation_file: [in_file]
