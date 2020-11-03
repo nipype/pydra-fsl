@@ -46,6 +46,40 @@ BET:
        outskull_mesh_file, outskin_mask_file, outskin_mesh_file, skull_mask_file]
 
 
+FAST:
+  name: FAST
+  filename: fast
+  cmd: fast
+
+  inputs_metadata:
+    number_classes:
+      default: 3
+
+  output_files:
+    tissue_class_files: [segments: True]
+    partial_volume_map: [no_pve: False] # possibly [False, None, attr.NOTHING]
+    partial_volume_files: [no_pve: False] # possibly [False, None, attr.NOTHING]
+    bias_field: [output_biasfield: True]
+    probability_maps: [probability_maps: True]
+
+  outputs_callables:
+    tissue_class_map: FAST_output
+    tissue_class_files: FAST_output_nclass
+    restored_image: FAST_output_infile
+    mixeltype: FAST_output
+    partial_volume_map: FAST_output
+    partial_volume_files: FAST_output_nclass
+    bias_field: FAST_output_infile
+    probability_maps: FAST_output_nclass
+
+
+  tests_inputs:
+    -
+
+  tests_outputs:
+    - AttributeError
+
+
 MCFLIRT:
   name: MCFLIRT
   filename: mcflirt
@@ -68,7 +102,6 @@ MCFLIRT:
     par_file: "{out_file}.par"
 #    mat_file:
 #    rms_files:
-
 
   tests_inputs:
     -

@@ -7,6 +7,7 @@ import os, sys, yaml, black, imp
 import traits
 from pathlib import Path
 import typing as ty
+import inspect
 import pytest
 
 
@@ -31,6 +32,17 @@ class FSLConverter:
             self.interface_spec = yaml.safe_load(f)[interface_name]
         if self.interface_spec.get("output_files") is None:
             self.interface_spec["output_files"] = []
+        if self.interface_spec.get("inputs_metadata") is None:
+            self.interface_spec["inputs_metadata"] = {}
+        if self.interface_spec.get("output_templates") is None:
+            self.interface_spec["output_templates"] = {}
+        if self.interface_spec.get("outputs_callables") is None:
+            self.interface_spec["outputs_callables"] = {}
+        if not self.interface_spec["outputs_callables"].keys().isdisjoint(
+                self.interface_spec["output_templates"].keys()):
+            raise Exception("outputs_callables and output_templates have the same keys")
+
+
         # getting input/output spec from nipype
         nipype_interface = getattr(fsl, interface_name)
         self.nipype_input_spec = nipype_interface.input_spec()
@@ -84,11 +96,12 @@ class FSLConverter:
 
         input_fields_str = types_to_names(spec_fields=input_fields)
         output_fields_str = types_to_names(spec_fields=output_fields)
-        cmd = self.interface_spec["cmd"]
+        cmd = self.interface_spec["cmd"] # TODO: remove?
         name = self.interface_spec["name"]
-
+        functions_str = self.function_callables()
         spec_str = "from pydra.engine import specs \nfrom pydra import ShellCommandTask \n"
         spec_str += f"import typing as ty\n"
+        spec_str += functions_str
         spec_str += f"input_fields = {input_fields_str}\n"
         spec_str += f"{name}_input_spec = specs.SpecInfo(name='Input', fields=input_fields, bases=(specs.ShellSpec,))\n\n"
         spec_str += f"output_fields = {output_fields_str}\n"
@@ -207,7 +220,14 @@ class FSLConverter:
         tp = field.trait_type
         tp_pdr = self.pydra_type_converter(tp)
 
-        if getattr(field, "usedefault") and field.default is not traits.ctrait.Undefined:
+        if nm in self.interface_spec["inputs_metadata"]:
+            metadata_extra_spec = self.interface_spec["inputs_metadata"][nm]
+        else:
+            metadata_extra_spec = {}
+
+        if "default" in metadata_extra_spec:
+            default_pdr = metadata_extra_spec.pop("default")
+        elif getattr(field, "usedefault") and field.default is not traits.ctrait.Undefined:
             default_pdr = field.default
         else:
             default_pdr = None
@@ -234,6 +254,8 @@ class FSLConverter:
                     tp_pdr = str
             else:
                 raise Exception(f"the filed {nm} has genfile=True, but no output template provided")
+
+        metadata_pdr.update(metadata_extra_spec)
 
         pos = metadata_pdr.get("position", None)
 
@@ -289,9 +311,23 @@ class FSLConverter:
 
         if name in self.interface_spec["output_templates"]:
             metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][name]
-
+        elif name in self.interface_spec["outputs_callables"]:
+            metadata_pdr["callable"] = self.interface_spec["outputs_callables"][name]
         return (tp_pdr, metadata_pdr)
 
+
+    def function_callables(self):
+        if not self.interface_spec["outputs_callables"]:
+            return ""
+        python_functions_spec = Path(os.path.dirname(__file__)) / "../specs/callables.py"
+        if not python_functions_spec.exists():
+            raise Exception("specs/callables.py file is needed if outputs_callables in the spec files")
+        from specs import callables
+        fun_str = ""
+        for fun_nm in set(self.interface_spec["outputs_callables"].values()):
+            fun = getattr(callables, fun_nm)
+            fun_str += inspect.getsource(fun) + "\n"
+        return fun_str
 
     def pydra_type_converter(self, tp):
         """converting types to types used in pydra"""
@@ -354,7 +390,8 @@ class FSLConverter:
 
 @pytest.mark.parametrize("interface_name",
                          ["BET", "MCFLIRT", "FLIRT", "FNIRT", "ApplyWarp", "SliceTimer",
-                          "SUSAN", "PRELUDE", "FIRST"])
+                          "SUSAN", "PRELUDE", "FIRST", "FAST"]
+                         )
 def test_convert_file(interface_name):
     converter = FSLConverter(interface_name=interface_name)
 
