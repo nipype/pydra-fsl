@@ -30,17 +30,17 @@ class FSLConverter:
                  interface_spec_file=Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml"):
         with interface_spec_file.open() as f:
             self.interface_spec = yaml.safe_load(f)[interface_name]
-        if self.interface_spec.get("output_files") is None:
-            self.interface_spec["output_files"] = []
+        if self.interface_spec.get("output_requirements") is None:
+            self.interface_spec["output_requirements"] = []
         if self.interface_spec.get("inputs_metadata") is None:
             self.interface_spec["inputs_metadata"] = {}
         if self.interface_spec.get("output_templates") is None:
             self.interface_spec["output_templates"] = {}
-        if self.interface_spec.get("outputs_callables") is None:
-            self.interface_spec["outputs_callables"] = {}
-        if not self.interface_spec["outputs_callables"].keys().isdisjoint(
+        if self.interface_spec.get("output_callables") is None:
+            self.interface_spec["output_callables"] = {}
+        if not self.interface_spec["output_callables"].keys().isdisjoint(
                 self.interface_spec["output_templates"].keys()):
-            raise Exception("outputs_callables and output_templates have the same keys")
+            raise Exception("output_callables and output_templates have the same keys")
 
 
         # getting input/output spec from nipype
@@ -269,7 +269,7 @@ class FSLConverter:
         """creating fields list for pydra input spec """
         fields_pdr_l = []
         for name, fld in self.nipype_output_spec.traits().items():
-            if name in self.interface_spec["output_files"] and name not in fields_from_template:
+            if name in self.interface_spec["output_requirements"] and name not in fields_from_template:
                 fld_pdr = self.pydra_fld_output(fld, name)
                 fields_pdr_l.append((name,) + fld_pdr)
         return fields_pdr_l
@@ -287,12 +287,12 @@ class FSLConverter:
             if val:
                 metadata_pdr[key_nm_pdr] = val
 
-        if self.interface_spec["output_files"][name]:
-            if all([isinstance(el, list) for el in self.interface_spec["output_files"][name]]):
-                requires_l = self.interface_spec["output_files"][name]
+        if self.interface_spec["output_requirements"][name]:
+            if all([isinstance(el, list) for el in self.interface_spec["output_requirements"][name]]):
+                requires_l = self.interface_spec["output_requirements"][name]
                 nested_flag = True
-            elif all([isinstance(el, (str, dict)) for el in self.interface_spec["output_files"][name]]):
-                requires_l = [self.interface_spec["output_files"][name]]
+            elif all([isinstance(el, (str, dict)) for el in self.interface_spec["output_requirements"][name]]):
+                requires_l = [self.interface_spec["output_requirements"][name]]
                 nested_flag = False
             else:
                 Exception("has to be either list of list or list of str/dict")
@@ -311,20 +311,22 @@ class FSLConverter:
 
         if name in self.interface_spec["output_templates"]:
             metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][name]
-        elif name in self.interface_spec["outputs_callables"]:
-            metadata_pdr["callable"] = self.interface_spec["outputs_callables"][name]
+        elif name in self.interface_spec["output_callables"]:
+            metadata_pdr["callable"] = self.interface_spec["output_callables"][name]
         return (tp_pdr, metadata_pdr)
 
 
     def function_callables(self):
-        if not self.interface_spec["outputs_callables"]:
+        if not self.interface_spec["output_callables"]:
             return ""
         python_functions_spec = Path(os.path.dirname(__file__)) / "../specs/callables.py"
         if not python_functions_spec.exists():
-            raise Exception("specs/callables.py file is needed if outputs_callables in the spec files")
+            raise Exception("specs/callables.py file is needed if output_callables in the spec files")
         from specs import callables
         fun_str = ""
-        for fun_nm in set(self.interface_spec["outputs_callables"].values()):
+        fun_names = list(set(self.interface_spec["output_callables"].values()))
+        fun_names.sort()
+        for fun_nm in fun_names:
             fun = getattr(callables, fun_nm)
             fun_str += inspect.getsource(fun) + "\n"
         return fun_str

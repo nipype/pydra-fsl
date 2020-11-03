@@ -2,7 +2,7 @@ BET:
   name: BET
   filename: bet
   cmd: bet
-  output_files:
+  output_requirements:
     out_file: [in_file]
     mask_file:
       - [mask: True]
@@ -55,14 +55,14 @@ FAST:
     number_classes:
       default: 3
 
-  output_files:
+  output_requirements:
     tissue_class_files: [segments: True]
     partial_volume_map: [no_pve: False] # possibly [False, None, attr.NOTHING]
     partial_volume_files: [no_pve: False] # possibly [False, None, attr.NOTHING]
     bias_field: [output_biasfield: True]
     probability_maps: [probability_maps: True]
 
-  outputs_callables:
+  output_callables:
     tissue_class_map: FAST_output
     tissue_class_files: FAST_output_nclass
     restored_image: FAST_output_infile
@@ -84,7 +84,7 @@ MCFLIRT:
   name: MCFLIRT
   filename: mcflirt
   cmd: mcflirt
-  output_files:
+  output_requirements:
     out_file: [in_file]
     variance_img: [in_file, stats_imgs: True]
     std_img: [in_file, stats_imgs: True]
@@ -114,7 +114,7 @@ FLIRT:
   name: FLIRT
   filename: flirt
   cmd: flirt
-  output_files:
+  output_requirements:
 
   output_templates:
 
@@ -131,7 +131,7 @@ FNIRT:
   filename: fnirt
   cmd: fnirt
 
-  output_files:
+  output_requirements:
     warped_file: [in_file]
     field_file: [in_file]
     jacobian_file: [in_file]
@@ -179,7 +179,7 @@ SliceTimer:
   filename: slicetime
   cmd: slicetimer
 
-  output_files:
+  output_requirements:
     slice_time_corrected_file: [out_file]
 
   output_templates:
@@ -198,7 +198,7 @@ SUSAN:
   filename: susan
   cmd: susan
 
-  output_files:
+  output_requirements:
     smoothed_file: [out_file]
 
   output_templates:
@@ -221,7 +221,7 @@ PRELUDE:
   filename: prelude
   cmd: prelude
 
-  output_files:
+  output_requirements:
     unwrapped_phase_file: [phase_file]
 
   output_templates:
@@ -239,7 +239,7 @@ FIRST:
   filename: first
   cmd: run_first_all
 
-  output_files:
+  output_requirements:
     original_segmentations: [in_file]
     segmentation_file: [in_file]
     vtk_surfaces: [in_file]
