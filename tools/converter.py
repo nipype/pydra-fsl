@@ -3,7 +3,7 @@ from nipype.interfaces.base import traits_extension
 import pydra
 from pydra.engine import specs
 
-import os, sys, yaml, black, imp
+import os, yaml, black, imp
 import traits
 from pathlib import Path
 import typing as ty
@@ -22,8 +22,9 @@ class FSLConverter:
     TRAITS_IRREL = ['output_type', 'args', 'environ', 'environ_items', '__all__',
                    'trait_added', 'trait_modified']
 
-    TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"), ("\'Any\'", "ty.Any"),
-                    ("\'int\'", "int"), ("\'float\'", "float"), ("\'list\'", "list"), ("\'dict\'", "dict")]
+    TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"),
+                    ("\'Any\'", "ty.Any"), ("\'int\'", "int"), ("\'float\'", "float"),
+                    ("\'list\'", "list"), ("\'dict\'", "dict")]
 
 
     def __init__(self, interface_name,
@@ -56,8 +57,10 @@ class FSLConverter:
         input_fields_pdr, inp_templates = self.convert_input_fields()
         output_fields_pdr = self.convert_output_spec(fields_from_template=inp_templates)
 
-        input_spec_pydra = specs.SpecInfo(name="Input", fields=input_fields_pdr, bases=(specs.ShellSpec,))
-        output_spec_pydra = specs.SpecInfo(name="Output", fields=output_fields_pdr, bases=(specs.ShellOutSpec,))
+        input_spec_pydra = specs.SpecInfo(name="Input", fields=input_fields_pdr,
+                                          bases=(specs.ShellSpec,))
+        output_spec_pydra = specs.SpecInfo(name="Output", fields=output_fields_pdr,
+                                           bases=(specs.ShellOutSpec,))
 
         if write:
             if dirname is None:
@@ -77,7 +80,6 @@ class FSLConverter:
         print("\n FILENAME", filename)
         self.write_task(filename, pydra_input_spec, pydra_output_spec)
 
-        # fielname_test = filename.parent / f"test_{filename.name}"
         self.write_test(filename_test=filename_test)
         self.write_test(filename_test=filename_test_run, run=True)
 
@@ -122,7 +124,8 @@ class FSLConverter:
 
     def write_test(self, filename_test, run=False):
         """writing tests for the specific interface based on the test spec (from interface_spec)
-           if run is True the test contains task run, if run is False only the spec is check by teh test
+           if run is True the test contains task run,
+           if run is False only the spec is check by the test
         """
         tests_inputs = self.interface_spec["tests_inputs"]
         tests_outputs = self.interface_spec["tests_outputs"]
@@ -142,8 +145,6 @@ class FSLConverter:
             else:
                 tests_inp_error.append((tests_inputs[i], out))
 
-        print("\FILENAME TEST", filename_test)
-
         spec_str = f"import os, pytest \nfrom pathlib import Path\n"
         spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
@@ -154,7 +155,8 @@ class FSLConverter:
         spec_str += f"        try: inputs[key] = eval(val)\n"
         spec_str += f"        except: pass\n"
         spec_str += f"    task = {self.interface_name}(in_file=in_file, **inputs)\n"
-        spec_str += f"    assert set(task.generated_output_names) == set(['return_code', 'stdout', 'stderr'] + outputs)\n"
+        spec_str += f"    assert set(task.generated_output_names) == " \
+                    f"set(['return_code', 'stdout', 'stderr'] + outputs)\n"
 
         if run:
             spec_str += f"    res = task()\n"
@@ -386,6 +388,7 @@ class FSLConverter:
         else:
             raise Exception(f"format from {argstr} is not supported TODO")
         return argstr_new
+
 
 
 @pytest.mark.parametrize("interface_name",

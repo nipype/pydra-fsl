@@ -1,6 +1,6 @@
 import os, pytest
 from pathlib import Path
-from ..slicetime import SliceTimer
+from ..slicetimer import SliceTimer
 
 
 @pytest.mark.parametrize(
