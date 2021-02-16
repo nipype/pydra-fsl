@@ -110,7 +110,7 @@ input_fields = [
     ),
     (
         "savemask_file",
-        specs.File,
+        str,
         {
             "argstr": "--savemask={savemask_file}",
             "help_string": "saving the mask volume",
@@ -118,7 +118,7 @@ input_fields = [
     ),
     (
         "rawphase_file",
-        specs.File,
+        str,
         {
             "argstr": "--rawphase={rawphase_file}",
             "help_string": "saving the raw phase output",
@@ -126,7 +126,7 @@ input_fields = [
     ),
     (
         "label_file",
-        specs.File,
+        str,
         {
             "argstr": "--labels={label_file}",
             "help_string": "saving the area labels output",

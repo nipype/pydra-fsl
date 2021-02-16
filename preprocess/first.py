@@ -16,7 +16,7 @@ input_fields = [
     ),
     (
         "out_file",
-        specs.File,
+        str,
         {
             "argstr": "-o {out_file}",
             "help_string": "output data file",
@@ -94,7 +94,7 @@ FIRST_input_spec = specs.SpecInfo(
 output_fields = [
     (
         "vtk_surfaces",
-        list,
+        "MultiOutputFile",
         {
             "help_string": "VTK format meshes for each subcortical region",
             "requires": ["in_file"],
@@ -103,7 +103,7 @@ output_fields = [
     ),
     (
         "bvars",
-        list,
+        "MultiOutputFile",
         {
             "help_string": "bvars for each subcortical region",
             "requires": ["in_file"],

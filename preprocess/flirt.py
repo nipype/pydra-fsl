@@ -54,7 +54,7 @@ input_fields = [
     ),
     (
         "in_matrix_file",
-        specs.File,
+        str,
         {"argstr": "-init {in_matrix_file}", "help_string": "input 4x4 affine matrix"},
     ),
     (
@@ -266,7 +266,7 @@ input_fields = [
     ),
     (
         "wm_seg",
-        specs.File,
+        str,
         {
             "argstr": "-wmseg {wm_seg}",
             "help_string": "white matter segmentation volume needed by BBR cost function",
@@ -274,7 +274,7 @@ input_fields = [
     ),
     (
         "wmcoords",
-        specs.File,
+        str,
         {
             "argstr": "-wmcoords {wmcoords}",
             "help_string": "white matter boundary coordinates for BBR cost function",
@@ -282,7 +282,7 @@ input_fields = [
     ),
     (
         "wmnorms",
-        specs.File,
+        str,
         {
             "argstr": "-wmnorms {wmnorms}",
             "help_string": "white matter boundary normals for BBR cost function",
@@ -290,7 +290,7 @@ input_fields = [
     ),
     (
         "fieldmap",
-        specs.File,
+        str,
         {
             "argstr": "-fieldmap {fieldmap}",
             "help_string": "fieldmap image in rads/s - must be already registered to the reference image",
@@ -298,7 +298,7 @@ input_fields = [
     ),
     (
         "fieldmapmask",
-        specs.File,
+        str,
         {
             "argstr": "-fieldmapmask {fieldmapmask}",
             "help_string": "mask for fieldmap image",

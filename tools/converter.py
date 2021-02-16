@@ -24,7 +24,10 @@ class FSLConverter:
 
     TYPE_REPLACE = [("\'File\'", "specs.File"), ("\'bool\'", "bool"), ("\'str\'", "str"),
                     ("\'Any\'", "ty.Any"), ("\'int\'", "int"), ("\'float\'", "float"),
-                    ("\'list\'", "list"), ("\'dict\'", "dict")]
+                    ("\'list\'", "list"), ("\'dict\'", "dict"),
+                    ("\'MultiInputObj\'", "specs.MultiInputObj"),
+                    ("\'MultiOutputObj\'", "specs.MultiOutputObj")
+                    ]
 
 
     def __init__(self, interface_name,
@@ -43,6 +46,8 @@ class FSLConverter:
         if not self.interface_spec["output_callables"].keys().isdisjoint(
                 self.interface_spec["output_templates"].keys()):
             raise Exception("output_callables and output_templates have the same keys")
+        if self.interface_spec.get("doctest") is None:
+            self.interface_spec["doctest"] = {}
 
         # getting input/output spec from nipype
         nipype_interface = getattr(fsl, self.interface_name)
@@ -109,6 +114,8 @@ class FSLConverter:
         spec_str += f"{self.interface_name}_output_spec = specs.SpecInfo(name='Output', fields=output_fields, bases=(specs.ShellOutSpec,))\n\n"
 
         spec_str += f"class {self.interface_name}(ShellCommandTask):\n"
+        if self.interface_spec["doctest"]:
+            spec_str += self.create_doctest()
         spec_str += f"    input_spec = {self.interface_name}_input_spec\n"
         spec_str += f"    output_spec = {self.interface_name}_output_spec\n"
         spec_str += f"    executable='{self.cmd}'\n"
@@ -192,6 +199,22 @@ class FSLConverter:
         return spec_str
 
 
+    def create_doctest(self):
+        """adding doctests to the interfaces"""
+        cmdline = self.interface_spec["doctest"].pop("cmdline")
+        doctest = '    """\n    Example\n    -------\n'
+        doctest += f'    >>> task = {self.interface_name}()\n'
+        for key, val in self.interface_spec["doctest"].items():
+            if type(val) is str:
+                doctest += f'    >>> task.inputs.{key} = "{val}"\n'
+            else:
+                doctest += f'    >>> task.inputs.{key} = {val}\n'
+        doctest += '    >>> task.cmdline\n'
+        doctest += f"    '{cmdline}'"
+        doctest += '\n    """\n'
+        return doctest
+
+
     def convert_input_fields(self):
         """creating fields list for pydra input spec """
         fields_pdr_dict = {}
@@ -217,8 +240,7 @@ class FSLConverter:
 
     def pydra_fld_input(self, field, nm):
         """converting a single nipype field to one element of fields for pydra input_spec"""
-        tp = field.trait_type
-        tp_pdr = self.pydra_type_converter(tp)
+        tp_pdr = self.pydra_type_converter(field, spec_type="input", name=nm)
 
         if nm in self.interface_spec["inputs_metadata"]:
             metadata_extra_spec = self.interface_spec["inputs_metadata"][nm]
@@ -277,8 +299,7 @@ class FSLConverter:
 
     def pydra_fld_output(self, field, name):
         """converting a single nipype field to one element of fields for pydra output_spec"""
-        tp = field.trait_type
-        tp_pdr = self.pydra_type_converter(tp)
+        tp_pdr = self.pydra_type_converter(field, spec_type="output", name=name)
 
         metadata_pdr = {}
         for key in self.OUTPUT_KEYS:
@@ -331,8 +352,11 @@ class FSLConverter:
             fun_str += inspect.getsource(fun) + "\n"
         return fun_str
 
-    def pydra_type_converter(self, tp):
+    def pydra_type_converter(self, field, spec_type, name):
         """converting types to types used in pydra"""
+        if spec_type not in ["input", "output"]:
+            raise Exception(f"spec_type has to be input or output, but {spec_type} provided")
+        tp = field.trait_type
         if isinstance(tp, traits.trait_types.Int):
             tp_pdr = int
         elif isinstance(tp, traits.trait_types.Float):
@@ -343,10 +367,23 @@ class FSLConverter:
             tp_pdr = bool
         elif isinstance(tp, traits.trait_types.Dict):
             tp_pdr = dict
+        elif isinstance(tp, traits_extension.InputMultiObject):
+            if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
+                tp_pdr = specs.MultiInputFile
+            else:
+                tp_pdr = specs.MultiInputObj
+        elif isinstance(tp, traits_extension.OutputMultiObject):
+            if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
+                tp_pdr = specs.MultiOutputFile
+            else:
+                tp_pdr = specs.MultiOutputObj
         elif isinstance(tp, traits.trait_types.List):
             tp_pdr = list
         elif isinstance(tp, traits_extension.File):
-            tp_pdr = specs.File
+            if spec_type == "output" or tp.exists is True: # TODO check the hash_file metadata in nipype
+                tp_pdr = specs.File
+            else:
+                tp_pdr = str
         else:
             tp_pdr = ty.Any
         return tp_pdr

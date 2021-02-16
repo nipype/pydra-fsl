@@ -91,7 +91,7 @@ def FAST_output_nclass(field, in_files, nclasses, out_basename):
 input_fields = [
     (
         "in_files",
-        list,
+        "MultiInputFile",
         {
             "argstr": "{in_files}",
             "copyfile": False,
@@ -102,7 +102,7 @@ input_fields = [
     ),
     (
         "out_basename",
-        specs.File,
+        str,
         {"argstr": "-o {out_basename}", "help_string": "base name of output files"},
     ),
     (
@@ -174,7 +174,7 @@ input_fields = [
     ),
     (
         "other_priors",
-        list,
+        "MultiInputFile",
         {"argstr": "-A {other_priors}", "help_string": "alternative prior images"},
     ),
     (
@@ -235,7 +235,7 @@ FAST_input_spec = specs.SpecInfo(
 output_fields = [
     (
         "tissue_class_files",
-        list,
+        "MultiOutputFile",
         {"requires": [("segments", True)], "callable": "FAST_output_nclass"},
     ),
     (
@@ -249,17 +249,17 @@ output_fields = [
     ),
     (
         "partial_volume_files",
-        list,
+        "MultiOutputFile",
         {"requires": [("no_pve", False)], "callable": "FAST_output_nclass"},
     ),
     (
         "bias_field",
-        list,
+        "MultiOutputFile",
         {"requires": [("output_biasfield", True)], "callable": "FAST_output_infile"},
     ),
     (
         "probability_maps",
-        list,
+        "MultiOutputFile",
         {"requires": [("probability_maps", True)], "callable": "FAST_output_nclass"},
     ),
 ]
@@ -269,6 +269,16 @@ FAST_output_spec = specs.SpecInfo(
 
 
 class FAST(ShellCommandTask):
+    """
+    Example
+    -------
+    >>> task = FAST()
+    >>> task.inputs.in_files = "test.nii.gz"
+    >>> task.inputs.out_basename = "fast_"
+    >>> task.cmdline
+    'fast -o fast_ -S 1 test.nii.gz'
+    """
+
     input_spec = FAST_input_spec
     output_spec = FAST_output_spec
     executable = "fast"

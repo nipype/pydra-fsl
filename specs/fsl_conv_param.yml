@@ -31,6 +31,13 @@ BET:
     skull_mask_file: "{out_file}_skull_mask"
     skull_file: "{out_file}_skull"
 
+
+  doctest:
+    in_file: "test.nii.gz"
+    out_file: test_brain.nii.gz
+    frac: 0.7
+    cmdline: 'bet test.nii.gz test_brain.nii.gz -f 0.70'
+
   tests_inputs:
     -
     - mask: True
@@ -64,6 +71,11 @@ FAST:
     partial_volume_files: FAST_output_nclass
     bias_field: FAST_output_infile
     probability_maps: FAST_output_nclass
+
+  doctest:
+    in_files: "test.nii.gz"
+    out_basename: "fast_"
+    cmdline: 'fast -o fast_ -S 1 test.nii.gz'
 
   tests_inputs:
     -

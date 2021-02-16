@@ -133,7 +133,7 @@ input_fields = [
     ),
     (
         "t2_guided",
-        specs.File,
+        str,
         {
             "argstr": "-A2 {t2_guided}",
             "help_string": "as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)",
@@ -294,6 +294,17 @@ BET_output_spec = specs.SpecInfo(
 
 
 class BET(ShellCommandTask):
+    """
+    Example
+    -------
+    >>> task = BET()
+    >>> task.inputs.in_file = "test.nii.gz"
+    >>> task.inputs.out_file = "test_brain.nii.gz"
+    >>> task.inputs.frac = 0.7
+    >>> task.cmdline
+    'bet test.nii.gz test_brain.nii.gz -f 0.70'
+    """
+
     input_spec = BET_input_spec
     output_spec = BET_output_spec
     executable = "bet"
