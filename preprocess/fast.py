@@ -91,7 +91,7 @@ def FAST_output_nclass(field, in_files, nclasses, out_basename):
 input_fields = [
     (
         "in_files",
-        "MultiInputFile",
+        specs.MultiInputFile,
         {
             "argstr": "{in_files}",
             "copyfile": False,
@@ -174,7 +174,7 @@ input_fields = [
     ),
     (
         "other_priors",
-        "MultiInputFile",
+        specs.MultiInputFile,
         {"argstr": "-A {other_priors}", "help_string": "alternative prior images"},
     ),
     (
@@ -235,7 +235,7 @@ FAST_input_spec = specs.SpecInfo(
 output_fields = [
     (
         "tissue_class_files",
-        "MultiOutputFile",
+        specs.MultiOutputFile,
         {"requires": [("segments", True)], "callable": "FAST_output_nclass"},
     ),
     (
@@ -249,17 +249,17 @@ output_fields = [
     ),
     (
         "partial_volume_files",
-        "MultiOutputFile",
+        specs.MultiOutputFile,
         {"requires": [("no_pve", False)], "callable": "FAST_output_nclass"},
     ),
     (
         "bias_field",
-        "MultiOutputFile",
+        specs.MultiOutputFile,
         {"requires": [("output_biasfield", True)], "callable": "FAST_output_infile"},
     ),
     (
         "probability_maps",
-        "MultiOutputFile",
+        specs.MultiOutputFile,
         {"requires": [("probability_maps", True)], "callable": "FAST_output_nclass"},
     ),
 ]

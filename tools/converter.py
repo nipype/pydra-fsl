@@ -1,6 +1,5 @@
 from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
-import pydra
 from pydra.engine import specs
 
 import os, yaml, black, imp
@@ -26,7 +25,9 @@ class FSLConverter:
                     ("\'Any\'", "ty.Any"), ("\'int\'", "int"), ("\'float\'", "float"),
                     ("\'list\'", "list"), ("\'dict\'", "dict"),
                     ("\'MultiInputObj\'", "specs.MultiInputObj"),
-                    ("\'MultiOutputObj\'", "specs.MultiOutputObj")
+                    ("\'MultiOutputObj\'", "specs.MultiOutputObj"),
+                    ("\'MultiInputFile\'", "specs.MultiInputFile"),
+                    ("\'MultiOutputFile\'", "specs.MultiOutputFile"),
                     ]
 
 
@@ -378,7 +379,13 @@ class FSLConverter:
             else:
                 tp_pdr = specs.MultiOutputObj
         elif isinstance(tp, traits.trait_types.List):
-            tp_pdr = list
+            if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
+                if spec_type == "input":
+                    tp_pdr = specs.MultiInputFile
+                else:
+                    tp_pdr = specs.MultiOutputFile
+            else:
+                tp_pdr = list
         elif isinstance(tp, traits_extension.File):
             if spec_type == "output" or tp.exists is True: # TODO check the hash_file metadata in nipype
                 tp_pdr = specs.File

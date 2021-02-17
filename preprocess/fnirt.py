@@ -39,7 +39,7 @@ input_fields = [
     ),
     (
         "in_intensitymap_file",
-        list,
+        specs.MultiInputFile,
         {
             "argstr": "--intin={in_intensitymap_file}",
             "copyfile": False,
