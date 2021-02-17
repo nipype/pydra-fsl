@@ -79,9 +79,11 @@ class FSLConverter:
 
     def write_pydra_files(self, dirname, pydra_input_spec, pydra_output_spec):
         """writing pydra task and tests to the files """
+        testdir = dirname / "tests"
+        testdir.mkdir(parents=True, exist_ok=True)
         filename = dirname / f"{self.interface_name.lower()}.py"
-        filename_test = dirname / "tests" / f"test_spec_{filename.name}"
-        filename_test_run = dirname / "tests" / f"test_run_{filename.name}"
+        filename_test = testdir / f"test_spec_{filename.name}"
+        filename_test_run = testdir / f"test_run_{filename.name}"
 
         print("\n FILENAME", filename)
         self.write_task(filename, pydra_input_spec, pydra_output_spec)
@@ -442,6 +444,6 @@ class FSLConverter:
 def test_convert_file(interface_name):
     converter = FSLConverter(interface_name=interface_name)
 
-    dirname_interf = Path(os.path.dirname(__file__)) / "../preprocess"
+    dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/preprocess"
 
     input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)
