@@ -6,7 +6,7 @@ import pytest
 import py.path as pp
 
 NIPYPE_DATADIR = os.path.realpath(
-    os.path.join(os.path.dirname(__file__), "preprocess/tests/data_tests")
+    os.path.join(os.path.dirname(__file__), "tests/data")
 )
 temp_folder = mkdtemp()
 data_dir = os.path.join(temp_folder, "data")
@@ -38,6 +38,11 @@ def _docdir(request):
     else:
         # For normal tests, we have to yield, since this is a yield-fixture.
         yield
+
+
+@pytest.fixture()
+def test_data():
+    return NIPYPE_DATADIR
 
 
 def pytest_unconfigure(config):
