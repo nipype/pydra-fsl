@@ -79,9 +79,13 @@ class FSLConverter:
 
     def write_pydra_files(self, dirname, pydra_input_spec, pydra_output_spec):
         """writing pydra task and tests to the files """
+        testdir = dirname / "tests"
+        testdir.mkdir(parents=True, exist_ok=True)
+        Path.touch(dirname / "__init__.py")
+        Path.touch(testdir / "__init__.py")
         filename = dirname / f"{self.interface_name.lower()}.py"
-        filename_test = dirname / "tests" / f"test_spec_{filename.name}"
-        filename_test_run = dirname / "tests" / f"test_run_{filename.name}"
+        filename_test = testdir / f"test_spec_{filename.name}"
+        filename_test_run = testdir / f"test_run_{filename.name}"
 
         print("\n FILENAME", filename)
         self.write_task(filename, pydra_input_spec, pydra_output_spec)
@@ -156,8 +160,8 @@ class FSLConverter:
         spec_str = f"import os, pytest \nfrom pathlib import Path\n"
         spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
-        spec_str += f"def test_{self.interface_name}(inputs, outputs):\n"
-        spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+        spec_str += f"def test_{self.interface_name}(test_data, inputs, outputs):\n"
+        spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"
         spec_str += f"    if inputs is None: inputs = {{}}\n"
         spec_str += f"    for key, val in inputs.items():\n"
         spec_str += f"        try: inputs[key] = eval(val)\n"
@@ -187,8 +191,8 @@ class FSLConverter:
         """
         spec_str = "\n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, error', {input_error})\n"
-        spec_str += f"def test_{self.interface_name}_exception(inputs, error):\n"
-        spec_str += f"    in_file = Path(os.path.dirname(__file__)) / 'data_tests/test.nii.gz'\n"
+        spec_str += f"def test_{self.interface_name}_exception(test_data, inputs, error):\n"
+        spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"
         spec_str += f"    if inputs is None: inputs = {{}}\n"
         spec_str += f"    for key, val in inputs.items():\n"
         spec_str += f"        try: inputs[key] = eval(val)\n"
@@ -442,6 +446,6 @@ class FSLConverter:
 def test_convert_file(interface_name):
     converter = FSLConverter(interface_name=interface_name)
 
-    dirname_interf = Path(os.path.dirname(__file__)) / "../preprocess"
+    dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/preprocess"
 
     input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)

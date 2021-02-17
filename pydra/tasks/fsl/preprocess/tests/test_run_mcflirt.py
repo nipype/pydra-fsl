@@ -1,14 +1,11 @@
 import os, pytest
 from pathlib import Path
-from ..slicetimer import SliceTimer
+from ..mcflirt import MCFLIRT
 
 
-@pytest.mark.parametrize(
-    "inputs, outputs",
-    [({"ref_file": 'f"{in_file}"'}, ["out_file", "slice_time_corrected_file"])],
-)
-def test_SliceTimer(inputs, outputs):
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+@pytest.mark.parametrize("inputs, outputs", [(None, ["out_file"])])
+def test_MCFLIRT(test_data, inputs, outputs):
+    in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
     for key, val in inputs.items():
@@ -16,7 +13,7 @@ def test_SliceTimer(inputs, outputs):
             inputs[key] = eval(val)
         except:
             pass
-    task = SliceTimer(in_file=in_file, **inputs)
+    task = MCFLIRT(in_file=in_file, **inputs)
     assert set(task.generated_output_names) == set(
         ["return_code", "stdout", "stderr"] + outputs
     )
