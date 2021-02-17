@@ -81,6 +81,8 @@ class FSLConverter:
         """writing pydra task and tests to the files """
         testdir = dirname / "tests"
         testdir.mkdir(parents=True, exist_ok=True)
+        Path.touch(dirname / "__init__.py")
+        Path.touch(testdir / "__init__.py")
         filename = dirname / f"{self.interface_name.lower()}.py"
         filename_test = testdir / f"test_spec_{filename.name}"
         filename_test_run = testdir / f"test_run_{filename.name}"
