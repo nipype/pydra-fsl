@@ -6,8 +6,8 @@ from ..applywarp import ApplyWarp
 @pytest.mark.parametrize(
     "inputs, outputs", [({"ref_file": 'f"{in_file}"'}, ["out_file"])]
 )
-def test_ApplyWarp(inputs, outputs):
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+def test_ApplyWarp(test_data, inputs, outputs):
+    in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
     for key, val in inputs.items():

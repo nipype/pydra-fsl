@@ -19,8 +19,8 @@ from ..fnirt import FNIRT
         )
     ],
 )
-def test_FNIRT(inputs, outputs):
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+def test_FNIRT(test_data, inputs, outputs):
+    in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
     for key, val in inputs.items():
@@ -35,8 +35,8 @@ def test_FNIRT(inputs, outputs):
 
 
 @pytest.mark.parametrize("inputs, error", [(None, "AttributeError")])
-def test_FNIRT_exception(inputs, error):
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+def test_FNIRT_exception(test_data, inputs, error):
+    in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
     for key, val in inputs.items():
