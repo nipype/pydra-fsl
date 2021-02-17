@@ -1,3 +1,24 @@
+# Pydra FSL Tasks
+
+This repository aims to be the canonical set of Pydra tasks for incorporating
+[FSL](https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/) tools into a Pydra workflow.
+
+Part of this effort is to establish a (mostly) declarative language for describing tasks that
+potentially have intricate rules for determining the availability and names from the choice of
+inputs. See [Converter](#Converter) for this aspect of the repository.
+
+## Installation
+
+```
+pip install pydra-fsl
+```
+
+or
+
+```
+pip install /path/to/pydra-fsl/
+```
+
 ## Converter
 
 `FSLConverter` class (from `tools/converter.py`) requires three parts of information:
