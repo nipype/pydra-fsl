@@ -7,6 +7,7 @@ import traits
 from pathlib import Path
 import typing as ty
 import inspect
+import click
 import pytest
 
 
@@ -439,13 +440,16 @@ class FSLConverter:
 
 
 
-@pytest.mark.parametrize("interface_name",
-                         ["BET", "MCFLIRT", "FLIRT", "FNIRT", "ApplyWarp", "SliceTimer",
-                          "SUSAN", "PRELUDE", "FIRST", "FAST"]
-                         )
-def test_convert_file(interface_name):
+@click.command()
+@click.option("-i", "--interface_name", required=True,
+              help="name of the interface (name used in Nipype, e.g. BET)")
+@click.option("-m", "--module_name", required=True, help="name of the module (e.g. preprocess)")
+def create_pydra_spec(interface_name, module_name):
     converter = FSLConverter(interface_name=interface_name)
+    dirname_interf = Path(__file__).parent.parent / f"pydra/tasks/fsl/{module_name}"
+    dirname_interf.mkdir(exist_ok=True)
+    converter.pydra_specs(write=True, dirname=dirname_interf)
 
-    dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/preprocess"
+if __name__ == '__main__':
+    create_pydra_spec()
 
-    input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)
