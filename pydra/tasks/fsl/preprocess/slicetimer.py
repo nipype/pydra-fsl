@@ -10,7 +10,7 @@ input_fields = [
             "argstr": "--in={in_file}",
             "help_string": "filename of input timeseries",
             "mandatory": True,
-            "position": 1,
+            "position": 0,
         },
     ),
     (

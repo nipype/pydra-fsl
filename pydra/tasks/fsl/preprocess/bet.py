@@ -10,7 +10,7 @@ input_fields = [
             "argstr": "{in_file}",
             "help_string": "input file to skull strip",
             "mandatory": True,
-            "position": 1,
+            "position": 0,
         },
     ),
     (
@@ -19,7 +19,7 @@ input_fields = [
         {
             "argstr": "{out_file}",
             "help_string": "name of output skull stripped image",
-            "position": 2,
+            "position": 1,
             "output_file_template": "{in_file}_brain",
         },
     ),
