@@ -10,7 +10,7 @@ input_fields = [
             "argstr": "-in {in_file}",
             "help_string": "input file",
             "mandatory": True,
-            "position": 1,
+            "position": 0,
         },
     ),
     (
@@ -20,7 +20,7 @@ input_fields = [
             "argstr": "-ref {reference}",
             "help_string": "reference file",
             "mandatory": True,
-            "position": 2,
+            "position": 1,
         },
     ),
     (
@@ -29,7 +29,7 @@ input_fields = [
         {
             "argstr": "-out {out_file}",
             "help_string": "registered output file",
-            "position": 3,
+            "position": 2,
             "output_file_template": "{in_file}_flirt",
         },
     ),
@@ -39,7 +39,7 @@ input_fields = [
         {
             "argstr": "-omat {out_matrix_file}",
             "help_string": "output affine matrix in 4x4 asciii format",
-            "position": 4,
+            "position": 3,
             "output_file_template": "{in_file}_flirt.mat",
         },
     ),

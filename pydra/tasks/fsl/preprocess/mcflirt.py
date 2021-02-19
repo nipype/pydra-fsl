@@ -10,7 +10,7 @@ input_fields = [
             "argstr": "-in {in_file}",
             "help_string": "timeseries to motion-correct",
             "mandatory": True,
-            "position": 1,
+            "position": 0,
         },
     ),
     (

@@ -97,7 +97,7 @@ input_fields = [
             "copyfile": False,
             "help_string": "image, or multi-channel set of images, to be segmented",
             "mandatory": True,
-            "position": 1,
+            "position": -1,
         },
     ),
     (
