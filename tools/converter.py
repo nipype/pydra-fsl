@@ -2,7 +2,7 @@ from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
 from pydra.engine import specs
 
-import os, yaml, black, imp
+import os, sys, yaml, black, imp
 import traits
 from pathlib import Path
 import typing as ty
@@ -10,6 +10,8 @@ import inspect
 import click
 import warnings
 
+sys.path.append(str(Path(__file__).resolve().parent.parent / 'specs'))
+import callables
 
 class FSLConverter:
 
@@ -344,7 +346,6 @@ class FSLConverter:
         python_functions_spec = Path(os.path.dirname(__file__)) / "../specs/callables.py"
         if not python_functions_spec.exists():
             raise Exception("specs/callables.py file is needed if output_callables in the spec files")
-        from specs import callables
         fun_str = ""
         fun_names = list(set(self.interface_spec["output_callables"].values()))
         fun_names.sort()
