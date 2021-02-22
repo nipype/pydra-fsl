@@ -3,7 +3,9 @@ from pathlib import Path
 from ..flirt import FLIRT
 
 
-@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
+@pytest.mark.xfail(
+    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
+)
 @pytest.mark.parametrize("inputs, outputs", [])
 def test_FLIRT(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"

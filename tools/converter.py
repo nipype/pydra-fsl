@@ -160,7 +160,8 @@ class FSLConverter:
         spec_str = f"import os, pytest \nfrom pathlib import Path\n"
         spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
         if run:
-            spec_str += "@pytest.mark.skipif('FSLDIR' not in os.environ, reason='no FSL found')\n"
+            spec_str += "@pytest.mark.xfail('FSLDIR' not in os.environ, reason='no FSL found', " \
+                        "raises=FileNotFoundError)\n"
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
         spec_str += f"def test_{self.interface_name}(test_data, inputs, outputs):\n"
         spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"

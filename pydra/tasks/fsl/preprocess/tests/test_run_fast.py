@@ -3,7 +3,9 @@ from pathlib import Path
 from ..fast import FAST
 
 
-@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
+@pytest.mark.xfail(
+    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
+)
 @pytest.mark.parametrize("inputs, outputs", [])
 def test_FAST(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
