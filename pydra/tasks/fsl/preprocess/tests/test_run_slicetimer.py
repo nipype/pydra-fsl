@@ -3,6 +3,7 @@ from pathlib import Path
 from ..slicetimer import SliceTimer
 
 
+@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
 @pytest.mark.parametrize(
     "inputs, outputs",
     [({"ref_file": 'f"{in_file}"'}, ["out_file", "slice_time_corrected_file"])],

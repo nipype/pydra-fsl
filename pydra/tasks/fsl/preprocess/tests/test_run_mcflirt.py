@@ -3,6 +3,7 @@ from pathlib import Path
 from ..mcflirt import MCFLIRT
 
 
+@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
 @pytest.mark.parametrize("inputs, outputs", [(None, ["out_file"])])
 def test_MCFLIRT(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"

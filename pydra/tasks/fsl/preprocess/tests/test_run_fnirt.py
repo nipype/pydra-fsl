@@ -3,6 +3,7 @@ from pathlib import Path
 from ..fnirt import FNIRT
 
 
+@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
 @pytest.mark.parametrize(
     "inputs, outputs",
     [

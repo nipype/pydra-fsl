@@ -3,6 +3,7 @@ from pathlib import Path
 from ..first import FIRST
 
 
+@pytest.mark.skipif("FSLDIR" not in os.environ, reason="no FSL found")
 @pytest.mark.parametrize("inputs, outputs", [])
 def test_FIRST(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
