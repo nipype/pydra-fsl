@@ -456,10 +456,10 @@ def create_pydra_spec(interface_name, module_name):
     dirname_interf.mkdir(exist_ok=True)
 
     for interface_el in interface_list:
-        converter = FSLConverter(interface_name=interface_el,
-        interface_spec_file=Path(os.path.dirname(__file__)) / "../specs/fsl_preprocess_param.yml")
+        converter = FSLConverter(
+            interface_name=interface_el,
+            interface_spec_file=Path(__file__).parent.parent / "specs/fsl_preprocess_param.yml")
         converter.pydra_specs(write=True, dirname=dirname_interf)
 
 if __name__ == '__main__':
     create_pydra_spec()
-
