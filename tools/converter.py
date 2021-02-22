@@ -9,6 +9,7 @@ import typing as ty
 import inspect
 import click
 import warnings
+import functools
 
 sys.path.append(str(Path(__file__).resolve().parent.parent / 'specs'))
 import callables
@@ -430,6 +431,7 @@ def create_pydra_spec(interface_name, module_name):
         raise Exception(f"the specification file doesn't exist for the module {module_name},"
                         f"create the specification file in {spec_file.parent}")
 
+    @functools.lru_cache()
     def all_interfaces(module):
         nipype_module = getattr(fsl, module)
         all_specs = [el for el in dir(nipype_module) if "InputSpec" in el]
