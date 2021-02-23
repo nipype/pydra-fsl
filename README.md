@@ -8,13 +8,6 @@ potentially have intricate rules for determining the availability and names from
 inputs. See [Converter](#Converter) for this aspect of the repository.
 
 ## Installation
-
-```
-pip install pydra-fsl
-```
-
-or
-
 ```
 pip install /path/to/pydra-fsl/
 ```
