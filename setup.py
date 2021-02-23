@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import sys
 
-from setuptools import setup, find_packages
+from setuptools import setup, find_namespace_packages
 import versioneer
 
 SUBPACKAGE = "fsl"
@@ -19,8 +19,7 @@ if __name__ == "__main__":
         setup_requires=SETUP_REQUIRES,
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
-        packages=[
-            f"pydra.tasks.{SUBPACKAGE}.{package}"
-            for package in find_packages("pydra/tasks/{SUBPACKAGE}")
-        ],
+        packages=find_namespace_packages(
+            include=(f"pydra.tasks.{SUBPACKAGE}", f"pydra.tasks.{SUBPACKAGE}.*")
+        ),
     )
