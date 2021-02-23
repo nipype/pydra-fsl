@@ -11,7 +11,7 @@ input_fields = [
             "copyfile": False,
             "help_string": "input data file",
             "mandatory": True,
-            "position": 9,
+            "position": -2,
         },
     ),
     (
@@ -21,13 +21,13 @@ input_fields = [
             "argstr": "-o {out_file}",
             "help_string": "output data file",
             "mandatory": True,
-            "position": 1,
+            "position": -1,
         },
     ),
     (
         "verbose",
         bool,
-        {"argstr": "-v", "help_string": "Use verbose logging.", "position": 2},
+        {"argstr": "-v", "help_string": "Use verbose logging.", "position": 1},
     ),
     (
         "brain_extracted",
@@ -35,7 +35,7 @@ input_fields = [
         {
             "argstr": "-b",
             "help_string": "Input structural image is already brain-extracted",
-            "position": 3,
+            "position": 2,
         },
     ),
     (
@@ -44,7 +44,7 @@ input_fields = [
         {
             "argstr": "-d",
             "help_string": "Input structural image is already brain-extracted",
-            "position": 4,
+            "position": 3,
         },
     ),
     (
@@ -54,7 +54,7 @@ input_fields = [
         {
             "argstr": "-m {method}",
             "help_string": "Method must be one of auto, fast, none, or it can be entered using the 'method_as_numerical_threshold' input",
-            "position": 6,
+            "position": 4,
             "xor": ["method_as_numerical_threshold"],
         },
     ),
@@ -64,7 +64,7 @@ input_fields = [
         {
             "argstr": "-m {method_as_numerical_threshold:.4f}",
             "help_string": "Specify a numerical threshold value or use the 'method' input to choose auto, fast, or none",
-            "position": 6,
+            "position": 4,
         },
     ),
     (
@@ -73,7 +73,7 @@ input_fields = [
         {
             "argstr": "-s {list_of_specific_structures}",
             "help_string": "Runs only on the specified structures (e.g. L_Hipp, R_HippL_Accu, R_Accu, L_Amyg, R_AmygL_Caud, R_Caud, L_Pall, R_PallL_Puta, R_Puta, L_Thal, R_Thal, BrStem",
-            "position": 7,
+            "position": 5,
             "sep": ",",
         },
     ),
@@ -83,7 +83,7 @@ input_fields = [
         {
             "argstr": "-a {affine_file}",
             "help_string": "Affine matrix to use (e.g. img2std.mat) (does not re-run registration)",
-            "position": 8,
+            "position": 6,
         },
     ),
 ]

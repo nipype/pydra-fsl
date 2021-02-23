@@ -159,6 +159,9 @@ class FSLConverter:
 
         spec_str = f"import os, pytest \nfrom pathlib import Path\n"
         spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
+        if run:
+            spec_str += "@pytest.mark.xfail('FSLDIR' not in os.environ, reason='no FSL found', " \
+                        "raises=FileNotFoundError)\n"
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
         spec_str += f"def test_{self.interface_name}(test_data, inputs, outputs):\n"
         spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"
@@ -235,9 +238,6 @@ class FSLConverter:
             fields_pdr_dict[name] = (name,) + fld_pdr
             if pos is not None:
                 position_dict[name] = pos
-
-        if position_dict:
-            fields_pdr_dict = self.fix_position(fields_pdr_dict, position_dict)
 
         fields_pdr_l = list(fields_pdr_dict.values())
         return fields_pdr_l, has_template
@@ -398,28 +398,6 @@ class FSLConverter:
         else:
             tp_pdr = ty.Any
         return tp_pdr
-
-
-    def fix_position(self, fields_dict, positions):
-        """ fixing positions all of the fields"""
-        positions_list = list(positions.values())
-        positions_list.sort()
-    #    if positions_list[0] < -1:
-    #        raise Exception("position in nipype interface < -1")
-        if positions_list[0] <= -1:
-            positions_list.append(positions_list.pop(0))
-
-        positions_map = {}
-        for ii, el in enumerate(positions_list):
-            if el != ii + 1:
-                positions_map[el] = ii + 1
-
-        for nm, pos in positions.items():
-            if pos in positions_map:
-                # dictionary with metadata should be the last element
-                fields_dict[nm][-1]["position"] = positions_map[pos]
-
-        return fields_dict
 
 
     def string_formats(self, argstr, name):

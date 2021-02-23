@@ -10,7 +10,7 @@ input_fields = [
             "argstr": "--in={in_file}",
             "help_string": "image to be warped",
             "mandatory": True,
-            "position": 2,
+            "position": 0,
         },
     ),
     (
@@ -19,7 +19,7 @@ input_fields = [
         {
             "argstr": "--out={out_file}",
             "help_string": "output filename",
-            "position": 4,
+            "position": 2,
             "output_file_template": "{in_file}_warp",
         },
     ),
@@ -30,7 +30,7 @@ input_fields = [
             "argstr": "--ref={ref_file}",
             "help_string": "reference image",
             "mandatory": True,
-            "position": 3,
+            "position": 1,
         },
     ),
     (
@@ -53,7 +53,7 @@ input_fields = [
         {
             "argstr": "--rel",
             "help_string": "treat warp field as relative: x' = x + w(x)",
-            "position": 1,
+            "position": -1,
             "xor": ["abswarp"],
         },
     ),
@@ -111,7 +111,7 @@ input_fields = [
         {
             "argstr": "--interp={interp}",
             "help_string": "interpolation method",
-            "position": 5,
+            "position": -2,
         },
     ),
 ]
