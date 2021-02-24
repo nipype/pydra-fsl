@@ -2,14 +2,17 @@ from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
 from pydra.engine import specs
 
-import os, yaml, black, imp
+import os, sys, yaml, black, imp
 import traits
 from pathlib import Path
 import typing as ty
 import inspect
-import pytest
+import click
+import warnings
+import functools
 
-
+sys.path.append(str(Path(__file__).resolve().parent.parent / 'specs'))
+import callables
 
 class FSLConverter:
 
@@ -31,8 +34,7 @@ class FSLConverter:
                     ]
 
 
-    def __init__(self, interface_name,
-                 interface_spec_file=Path(os.path.dirname(__file__)) / "../specs/fsl_conv_param.yml"):
+    def __init__(self, interface_name, interface_spec_file):
         self.interface_name = interface_name
         with interface_spec_file.open() as f:
             self.interface_spec = yaml.safe_load(f)[self.interface_name]
@@ -348,7 +350,6 @@ class FSLConverter:
         python_functions_spec = Path(os.path.dirname(__file__)) / "../specs/callables.py"
         if not python_functions_spec.exists():
             raise Exception("specs/callables.py file is needed if output_callables in the spec files")
-        from specs import callables
         fun_str = ""
         fun_names = list(set(self.interface_spec["output_callables"].values()))
         fun_names.sort()
@@ -416,14 +417,55 @@ class FSLConverter:
         return argstr_new
 
 
+FSL_MODULES = ['aroma', 'dti', 'epi', 'fix', 'maths', 'model', 'possum', 'preprocess', 'utils']
 
-@pytest.mark.parametrize("interface_name",
-                         ["BET", "MCFLIRT", "FLIRT", "FNIRT", "ApplyWarp", "SliceTimer",
-                          "SUSAN", "PRELUDE", "FIRST", "FAST"]
-                         )
-def test_convert_file(interface_name):
-    converter = FSLConverter(interface_name=interface_name)
+@click.command()
+@click.option("-i", "--interface_name", required=True, default="all",
+              help="name of the interface (name used in Nipype, e.g. BET) or all (default)"
+                   "if all is used all interfaces from the spec file will be created")
+@click.option("-m", "--module_name", required=True, help=f"name of the module from the list {FSL_MODULES}")
+def create_pydra_spec(interface_name, module_name):
+    if module_name not in FSL_MODULES:
+        raise Exception(f"module name {module_name} not available;"
+                        f"should be from the list {FSL_MODULES}")
 
-    dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/preprocess"
+    spec_file = Path(os.path.dirname(__file__)) / f"../specs/fsl_{module_name}_param.yml"
+    if not spec_file.exists():
+        raise Exception(f"the specification file doesn't exist for the module {module_name},"
+                        f"create the specification file in {spec_file.parent}")
 
-    input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)
+    @functools.lru_cache()
+    def all_interfaces(module):
+        nipype_module = getattr(fsl, module)
+        all_specs = [el for el in dir(nipype_module) if "InputSpec" in el]
+        all_interf = [el.replace("InputSpec", "") for el in all_specs]
+
+        # interfaces in the spec file
+        with open(spec_file) as f:
+            spec_interf = yaml.safe_load(f).keys()
+
+        if set(all_interf) - set(spec_interf):
+            warnings.warn(f"some interfaces are not in the spec file: "
+                          f"{set(all_interf) - set(spec_interf)}, "
+                          f"and pydra interfaces will not be created for them")
+        return spec_interf
+
+    if interface_name == "all":
+        interface_list = all_interfaces(module_name)
+    elif interface_name in all_interfaces(module_name):
+        interface_list = [interface_name]
+    else:
+        raise Exception(f"interface_name has to be 'all' "
+                        f"or a name from the list {all_interfaces(module_name)}")
+
+    dirname_interf = Path(__file__).parent.parent / f"pydra/tasks/fsl/{module_name}"
+    dirname_interf.mkdir(exist_ok=True)
+
+    for interface_el in interface_list:
+        converter = FSLConverter(
+            interface_name=interface_el,
+            interface_spec_file=Path(__file__).parent.parent / "specs/fsl_preprocess_param.yml")
+        converter.pydra_specs(write=True, dirname=dirname_interf)
+
+if __name__ == '__main__':
+    create_pydra_spec()
