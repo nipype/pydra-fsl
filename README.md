@@ -13,6 +13,8 @@ All tasks will be inserted into the `pydra.tasks.<yourtaskpackagename>` namespac
 1. One of the folders is called TODO. This should also be renamed to your package
    name.
 1. Add tasks to the `pydra/tasks/<yourpackagename>` folder.
+1. An example subpackage is found in `pydra/tasks/<yourpackagename>/utils`.
+   You may wish to add tools to it or delete it.
 1. You may want to initialize a [Sphinx] docs directory.
 1. **Update this README after creating the new repository.**
 
