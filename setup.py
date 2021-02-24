@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 import sys
 
-from setuptools import setup
+from setuptools import setup, find_namespace_packages
 import versioneer
+
+SUBPACKAGE = "TODO"
 
 # Give setuptools a hint to complain if it's too old a version
 # 30.3.0 allows us to put most metadata in setup.cfg
@@ -13,8 +15,11 @@ SETUP_REQUIRES += ["wheel"] if "bdist_wheel" in sys.argv else []
 
 if __name__ == "__main__":
     setup(
-        name="pydra-TODO",
+        name=f"pydra-{SUBPACKAGE}",
         setup_requires=SETUP_REQUIRES,
         version=versioneer.get_version(),
         cmdclass=versioneer.get_cmdclass(),
+        packages=find_namespace_packages(
+            include=(f"pydra.tasks.{SUBPACKAGE}", f"pydra.tasks.{SUBPACKAGE}.*")
+        ),
     )
