@@ -16,6 +16,8 @@ All tasks will be inserted into the `pydra.tasks.<yourtaskpackagename>` namespac
 1. An example subpackage is found in `pydra/tasks/<yourpackagename>/utils`.
    You may wish to add tools to it or delete it.
 1. You may want to initialize a [Sphinx] docs directory.
+1. Review the workflow in `.github/workflows/pythonpackage.yml`. Testing editable installations
+   is probably not useful unless you are reconfiguring namespace packages.
 1. **Update this README after creating the new repository.**
 
 [Sphinx]: https://www.sphinx-doc.org/en/master/usage/quickstart.html
