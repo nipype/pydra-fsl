@@ -464,7 +464,7 @@ def create_pydra_spec(interface_name, module_name):
     for interface_el in interface_list:
         converter = FSLConverter(
             interface_name=interface_el,
-            interface_spec_file=Path(__file__).parent.parent / "specs/fsl_preprocess_param.yml")
+            interface_spec_file=Path(__file__).parent.parent / f"specs/fsl_{module_name}_param.yml")
         converter.pydra_specs(write=True, dirname=dirname_interf)
 
 if __name__ == '__main__':
