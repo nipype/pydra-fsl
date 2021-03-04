@@ -69,7 +69,7 @@ input_fields = [
         {
             "argstr": "{out_file}",
             "help_string": "output file name",
-            "position": 7,
+            "position": -1,
             "output_file_template": "{in_file}_smooth",
         },
     ),

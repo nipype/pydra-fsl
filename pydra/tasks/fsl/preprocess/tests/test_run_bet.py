@@ -3,6 +3,9 @@ from pathlib import Path
 from ..bet import BET
 
 
+@pytest.mark.xfail(
+    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
+)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [

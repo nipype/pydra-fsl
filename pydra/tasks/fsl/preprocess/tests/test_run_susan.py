@@ -3,6 +3,9 @@ from pathlib import Path
 from ..susan import SUSAN
 
 
+@pytest.mark.xfail(
+    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
+)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [({"brightness_threshold": 0.01, "fwhm": 2}, ["out_file", "smoothed_file"])],
