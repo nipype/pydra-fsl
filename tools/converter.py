@@ -449,3 +449,13 @@ def test_convert_file(interface_name):
     dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/preprocess"
 
     input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)
+
+@pytest.mark.parametrize("interface_name",
+                         ["ImageMaths"]
+                         )
+def test_convert_util(interface_name):
+    converter = FSLConverter(interface_name=interface_name)
+
+    dirname_interf = Path(__file__).parent.parent / "pydra/tasks/fsl/utils"
+
+    input_spec, output_spec = converter.pydra_specs(write=True, dirname=dirname_interf)
