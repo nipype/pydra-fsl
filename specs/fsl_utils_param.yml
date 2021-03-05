@@ -1,3 +1,65 @@
+# AvScale:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# Complex:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# ConvertWarp:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# ConvertXFM:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# CopyGeom:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# ExtractROI:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# FilterRegressor:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 ImageMaths:
   output_requirements:
@@ -6,7 +68,7 @@ ImageMaths:
       - [op_string: True]
 
   output_templates:
-    out_file: "{in_file}_maths"
+    out_file: ["{in_file}_{suffix}", "{in_file}_maths"]
 
   doctest:
     in_file: "test.nii.gz"
@@ -16,9 +78,80 @@ ImageMaths:
 
   tests_inputs:
     -
-    - in_file
-      op_string
+    - in_file: f"{in_file}"
+      op_string: f"{op_string}"
+      suffix: f"{suffix}"
 
   tests_outputs:
     - AttributeError
     - out_file
+
+# ImageMeants:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# ImageStats:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# InvWarp:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# Merge:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
+
+# MotionOutliers:
+
+# Overlay:
+
+# PlotMotionParams:
+
+# PlotTimeSeries:
+
+# PowerSpectrum:
+
+# Reorient2Std:
+
+# RobustFOV:
+
+# SigLoss:
+
+# Slice:
+
+# Slicer:
+
+# Smooth:
+
+# Split:
+
+# SwapDimensions:
+
+# WarpPoints:
+
+# WarpPointsFromStd:
+
+# WarpPointsToStd:
+
+# WarpUtils:
