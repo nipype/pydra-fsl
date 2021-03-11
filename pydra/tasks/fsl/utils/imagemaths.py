@@ -19,7 +19,7 @@ input_fields = [
         {
             "argstr": "{out_file}",
             "position": -2,
-            "output_file_template": "{in_file}_maths",
+            "output_file_template": ["{in_file}_{suffix}", "{in_file}_maths"],
         },
     ),
     (
@@ -60,8 +60,9 @@ class ImageMaths(ShellCommandTask):
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.out_file = "test_maths.nii.gz"
     >>> task.inputs.op_string = "-add 5"
+    >>> task.inputs.suffix = "add5"
     >>> task.cmdline
-    'fslmaths test.nii.gz -add 5 test_brain_maths.nii.gz'
+    'fslmaths test.nii.gz -add 5 test_brain_add5.nii.gz'
     """
 
     input_spec = ImageMaths_input_spec

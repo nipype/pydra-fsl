@@ -3,7 +3,19 @@ from pathlib import Path
 from ..imagemaths import ImageMaths
 
 
-@pytest.mark.parametrize("inputs, outputs", [("in_file op_string", ["out_file"])])
+@pytest.mark.parametrize(
+    "inputs, outputs",
+    [
+        (
+            {
+                "in_file": 'f"{in_file}"',
+                "op_string": 'f"{op_string}"',
+                "suffix": 'f"{suffix}"',
+            },
+            ["out_file"],
+        )
+    ],
+)
 def test_ImageMaths(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:

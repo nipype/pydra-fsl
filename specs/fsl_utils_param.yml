@@ -74,7 +74,8 @@ ImageMaths:
     in_file: "test.nii.gz"
     out_file: "test_maths.nii.gz"
     op_string: "-add 5"
-    cmdline: "fslmaths test.nii.gz -add 5 test_brain_maths.nii.gz"
+    suffix: "add5"
+    cmdline: "fslmaths test.nii.gz -add 5 test_brain_add5.nii.gz"
 
   tests_inputs:
     -
