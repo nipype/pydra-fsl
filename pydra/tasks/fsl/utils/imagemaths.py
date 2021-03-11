@@ -3,31 +3,40 @@ from pydra import ShellCommandTask
 import typing as ty
 
 input_fields = [
-    ("in_file", specs.File, {"argstr": "{in_file}", "mandatory": True, "position": 1}),
-    ("in_file2", specs.File, {"argstr": "{in_file2}", "position": 3}),
+    (
+        "in_file",
+        specs.File,
+        {"help_string": "", "argstr": "{in_file}", "mandatory": True, "position": 1},
+    ),
+    (
+        "in_file2",
+        specs.File,
+        {"help_string": "", "argstr": "{in_file2}", "position": 3},
+    ),
     (
         "mask_file",
         specs.File,
         {
-            "argstr": "-mas {mask_file}",
             "help_string": "use (following image>0) to mask current image",
+            "argstr": "-mas {mask_file}",
         },
     ),
     (
         "out_file",
         str,
         {
+            "help_string": "",
             "argstr": "{out_file}",
             "position": -2,
-            "output_file_template": ["{in_file}_{suffix}", "{in_file}_maths"],
+            "output_file_template": "{in_file}_{suffix}",
         },
     ),
     (
         "op_string",
         str,
         {
-            "argstr": "{op_string}",
             "help_string": "string defining the operation, i. e. -add",
+            "argstr": "{op_string}",
             "position": 2,
         },
     ),
@@ -36,8 +45,8 @@ input_fields = [
         "out_data_type",
         ty.Any,
         {
-            "argstr": "-odt {out_data_type}",
             "help_string": "output datatype, one of (char, short, int, float, double, input)",
+            "argstr": "-odt {out_data_type}",
             "position": -1,
         },
     ),

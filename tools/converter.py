@@ -261,7 +261,7 @@ class FSLConverter:
         else:
             default_pdr = None
 
-        metadata_pdr = {}
+        metadata_pdr = {"help_string": ""}
         for key in self.INPUT_KEYS:
             key_nm_pdr = self.NAME_MAPPING.get(key, key)
             val = getattr(field, key)

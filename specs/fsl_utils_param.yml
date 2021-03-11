@@ -68,7 +68,7 @@ ImageMaths:
       - [op_string: True]
 
   output_templates:
-    out_file: ["{in_file}_{suffix}", "{in_file}_maths"]
+    out_file: "{in_file}_{suffix}"
 
   doctest:
     in_file: "test.nii.gz"
