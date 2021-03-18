@@ -2,19 +2,6 @@ from pydra.engine import specs
 from pydra import ShellCommandTask
 import typing as ty
 
-
-def ImageMaths_output(in_file, out_file, suffix):
-    import attr
-
-    if suffix in [None, attr.NOTHING]:
-        suffix = "maths"
-
-    if out_file in [None, attr.NOTHING]:
-        return f"{in_file}_{suffix}"
-    else:
-        return out_file
-
-
 input_fields = [
     (
         "in_file",
@@ -34,7 +21,16 @@ input_fields = [
             "argstr": "-mas {mask_file}",
         },
     ),
-    ("out_file", str, {"help_string": "", "argstr": "{out_file}", "mandatory": True, "position": -2}),
+    (
+        "out_file",
+        str,
+        {
+            "help_string": "",
+            "argstr": "{out_file}",
+            "position": -2,
+            "output_file_template": "{in_file}_maths",
+        },
+    ),
     (
         "op_string",
         str,
@@ -44,7 +40,6 @@ input_fields = [
             "position": 2,
         },
     ),
-    ("suffix", str, {"help_string": "out_file suffix"}),
     (
         "out_data_type",
         ty.Any,
@@ -59,13 +54,7 @@ ImageMaths_input_spec = specs.SpecInfo(
     name="Input", fields=input_fields, bases=(specs.ShellSpec,)
 )
 
-output_fields = [
-    (
-        "outfile",
-        specs.File,
-        {"requires": [["in_file"], ["op_string"]], "callable": "ImageMaths_output"},
-    )
-]
+output_fields = []
 ImageMaths_output_spec = specs.SpecInfo(
     name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )

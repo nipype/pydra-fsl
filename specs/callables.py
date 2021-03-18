@@ -1,4 +1,3 @@
-
 def FAST_output(field, in_files, out_basename):
     import attr
     if out_basename in [None, attr.NOTHING]:
