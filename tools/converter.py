@@ -42,6 +42,8 @@ class FSLConverter:
             self.interface_spec["output_requirements"] = []
         if self.interface_spec.get("inputs_metadata") is None:
             self.interface_spec["inputs_metadata"] = {}
+        if self.interface_spec.get("inputs_drop") is None:
+            self.interface_spec["inputs_drop"] = []
         if self.interface_spec.get("output_templates") is None:
             self.interface_spec["output_templates"] = {}
         if self.interface_spec.get("output_callables") is None:
@@ -233,6 +235,8 @@ class FSLConverter:
         for name, fld in self.nipype_input_spec.traits().items():
             if name in self.TRAITS_IRREL:
                 continue
+            if name in self.interface_spec["inputs_drop"]:
+                continue
             fld_pdr, pos = self.pydra_fld_input(fld, name)
             meta_pdr = fld_pdr[-1]
             if "output_file_template" in meta_pdr:
@@ -248,7 +252,6 @@ class FSLConverter:
     def pydra_fld_input(self, field, nm):
         """converting a single nipype field to one element of fields for pydra input_spec"""
         tp_pdr = self.pydra_type_converter(field, spec_type="input", name=nm)
-
         if nm in self.interface_spec["inputs_metadata"]:
             metadata_extra_spec = self.interface_spec["inputs_metadata"][nm]
         else:
@@ -261,7 +264,7 @@ class FSLConverter:
         else:
             default_pdr = None
 
-        metadata_pdr = {}
+        metadata_pdr = {"help_string": ""}
         for key in self.INPUT_KEYS:
             key_nm_pdr = self.NAME_MAPPING.get(key, key)
             val = getattr(field, key)
