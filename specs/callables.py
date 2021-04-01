@@ -75,3 +75,4 @@ def FAST_output_infile(field, in_files, out_basename):
         # single image segmentation has unnumbered output image
         outputs.append(f"{out_basename}_{suffix}")
     return outputs
+

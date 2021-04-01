@@ -1,11 +1,11 @@
-# AvScale:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+AvScale:
+  output_requirements:
+  output_templates:
+  doctest:
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
 # Complex:
 #   output_requirements:
@@ -139,8 +139,25 @@ ImageMaths:
 
 # Slicer:
 
-# Smooth:
+Smooth:
+  output_requirements:
+    out_file: [in_file]
 
+  output_templates:
+    out_file: "{in_file}_smoothed"
+
+  doctest:
+    in_file: "test.nii.gz"
+    fwhm: 8.0
+    cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
+
+  tests_inputs:
+    -
+    - [in_file, sigma]
+
+  tests_outputs:
+    - AttributeError
+    - out_file
 # Split:
 
 # SwapDimensions:
