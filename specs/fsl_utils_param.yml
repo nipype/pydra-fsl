@@ -261,26 +261,26 @@ ImageStats:
 #   tests_outputs:
 #     - AttributeError
 
-# Smooth:
-#   output_requirements:
-#     out_file: [in_file]
+Smooth:
+  output_requirements:
+    smoothed_file: [in_file, sigma]
 
-#   output_templates:
-#     out_file: "{in_file}_smoothed"
+  output_templates:
+    smoothed_file: "{in_file}_smoothed"
 
-#   inputs_drop:
-#     - fwhm
+  inputs_drop:
+    - fwhm
 
-#   doctest:
-#     in_file: "test.nii.gz"
-#     sigma: 3.397
-#     cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
+  doctest:
+    in_file: "test.nii.gz"
+    sigma: 3.397
+    cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
 
-#   tests_inputs:
-#     - [in_file, sigma]
-
-#   tests_outputs:
-#     - out_file
+  tests_inputs:
+    -
+      sigma: 3.397
+  tests_outputs:
+    - smoothed_file
 
 # Split:
 #   output_requirements:
