@@ -1,10 +1,10 @@
 import os, pytest
 from pathlib import Path
-from ..smooth import Smooth
+from ..filterregressor import FilterRegressor
 
 
-@pytest.mark.parametrize("inputs, outputs", [(["in_file", "sigma"], ["out_file"])])
-def test_Smooth(test_data, inputs, outputs):
+@pytest.mark.parametrize("inputs, outputs", [])
+def test_FilterRegressor(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
@@ -13,14 +13,14 @@ def test_Smooth(test_data, inputs, outputs):
             inputs[key] = eval(val)
         except:
             pass
-    task = Smooth(in_file=in_file, **inputs)
+    task = FilterRegressor(in_file=in_file, **inputs)
     assert set(task.generated_output_names) == set(
         ["return_code", "stdout", "stderr"] + outputs
     )
 
 
 @pytest.mark.parametrize("inputs, error", [(None, "AttributeError")])
-def test_Smooth_exception(test_data, inputs, error):
+def test_FilterRegressor_exception(test_data, inputs, error):
     in_file = Path(test_data) / "test.nii.gz"
     if inputs is None:
         inputs = {}
@@ -29,6 +29,6 @@ def test_Smooth_exception(test_data, inputs, error):
             inputs[key] = eval(val)
         except:
             pass
-    task = Smooth(in_file=in_file, **inputs)
+    task = FilterRegressor(in_file=in_file, **inputs)
     with pytest.raises(eval(error)):
         task.generated_output_names

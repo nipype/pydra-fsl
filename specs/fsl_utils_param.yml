@@ -1,11 +1,23 @@
-AvScale:
-  output_requirements:
-  output_templates:
-  doctest:
-  tests_inputs:
-    -
-  tests_outputs:
-    - AttributeError
+# AvScale:
+#   output_requirements:
+#     average_scaling:
+#     backward_half_transform:
+#     determinant:
+#     forward_half_transform:
+#     left_right_orientation_preserved:
+#     rot_angles:
+#     rotation_translation_matrix:
+#     scales:
+#     skews:
+#     translations:
+#   output_templates:
+#   doctest:
+#     mat_file: "flirt.mat"
+#     cmdline: "avscale flirt.mat"
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # Complex:
 #   output_requirements:
@@ -18,8 +30,14 @@ AvScale:
 
 # ConvertWarp:
 #   output_requirements:
+#     out_file: [reference]
 #   output_templates:
+#     out_file: "{reference}_concatwarp"
 #   doctest:
+#     warp1: "warpfield.nii"
+#     reference: "T1.nii"
+#     relwarp: True
+#     cmdline: "convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz"
 #   tests_inputs:
 #     -
 #   tests_outputs:
@@ -27,39 +45,65 @@ AvScale:
 
 # ConvertXFM:
 #   output_requirements:
+#     out_file: [in_file]
 #   output_templates:
+#     out_file: "{in_file}_inv"
 #   doctest:
+#     in_file: "flirt.mat"
+#     cmdline: "convert_xfm -omat flirt_inv.mat -inverse flirt.mat"
 #   tests_inputs:
 #     -
 #   tests_outputs:
 #     - AttributeError
 
-# CopyGeom:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+CopyGeom:
+  output_requirements:
+    out_file: [dest_file, in_file]
+  output_templates:
+  doctest:
+    in_file: source.nii.gz
+    dest_file: dest.nii.gz
+    cmdline: "fslcpgeom source.nii.gz dest.nii.gz"
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
-# ExtractROI:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+ExtractROI:
+  output_requirements:
+    roi_file: in_file
+  output_templates:
+    roi_file: "{in_file}_trim"
+  inputs_drop:
+    - crop_list
+  doctest:
+    in_file: test.nii
+    t_min: 0
+    t_size: 3
+    cmdline: "fslroi test.nii.gz test_trim.nii.gz 0 3"
+  tests_inputs:
+    -
+      t_min: 0
+      t_size: 1
+  tests_outputs:
+    - roi_file
 
-# FilterRegressor:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+FilterRegressor:
+  output_requirements:
+    out_file: [in_file, design_file]
+  inputs_drop:
+    - filter_all
+  output_templates:
+    out_file: "{in_file}_filtered"
+  doctest:
+    in_file: test.nii.gz
+    design_file: design
+    filter_columns: 1,2,3
+    cmdline: "fsl_regfilt -i test.nii.gz -d design -f 1,2,3 -o test_filtered.nii.gz"
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
 ImageMaths:
 
@@ -76,30 +120,38 @@ ImageMaths:
     in_file: "test.nii.gz"
     op_string: "-add 5"
     cmdline: "fslmaths test.nii.gz -add 5 test_maths.nii.gz"
-
   tests_inputs:
     -
 
   tests_outputs:
     - out_file
 
-# ImageMeants:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+ImageMeants:
+  output_requirements:
+    out_file: [in_file]
+  output_templates:
+    out_file: "{in_file}_meants"
+  doctest:
+    in_file: "test.nii.gz"
+    mask: "mask.nii.gz"
+    cmdline: "fslmeants test.nii.gz -m mask.nii.gz -o test_meants.txt"
+  tests_inputs:
+    -
+  tests_outputs:
+    - out_file
 
-# ImageStats:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+ImageStats:
+  output_requirements:
+    out_stat: [in_file, op_string]
+  output_templates:
+  doctest:
+    in_file: "test.nii.gz"
+    op_string: "-M"
+    cmdline: "fslstats test.nii.gz -M"
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
 # InvWarp:
 #   output_requirements:
@@ -120,52 +172,166 @@ ImageMaths:
 #     - AttributeError
 
 # MotionOutliers:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # Overlay:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # PlotMotionParams:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # PlotTimeSeries:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # PowerSpectrum:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # Reorient2Std:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # RobustFOV:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # SigLoss:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # Slice:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # Slicer:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
-Smooth:
-  output_requirements:
-    out_file: [in_file]
+# Smooth:
+#   output_requirements:
+#     out_file: [in_file]
 
-  output_templates:
-    out_file: "{in_file}_smoothed"
+#   output_templates:
+#     out_file: "{in_file}_smoothed"
 
-  doctest:
-    in_file: "test.nii.gz"
-    fwhm: 8.0
-    cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
+#   inputs_drop:
+#     - fwhm
 
-  tests_inputs:
-    -
-    - [in_file, sigma]
+#   doctest:
+#     in_file: "test.nii.gz"
+#     sigma: 3.397
+#     cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
 
-  tests_outputs:
-    - AttributeError
-    - out_file
+#   tests_inputs:
+#     - [in_file, sigma]
+
+#   tests_outputs:
+#     - out_file
+
 # Split:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # SwapDimensions:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # WarpPoints:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # WarpPointsFromStd:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # WarpPointsToStd:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
 
 # WarpUtils:
+#   output_requirements:
+#   output_templates:
+#   doctest:
+#   tests_inputs:
+#     -
+#   tests_outputs:
+#     - AttributeError
