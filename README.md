@@ -35,7 +35,10 @@ python setup.py sdist bdist_wheel
 twine upload dist/*
 ```
 
-Note that we assume tags will be version numbers and not be prefixed with `v` or some other
+Note that uploading to PyPI is done via [Continuous integration](#continuous-integration)) when
+a tag is pushed to the repository, so only the first step needs to be donne manually.
+
+Note also that we assume tags will be version numbers and not be prefixed with `v` or some other
 string. See Versioneer documentation for alternative configurations.
 
 ## Namespace packages
@@ -71,6 +74,10 @@ non-compliant package can potentially affect Pydra or other task packages.
 
 In addition to verifying installations do not break or conflict, pytest is run on the package,
 including all tests found in `test/` directories and [doctests].
+
+Finally, packages are built and uploaded as artifacts for inspection. When a tag is pushed,
+the packages are uploaded to PyPI if a valid [API token](https://pypi.org/help/#apitoken) is placed
+in the [repository secrets](https://docs.github.com/en/actions/reference/encrypted-secrets).
 
 [doctests]: https://docs.python.org/3/library/doctest.html
 
