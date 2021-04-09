@@ -80,8 +80,18 @@ jobs:
       with:
         name: distributions
         path: dist/
-    - name: Upload to PyPI (on tags)
+    # Deploy on tags if PYPI_API_TOKEN is defined in the repository secrets.
+    # Secrets are not accessible in the if: condition [0], so set an output variable [1]
+    # [0] https://github.community/t/16928
+    # [1] https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter
+    - name: Check for PyPI token on tag
+      id: deployable
       if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags')
+      env:
+        PYPI_API_TOKEN: "${{ secrets.PYPI_API_TOKEN }}"
+      run: if [ -n "$PYPI_API_TOKEN" ]; then echo ::set-output name=DEPLOY::true; fi
+    - name: Upload to PyPI
+      if: steps.deployable.outputs.DEPLOY
       uses: pypa/gh-action-pypi-publish@master
       with:
         user: __token__
