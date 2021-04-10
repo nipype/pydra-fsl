@@ -92,7 +92,7 @@ jobs:
       run: if [ -n "$PYPI_API_TOKEN" ]; then echo ::set-output name=DEPLOY::true; fi
     - name: Upload to PyPI
       if: steps.deployable.outputs.DEPLOY
-      uses: pypa/gh-action-pypi-publish@master
+      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29  # v1.4.2
       with:
         user: __token__
         password: ${{ secrets.PYPI_API_TOKEN }}
