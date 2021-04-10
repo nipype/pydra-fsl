@@ -1,11 +1,6 @@
 #This workflow will install Python dependencies, run tests and lint with a variety of Python versions
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 
-# Note that editable installs of Pydra and the task package is useful to ensure that the
-# template describes namespace packages that can be used in various development environments.
-# Packages that use it probably do not want to continue testing with editable installations,
-# quadrupling their test load.
-
 # For deployment, it will be necessary to create a PyPI API token and store it as a secret
 # https://docs.github.com/en/actions/reference/encrypted-secrets
 
@@ -23,11 +18,11 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  devcheck:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.7, 3.9]  # Check oldest and newest versions
         pip-flags: ['', '--editable']
         pydra:
         - 'pydra'
@@ -51,12 +46,37 @@ jobs:
         pip install ${{ matrix.pip-flags }} ".[dev]"
         python -c "import pydra.tasks.$SUBPACKAGE as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
         python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.7, 3.8, 3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install task package
+      run: |
+        pip install ".[test]"
+        python -c "import pydra.tasks.$SUBPACKAGE as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
     - name: Test with pytest
       run: |
-        pytest -sv --doctest-modules pydra/tasks/$SUBPACKAGE
+        pytest -sv --doctest-modules pydra/tasks/$SUBPACKAGE \
+            --cov pydra.tasks.$SUBPACKAGE --cov-report xml
+    - uses: codecov/codecov-action@v1
+      if: ${{ always() }}
+
 
   deploy:
-    needs: test
+    needs: [devcheck, test]
     runs-on: ubuntu-latest
     strategy:
       matrix:
