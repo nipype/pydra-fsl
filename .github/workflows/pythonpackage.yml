@@ -69,7 +69,11 @@ jobs:
         python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
     - name: Test with pytest
       run: |
-        pytest -sv --doctest-modules pydra/tasks/$SUBPACKAGE
+        pytest -sv --doctest-modules pydra/tasks/$SUBPACKAGE \
+            --cov pydra.tasks.$SUBPACKAGE --cov-report xml
+    - uses: codecov/codecov-action@v1
+      if: ${{ always() }}
+
 
   deploy:
     needs: [devcheck, test]
