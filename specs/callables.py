@@ -1,3 +1,16 @@
+def complex_output(inputs, in_file):
+    import attr
+    if inputs.complex_cartesian:
+        in_file = inputs.real_in_file
+    elif inputs.complex_polar:
+        in_file = inputs.magnitude_in_file
+    elif inputs.complex_split or inputs.complex_merge:
+        in_file = inputs.complex_in_file
+    else:
+        return None
+    return f"{in_file}_cplx"
+
+
 def FAST_output(field, in_files, out_basename):
     import attr
     if out_basename in [None, attr.NOTHING]:

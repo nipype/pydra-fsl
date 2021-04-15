@@ -1,4 +1,4 @@
-# AvScale:
+# AvScale:  # complex output
 #   output_requirements:
 #     average_scaling:
 #     backward_half_transform:
@@ -19,31 +19,38 @@
 #   tests_outputs:
 #     - AttributeError
 
-# Complex:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+Complex:
+  output_requirements:
 
-# ConvertWarp:
-#   output_requirements:
-#     out_file: [reference]
-#   output_templates:
-#     out_file: "{reference}_concatwarp"
-#   doctest:
-#     warp1: "warpfield.nii"
-#     reference: "T1.nii"
-#     relwarp: True
-#     cmdline: "convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz"
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+  output_callables:
+    complex_out_file: complex_output
+  output_templates:
+    imaginary_out_file: "{in_file}_imag"
+    magnitude_out_file: "{in_file}_mag"
+    phase_out_file: "{in_file}_phase"
+    real_out_file: "{in_file}_real"
+  doctest:
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
-# ConvertXFM:
+ConvertWarp:
+  output_requirements:
+    out_file: [reference]
+  output_templates:
+    out_file: "{reference}_concatwarp"
+  doctest:
+    warp1: "warpfield.nii"
+    reference: "T1.nii"
+    relwarp: True
+    cmdline: "convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz"
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
+
+# ConvertXFM:  # need new test file
 #   output_requirements:
 #     out_file: [in_file]
 #   output_templates:
@@ -54,7 +61,7 @@
 #   tests_inputs:
 #     -
 #   tests_outputs:
-#     - AttributeError
+#     - out_file
 
 CopyGeom:
   output_requirements:
@@ -68,6 +75,7 @@ CopyGeom:
     cmdline: "fslcpgeom source.nii.gz dest.nii.gz"
   tests_inputs:
     -
+
   tests_outputs:
     - AttributeError
 
@@ -155,14 +163,19 @@ ImageStats:
   tests_outputs:
     - AttributeError
 
-# InvWarp:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+InvWarp:
+  output_requirements:
+    inverse_warp: [reference, warp]
+  output_templates:
+    inverse_warp: "{warp}_inverse"
+  doctest:
+    reference: "anatomical.nii"
+    warp: "struct2mni.nii"
+    cmdline: "invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii"
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
 # Merge:
 #   output_requirements:
@@ -175,15 +188,24 @@ ImageStats:
 
 # MotionOutliers:
 #   output_requirements:
+#     out_file: [in_file]
+#     out_metric_plot: [in_file]
+#     out_metric_values: [in_file]
 #   output_templates:
+#     out_file: "{infile}_outlier"
+#     out_metric_plot: "{infile}_metrics"
+#     out_metric_values: "{infile}_metrics"
 #   doctest:
+#      in_file: "epi.nii"
+#      cmdline: "fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt"
 #   tests_inputs:
 #     -
 #   tests_outputs:
-#     - AttributeError
+#     - [out_file, out_metric_plot, out_metric_values]
 
 # Overlay:
 #   output_requirements:
+#     out_file: ["auto_thresh_bg", "background_image", "stat_image", "stat_thresh"]
 #   output_templates:
 #   doctest:
 #   tests_inputs:
@@ -245,17 +267,22 @@ ImageStats:
 #   tests_outputs:
 #     - AttributeError
 
-# Slice:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+Slice:
+  output_requirements:
+    out_file: [in_file]
+  output_templates:
+  doctest:
+    in_file: "functional.nii"
+    out_base_name: "sl"
+    cmdline: "fslslice functional.nii sl"
+  tests_inputs:
+    -
+  tests_outputs:
+    -
 
 # Slicer:
 #   output_requirements:
+#     out_file: [in_file]
 #   output_templates:
 #   doctest:
 #   tests_inputs:
@@ -284,27 +311,32 @@ Smooth:
   tests_outputs:
     - smoothed_file
 
-# Split:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+Split:
+  output_requirements:
+    out_file: [in_file, dimension]
+  output_templates:
+  doctest:
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
-# SwapDimensions:
-#   output_requirements:
-#   output_templates:
-#   doctest:
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - AttributeError
+SwapDimensions:
+  output_requirements:
+    out_file: [in_file, new_dims]
+  output_templates:
+    out_file: "{in_file}_newdims"
+  doctest:
+  tests_inputs:
+    -
+  tests_outputs:
+    - AttributeError
 
 # WarpPoints:
 #   output_requirements:
+#     out_file: [dest_file, in_coords, src_file]
 #   output_templates:
+#     out_file: "{in_coords}_warped"
 #   doctest:
 #   tests_inputs:
 #     -
@@ -331,7 +363,10 @@ Smooth:
 
 # WarpUtils:
 #   output_requirements:
+#     out_file: [in_file, reference, write_jacobian]
+#     out_jacobian: [in_file, reference, write_jacobian: True]
 #   output_templates:
+#     out_file: "{in_file}_coeffs"
 #   doctest:
 #   tests_inputs:
 #     -
