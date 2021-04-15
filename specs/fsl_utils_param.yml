@@ -58,8 +58,10 @@
 
 CopyGeom:
   output_requirements:
-    out_file: [dest_file, in_file]
+    out_file: [in_file, dest_file]
   output_templates:
+    dest_file: "original"
+    out_file: "{dest_file}"
   doctest:
     in_file: source.nii.gz
     dest_file: dest.nii.gz

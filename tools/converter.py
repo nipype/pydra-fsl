@@ -1,3 +1,4 @@
+from attr import has
 from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
 from pydra.engine import specs
@@ -275,8 +276,11 @@ class FSLConverter:
 
         if getattr(field, "name_template"):
             template = getattr(field, "name_template")
+            name_source = getattr(field, "name_source")
+            if type(name_source) is not list:
+                name_source = [name_source]
             metadata_pdr["output_file_template"] = \
-                self.string_formats(argstr=template, name=getattr(field, "name_source")[0])
+                self.string_formats(argstr=template, name=name_source[0])
             if tp_pdr in [specs.File, specs.Directory]:
                 tp_pdr = str
         elif getattr(field, "genfile"):

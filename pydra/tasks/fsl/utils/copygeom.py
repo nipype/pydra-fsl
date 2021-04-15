@@ -22,7 +22,7 @@ input_fields = [
             "copyfile": True,
             "mandatory": True,
             "position": 1,
-            "output_file_template": "{d}",
+            "output_file_template": "{dest_file}",
         },
     ),
     (
@@ -45,7 +45,8 @@ output_fields = [
         specs.File,
         {
             "help_string": "image with new geometry header",
-            "requires": ["dest_file", "in_file"],
+            "requires": ["in_file", "dest_file"],
+            "output_file_template": "{dest_file}",
         },
     )
 ]
