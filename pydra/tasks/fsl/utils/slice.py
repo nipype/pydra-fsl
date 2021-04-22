@@ -35,10 +35,10 @@ class Slice(ShellCommandTask):
     Example
     -------
     >>> task = Slice()
-    >>> task.inputs.in_file = "functional.nii"
+    >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.out_base_name = "sl"
     >>> task.cmdline
-    'fslslice functional.nii sl'
+    'fslslice test.nii.gz sl'
     """
 
     input_spec = Slice_input_spec

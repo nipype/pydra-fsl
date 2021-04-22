@@ -60,10 +60,10 @@ class CopyGeom(ShellCommandTask):
     Example
     -------
     >>> task = CopyGeom()
-    >>> task.inputs.in_file = "source.nii.gz"
+    >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.dest_file = "dest.nii.gz"
     >>> task.cmdline
-    'fslcpgeom source.nii.gz dest.nii.gz'
+    'fslcpgeom test.nii.gz dest.nii.gz'
     """
 
     input_spec = CopyGeom_input_spec

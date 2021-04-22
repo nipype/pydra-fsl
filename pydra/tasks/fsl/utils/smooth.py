@@ -47,8 +47,9 @@ class Smooth(ShellCommandTask):
     >>> task = Smooth()
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.sigma = 3.397
+    >>> task.inputs.smoothed_file = "test_smooth.nii.gz"
     >>> task.cmdline
-    'fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz'
+    'fslmaths test.nii.gz -kernel gauss 3.397 -fmean test_smooth.nii.gz'
     """
 
     input_spec = Smooth_input_spec

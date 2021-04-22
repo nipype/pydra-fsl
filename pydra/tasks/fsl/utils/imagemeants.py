@@ -19,7 +19,7 @@ input_fields = [
         {
             "help_string": "name of output text matrix",
             "argstr": "-o {out_file}",
-            "output_file_template": "{in_file}_meants",
+            "output_file_template": "{in_file}_meants.txt",
         },
     ),
     ("mask", specs.File, {"help_string": "input 3D mask", "argstr": "-m {mask}"}),
@@ -95,8 +95,9 @@ class ImageMeants(ShellCommandTask):
     >>> task = ImageMeants()
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.mask = "mask.nii.gz"
+    >>> task.inputs.out_file = "test_meants.txt"
     >>> task.cmdline
-    'fslmeants test.nii.gz -m mask.nii.gz -o test_meants.txt'
+    'fslmeants -i test.nii.gz -o test_meants.txt -m mask.nii.gz --order=1'
     """
 
     input_spec = ImageMeants_input_spec

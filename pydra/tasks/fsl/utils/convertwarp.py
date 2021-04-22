@@ -157,10 +157,11 @@ class ConvertWarp(ShellCommandTask):
     -------
     >>> task = ConvertWarp()
     >>> task.inputs.warp1 = "warpfield.nii"
-    >>> task.inputs.reference = "T1.nii"
+    >>> task.inputs.reference = "test.nii.gz"
     >>> task.inputs.relwarp = True
+    >>> task.inputs.out_file = "test_concatwarp.nii.gz"
     >>> task.cmdline
-    'convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz'
+    'convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz'
     """
 
     input_spec = ConvertWarp_input_spec

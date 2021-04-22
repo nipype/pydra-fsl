@@ -81,8 +81,9 @@ class FilterRegressor(ShellCommandTask):
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.design_file = "design"
     >>> task.inputs.filter_columns = "1,2,3"
+    >>> task.inputs.out_file = "test_filtered.nii.gz"
     >>> task.cmdline
-    'fsl_regfilt -i test.nii.gz -d design -f 1,2,3 -o test_filtered.nii.gz'
+    'fsl_regfilt -i test.nii.gz -o test_filtered.nii.gz -d design -f '1,2,3''
     """
 
     input_spec = FilterRegressor_input_spec

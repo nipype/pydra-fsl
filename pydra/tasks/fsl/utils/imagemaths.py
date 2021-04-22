@@ -67,6 +67,7 @@ class ImageMaths(ShellCommandTask):
     >>> task = ImageMaths()
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.op_string = "-add 5"
+    >>> task.inputs.out_file = "test_maths.nii.gz"
     >>> task.cmdline
     'fslmaths test.nii.gz -add 5 test_maths.nii.gz'
     """

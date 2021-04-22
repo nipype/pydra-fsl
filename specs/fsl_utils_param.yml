@@ -41,10 +41,11 @@ ConvertWarp:
   output_templates:
     out_file: "{reference}_concatwarp"
   doctest:
-    warp1: "warpfield.nii"
-    reference: "T1.nii"
+    warp1: warpfield.nii
+    reference: test.nii.gz
     relwarp: True
-    cmdline: "convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz"
+    out_file: test_concatwarp.nii.gz
+    cmdline: convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz
   tests_inputs:
     -
   tests_outputs:
@@ -70,9 +71,9 @@ CopyGeom:
     dest_file: "original"
     out_file: "{dest_file}"
   doctest:
-    in_file: source.nii.gz
+    in_file: test.nii.gz
     dest_file: dest.nii.gz
-    cmdline: "fslcpgeom source.nii.gz dest.nii.gz"
+    cmdline: fslcpgeom test.nii.gz dest.nii.gz
   tests_inputs:
     -
 
@@ -87,10 +88,11 @@ ExtractROI:
   inputs_drop:
     - crop_list
   doctest:
-    in_file: test.nii
+    in_file: test.nii.gz
     t_min: 0
     t_size: 3
-    cmdline: "fslroi test.nii.gz test_trim.nii.gz 0 3"
+    roi_file: test_trim.nii.gz
+    cmdline: fslroi test.nii.gz test_trim.nii.gz 0 3
   tests_inputs:
     -
       t_min: 0
@@ -109,7 +111,8 @@ FilterRegressor:
     in_file: test.nii.gz
     design_file: design
     filter_columns: 1,2,3
-    cmdline: "fsl_regfilt -i test.nii.gz -d design -f 1,2,3 -o test_filtered.nii.gz"
+    out_file: test_filtered.nii.gz
+    cmdline: fsl_regfilt -i test.nii.gz -o test_filtered.nii.gz -d design -f '1,2,3'
   tests_inputs:
     -
   tests_outputs:
@@ -127,9 +130,10 @@ ImageMaths:
     - suffix
 
   doctest:
-    in_file: "test.nii.gz"
-    op_string: "-add 5"
-    cmdline: "fslmaths test.nii.gz -add 5 test_maths.nii.gz"
+    in_file: test.nii.gz
+    op_string: -add 5
+    out_file: test_maths.nii.gz
+    cmdline: fslmaths test.nii.gz -add 5 test_maths.nii.gz
   tests_inputs:
     -
 
@@ -140,11 +144,12 @@ ImageMeants:
   output_requirements:
     out_file: [in_file]
   output_templates:
-    out_file: "{in_file}_meants"
+    out_file: "{in_file}_meants.txt"
   doctest:
-    in_file: "test.nii.gz"
-    mask: "mask.nii.gz"
-    cmdline: "fslmeants test.nii.gz -m mask.nii.gz -o test_meants.txt"
+    in_file: test.nii.gz
+    mask: mask.nii.gz
+    out_file: test_meants.txt
+    cmdline: fslmeants -i test.nii.gz -o test_meants.txt -m mask.nii.gz --order=1
   tests_inputs:
     -
   tests_outputs:
@@ -155,9 +160,9 @@ ImageStats:
     out_stat: [in_file, op_string]
   output_templates:
   doctest:
-    in_file: "test.nii.gz"
-    op_string: "-M"
-    cmdline: "fslstats test.nii.gz -M"
+    in_file: test.nii.gz
+    op_string: -M
+    cmdline: fslstats test.nii.gz -M
   tests_inputs:
     -
   tests_outputs:
@@ -169,9 +174,10 @@ InvWarp:
   output_templates:
     inverse_warp: "{warp}_inverse"
   doctest:
-    reference: "anatomical.nii"
-    warp: "struct2mni.nii"
-    cmdline: "invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii"
+    reference: anatomical.nii
+    warp: struct2mni.nii
+    inverse_warp: struct2mni_inverse.nii.gz
+    cmdline: invwarp --warp=struct2mni.nii --ref=anatomical.nii --out=struct2mni_inverse.nii.gz
   tests_inputs:
     -
   tests_outputs:
@@ -272,9 +278,9 @@ Slice:
     out_file: [in_file]
   output_templates:
   doctest:
-    in_file: "functional.nii"
-    out_base_name: "sl"
-    cmdline: "fslslice functional.nii sl"
+    in_file: test.nii.gz
+    out_base_name: sl
+    cmdline: fslslice test.nii.gz sl
   tests_inputs:
     -
   tests_outputs:
@@ -295,15 +301,16 @@ Smooth:
     smoothed_file: [in_file, sigma]
 
   output_templates:
-    smoothed_file: "{in_file}_smoothed"
+    smoothed_file: "{in_file}_smooth"
 
   inputs_drop:
     - fwhm
 
   doctest:
-    in_file: "test.nii.gz"
+    in_file: test.nii.gz
     sigma: 3.397
-    cmdline: "fslmaths test.nii -kernel gauss 3.397 -fmean test_smooth.nii.gz"
+    smoothed_file: test_smooth.nii.gz
+    cmdline: fslmaths test.nii.gz -kernel gauss 3.397 -fmean test_smooth.nii.gz
 
   tests_inputs:
     -

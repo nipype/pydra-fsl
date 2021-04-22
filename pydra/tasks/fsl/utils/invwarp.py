@@ -103,8 +103,9 @@ class InvWarp(ShellCommandTask):
     >>> task = InvWarp()
     >>> task.inputs.reference = "anatomical.nii"
     >>> task.inputs.warp = "struct2mni.nii"
+    >>> task.inputs.inverse_warp = "struct2mni_inverse.nii.gz"
     >>> task.cmdline
-    'invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii'
+    'invwarp --warp=struct2mni.nii --ref=anatomical.nii --out=struct2mni_inverse.nii.gz'
     """
 
     input_spec = InvWarp_input_spec

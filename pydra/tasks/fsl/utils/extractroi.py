@@ -47,9 +47,10 @@ class ExtractROI(ShellCommandTask):
     Example
     -------
     >>> task = ExtractROI()
-    >>> task.inputs.in_file = "test.nii"
+    >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.t_min = 0
     >>> task.inputs.t_size = 3
+    >>> task.inputs.roi_file = "test_trim.nii.gz"
     >>> task.cmdline
     'fslroi test.nii.gz test_trim.nii.gz 0 3'
     """
