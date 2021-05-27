@@ -276,7 +276,7 @@ class FAST(ShellCommandTask):
     >>> task.inputs.in_files = "test.nii.gz"
     >>> task.inputs.out_basename = "fast_"
     >>> task.cmdline
-    'fast -o fast_ -S 1 test.nii.gz'
+    'fast -o fast_ -n 3 test.nii.gz'
     """
 
     input_spec = FAST_input_spec

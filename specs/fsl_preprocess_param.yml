@@ -75,7 +75,7 @@ FAST:
   doctest:
     in_files: "test.nii.gz"
     out_basename: "fast_"
-    cmdline: 'fast -o fast_ -S 1 test.nii.gz'
+    cmdline: 'fast -o fast_ -n 3 test.nii.gz'
 
   tests_inputs:
     -
