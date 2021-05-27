@@ -112,7 +112,7 @@ FilterRegressor:
     design_file: design
     filter_columns: 1,2,3
     out_file: test_filtered.nii.gz
-    cmdline: fsl_regfilt -i test.nii.gz -o test_filtered.nii.gz -d design -f '1,2,3'
+    cmdline: fsl_regfilt -i test.nii.gz -o test_filtered.nii.gz -d design -f 1,2,3
   tests_inputs:
     -
   tests_outputs:
