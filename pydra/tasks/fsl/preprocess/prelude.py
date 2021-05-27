@@ -7,8 +7,8 @@ input_fields = [
         "complex_phase_file",
         specs.File,
         {
-            "argstr": "--complex={complex_phase_file}",
             "help_string": "complex phase input volume",
+            "argstr": "--complex={complex_phase_file}",
             "mandatory": True,
             "xor": ["magnitude_file", "phase_file"],
         },
@@ -17,8 +17,8 @@ input_fields = [
         "magnitude_file",
         specs.File,
         {
-            "argstr": "--abs={magnitude_file}",
             "help_string": "file containing magnitude image",
+            "argstr": "--abs={magnitude_file}",
             "mandatory": True,
             "xor": ["complex_phase_file"],
         },
@@ -27,8 +27,8 @@ input_fields = [
         "phase_file",
         specs.File,
         {
-            "argstr": "--phase={phase_file}",
             "help_string": "raw phase file",
+            "argstr": "--phase={phase_file}",
             "mandatory": True,
             "xor": ["complex_phase_file"],
         },
@@ -37,8 +37,8 @@ input_fields = [
         "unwrapped_phase_file",
         str,
         {
-            "argstr": "--unwrap={unwrapped_phase_file}",
             "help_string": "file containing unwrapepd phase",
+            "argstr": "--unwrap={unwrapped_phase_file}",
             "output_file_template": "{phase_file}_unwrapped",
         },
     ),
@@ -46,24 +46,24 @@ input_fields = [
         "num_partitions",
         int,
         {
-            "argstr": "--numphasesplit={num_partitions}",
             "help_string": "number of phase partitions to use",
+            "argstr": "--numphasesplit={num_partitions}",
         },
     ),
     (
         "labelprocess2d",
         bool,
         {
-            "argstr": "--labelslices",
             "help_string": "does label processing in 2D (slice at a time)",
+            "argstr": "--labelslices",
         },
     ),
     (
         "process2d",
         bool,
         {
-            "argstr": "--slices",
             "help_string": "does all processing in 2D (slice at a time)",
+            "argstr": "--slices",
             "xor": ["labelprocess2d"],
         },
     ),
@@ -71,8 +71,8 @@ input_fields = [
         "process3d",
         bool,
         {
-            "argstr": "--force3D",
             "help_string": "forces all processing to be full 3D",
+            "argstr": "--force3D",
             "xor": ["labelprocess2d", "process2d"],
         },
     ),
@@ -80,64 +80,64 @@ input_fields = [
         "threshold",
         float,
         {
-            "argstr": "--thresh={threshold:.10f}",
             "help_string": "intensity threshold for masking",
+            "argstr": "--thresh={threshold:.10f}",
         },
     ),
     (
         "mask_file",
         specs.File,
         {
-            "argstr": "--mask={mask_file}",
             "help_string": "filename of mask input volume",
+            "argstr": "--mask={mask_file}",
         },
     ),
     (
         "start",
         int,
         {
-            "argstr": "--start={start}",
             "help_string": "first image number to process (default 0)",
+            "argstr": "--start={start}",
         },
     ),
     (
         "end",
         int,
         {
-            "argstr": "--end={end}",
             "help_string": "final image number to process (default Inf)",
+            "argstr": "--end={end}",
         },
     ),
     (
         "savemask_file",
         str,
         {
-            "argstr": "--savemask={savemask_file}",
             "help_string": "saving the mask volume",
+            "argstr": "--savemask={savemask_file}",
         },
     ),
     (
         "rawphase_file",
         str,
         {
-            "argstr": "--rawphase={rawphase_file}",
             "help_string": "saving the raw phase output",
+            "argstr": "--rawphase={rawphase_file}",
         },
     ),
     (
         "label_file",
         str,
         {
-            "argstr": "--labels={label_file}",
             "help_string": "saving the area labels output",
+            "argstr": "--labels={label_file}",
         },
     ),
     (
         "removeramps",
         bool,
         {
-            "argstr": "--removeramps",
             "help_string": "remove phase ramps during unwrapping",
+            "argstr": "--removeramps",
         },
     ),
 ]

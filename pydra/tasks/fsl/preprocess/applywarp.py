@@ -7,8 +7,8 @@ input_fields = [
         "in_file",
         specs.File,
         {
-            "argstr": "--in={in_file}",
             "help_string": "image to be warped",
+            "argstr": "--in={in_file}",
             "mandatory": True,
             "position": 0,
         },
@@ -17,8 +17,8 @@ input_fields = [
         "out_file",
         str,
         {
-            "argstr": "--out={out_file}",
             "help_string": "output filename",
+            "argstr": "--out={out_file}",
             "position": 2,
             "output_file_template": "{in_file}_warp",
         },
@@ -27,8 +27,8 @@ input_fields = [
         "ref_file",
         specs.File,
         {
-            "argstr": "--ref={ref_file}",
             "help_string": "reference image",
+            "argstr": "--ref={ref_file}",
             "mandatory": True,
             "position": 1,
         },
@@ -36,14 +36,14 @@ input_fields = [
     (
         "field_file",
         specs.File,
-        {"argstr": "--warp={field_file}", "help_string": "file containing warp field"},
+        {"help_string": "file containing warp field", "argstr": "--warp={field_file}"},
     ),
     (
         "abswarp",
         bool,
         {
-            "argstr": "--abs",
             "help_string": "treat warp field as absolute: x' = w(x)",
+            "argstr": "--abs",
             "xor": ["relwarp"],
         },
     ),
@@ -51,8 +51,8 @@ input_fields = [
         "relwarp",
         bool,
         {
-            "argstr": "--rel",
             "help_string": "treat warp field as relative: x' = x + w(x)",
+            "argstr": "--rel",
             "position": -1,
             "xor": ["abswarp"],
         },
@@ -61,56 +61,56 @@ input_fields = [
         "datatype",
         ty.Any,
         {
-            "argstr": "--datatype={datatype}",
             "help_string": "Force output data type [char short int float double].",
+            "argstr": "--datatype={datatype}",
         },
     ),
     (
         "supersample",
         bool,
         {
-            "argstr": "--super",
             "help_string": "intermediary supersampling of output, default is off",
+            "argstr": "--super",
         },
     ),
     (
         "superlevel",
         ty.Any,
         {
-            "argstr": "--superlevel={superlevel}",
             "help_string": "level of intermediary supersampling, a for 'automatic' or integer level. Default = 2",
+            "argstr": "--superlevel={superlevel}",
         },
     ),
     (
         "premat",
         specs.File,
         {
-            "argstr": "--premat={premat}",
             "help_string": "filename for pre-transform (affine matrix)",
+            "argstr": "--premat={premat}",
         },
     ),
     (
         "postmat",
         specs.File,
         {
-            "argstr": "--postmat={postmat}",
             "help_string": "filename for post-transform (affine matrix)",
+            "argstr": "--postmat={postmat}",
         },
     ),
     (
         "mask_file",
         specs.File,
         {
-            "argstr": "--mask={mask_file}",
             "help_string": "filename for mask image (in reference space)",
+            "argstr": "--mask={mask_file}",
         },
     ),
     (
         "interp",
         ty.Any,
         {
-            "argstr": "--interp={interp}",
             "help_string": "interpolation method",
+            "argstr": "--interp={interp}",
             "position": -2,
         },
     ),
