@@ -1,6 +1,8 @@
+from attr import has
 from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
 from pydra.engine import specs
+from pydra.engine.helpers import ensure_list
 
 import os, sys, yaml, black, imp
 import traits
@@ -42,6 +44,8 @@ class FSLConverter:
             self.interface_spec["output_requirements"] = []
         if self.interface_spec.get("inputs_metadata") is None:
             self.interface_spec["inputs_metadata"] = {}
+        if self.interface_spec.get("inputs_drop") is None:
+            self.interface_spec["inputs_drop"] = []
         if self.interface_spec.get("output_templates") is None:
             self.interface_spec["output_templates"] = {}
         if self.interface_spec.get("output_callables") is None:
@@ -233,6 +237,8 @@ class FSLConverter:
         for name, fld in self.nipype_input_spec.traits().items():
             if name in self.TRAITS_IRREL:
                 continue
+            if name in self.interface_spec["inputs_drop"]:
+                continue
             fld_pdr, pos = self.pydra_fld_input(fld, name)
             meta_pdr = fld_pdr[-1]
             if "output_file_template" in meta_pdr:
@@ -248,7 +254,6 @@ class FSLConverter:
     def pydra_fld_input(self, field, nm):
         """converting a single nipype field to one element of fields for pydra input_spec"""
         tp_pdr = self.pydra_type_converter(field, spec_type="input", name=nm)
-
         if nm in self.interface_spec["inputs_metadata"]:
             metadata_extra_spec = self.interface_spec["inputs_metadata"][nm]
         else:
@@ -261,7 +266,7 @@ class FSLConverter:
         else:
             default_pdr = None
 
-        metadata_pdr = {}
+        metadata_pdr = {"help_string": ""}
         for key in self.INPUT_KEYS:
             key_nm_pdr = self.NAME_MAPPING.get(key, key)
             val = getattr(field, key)
@@ -272,8 +277,10 @@ class FSLConverter:
 
         if getattr(field, "name_template"):
             template = getattr(field, "name_template")
+            name_source = ensure_list(getattr(field, "name_source"))
+
             metadata_pdr["output_file_template"] = \
-                self.string_formats(argstr=template, name=getattr(field, "name_source")[0])
+                self.string_formats(argstr=template, name=name_source[0])
             if tp_pdr in [specs.File, specs.Directory]:
                 tp_pdr = str
         elif getattr(field, "genfile"):
@@ -281,8 +288,8 @@ class FSLConverter:
                 metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
                 if tp_pdr in [specs.File, specs.Directory]: # since this is a template, the file doesn't exist
                     tp_pdr = str
-            else:
-                raise Exception(f"the filed {nm} has genfile=True, but no output template provided")
+            elif  nm not in self.interface_spec["output_callables"]:
+                raise Exception(f"the filed {nm} has genfile=True, but no output template or callables provided")
 
         metadata_pdr.update(metadata_extra_spec)
 
@@ -409,6 +416,8 @@ class FSLConverter:
             argstr_new = argstr.replace("%d", f"{{{name}}}")
         elif "%f" in argstr:
             argstr_new = argstr.replace("%f", f"{{{name}}}")
+        elif "%g" in argstr:
+            argstr_new = argstr.replace("%g", f"{{{name}}}")
         elif len(re.findall("%[0-9.]+f", argstr)) == 1:
             old_format = re.findall("%[0-9.]+f", argstr)[0]
             argstr_new = argstr.replace(old_format, f"{{{name}:{old_format[1:]}}}")

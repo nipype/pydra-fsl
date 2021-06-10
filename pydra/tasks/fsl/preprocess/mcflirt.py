@@ -7,8 +7,8 @@ input_fields = [
         "in_file",
         specs.File,
         {
-            "argstr": "-in {in_file}",
             "help_string": "timeseries to motion-correct",
+            "argstr": "-in {in_file}",
             "mandatory": True,
             "position": 0,
         },
@@ -17,120 +17,120 @@ input_fields = [
         "out_file",
         str,
         {
-            "argstr": "-out {out_file}",
             "help_string": "file to write",
+            "argstr": "-out {out_file}",
             "output_file_template": "{in_file}_mcf",
         },
     ),
     (
         "cost",
         ty.Any,
-        {"argstr": "-cost {cost}", "help_string": "cost function to optimize"},
+        {"help_string": "cost function to optimize", "argstr": "-cost {cost}"},
     ),
     (
         "bins",
         int,
-        {"argstr": "-bins {bins}", "help_string": "number of histogram bins"},
+        {"help_string": "number of histogram bins", "argstr": "-bins {bins}"},
     ),
     (
         "dof",
         int,
         {
-            "argstr": "-dof {dof}",
             "help_string": "degrees of freedom for the transformation",
+            "argstr": "-dof {dof}",
         },
     ),
     (
         "ref_vol",
         int,
-        {"argstr": "-refvol {ref_vol}", "help_string": "volume to align frames to"},
+        {"help_string": "volume to align frames to", "argstr": "-refvol {ref_vol}"},
     ),
     (
         "scaling",
         float,
-        {"argstr": "-scaling {scaling:.2f}", "help_string": "scaling factor to use"},
+        {"help_string": "scaling factor to use", "argstr": "-scaling {scaling:.2f}"},
     ),
     (
         "smooth",
         float,
         {
-            "argstr": "-smooth {smooth:.2f}",
             "help_string": "smoothing factor for the cost function",
+            "argstr": "-smooth {smooth:.2f}",
         },
     ),
     (
         "rotation",
         int,
         {
-            "argstr": "-rotation {rotation}",
             "help_string": "scaling factor for rotation tolerances",
+            "argstr": "-rotation {rotation}",
         },
     ),
     (
         "stages",
         int,
         {
-            "argstr": "-stages {stages}",
             "help_string": "stages (if 4, perform final search with sinc interpolation",
+            "argstr": "-stages {stages}",
         },
     ),
     (
         "init",
         specs.File,
-        {"argstr": "-init {init}", "help_string": "inital transformation matrix"},
+        {"help_string": "inital transformation matrix", "argstr": "-init {init}"},
     ),
     (
         "interpolation",
         ty.Any,
         {
-            "argstr": "-{interpolation}_final",
             "help_string": "interpolation method for transformation",
+            "argstr": "-{interpolation}_final",
         },
     ),
     (
         "use_gradient",
         bool,
-        {"argstr": "-gdt", "help_string": "run search on gradient images"},
+        {"help_string": "run search on gradient images", "argstr": "-gdt"},
     ),
     (
         "use_contour",
         bool,
-        {"argstr": "-edge", "help_string": "run search on contour images"},
+        {"help_string": "run search on contour images", "argstr": "-edge"},
     ),
     (
         "mean_vol",
         bool,
-        {"argstr": "-meanvol", "help_string": "register to mean volume"},
+        {"help_string": "register to mean volume", "argstr": "-meanvol"},
     ),
     (
         "stats_imgs",
         bool,
-        {"argstr": "-stats", "help_string": "produce variance and std. dev. images"},
+        {"help_string": "produce variance and std. dev. images", "argstr": "-stats"},
     ),
     (
         "save_mats",
         bool,
-        {"argstr": "-mats", "help_string": "save transformation matrices"},
+        {"help_string": "save transformation matrices", "argstr": "-mats"},
     ),
     (
         "save_plots",
         bool,
-        {"argstr": "-plots", "help_string": "save transformation parameters"},
+        {"help_string": "save transformation parameters", "argstr": "-plots"},
     ),
     (
         "save_rms",
         bool,
         {
-            "argstr": "-rmsabs -rmsrel",
             "help_string": "save rms displacement parameters",
+            "argstr": "-rmsabs -rmsrel",
         },
     ),
     (
         "ref_file",
         specs.File,
         {
-            "argstr": "-reffile {ref_file}",
             "help_string": "target image for motion correction",
+            "argstr": "-reffile {ref_file}",
         },
     ),
 ]

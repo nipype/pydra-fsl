@@ -93,9 +93,9 @@ input_fields = [
         "in_files",
         specs.MultiInputFile,
         {
+            "help_string": "image, or multi-channel set of images, to be segmented",
             "argstr": "{in_files}",
             "copyfile": False,
-            "help_string": "image, or multi-channel set of images, to be segmented",
             "mandatory": True,
             "position": -1,
         },
@@ -103,129 +103,129 @@ input_fields = [
     (
         "out_basename",
         str,
-        {"argstr": "-o {out_basename}", "help_string": "base name of output files"},
+        {"help_string": "base name of output files", "argstr": "-o {out_basename}"},
     ),
     (
         "number_classes",
         ty.Any,
         3,
         {
-            "argstr": "-n {number_classes}",
             "help_string": "number of tissue-type classes",
+            "argstr": "-n {number_classes}",
         },
     ),
     (
         "output_biasfield",
         bool,
-        {"argstr": "-b", "help_string": "output estimated bias field"},
+        {"help_string": "output estimated bias field", "argstr": "-b"},
     ),
     (
         "output_biascorrected",
         bool,
-        {"argstr": "-B", "help_string": "output restored image (bias-corrected image)"},
+        {"help_string": "output restored image (bias-corrected image)", "argstr": "-B"},
     ),
     (
         "img_type",
         ty.Any,
         {
-            "argstr": "-t {img_type}",
             "help_string": "int specifying type of image: (1 = T1, 2 = T2, 3 = PD)",
+            "argstr": "-t {img_type}",
         },
     ),
     (
         "bias_iters",
         ty.Any,
         {
-            "argstr": "-I {bias_iters}",
             "help_string": "number of main-loop iterations during bias-field removal",
+            "argstr": "-I {bias_iters}",
         },
     ),
     (
         "bias_lowpass",
         ty.Any,
         {
-            "argstr": "-l {bias_lowpass}",
             "help_string": "bias field smoothing extent (FWHM) in mm",
+            "argstr": "-l {bias_lowpass}",
         },
     ),
     (
         "init_seg_smooth",
         ty.Any,
         {
-            "argstr": "-f {init_seg_smooth:.3f}",
             "help_string": "initial segmentation spatial smoothness (during bias field estimation)",
+            "argstr": "-f {init_seg_smooth:.3f}",
         },
     ),
     (
         "segments",
         bool,
         {
-            "argstr": "-g",
             "help_string": "outputs a separate binary image for each tissue type",
+            "argstr": "-g",
         },
     ),
     (
         "init_transform",
         specs.File,
         {
-            "argstr": "-a {init_transform}",
             "help_string": "<standard2input.mat> initialise using priors",
+            "argstr": "-a {init_transform}",
         },
     ),
     (
         "other_priors",
         specs.MultiInputFile,
-        {"argstr": "-A {other_priors}", "help_string": "alternative prior images"},
+        {"help_string": "alternative prior images", "argstr": "-A {other_priors}"},
     ),
     (
         "no_pve",
         bool,
         {
-            "argstr": "--nopve",
             "help_string": "turn off PVE (partial volume estimation)",
+            "argstr": "--nopve",
         },
     ),
-    ("no_bias", bool, {"argstr": "-N", "help_string": "do not remove bias field"}),
-    ("use_priors", bool, {"argstr": "-P", "help_string": "use priors throughout"}),
+    ("no_bias", bool, {"help_string": "do not remove bias field", "argstr": "-N"}),
+    ("use_priors", bool, {"help_string": "use priors throughout", "argstr": "-P"}),
     (
         "segment_iters",
         ty.Any,
         {
-            "argstr": "-W {segment_iters}",
             "help_string": "number of segmentation-initialisation iterations",
+            "argstr": "-W {segment_iters}",
         },
     ),
     (
         "mixel_smooth",
         ty.Any,
         {
-            "argstr": "-R {mixel_smooth:.2f}",
             "help_string": "spatial smoothness for mixeltype",
+            "argstr": "-R {mixel_smooth:.2f}",
         },
     ),
     (
         "iters_afterbias",
         ty.Any,
         {
-            "argstr": "-O {iters_afterbias}",
             "help_string": "number of main-loop iterations after bias-field removal",
+            "argstr": "-O {iters_afterbias}",
         },
     ),
     (
         "hyper",
         ty.Any,
-        {"argstr": "-H {hyper:.2f}", "help_string": "segmentation spatial smoothness"},
+        {"help_string": "segmentation spatial smoothness", "argstr": "-H {hyper:.2f}"},
     ),
-    ("verbose", bool, {"argstr": "-v", "help_string": "switch on diagnostic messages"}),
+    ("verbose", bool, {"help_string": "switch on diagnostic messages", "argstr": "-v"}),
     (
         "manual_seg",
         specs.File,
-        {"argstr": "-s {manual_seg}", "help_string": "Filename containing intensities"},
+        {"help_string": "Filename containing intensities", "argstr": "-s {manual_seg}"},
     ),
     (
         "probability_maps",
         bool,
-        {"argstr": "-p", "help_string": "outputs individual probability maps"},
+        {"help_string": "outputs individual probability maps", "argstr": "-p"},
     ),
 ]
 FAST_input_spec = specs.SpecInfo(
@@ -276,7 +276,7 @@ class FAST(ShellCommandTask):
     >>> task.inputs.in_files = "test.nii.gz"
     >>> task.inputs.out_basename = "fast_"
     >>> task.cmdline
-    'fast -o fast_ -S 1 test.nii.gz'
+    'fast -o fast_ -n 3 test.nii.gz'
     """
 
     input_spec = FAST_input_spec

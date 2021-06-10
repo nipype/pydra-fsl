@@ -7,8 +7,8 @@ input_fields = [
         "in_file",
         specs.File,
         {
-            "argstr": "-in {in_file}",
             "help_string": "input file",
+            "argstr": "-in {in_file}",
             "mandatory": True,
             "position": 0,
         },
@@ -17,8 +17,8 @@ input_fields = [
         "reference",
         specs.File,
         {
-            "argstr": "-ref {reference}",
             "help_string": "reference file",
+            "argstr": "-ref {reference}",
             "mandatory": True,
             "position": 1,
         },
@@ -27,8 +27,8 @@ input_fields = [
         "out_file",
         str,
         {
-            "argstr": "-out {out_file}",
             "help_string": "registered output file",
+            "argstr": "-out {out_file}",
             "position": 2,
             "output_file_template": "{in_file}_flirt",
         },
@@ -37,8 +37,8 @@ input_fields = [
         "out_matrix_file",
         str,
         {
-            "argstr": "-omat {out_matrix_file}",
             "help_string": "output affine matrix in 4x4 asciii format",
+            "argstr": "-omat {out_matrix_file}",
             "position": 3,
             "output_file_template": "{in_file}_flirt.mat",
         },
@@ -55,283 +55,283 @@ input_fields = [
     (
         "in_matrix_file",
         str,
-        {"argstr": "-init {in_matrix_file}", "help_string": "input 4x4 affine matrix"},
+        {"help_string": "input 4x4 affine matrix", "argstr": "-init {in_matrix_file}"},
     ),
     (
         "apply_xfm",
         bool,
         {
-            "argstr": "-applyxfm",
             "help_string": "apply transformation supplied by in_matrix_file or uses_qform to use the affine matrix stored in the reference header",
+            "argstr": "-applyxfm",
         },
     ),
     (
         "apply_isoxfm",
         float,
         {
-            "argstr": "-applyisoxfm {apply_isoxfm}",
             "help_string": "as applyxfm but forces isotropic resampling",
+            "argstr": "-applyisoxfm {apply_isoxfm}",
             "xor": ["apply_xfm"],
         },
     ),
     (
         "datatype",
         ty.Any,
-        {"argstr": "-datatype {datatype}", "help_string": "force output data type"},
+        {"help_string": "force output data type", "argstr": "-datatype {datatype}"},
     ),
-    ("cost", ty.Any, {"argstr": "-cost {cost}", "help_string": "cost function"}),
+    ("cost", ty.Any, {"help_string": "cost function", "argstr": "-cost {cost}"}),
     (
         "cost_func",
         ty.Any,
-        {"argstr": "-searchcost {cost_func}", "help_string": "cost function"},
+        {"help_string": "cost function", "argstr": "-searchcost {cost_func}"},
     ),
     (
         "uses_qform",
         bool,
-        {"argstr": "-usesqform", "help_string": "initialize using sform or qform"},
+        {"help_string": "initialize using sform or qform", "argstr": "-usesqform"},
     ),
     (
         "display_init",
         bool,
-        {"argstr": "-displayinit", "help_string": "display initial matrix"},
+        {"help_string": "display initial matrix", "argstr": "-displayinit"},
     ),
     (
         "angle_rep",
         ty.Any,
         {
-            "argstr": "-anglerep {angle_rep}",
             "help_string": "representation of rotation angles",
+            "argstr": "-anglerep {angle_rep}",
         },
     ),
     (
         "interp",
         ty.Any,
         {
-            "argstr": "-interp {interp}",
             "help_string": "final interpolation method used in reslicing",
+            "argstr": "-interp {interp}",
         },
     ),
     (
         "sinc_width",
         int,
-        {"argstr": "-sincwidth {sinc_width}", "help_string": "full-width in voxels"},
+        {"help_string": "full-width in voxels", "argstr": "-sincwidth {sinc_width}"},
     ),
     (
         "sinc_window",
         ty.Any,
-        {"argstr": "-sincwindow {sinc_window}", "help_string": "sinc window"},
+        {"help_string": "sinc window", "argstr": "-sincwindow {sinc_window}"},
     ),
     (
         "bins",
         int,
-        {"argstr": "-bins {bins}", "help_string": "number of histogram bins"},
+        {"help_string": "number of histogram bins", "argstr": "-bins {bins}"},
     ),
     (
         "dof",
         int,
         {
-            "argstr": "-dof {dof}",
             "help_string": "number of transform degrees of freedom",
+            "argstr": "-dof {dof}",
         },
     ),
     (
         "no_resample",
         bool,
-        {"argstr": "-noresample", "help_string": "do not change input sampling"},
+        {"help_string": "do not change input sampling", "argstr": "-noresample"},
     ),
     (
         "force_scaling",
         bool,
         {
-            "argstr": "-forcescaling",
             "help_string": "force rescaling even for low-res images",
+            "argstr": "-forcescaling",
         },
     ),
     (
         "min_sampling",
         float,
         {
-            "argstr": "-minsampling {min_sampling}",
             "help_string": "set minimum voxel dimension for sampling",
+            "argstr": "-minsampling {min_sampling}",
         },
     ),
     (
         "padding_size",
         int,
         {
-            "argstr": "-paddingsize {padding_size}",
             "help_string": "for applyxfm: interpolates outside image by size",
+            "argstr": "-paddingsize {padding_size}",
         },
     ),
     (
         "searchr_x",
         list,
         {
-            "argstr": "-searchrx {searchr_x}",
             "help_string": "search angles along x-axis, in degrees",
+            "argstr": "-searchrx {searchr_x}",
         },
     ),
     (
         "searchr_y",
         list,
         {
-            "argstr": "-searchry {searchr_y}",
             "help_string": "search angles along y-axis, in degrees",
+            "argstr": "-searchry {searchr_y}",
         },
     ),
     (
         "searchr_z",
         list,
         {
-            "argstr": "-searchrz {searchr_z}",
             "help_string": "search angles along z-axis, in degrees",
+            "argstr": "-searchrz {searchr_z}",
         },
     ),
     (
         "no_search",
         bool,
         {
-            "argstr": "-nosearch",
             "help_string": "set all angular searches to ranges 0 to 0",
+            "argstr": "-nosearch",
         },
     ),
     (
         "coarse_search",
         int,
         {
-            "argstr": "-coarsesearch {coarse_search}",
             "help_string": "coarse search delta angle",
+            "argstr": "-coarsesearch {coarse_search}",
         },
     ),
     (
         "fine_search",
         int,
         {
-            "argstr": "-finesearch {fine_search}",
             "help_string": "fine search delta angle",
+            "argstr": "-finesearch {fine_search}",
         },
     ),
     (
         "schedule",
         specs.File,
-        {"argstr": "-schedule {schedule}", "help_string": "replaces default schedule"},
+        {"help_string": "replaces default schedule", "argstr": "-schedule {schedule}"},
     ),
     (
         "ref_weight",
         specs.File,
         {
-            "argstr": "-refweight {ref_weight}",
             "help_string": "File for reference weighting volume",
+            "argstr": "-refweight {ref_weight}",
         },
     ),
     (
         "in_weight",
         specs.File,
         {
-            "argstr": "-inweight {in_weight}",
             "help_string": "File for input weighting volume",
+            "argstr": "-inweight {in_weight}",
         },
     ),
     (
         "no_clamp",
         bool,
-        {"argstr": "-noclamp", "help_string": "do not use intensity clamping"},
+        {"help_string": "do not use intensity clamping", "argstr": "-noclamp"},
     ),
     (
         "no_resample_blur",
         bool,
         {
-            "argstr": "-noresampblur",
             "help_string": "do not use blurring on downsampling",
+            "argstr": "-noresampblur",
         },
     ),
     (
         "rigid2D",
         bool,
-        {"argstr": "-2D", "help_string": "use 2D rigid body mode - ignores dof"},
+        {"help_string": "use 2D rigid body mode - ignores dof", "argstr": "-2D"},
     ),
     ("save_log", bool, {"help_string": "save to log file"}),
     (
         "verbose",
         int,
-        {"argstr": "-verbose {verbose}", "help_string": "verbose mode, 0 is least"},
+        {"help_string": "verbose mode, 0 is least", "argstr": "-verbose {verbose}"},
     ),
     (
         "bgvalue",
         float,
         {
-            "argstr": "-setbackground {bgvalue}",
             "help_string": "use specified background value for points outside FOV",
+            "argstr": "-setbackground {bgvalue}",
         },
     ),
     (
         "wm_seg",
         str,
         {
-            "argstr": "-wmseg {wm_seg}",
             "help_string": "white matter segmentation volume needed by BBR cost function",
+            "argstr": "-wmseg {wm_seg}",
         },
     ),
     (
         "wmcoords",
         str,
         {
-            "argstr": "-wmcoords {wmcoords}",
             "help_string": "white matter boundary coordinates for BBR cost function",
+            "argstr": "-wmcoords {wmcoords}",
         },
     ),
     (
         "wmnorms",
         str,
         {
-            "argstr": "-wmnorms {wmnorms}",
             "help_string": "white matter boundary normals for BBR cost function",
+            "argstr": "-wmnorms {wmnorms}",
         },
     ),
     (
         "fieldmap",
         str,
         {
-            "argstr": "-fieldmap {fieldmap}",
             "help_string": "fieldmap image in rads/s - must be already registered to the reference image",
+            "argstr": "-fieldmap {fieldmap}",
         },
     ),
     (
         "fieldmapmask",
         str,
         {
-            "argstr": "-fieldmapmask {fieldmapmask}",
             "help_string": "mask for fieldmap image",
+            "argstr": "-fieldmapmask {fieldmapmask}",
         },
     ),
     (
         "pedir",
         int,
         {
-            "argstr": "-pedir {pedir}",
             "help_string": "phase encode direction of EPI - 1/2/3=x/y/z & -1/-2/-3=-x/-y/-z",
+            "argstr": "-pedir {pedir}",
         },
     ),
     (
         "echospacing",
         float,
         {
-            "argstr": "-echospacing {echospacing}",
             "help_string": "value of EPI echo spacing - units of seconds",
+            "argstr": "-echospacing {echospacing}",
         },
     ),
     (
         "bbrtype",
         ty.Any,
         {
-            "argstr": "-bbrtype {bbrtype}",
             "help_string": "type of bbr cost function: signed [default], global_abs, local_abs",
+            "argstr": "-bbrtype {bbrtype}",
         },
     ),
     (
         "bbrslope",
         float,
-        {"argstr": "-bbrslope {bbrslope}", "help_string": "value of bbr slope"},
+        {"help_string": "value of bbr slope", "argstr": "-bbrslope {bbrslope}"},
     ),
 ]
 FLIRT_input_spec = specs.SpecInfo(

@@ -7,8 +7,8 @@ input_fields = [
         "in_file",
         specs.File,
         {
-            "argstr": "{in_file}",
             "help_string": "filename of input timeseries",
+            "argstr": "{in_file}",
             "mandatory": True,
             "position": 1,
         },
@@ -17,8 +17,8 @@ input_fields = [
         "brightness_threshold",
         float,
         {
-            "argstr": "{brightness_threshold:.10f}",
             "help_string": "brightness threshold and should be greater than noise level and less than contrast of edges to be preserved.",
+            "argstr": "{brightness_threshold:.10f}",
             "mandatory": True,
             "position": 2,
         },
@@ -27,8 +27,8 @@ input_fields = [
         "fwhm",
         float,
         {
-            "argstr": "{fwhm:.10f}",
             "help_string": "fwhm of smoothing, in mm, gets converted using sqrt(8*log(2))",
+            "argstr": "{fwhm:.10f}",
             "mandatory": True,
             "position": 3,
         },
@@ -38,8 +38,8 @@ input_fields = [
         ty.Any,
         3,
         {
-            "argstr": "{dimension}",
             "help_string": "within-plane (2) or fully 3D (3)",
+            "argstr": "{dimension}",
             "position": 4,
         },
     ),
@@ -48,8 +48,8 @@ input_fields = [
         ty.Any,
         1,
         {
-            "argstr": "{use_median}",
             "help_string": "whether to use a local median filter in the cases where single-point noise is detected",
+            "argstr": "{use_median}",
             "position": 5,
         },
     ),
@@ -58,8 +58,8 @@ input_fields = [
         list,
         [],
         {
-            "argstr": "",
             "help_string": "determines whether the smoothing area (USAN) is to be found from secondary images (0, 1 or 2). A negative value for any brightness threshold will auto-set the threshold at 10% of the robust range",
+            "argstr": "",
             "position": 6,
         },
     ),
@@ -67,8 +67,8 @@ input_fields = [
         "out_file",
         str,
         {
-            "argstr": "{out_file}",
             "help_string": "output file name",
+            "argstr": "{out_file}",
             "position": -1,
             "output_file_template": "{in_file}_smooth",
         },

@@ -7,8 +7,8 @@ input_fields = [
         "in_file",
         specs.File,
         {
-            "argstr": "{in_file}",
             "help_string": "input file to skull strip",
+            "argstr": "{in_file}",
             "mandatory": True,
             "position": 0,
         },
@@ -17,58 +17,58 @@ input_fields = [
         "out_file",
         str,
         {
-            "argstr": "{out_file}",
             "help_string": "name of output skull stripped image",
+            "argstr": "{out_file}",
             "position": 1,
             "output_file_template": "{in_file}_brain",
         },
     ),
-    ("outline", bool, {"argstr": "-o", "help_string": "create surface outline image"}),
-    ("mask", bool, {"argstr": "-m", "help_string": "create binary mask image"}),
-    ("skull", bool, {"argstr": "-s", "help_string": "create skull image"}),
+    ("outline", bool, {"help_string": "create surface outline image", "argstr": "-o"}),
+    ("mask", bool, {"help_string": "create binary mask image", "argstr": "-m"}),
+    ("skull", bool, {"help_string": "create skull image", "argstr": "-s"}),
     (
         "no_output",
         bool,
-        {"argstr": "-n", "help_string": "Don't generate segmented output"},
+        {"help_string": "Don't generate segmented output", "argstr": "-n"},
     ),
     (
         "frac",
         float,
-        {"argstr": "-f {frac:.2f}", "help_string": "fractional intensity threshold"},
+        {"help_string": "fractional intensity threshold", "argstr": "-f {frac:.2f}"},
     ),
     (
         "vertical_gradient",
         float,
         {
-            "argstr": "-g {vertical_gradient:.2f}",
             "help_string": "vertical gradient in fractional intensity threshold (-1, 1)",
+            "argstr": "-g {vertical_gradient:.2f}",
         },
     ),
-    ("radius", int, {"argstr": "-r {radius}", "help_string": "head radius"}),
+    ("radius", int, {"help_string": "head radius", "argstr": "-r {radius}"}),
     (
         "center",
         list,
-        {"argstr": "-c {center}", "help_string": "center of gravity in voxels"},
+        {"help_string": "center of gravity in voxels", "argstr": "-c {center}"},
     ),
     (
         "threshold",
         bool,
         {
-            "argstr": "-t",
             "help_string": "apply thresholding to segmented brain image and mask",
+            "argstr": "-t",
         },
     ),
     (
         "mesh",
         bool,
-        {"argstr": "-e", "help_string": "generate a vtk mesh brain surface"},
+        {"help_string": "generate a vtk mesh brain surface", "argstr": "-e"},
     ),
     (
         "robust",
         bool,
         {
-            "argstr": "-R",
             "help_string": "robust brain centre estimation (iterates BET several times)",
+            "argstr": "-R",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -84,8 +84,8 @@ input_fields = [
         "padding",
         bool,
         {
-            "argstr": "-Z",
             "help_string": "improve BET if FOV is very small in Z (by temporarily padding end slices)",
+            "argstr": "-Z",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -101,8 +101,8 @@ input_fields = [
         "remove_eyes",
         bool,
         {
-            "argstr": "-S",
             "help_string": "eye & optic nerve cleanup (can be useful in SIENA)",
+            "argstr": "-S",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -118,8 +118,8 @@ input_fields = [
         "surfaces",
         bool,
         {
-            "argstr": "-A",
             "help_string": "run bet2 and then betsurf to get additional skull and scalp surfaces (includes registrations)",
+            "argstr": "-A",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -135,8 +135,8 @@ input_fields = [
         "t2_guided",
         str,
         {
-            "argstr": "-A2 {t2_guided}",
             "help_string": "as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)",
+            "argstr": "-A2 {t2_guided}",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -152,8 +152,8 @@ input_fields = [
         "functional",
         bool,
         {
-            "argstr": "-F",
             "help_string": "apply to 4D fMRI data",
+            "argstr": "-F",
             "xor": (
                 "functional",
                 "reduce_bias",
@@ -169,8 +169,8 @@ input_fields = [
         "reduce_bias",
         bool,
         {
-            "argstr": "-B",
             "help_string": "bias field and neck cleanup",
+            "argstr": "-B",
             "xor": (
                 "functional",
                 "reduce_bias",
