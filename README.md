@@ -12,6 +12,12 @@ inputs. See [Converter](#Converter) for this aspect of the repository.
 pip install /path/to/pydra-fsl/
 ```
 
+### Installation for developers
+```
+pip install -e /path/to/pydra-fsl/[dev]
+```
+
+
 ## Converter
 
 `FSLConverter` class (from `tools/converter.py`) requires three parts of information:
