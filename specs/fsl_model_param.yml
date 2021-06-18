@@ -1,0 +1,143 @@
+# Cluster:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# ContrastMgr:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# DualRegression:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# FEAT:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# FEATModel:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# FEATRegister:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# FILMGLS:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# FLAMEO:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# GLM:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# L2Model:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# Level1Design:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# MELODIC:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# MultipleRegressDesign:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# Randomise:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# SMM:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
+
+# SmoothEstimate:
+#   output_requirements:
+#   output_callables:
+#   output_templates:
+#   inputs_drop:
+#   doctest:
+#   tests_inputs:
+#   tests_outputs:
