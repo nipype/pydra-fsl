@@ -1,0 +1,11 @@
+# B0Calc:
+#   output_requirements:
+#     out_file : [in_file]
+#   output_templates:
+#     out_file: "{in_file}_b0field"
+#   tests_inputs:
+#     -
+
+#   tests_outputs:
+#     - AttributeError
+# Exception: format from --b0x=%0.2f --b0y=%0.2f --b0=%0.2f is not supported TODO

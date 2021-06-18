@@ -1,0 +1,80 @@
+ApplyTOPUP:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+EPIDeWarp:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+Eddy:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+EddyCorrect:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+EddyQuad:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+EpiReg:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+PrepareFieldmap:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+SigLoss:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+TOPUP:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:

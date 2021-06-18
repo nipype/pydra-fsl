@@ -1,0 +1,170 @@
+AR1Image:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+ApplyMask:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+BinaryMaths:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+ChangeDataType:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+DilateImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+ErodeImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+IsotropicSmooth:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MathsCommand:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MaxImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MeanImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MedianImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MinImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+MultiImageMaths:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+PercentileImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+SpatialFilter:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+StdImage:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+TemporalFilter:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+Threshold:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
+
+UnaryMaths:
+  output_requirements:
+  output_callables:
+  output_templates:
+  inputs_drop:
+  doctest:
+  tests_inputs:
+  tests_outputs:
