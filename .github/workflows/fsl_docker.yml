@@ -15,6 +15,9 @@ jobs:
         docker pull $DOCKER_IMAGE
         # Have image running in background
         docker run `bash <(curl -s https://codecov.io/env)` -itd --name fsl_cont -v `pwd`:/pydra_fsl $DOCKER_IMAGE
+    - name: Updating pydra
+      run: docker exec fsl_cont bash -c "pip install https://github.com/nipype/pydra/tarball/master && python -c 'import pydra; print(pydra.__version__)'"
     - name: Run pytest
       run: docker exec fsl_cont bash -c "pytest --color=yes -vs /pydra_fsl/pydra/tasks/fsl"
-
+    - name: removing container
+      run: docker rm -f fsl_cont
