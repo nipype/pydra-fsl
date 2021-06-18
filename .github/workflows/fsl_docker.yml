@@ -1,0 +1,15 @@
+name: fsl_docker
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_IMAGE: djarecka/fsl_py:6.0.4
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Pull docker image
+      run: |
+        docker pull $DOCKER_IMAGE
