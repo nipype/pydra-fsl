@@ -13,3 +13,8 @@ jobs:
     - name: Pull docker image
       run: |
         docker pull $DOCKER_IMAGE
+        # Have image running in background
+        docker run `bash <(curl -s https://codecov.io/env)` -itd fsl_cont -v `pwd`:/pydra_fsl -e $DOCKER_IMAGE
+    - name: Run pytest
+      run: docker exec slurm bash -c "pytest --color=yes -vs /pydra_fsl/pydra/tasks/fsl"
+
