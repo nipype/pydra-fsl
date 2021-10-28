@@ -5,8 +5,7 @@ from pathlib import Path
 
 from ..converter import FSLConverter
 
-# TODO: rethink teh tests
-
+#TODO: rethink teh tests
 
 @pytest.mark.skip()
 def test_spec(tmpdir):
@@ -14,12 +13,13 @@ def test_spec(tmpdir):
     converter = FSLConverter(interface_name=interface_name)
     input_spec_pydra, output_spec_pydra = converter.pydra_specs()
 
-    in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
+    in_file =  Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
     out_file = Path(os.path.dirname(__file__)) / "data_tests/test_brain.nii.gz"
     cmd = "bet"
 
     shelly = pydra.ShellCommandTask(
-        name="bet_task", executable=cmd, input_spec=input_spec_pydra, output_spec=output_spec_pydra
+        name="bet_task", executable=cmd,
+        input_spec=input_spec_pydra, output_spec=output_spec_pydra
     )
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
@@ -28,18 +28,13 @@ def test_spec(tmpdir):
     assert res.output.out_file.exists()
     print("\n Result: ", res)
 
+
     shelly_mask = pydra.ShellCommandTask(
-        name="bet_task",
-        executable=cmd,
-        input_spec=input_spec_pydra,
-        output_spec=output_spec_pydra,
+        name="bet_task", executable=cmd, input_spec=input_spec_pydra, output_spec=output_spec_pydra
     )
     shelly_mask.inputs.in_file = in_file
     shelly_mask.inputs.mask = True
-    assert (
-        shelly_mask.cmdline
-        == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
-    )
+    assert shelly_mask.cmdline == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
     res = shelly_mask()
     assert res.output.out_file.exists()
     assert res.output.mask_file.exists()
@@ -58,7 +53,6 @@ def test_spec_from_file(tmpdir):
 
     imp.load_source("bet_module", str(dirname_spec / "bet.py"))
     import bet_module as bm
-
     in_file = Path(os.path.dirname(__file__)) / "data_tests/test.nii.gz"
 
     shelly = bm.BET(name="my_bet")
@@ -69,25 +63,21 @@ def test_spec_from_file(tmpdir):
     assert res.output.out_file.exists()
     print("\n Result: ", res)
 
+
     shelly_mask = bm.BET(name="my_bet")
     shelly_mask.inputs.in_file = in_file
     shelly_mask.inputs.mask = True
-    assert (
-        shelly_mask.cmdline
-        == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
-    )
+    assert shelly_mask.cmdline == f"bet {in_file} {str(shelly_mask.output_dir / 'test_brain.nii.gz')} -m"
     res = shelly_mask()
     assert res.output.out_file.exists()
     assert res.output.mask_file.exists()
     print("\n Result: ", res)
 
+
     shelly_surf = bm.BET(name="my_bet")
     shelly_surf.inputs.in_file = in_file
     shelly_surf.inputs.surfaces = True
-    assert (
-        shelly_surf.cmdline
-        == f"bet {in_file} {str(shelly_surf.output_dir / 'test_brain.nii.gz')} -A"
-    )
+    assert shelly_surf.cmdline == f"bet {in_file} {str(shelly_surf.output_dir / 'test_brain.nii.gz')} -A"
     res = shelly_surf()
     assert res.output.out_file.exists()
     assert res.output.inskull_mask_file.exists()
