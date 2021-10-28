@@ -23,10 +23,7 @@ def test_spec(tmpdir):
     )
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
-    assert (
-        shelly.cmdline
-        == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
-    )
+    assert shelly.cmdline == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
     res = shelly()
     assert res.output.out_file.exists()
     print("\n Result: ", res)
@@ -67,10 +64,7 @@ def test_spec_from_file(tmpdir):
     shelly = bm.BET(name="my_bet")
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
-    assert (
-        shelly.cmdline
-        == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
-    )
+    assert shelly.cmdline == f"bet {in_file} {str(shelly.output_dir / 'test_brain.nii.gz')}"
     res = shelly()
     assert res.output.out_file.exists()
     print("\n Result: ", res)
