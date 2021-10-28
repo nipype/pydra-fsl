@@ -34,6 +34,4 @@ def test_BET(test_data, inputs, outputs):
         except:
             pass
     task = BET(in_file=in_file, **inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)

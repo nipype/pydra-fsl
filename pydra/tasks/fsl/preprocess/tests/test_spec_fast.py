@@ -14,9 +14,7 @@ def test_FAST(test_data, inputs, outputs):
         except:
             pass
     task = FAST(in_file=in_file, **inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
 
 
 @pytest.mark.parametrize("inputs, error", [(None, "AttributeError")])

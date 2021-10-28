@@ -3,9 +3,7 @@ from pathlib import Path
 from ..complex import Complex
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize("inputs, outputs", [])
 def test_Complex(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
@@ -17,9 +15,7 @@ def test_Complex(test_data, inputs, outputs):
         except:
             pass
     task = Complex(in_file=in_file, **inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

@@ -14,7 +14,7 @@ shutil.copytree(NIPYPE_DATADIR, data_dir)
 
 @pytest.fixture(autouse=True)
 def add_np(doctest_namespace):
-    #    doctest_namespace["np"] = numpy
+    # doctest_namespace["np"] = numpy
     doctest_namespace["os"] = os
     doctest_namespace["pytest"] = pytest
     doctest_namespace["datadir"] = data_dir

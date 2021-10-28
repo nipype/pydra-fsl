@@ -35,28 +35,28 @@ class FSLConverter:
     NAME_MAPPING = {"desc": "help_string"}
 
     TRAITS_IRREL = [
-        "output_type",
-        "args",
-        "environ",
-        "environ_items",
-        "__all__",
-        "trait_added",
-        "trait_modified",
+        'output_type',
+        'args',
+        'environ',
+        'environ_items',
+        '__all__',
+        'trait_added',
+        'trait_modified',
     ]
 
     TYPE_REPLACE = [
-        ("'File'", "specs.File"),
-        ("'bool'", "bool"),
-        ("'str'", "str"),
-        ("'Any'", "ty.Any"),
-        ("'int'", "int"),
-        ("'float'", "float"),
-        ("'list'", "list"),
-        ("'dict'", "dict"),
-        ("'MultiInputObj'", "specs.MultiInputObj"),
-        ("'MultiOutputObj'", "specs.MultiOutputObj"),
-        ("'MultiInputFile'", "specs.MultiInputFile"),
-        ("'MultiOutputFile'", "specs.MultiOutputFile"),
+        ("\'File\'", "specs.File"),
+        ("\'bool\'", "bool"),
+        ("\'str\'", "str"),
+        ("\'Any\'", "ty.Any"),
+        ("\'int\'", "int"),
+        ("\'float\'", "float"),
+        ("\'list\'", "list"),
+        ("\'dict\'", "dict"),
+        ("\'MultiInputObj\'", "specs.MultiInputObj"),
+        ("\'MultiOutputObj\'", "specs.MultiOutputObj"),
+        ("\'MultiInputFile\'", "specs.MultiInputFile"),
+        ("\'MultiOutputFile\'", "specs.MultiOutputFile"),
     ]
 
     def __init__(self, interface_name, interface_spec_file):
@@ -327,9 +327,7 @@ class FSLConverter:
                 tp_pdr = str
         elif getattr(field, "genfile"):
             if nm in self.interface_spec["output_templates"]:
-                metadata_pdr["output_file_template"] = self.interface_spec[
-                    "output_templates"
-                ][nm]
+                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
                 if tp_pdr in [
                     specs.File,
                     specs.Directory,
@@ -374,10 +372,7 @@ class FSLConverter:
 
         if self.interface_spec["output_requirements"][name]:
             if all(
-                [
-                    isinstance(el, list)
-                    for el in self.interface_spec["output_requirements"][name]
-                ]
+                [isinstance(el, list) for el in self.interface_spec["output_requirements"][name]]
             ):
                 requires_l = self.interface_spec["output_requirements"][name]
                 nested_flag = True
@@ -508,6 +503,7 @@ FSL_MODULES = [
 ]
 
 
+
 @click.command()
 @click.option(
     "-i",
@@ -518,21 +514,15 @@ FSL_MODULES = [
     "if all is used all interfaces from the spec file will be created",
 )
 @click.option(
-    "-m",
-    "--module_name",
-    required=True,
-    help=f"name of the module from the list {FSL_MODULES}",
+    "-m", "--module_name", required=True, help=f"name of the module from the list {FSL_MODULES}"
 )
 def create_pydra_spec(interface_name, module_name):
     if module_name not in FSL_MODULES:
         raise Exception(
-            f"module name {module_name} not available;"
-            f"should be from the list {FSL_MODULES}"
+            f"module name {module_name} not available;" f"should be from the list {FSL_MODULES}"
         )
 
-    spec_file = (
-        Path(os.path.dirname(__file__)) / f"../specs/fsl_{module_name}_param.yml"
-    )
+    spec_file = Path(os.path.dirname(__file__)) / f"../specs/fsl_{module_name}_param.yml"
     if not spec_file.exists():
         raise Exception(
             f"the specification file doesn't exist for the module {module_name},"
@@ -579,5 +569,5 @@ def create_pydra_spec(interface_name, module_name):
         converter.pydra_specs(write=True, dirname=dirname_interf)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     create_pydra_spec()

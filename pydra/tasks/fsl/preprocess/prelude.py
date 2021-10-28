@@ -141,9 +141,7 @@ input_fields = [
         },
     ),
 ]
-PRELUDE_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+PRELUDE_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 PRELUDE_output_spec = specs.SpecInfo(

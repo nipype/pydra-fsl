@@ -19,10 +19,7 @@ def test_spec(tmpdir):
     cmd = "bet"
 
     shelly = pydra.ShellCommandTask(
-        name="bet_task",
-        executable=cmd,
-        input_spec=input_spec_pydra,
-        output_spec=output_spec_pydra,
+        name="bet_task", executable=cmd, input_spec=input_spec_pydra, output_spec=output_spec_pydra
     )
     shelly.inputs.in_file = in_file
     assert shelly.inputs.executable == "bet"
