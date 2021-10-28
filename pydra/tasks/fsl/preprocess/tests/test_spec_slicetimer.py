@@ -17,6 +17,4 @@ def test_SliceTimer(test_data, inputs, outputs):
         except:
             pass
     task = SliceTimer(in_file=in_file, **inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)

@@ -20,9 +20,7 @@ input_fields = [
         {"help_string": "outputs prefix", "argstr": "{out_base_name}", "position": 1},
     ),
 ]
-Slice_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+Slice_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 Slice_output_spec = specs.SpecInfo(
