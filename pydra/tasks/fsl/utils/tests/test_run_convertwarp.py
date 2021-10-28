@@ -3,9 +3,7 @@ from pathlib import Path
 from ..convertwarp import ConvertWarp
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize("inputs, outputs", [])
 def test_ConvertWarp(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
@@ -17,9 +15,7 @@ def test_ConvertWarp(test_data, inputs, outputs):
         except:
             pass
     task = ConvertWarp(in_file=in_file, **inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

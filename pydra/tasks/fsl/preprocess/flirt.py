@@ -334,9 +334,7 @@ input_fields = [
         {"help_string": "value of bbr slope", "argstr": "-bbrslope {bbrslope}"},
     ),
 ]
-FLIRT_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+FLIRT_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 FLIRT_output_spec = specs.SpecInfo(

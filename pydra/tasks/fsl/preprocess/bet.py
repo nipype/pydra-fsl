@@ -183,9 +183,7 @@ input_fields = [
         },
     ),
 ]
-BET_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+BET_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (
@@ -288,9 +286,7 @@ output_fields = [
         },
     ),
 ]
-BET_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
+BET_output_spec = specs.SpecInfo(name="Output", fields=output_fields, bases=(specs.ShellOutSpec,))
 
 
 class BET(ShellCommandTask):
