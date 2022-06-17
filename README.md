@@ -26,21 +26,21 @@ pip install -e /path/to/pydra-fsl/[dev]
 - yml file with additional spec: `specs/fsl_{module_name}_params.yml` contains additional spec that are written based
 on additional functions from nipype (including `list_outputs`), each interface can have the following fields:
     - inputs_metadata: additional metadata for fields from input_spec
-      (it will be included in `metadata` in pydra spec),
-      e.g., used in `specs/fsl_preprocess_params.yml` for `FAST` to set default value for `number_classes`
-      (it's not part of nipype's spec, but it's set in `list_output`)
+    (it will be included in `metadata` in pydra spec),
+    e.g., used in `specs/fsl_preprocess_params.yml` for `FAST` to set default value for `number_classes`
+    (it's not part of nipype's spec, but it's set in `list_output`, see [here](https://github.com/nipy/nipype/blob/f4343d6ddaee814aa16b197cc729a10d437990bf/nipype/interfaces/fsl/preprocess.py#L403))
 
     - output_requirements: providing required fields for the output to be created,
-      taken from `list_output` structure;
-      it's a part of the `requires` field in metadata in pydra spec
+    taken from `list_output` structure (e.g. requirements for tissue_class_files [here](https://github.com/nipy/nipype/blob/f4343d6ddaee814aa16b197cc729a10d437990bf/nipype/interfaces/fsl/preprocess.py#L418));
+    it's a part of the `requires` field in metadata in pydra spec (e.g. [here](https://github.com/nipype/pydra-fsl/blob/ceae758f76bde81465e86cff029b40e334a7939a/pydra/tasks/fsl/preprocess/fast.py#L237))
 
     - output_templates: providing template to create the output file name,
-      taken from `list_output` structure;
-      it is set as `output_file_template` in metadata
+    taken from `list_output` structure (e.g., [here](https://github.com/nipy/nipype/blob/f4343d6ddaee814aa16b197cc729a10d437990bf/nipype/interfaces/fsl/preprocess.py#L205));
+    it is set as `output_file_template` in metadata (e.g. [here](https://github.com/nipype/pydra-fsl/blob/ceae758f76bde81465e86cff029b40e334a7939a/pydra/tasks/fsl/preprocess/bet.py#L204))
 
     - output_callables: providing function name that should be used to gather output,
-      based on the `list_output` structure and used only for `FAST`;
-      it is set as `callable` in metadata
+    based on the `list_output` structure and used only for `FAST`;
+    it is set as `callable` in metadata (e.g. [here](https://github.com/nipype/pydra-fsl/blob/ceae758f76bde81465e86cff029b40e334a7939a/pydra/tasks/fsl/preprocess/fast.py#L237))
 
     - tests_inputs, tests_outputs: specification for tests,
       the fields should have the same length and each element should contain
