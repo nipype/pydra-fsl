@@ -29,15 +29,15 @@ input_fields = [
         {
             "help_string": "apply transformation supplied by in_matrix_file or uses_qform to use the affine matrix stored in the reference header",
             "argstr": "-applyxfm",
-        }
+        },
     ),
     (
         "in_matrix_file",
         str,
-        { 
+        {
             "help_string": "input 4x4 affine matrix",
             "argstr": "-init {in_matrix_file}",
-            "mandatory" : True
+            "mandatory": True,
         },
     ),
     (
@@ -49,10 +49,11 @@ input_fields = [
             "position": 2,
             "output_file_template": "{in_file}_flirt",
         },
-    )
+    ),
 ]
 
 ApplyXFM_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+
 
 class ApplyXFM(FLIRT):
     """
@@ -72,4 +73,3 @@ class ApplyXFM(FLIRT):
     """
 
     input_spec = ApplyXFM_input_spec
-
