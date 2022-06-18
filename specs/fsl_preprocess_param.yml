@@ -163,26 +163,6 @@ ApplyWarp:
     - out_file
 
 
-ApplyXFM:
-  output_requirements:
-    out_file: [in_file, reference, in_matrix_file]
-
-  output_templates:
-    out_file: "{in_file}_flirt"
-
-  tests_inputs:
-    -
-    -
-      in_file: True
-      reference: True
-      in_matrix_file: True
-
-  tests_outputs:
-    - AttributeError
-    - out_file
-
-
-
 SliceTimer:
   output_requirements:
     slice_time_corrected_file: [out_file]

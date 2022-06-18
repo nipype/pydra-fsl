@@ -28,7 +28,7 @@ input_fields = [
         True,
         {
             "help_string": "apply transformation supplied by in_matrix_file or uses_qform to use the affine matrix stored in the reference header",
-            "argstr": "-applyxfm",
+            "argstr": "-applyxfm"
         }
     ),
     (
