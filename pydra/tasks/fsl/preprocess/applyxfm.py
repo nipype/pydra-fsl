@@ -1,5 +1,5 @@
 from pydra.engine import specs
-from pydra.tasks.fsl.preprocess.flirt import FLIRT
+from .flirt import FLIRT
 
 input_fields = [
     (
