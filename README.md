@@ -83,7 +83,7 @@ Below is a list of all planned interfaces, with completed interfaces checked. Th
 ### Preprocess
 
 - [x] ApplyWarp (`applywarp`)
-- [~] ApplyXFM (`flirt`)
+- [X] ApplyXFM (`flirt`)
 - [x] BET (`bet`)
 - [x] FAST (`fast`)
 - [x] FIRST (`first`)
