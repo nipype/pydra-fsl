@@ -4,12 +4,7 @@ from ..applyxfm import ApplyXFM
 
 
 @pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
-@pytest.mark.parametrize(
-    "inputs, outputs",
-    [
-        (None, ["out_file"])
-    ]
-)
+@pytest.mark.parametrize("inputs, outputs", [(None, ["out_file"])])
 def test_ApplyXFM(test_data, inputs, outputs):
     in_file = Path(test_data) / "test.nii.gz"
     reference = Path(test_data) / "test.nii.gz"
