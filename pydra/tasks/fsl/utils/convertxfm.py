@@ -19,7 +19,6 @@ input_fields = [
         {
             "help_string": "second input matrix (for use with fix_scale_skew or concat_xfm)",
             "argstr": "{in_file2}",
-            "mandatory": True,
             "position": -2,
         },
     ),
@@ -62,7 +61,8 @@ input_fields = [
             "argstr": "-omat {out_file}",
             "position": 1,
             "xor": ["_options"],
-            "requires": ["in_file2"]
+            "requires": ["in_file2"],
+            "output_file_template": "{in_file}_inv"
         }
     )
 ]
