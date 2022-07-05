@@ -61,9 +61,9 @@ input_fields = [
             "help_string": "final transformation matrix",
             "argstr": "-omat {out_file}",
             "position": 1,
-            "output_file_template": "{in_file}_inv"
-        }
-    )
+            "output_file_template": "{in_file}_inv",
+        },
+    ),
 ]
 
 
