@@ -23,25 +23,26 @@ input_fields = [
             "position": -2,
         },
     ),
-    ("_options",str,{"help_string": "","allowed_values": ["invert_xfm", "concat_xfm", "fix_scale_skew"]}),
+    (
+        "_options",
+        str,
+        {"help_string": "", "allowed_values": ["invert_xfm", "concat_xfm", "fix_scale_skew"]},
+    ),
     (
         "invert_xfm",
         bool,
-        {
-            "help_string": "invert input transformation",
-            "argstr": "-inverse",
-            "position": -3
-        }
+        {"help_string": "invert input transformation", "argstr": "-inverse", "position": -3},
     ),
     (
         "concat_xfm",
         bool,
         {
             "help_string": "write joint transformation of two input " "matrices",
-            "argstr": "-concat","position": -3,
+            "argstr": "-concat",
+            "position": -3,
             "xor": ["_options"],
-            "requires": ["in_file2"]
-        }
+            "requires": ["in_file2"],
+        },
     ),
     (
         "fix_scale_skew",
@@ -51,8 +52,8 @@ input_fields = [
             "argstr": "-fixscaleskew",
             "position": -3,
             "xor": ["_options"],
-            "requires": ["in_file2"]
-        }
+            "requires": ["in_file2"],
+        },
     ),
     (
         "out_file",
@@ -62,9 +63,9 @@ input_fields = [
             "argstr": "-omat {out_file}",
             "position": 1,
             "xor": ["_options"],
-            "requires": ["in_file2"]
-        }
-    )
+            "requires": ["in_file2"],
+        },
+    ),
 ]
 
 
