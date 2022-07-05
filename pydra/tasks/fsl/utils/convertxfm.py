@@ -63,9 +63,9 @@ input_fields = [
             "position": 1,
             "xor": ["_options"],
             "requires": ["in_file2"],
-            "output_file_template": "{in_file}_inv"
-        }
-    )
+            "output_file_template": "{in_file}_inv",
+        },
+    ),
 ]
 
 
