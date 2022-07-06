@@ -1,7 +1,7 @@
 from pydra.engine import specs
 from pydra import ShellCommandTask
 
-def ConvertXFM_input_outfile(in_file, _options):  
+def ConvertXFM_input_outfile(in_file, _options):
     if _options = "invert_xfm":
         return f"{in_file}_inv"
     elif _options = "concat_xfm":
@@ -13,7 +13,7 @@ def ConvertXFM_input_outfile(in_file, _options):
             f"this function should be run only for invert_xfm, "
             f"concat_xfm, or fix_scale_skew, not for {_options}"
         )
-    
+
 input_fields = [
     (
         "in_file",
