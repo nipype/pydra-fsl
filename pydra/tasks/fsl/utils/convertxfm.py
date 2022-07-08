@@ -1,12 +1,12 @@
 from pydra.engine import specs
 from pydra import ShellCommandTask
 
-def ConvertXFM_input_outfile(in_file, _options):  
-    if _options == "invert_xfm":
+def ConvertXFM_input_outfile(inputs, in_file):  
+    if inputs.invert_xfm:
         return f"{in_file}_inv"
-    elif _options == "concat_xfm":
+    elif inputs.concat_xfm:
         return f"{in_file}"
-    elif _options == "fix_scale_skew":
+    elif inputs.fix_scale_skew:
         return f"{in_file}_fix"
     else:
         raise Exception(
