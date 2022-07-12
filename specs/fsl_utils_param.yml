@@ -51,18 +51,21 @@ ConvertWarp:
   tests_outputs:
     - AttributeError
 
-# ConvertXFM:
-#   output_requirements:
-#     out_file: [in_file]
-#   output_templates:
-#     out_file: "{in_file}_inv"
-#   doctest:
-#     in_file: "flirt.mat"
-#     cmdline: "convert_xfm -omat flirt_inv.mat -inverse flirt.mat"
-#   tests_inputs:
-#     -
-#   tests_outputs:
-#     - out_file
+ConvertXFM:
+  output_requirements:
+    out_file: [in_file]
+  output_templates:
+    out_file: ConvertXFM_output
+  doctest:
+    in_file: flirt.mat
+    invert_xfm: True
+    out_file: flirt_inv.mat
+    cmdline: convert_xfm -omat flirt_inv.mat -inverse flirt.mat
+  tests_inputs:
+    - in_file: flirt.mat
+      invert_xfm: True
+  tests_outputs:
+    - out_file
 
 CopyGeom:
   output_requirements:

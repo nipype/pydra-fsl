@@ -1,18 +1,6 @@
 from pydra.engine import specs
 from pydra import ShellCommandTask
-
-def ConvertXFM_input_outfile(inputs, in_file):  
-    if inputs.invert_xfm:
-        return f"{in_file}_inv"
-    elif inputs.concat_xfm:
-        return f"{in_file}"
-    elif inputs.fix_scale_skew:
-        return f"{in_file}_fix"
-    else:
-        raise Exception(
-            f"this function should be run only for invert_xfm, "
-            f"concat_xfm, or fix_scale_skew, not for {_options}"
-        )
+import typing as ty
 
 input_fields = [
     (
@@ -35,51 +23,51 @@ input_fields = [
         },
     ),
     (
-        "_options",
-        str,
-        {"help_string": "", "allowed_values": ["invert_xfm", "concat_xfm", "fix_scale_skew"]},
-    ),
-    (
         "invert_xfm",
         bool,
-        {"help_string": "invert input transformation", "argstr": "-inverse", "position": -3},
+        {
+            "help_string": "invert input transformation",
+            "argstr": "-inverse",
+            "position": -3,
+            "xor": ["invert_xfm", "concat_xfm", "fix_scale_skew"],
+        },
     ),
     (
         "concat_xfm",
         bool,
         {
-            "help_string": "write joint transformation of two input " "matrices",
+            "help_string": "write joint transformation of two input matrices",
             "argstr": "-concat",
             "position": -3,
-            "xor": ["_options"],
             "requires": ["in_file2"],
+            "xor": ["invert_xfm", "concat_xfm", "fix_scale_skew"],
         },
     ),
     (
         "fix_scale_skew",
         bool,
         {
-            "help_string": "use secondary matrix to fix scale and " "skew",
+            "help_string": "use secondary matrix to fix scale and skew",
             "argstr": "-fixscaleskew",
             "position": -3,
-            "xor": ["_options"],
             "requires": ["in_file2"],
+            "xor": ["invert_xfm", "concat_xfm", "fix_scale_skew"],
         },
     ),
     (
         "out_file",
-        specs.File,
+        str,
         {
             "help_string": "final transformation matrix",
             "argstr": "-omat {out_file}",
             "position": 1,
-            "callable": "ConvertXFM_input_outfile"
-        }
-    )
+            "output_file_template": "ConvertXFM_output",
+        },
+    ),
 ]
-
-
-ConvertXFM_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+ConvertXFM_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = []
 ConvertXFM_output_spec = specs.SpecInfo(
@@ -94,7 +82,7 @@ class ConvertXFM(ShellCommandTask):
     >>> task = ConvertXFM()
     >>> task.inputs.in_file = "flirt.mat"
     >>> task.inputs.invert_xfm = True
-    >>> task.inputs.out_file = 'flirt_inv.mat'
+    >>> task.inputs.out_file = "flirt_inv.mat"
     >>> task.cmdline
     'convert_xfm -omat flirt_inv.mat -inverse flirt.mat'
     """

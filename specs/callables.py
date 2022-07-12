@@ -95,3 +95,21 @@ def FAST_output_infile(field, in_files, out_basename):
         # single image segmentation has unnumbered output image
         outputs.append(f"{out_basename}_{suffix}")
     return outputs
+
+
+def ConvertXFM_output(inputs):
+    import attr
+    
+    infile1 = inputs.in_file
+    if inputs.invert_xfm:
+        return f"{infile1}_inv"
+    elif inputs.concat_xfm:
+        infile2 = inputs.in_file2
+        return f"{infile1}_{infile2}"
+    elif inputs.fix_scale_skew:
+        return f"{infile1}_fix"
+    else:
+        raise Exception(
+            f"this function requires invert_xfm, or concat_xfm,"
+            f"or fix_scale_skew"
+        )
