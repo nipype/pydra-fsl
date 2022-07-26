@@ -133,7 +133,6 @@ def FAST_output_infile(field, in_files, out_basename):
         outputs.append(f"{out_basename}_{suffix}")
     return outputs
 
-
 def FEAT_output(fsf_file):
     is_ica = False
     with open(fsf_file, "rt") as fp:
@@ -385,3 +384,4 @@ def SLICE_output(inputs):
         fname_template = f"{inputs.in_file}_{suffix}"
         
     return sorted(glob(fname_template))
+

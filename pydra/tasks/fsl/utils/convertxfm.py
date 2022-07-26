@@ -87,9 +87,7 @@ input_fields = [
         },
     ),
 ]
-ConvertXFM_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+ConvertXFM_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 ConvertXFM_output_spec = specs.SpecInfo(
