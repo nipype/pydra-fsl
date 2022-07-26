@@ -320,9 +320,7 @@ input_fields = [
         },
     ),
 ]
-MELODIC_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+MELODIC_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     ("out_dir", specs.Directory, {"callable": MELODIC_output}),

@@ -3,17 +3,17 @@ from pathlib import Path
 from ..filmgls import FILMGLS
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [
         (
-            {"in_file": "test_film_gls.nii.gz", 
-             "design_file": "design_film_gls.mat",
-             "threshold": 10,
-             "results_dir": "stats"},
+            {
+                "in_file": "test_film_gls.nii.gz",
+                "design_file": "design_film_gls.mat",
+                "threshold": 10,
+                "results_dir": "stats",
+            },
             [
                 "dof_file",
                 "logfile",
@@ -21,7 +21,7 @@ from ..filmgls import FILMGLS
                 "residual4d",
                 "results_dir",
                 "sigmasquareds",
-                "thresholdac"
+                "thresholdac",
             ],
         )
     ],
@@ -52,9 +52,7 @@ def test_FILMGLS(test_data, inputs, outputs):
             except:
                 pass
         task = FILMGLS(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

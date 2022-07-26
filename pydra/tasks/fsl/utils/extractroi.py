@@ -32,9 +32,7 @@ input_fields = [
     ("t_min", int, {"help_string": "", "argstr": "{t_min}", "position": 8}),
     ("t_size", int, {"help_string": "", "argstr": "{t_size}", "position": 9}),
 ]
-ExtractROI_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+ExtractROI_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 ExtractROI_output_spec = specs.SpecInfo(

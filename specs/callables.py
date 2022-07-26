@@ -3,14 +3,14 @@ def Cluster_output(inputs):
     from pydra.engine.helpers_file import split_filename
 
     in_file = inputs.in_file
-    
+
     if in_file not in [None, attr.NOTHING]:
         pth, fname, ext = split_filename(in_file)
         return f"{fname}_localmax.txt"
     else:
-        raise Exception(
-            f"this function should be run only for out_localmax_txt_file not {name}"
-        )
+        raise Exception(f"this function should be run only for out_localmax_txt_file not {name}")
+
+
 def Complex_output(inputs):
     import attr
 
@@ -27,7 +27,7 @@ def Complex_output(inputs):
 
 def ConvertXFM_output(inputs):
     import attr
-    
+
     in_file = inputs.in_file
     if inputs.invert_xfm:
         return f"{in_file}_inv"
@@ -36,19 +36,14 @@ def ConvertXFM_output(inputs):
             in_file2 = inputs.in_file2
             return f"{in_file}_{in_file2}"
         else:
-            raise Exception(
-                "in_file2 is needed to use concat_xfm"
-            )
-            
+            raise Exception("in_file2 is needed to use concat_xfm")
+
     elif inputs.fix_scale_skew:
         return f"{in_file}_fix"
     else:
-        raise Exception(
-            "this function requires invert_xfm, or concat_xfm,"
-            "or fix_scale_skew"
-        )
-        
-        
+        raise Exception("this function requires invert_xfm, or concat_xfm," "or fix_scale_skew")
+
+
 def FAST_output(field, in_files, out_basename):
     import attr
 
@@ -133,6 +128,7 @@ def FAST_output_infile(field, in_files, out_basename):
         outputs.append(f"{out_basename}_{suffix}")
     return outputs
 
+
 def FEAT_output(fsf_file):
     is_ica = False
     with open(fsf_file, "rt") as fp:
@@ -147,7 +143,7 @@ def FEAT_output(fsf_file):
                         outputs = outputdir_spec
                 except:
                     pass
-    
+
     if not outputs:
         if is_ica:
             outputs = glob(os.path.join(os.getcwd(), "*ica"))[0]
@@ -159,6 +155,7 @@ def FEAT_output(fsf_file):
 
 def FEATModel_output(field, fsf_file):
     import os
+
     # TODO: figure out file names and get rid off the globs
     outputs = {}
     _, fname = os.path.split(fsf_file)
@@ -191,6 +188,7 @@ def FEATModel_output(field, fsf_file):
             f"design_cov, con_file, or fcon_file, not for {name}"
         )
     return outputs
+
 
 def FILMGLS_output(field, inputs):
     import os, attr
@@ -229,7 +227,7 @@ def FILMGLS_output(field, inputs):
         return numtcons, numfcons
 
     name = field.name
-    pth = inputs.results_dir       
+    pth = inputs.results_dir
     if name == "results_dir":
         return pth
     elif name == "param_estimates":
@@ -247,7 +245,7 @@ def FILMGLS_output(field, inputs):
         return os.path.join(pth, "threshac1.nii.gz")
     elif name == "logfile":
         return os.path.join(pth, "logfile")
-    
+
     numtcons, numfcons = _get_numcons(inputs)
     base_contrast = 1
     copes = []
@@ -277,7 +275,8 @@ def FILMGLS_output(field, inputs):
         if name == "fstats":
             return fstats
         elif name == "zfstats":
-            return 
+            return
+
 
 def FLAMEO_output(field, inputs):
     import os, glob, attr
@@ -292,6 +291,7 @@ def FLAMEO_output(field, inputs):
 
         def natural_keys(text):
             import re
+
             if isinstance(text, tuple):
                 text = text[0]
             return [atoi(c) for c in re.split(r"(\d+)", text)]
@@ -300,7 +300,7 @@ def FLAMEO_output(field, inputs):
 
     pth = inputs.log_dir
     name = field.name
-    
+
     if name == "pes":
         pes = human_order_sorted(glob.glob(os.path.join(pth, "pe[0-9]*.*")))
         if len(pes) >= 1:
@@ -326,9 +326,7 @@ def FLAMEO_output(field, inputs):
         if len(tstats) >= 1:
             return tstats
     elif name == "mrefvars":
-        mrefs = human_order_sorted(
-            glob.glob(os.path.join(pth, "mean_random_effects_var[0-9]*.*"))
-        )
+        mrefs = human_order_sorted(glob.glob(os.path.join(pth, "mean_random_effects_var[0-9]*.*")))
         if len(mrefs) >= 1:
             return mrefs
     elif name == "tdof":
@@ -356,9 +354,10 @@ def FLAMEO_output(field, inputs):
             f"fstats, zstats, tstats, mrefs, tdof, weights, or stats_dir, not for {name}"
         )
 
+
 def MELODIC_output(field, inputs):
     import os, attr
-    
+
     name = field.name
     if name == "out_dir":
         if inputs.out_dir not in [None, attr.NOTHING]:
@@ -374,14 +373,14 @@ def MELODIC_output(field, inputs):
             outputs = os.path.join(out_dir, "report")
     return outputs
 
+
 def SLICE_output(inputs):
     import glob
-    
+
     suffix = "slice_*"
-    if inputs.out_base_name: 
+    if inputs.out_base_name:
         fname_template = f"{inputs.out_base_name}_{suffix}"
     else:
         fname_template = f"{inputs.in_file}_{suffix}"
-        
-    return sorted(glob(fname_template))
 
+    return sorted(glob(fname_template))

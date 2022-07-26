@@ -48,17 +48,17 @@ ConvertWarp: # needs more test data
     out_file: test_concatwarp.nii.gz
     cmdline: convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz
   tests_inputs:
-    - 
+    -
   tests_outputs:
     - AttributeError
 
 ConvertXFM:
   output_requirements:
     out_file: [in_file]
-    
+
   output_templates:
     out_file: [ConvertXFM_output]
-    
+
   doctest:
     in_file: flirt.mat
     invert_xfm: True
