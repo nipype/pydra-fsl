@@ -194,6 +194,92 @@ def FEATModel_output(field, fsf_file):
         )
     return outputs
 
+def FILMGLS_output(field, inputs):
+    import os, attr
+
+    def _get_pe_files(design_file, pth):
+        files = None
+        if design_file not in [None, attr.NOTHING]:
+            fp = open(design_file, "rt")
+            for line in fp.readlines():
+                if line.startswith("/NumWaves"):
+                    numpes = int(line.split()[-1])
+                    files = []
+                    for i in range(numpes):
+                        files.append(os.path.join(pth, ("pe%d.nii.gz" % (i + 1))))
+                    break
+            fp.close()
+        return files
+
+    def _get_numcons(inputs):
+        numtcons = 0
+        numfcons = 0
+        if inputs.tcon_file not in [None, attr.NOTHING]:
+            fp = open(inputs.tcon_file, "rt")
+            for line in fp.readlines():
+                if line.startswith("/NumContrasts"):
+                    numtcons = int(line.split()[-1])
+                    break
+            fp.close()
+        if inputs.fcon_file not in [None, attr.NOTHING]:
+            fp = open(inputs.fcon_file, "rt")
+            for line in fp.readlines():
+                if line.startswith("/NumContrasts"):
+                    numfcons = int(line.split()[-1])
+                    break
+            fp.close()
+        return numtcons, numfcons
+
+    name = field.name
+    pth = inputs.results_dir       
+    if name == "results_dir":
+        return pth
+    elif name == "param_estimates":
+        design_file = inputs.design_file
+        pe_files = _get_pe_files(design_file, pth)
+        if pe_files:
+            return pe_files
+    elif name == "residual4d":
+        return os.path.join(pth, "res4d.nii.gz")
+    elif name == "dof_file":
+        return os.path.join(pth, "dof")
+    elif name == "sigmasquareds":
+        return os.path.join(pth, "sigmasquareds.nii.gz")
+    elif name == "thresholdac":
+        return os.path.join(pth, "threshac1.nii.gz")
+    elif name == "logfile":
+        return os.path.join(pth, "logfile")
+    
+    numtcons, numfcons = _get_numcons(inputs)
+    base_contrast = 1
+    copes = []
+    varcopes = []
+    zstats = []
+    tstats = []
+    for i in range(numtcons):
+        copes.append(os.path.join(pth, ("cope%d.nii.gz" % (base_contrast + i))))
+        varcopes.append(os.path.join(pth, ("varcope%d.nii.gz" % (base_contrast + i))))
+        zstats.append(os.path.join(pth, ("zstat%d.nii.gz" % (base_contrast + i))))
+        tstats.append(os.path.join(pth, ("tstat%d.nii.gz" % (base_contrast + i))))
+    if copes:
+        if name == "copes":
+            return copes
+        elif name == "varcopes":
+            return varcopes
+        elif name == "zstats":
+            return zstats
+        elif name == "tstats":
+            return tstats
+    fstats = []
+    zfstats = []
+    for i in range(numfcons):
+        fstats.append(os.path.join(pth, ("fstat%d.nii.gz" % (base_contrast + i))))
+        zfstats.append(os.path.join(pth, ("zfstat%d.nii.gz" % (base_contrast + i))))
+    if fstats:
+        if name == "fstats":
+            return fstats
+        elif name == "zfstats":
+            return 
 
 def FLAMEO_output(field, inputs):
     import os, glob, attr
