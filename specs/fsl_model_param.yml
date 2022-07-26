@@ -197,7 +197,7 @@ FLAMEO:
     run_mode: fe
 <<<<<<< HEAD
     cmdline: flameo --copefile=cope_merged.nii.gz --varcopefile=varcope_merged.nii.gz --maskfile=mask.nii.gz --designfile=design.mat --tcontrastsfile=design.con --covsplitfile=design.grp --runmode=fe --ld=stats
-  
+
 =======
     cmdline: flameo --copefile=cope_merged.nii.gz --covsplitfile=design.grp --designfile=design.mat --ld=stats --maskfile=mask.nii.gz --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope_merged.nii.gz
 
