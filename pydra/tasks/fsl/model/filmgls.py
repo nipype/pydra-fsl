@@ -2,6 +2,7 @@ from pydra.engine import specs
 from pydra import ShellCommandTask
 import typing as ty
 
+
 def FILMGLS_output(field, inputs):
     import os, attr
 
@@ -39,7 +40,7 @@ def FILMGLS_output(field, inputs):
         return numtcons, numfcons
 
     name = field.name
-    pth = inputs.results_dir       
+    pth = inputs.results_dir
     if name == "results_dir":
         return pth
     elif name == "param_estimates":
@@ -57,7 +58,7 @@ def FILMGLS_output(field, inputs):
         return os.path.join(pth, "threshac1.nii.gz")
     elif name == "logfile":
         return os.path.join(pth, "logfile")
-    
+
     numtcons, numfcons = _get_numcons(inputs)
     base_contrast = 1
     copes = []
@@ -90,9 +91,7 @@ def FILMGLS_output(field, inputs):
             return zfstats
 
 
-
 input_fields = [
-    
     (
         "in_file",
         specs.File,
@@ -263,15 +262,10 @@ input_fields = [
         "results_dir",
         str,
         "results",
-        {
-            "help_string": "directory to store results in",
-            "argstr": "--rn={results_dir}"
-        },
+        {"help_string": "directory to store results in", "argstr": "--rn={results_dir}"},
     ),
 ]
-FILMGLS_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+FILMGLS_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (
@@ -327,32 +321,56 @@ output_fields = [
     (
         "copes",
         specs.MultiOutputFile,
-        {"help_string": "Contrast estimates for each contrast", "requires": ["tcon_file"], "callable": FILMGLS_output},
+        {
+            "help_string": "Contrast estimates for each contrast",
+            "requires": ["tcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
     (
         "varcopes",
         specs.MultiOutputFile,
-        {"help_string": "Variance estimates for each contrast", "requires": ["tcon_file"], "callable": FILMGLS_output},
+        {
+            "help_string": "Variance estimates for each contrast",
+            "requires": ["tcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
     (
         "zstats",
         specs.MultiOutputFile,
-        {"help_string": "z-stat file for each contrast", "requires": ["tcon_file"], "callable": FILMGLS_output},
+        {
+            "help_string": "z-stat file for each contrast",
+            "requires": ["tcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
     (
         "tstats",
         specs.MultiOutputFile,
-        {"help_string": "t-stat file for each contrast","requires": ["tcon_file"], "callable": FILMGLS_output},
+        {
+            "help_string": "t-stat file for each contrast",
+            "requires": ["tcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
     (
         "fstats",
         specs.MultiOutputFile,
-        {"help_string": "f-stat file for each contrast", "requires": ["fcon_file"],"callable": FILMGLS_output},
+        {
+            "help_string": "f-stat file for each contrast",
+            "requires": ["fcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
     (
         "zfstats",
         specs.MultiOutputFile,
-        {"help_string": "z-stat file for each F contrast", "requires": ["fcon_file"], "callable": FILMGLS_output},
+        {
+            "help_string": "z-stat file for each F contrast",
+            "requires": ["fcon_file"],
+            "callable": FILMGLS_output,
+        },
     ),
 ]
 FILMGLS_output_spec = specs.SpecInfo(

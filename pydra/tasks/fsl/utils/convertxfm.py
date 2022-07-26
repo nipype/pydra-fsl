@@ -19,9 +19,7 @@ def ConvertXFM_output(inputs):
     elif inputs.fix_scale_skew:
         return f"{in_file}_fix"
     else:
-        raise Exception(
-            "this function requires invert_xfm, or concat_xfm," "or fix_scale_skew"
-        )
+        raise Exception("this function requires invert_xfm, or concat_xfm," "or fix_scale_skew")
 
 
 input_fields = [

@@ -16,6 +16,8 @@ import functools
 
 sys.path.append(str(Path(__file__).resolve().parent.parent / 'specs'))
 import callables
+
+
 class FSLConverter:
 
     INPUT_KEYS = [
@@ -233,7 +235,6 @@ class FSLConverter:
             spec_str += f"        if isinstance(getattr(res.output, out_nm), list): assert [os.path.exists(x) for x in getattr(res.output, out_nm)]\n"
             spec_str += f"        else: assert os.path.exists(getattr(res.output, out_nm))\n"
 
-
         # if test_inp_error is not empty, than additional test function will be created
         if tests_inp_error:
             spec_str += self.write_test_error(input_error=tests_inp_error)
@@ -349,9 +350,13 @@ class FSLConverter:
         elif getattr(field, "genfile"):
             if nm in self.interface_spec["output_templates"]:
                 if isinstance(self.interface_spec["output_templates"][nm], list):
-                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm][0]
+                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][
+                        nm
+                    ][0]
                 else:
-                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
+                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][
+                        nm
+                    ]
                 if tp_pdr in [
                     specs.File,
                     specs.Directory,
@@ -425,7 +430,9 @@ class FSLConverter:
 
         if nm in self.interface_spec["output_templates"]:
             if isinstance(self.interface_spec["output_templates"][nm], list):
-                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm][0]
+                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm][
+                    0
+                ]
             else:
                 metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
         elif nm in self.interface_spec["output_callables"]:
@@ -447,7 +454,7 @@ class FSLConverter:
             raise Exception(
                 "specs/callables.py file is needed if functions are used in the spec files"
             )
-        
+
         fun_names.extend(list(set(self.interface_spec["output_callables"].values())))
         fun_names.sort()
         fun_str = ""
@@ -481,7 +488,7 @@ class FSLConverter:
                 tp_pdr = specs.MultiOutputFile
             else:
                 tp_pdr = specs.MultiOutputObj
-        elif  isinstance(tp, traits_extension.InputMultiPath):
+        elif isinstance(tp, traits_extension.InputMultiPath):
             if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
                 tp_pdr = specs.MultiInputFile
             else:

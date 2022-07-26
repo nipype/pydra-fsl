@@ -3,9 +3,7 @@ from pathlib import Path
 from ..imagemeants import ImageMeants
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize("inputs, outputs", [(None, ["out_file"])])
 def test_ImageMeants(test_data, inputs, outputs):
     if inputs is None:
@@ -33,9 +31,7 @@ def test_ImageMeants(test_data, inputs, outputs):
             except:
                 pass
         task = ImageMeants(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

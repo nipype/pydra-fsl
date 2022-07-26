@@ -64,9 +64,7 @@ input_fields = [
         },
     ),
 ]
-FEATModel_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+FEATModel_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (

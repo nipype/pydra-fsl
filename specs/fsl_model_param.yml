@@ -9,7 +9,7 @@ Cluster:
     out_size_file: [in_file]
     out_threshold_file: [in_file]
   output_callables:
-    
+
   output_templates:
     out_index_file: "{in_file}_index"
     out_localmax_txt_file: [Cluster_output]
@@ -31,8 +31,8 @@ Cluster:
       use_mm: True
   tests_outputs:
     - [out_index_file,out_localmax_txt_file,out_localmax_vol_file,out_threshold_file,out_max_file,out_mean_file,out_pval_file,out_size_file,out_threshold_file]
-    
-    
+
+
 # ContrastMgr:
 #   output_requirements:
 #     copes:
@@ -42,7 +42,7 @@ Cluster:
 #     varcopes:
 #     zfstats:
 #     zstats:
-    
+
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -65,9 +65,9 @@ Cluster:
 #     out_dir: my_output_directory
 #     cmdline: dual_regression allFA.nii 0 -1 10 my_output_directory functional.nii functional2.nii functional3.nii
 #   tests_inputs:
-#     - 
+#     -
 #   tests_outputs:
-#     - 
+#     -
 
 FEAT: # need a simpler test.fsf
   output_requirements:
@@ -80,17 +80,17 @@ FEAT: # need a simpler test.fsf
     fsf_file: test.fsf
     cmdline: feat test.fsf
   tests_inputs:
-    - 
+    -
   tests_outputs:
     - AttributeError
 
 FEATModel:
   output_requirements:
-    con_file: 
-    design_cov: 
-    design_file: 
-    design_image: 
-    fcon_file: 
+    con_file:
+    design_cov:
+    design_file:
+    design_image:
+    fcon_file:
 
   output_callables:
     con_file: FEATModel_output
@@ -102,7 +102,7 @@ FEATModel:
   inputs_drop:
   doctest: # feat_model <design_name_root> [confound matrix text file]
   tests_inputs:
-    - 
+    -
   tests_outputs:
     - AttributeError
 
@@ -115,20 +115,20 @@ FEATModel:
 #   inputs_drop:
 #   doctest:
 #   tests_inputs:
-#     - 
+#     -
 #   tests_outputs:
 #     - AttributeError
 
-FILMGLS: 
+FILMGLS:
   output_requirements:
-    corrections: 
-    dof_file: 
-    logfile: 
-    param_estimates: 
-    residual4d: 
-    results_dir: 
-    sigmasquareds: 
-    thresholdac: 
+    corrections:
+    dof_file:
+    logfile:
+    param_estimates:
+    residual4d:
+    results_dir:
+    sigmasquareds:
+    thresholdac:
   output_callables:
     corrections: FILMGLS_output
     dof_file: FILMGLS_output
@@ -158,17 +158,17 @@ FLAMEO:
   output_requirements:
     copes:
     var_copes:
-    mrefvars: 
-    weights: 
-    pes: 
+    mrefvars:
+    weights:
+    pes:
     res4d:
-    tdof: 
+    tdof:
     tstats: [t_con_file]
     zstats: [t_con_file]
     zfstats: [f_con_file]
     fstats: [f_con_file]
-    stats_dir: 
-    
+    stats_dir:
+
   output_callables:
     copes: FLAMEO_output
     fstats: FLAMEO_output
@@ -182,11 +182,11 @@ FLAMEO:
     zfstats: FLAMEO_output
     zstats: FLAMEO_output
     stats_dir: FLAMEO_output
-  
+
   output_templates:
-  
+
   inputs_drop:
-  
+
   doctest:
     cope_file: cope_merged.nii.gz
     var_cope_file: varcope_merged.nii.gz
@@ -195,8 +195,13 @@ FLAMEO:
     t_con_file: design.con
     mask_file: mask.nii.gz
     run_mode: fe
+<<<<<<< HEAD
     cmdline: flameo --copefile=cope_merged.nii.gz --varcopefile=varcope_merged.nii.gz --maskfile=mask.nii.gz --designfile=design.mat --tcontrastsfile=design.con --covsplitfile=design.grp --runmode=fe --ld=stats
   
+=======
+    cmdline: flameo --copefile=cope_merged.nii.gz --covsplitfile=design.grp --designfile=design.mat --ld=stats --maskfile=mask.nii.gz --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope_merged.nii.gz
+
+>>>>>>> 9511484e7454a220799195c97bbbab056cb2a460
   tests_inputs:
     - cope_file: cope_merged.nii.gz
       var_cope_file: varcope_merged.nii.gz
@@ -228,9 +233,9 @@ GLM:
 
 # L2Model:
 #   output_requirements:
-#     design_con: 
-#     design_grp: 
-#     design_mat: 
+#     design_con:
+#     design_grp:
+#     design_mat:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -240,8 +245,8 @@ GLM:
 
 # Level1Design:
 #   output_requirements:
-#     ev_files: 
-#     fsf_files: 
+#     ev_files:
+#     fsf_files:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -251,8 +256,8 @@ GLM:
 
 MELODIC:
   output_requirements:
-    out_dir: 
-    report_dir: 
+    out_dir:
+    report_dir:
   output_callables:
     out_dir: MELODIC_output
     report_dir: MELODIC_output
@@ -272,16 +277,16 @@ MELODIC:
     out_dir: groupICA.out
     cmdline: melodic -i test.nii,test2.nii,test3.nii -o groupICA.out --nobet --bgthreshold=10 -a tica --tr=1.5 --Tdes=timeDesign.mat --Tcon=timeDesign.con --Sdes=subjectDesign.mat --Scon=subjectDesign.con --Ostats
   tests_inputs:
-    - 
+    -
   tests_outputs:
     - AttributeError
 
 # MultipleRegressDesign:
 #   output_requirements:
-#     design_con: 
-#     design_fts: 
-#     design_grp: 
-#     design_mat: 
+#     design_con:
+#     design_fts:
+#     design_grp:
+#     design_mat:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -291,12 +296,12 @@ MELODIC:
 
 # Randomise:
 #   output_requirements:
-#     f_corrected_p_files: 
-#     f_p_files: 
-#     fstat_files: 
-#     t_corrected_p_files: 
-#     t_p_files: 
-#     tstat_files: 
+#     f_corrected_p_files:
+#     f_p_files:
+#     fstat_files:
+#     t_corrected_p_files:
+#     t_p_files:
+#     tstat_files:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -308,8 +313,8 @@ MELODIC:
 # SMM:
 #   output_requirements:
 #     activation_p_map:
-#     deactivation_p_map: 
-#     null_p_map: 
+#     deactivation_p_map:
+#     null_p_map:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:
@@ -319,9 +324,9 @@ MELODIC:
 
 # SmoothEstimate: # need new test data
 #   output_requirements:
-#     dlh: 
-#     resels: 
-#     volume: 
+#     dlh:
+#     resels:
+#     volume:
 #   output_callables:
 #   output_templates:
 #   inputs_drop:

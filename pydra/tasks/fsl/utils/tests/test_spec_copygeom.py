@@ -30,9 +30,7 @@ def test_CopyGeom(test_data, inputs, outputs):
             except:
                 pass
         task = CopyGeom(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
 
 
 @pytest.mark.parametrize("inputs, error", [(None, "AttributeError")])

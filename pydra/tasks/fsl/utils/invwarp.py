@@ -86,9 +86,7 @@ input_fields = [
         },
     ),
 ]
-InvWarp_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+InvWarp_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = []
 InvWarp_output_spec = specs.SpecInfo(

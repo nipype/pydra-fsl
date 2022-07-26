@@ -3,9 +3,7 @@ from pathlib import Path
 from ..extractroi import ExtractROI
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [({"in_file": "test.nii.gz", "t_min": 0, "t_size": 1}, ["roi_file"])],
@@ -36,9 +34,7 @@ def test_ExtractROI(test_data, inputs, outputs):
             except:
                 pass
         task = ExtractROI(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

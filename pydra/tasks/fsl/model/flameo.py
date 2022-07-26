@@ -16,7 +16,7 @@ def FLAMEO_output(field, inputs):
 
         def natural_keys(text):
             import re
-            
+
             if isinstance(text, tuple):
                 text = text[0]
             return [atoi(c) for c in re.split(r"(\d+)", text)]
@@ -25,7 +25,7 @@ def FLAMEO_output(field, inputs):
 
     pth = inputs.log_dir
     name = field.name
-    
+
     if name == "pes":
         pes = human_order_sorted(glob.glob(os.path.join(pth, "pe[0-9]*.*")))
         if len(pes) >= 1:
@@ -51,9 +51,7 @@ def FLAMEO_output(field, inputs):
         if len(tstats) >= 1:
             return tstats
     elif name == "mrefvars":
-        mrefs = human_order_sorted(
-            glob.glob(os.path.join(pth, "mean_random_effects_var[0-9]*.*"))
-        )
+        mrefs = human_order_sorted(glob.glob(os.path.join(pth, "mean_random_effects_var[0-9]*.*")))
         if len(mrefs) >= 1:
             return mrefs
     elif name == "tdof":
@@ -211,9 +209,7 @@ input_fields = [
     ),
     ("log_dir", ty.Any, "stats", {"help_string": "", "argstr": "--ld={log_dir}"}),
 ]
-FLAMEO_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+FLAMEO_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (

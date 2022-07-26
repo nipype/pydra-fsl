@@ -39,16 +39,12 @@ input_fields = [
         },
     )
 ]
-FEAT_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+FEAT_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     ("feat_dir", specs.Directory, {"requires": ["fsf_file"], "callable": FEAT_output})
 ]
-FEAT_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
+FEAT_output_spec = specs.SpecInfo(name="Output", fields=output_fields, bases=(specs.ShellOutSpec,))
 
 
 class FEAT(ShellCommandTask):
