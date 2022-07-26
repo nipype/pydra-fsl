@@ -46,7 +46,7 @@ ConvertWarp: # needs more test data
     reference: test.nii.gz
     relwarp: True
     out_file: test_concatwarp.nii.gz
-    cmdline: convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz 
+    cmdline: convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz
   tests_inputs:
     -
   tests_outputs:
