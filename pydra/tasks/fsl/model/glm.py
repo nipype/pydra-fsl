@@ -182,7 +182,7 @@ class GLM(ShellCommandTask):
     """
     Example
     -------
-    >>> task = GLM() 
+    >>> task = GLM()
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.design = "confounds_regressors.tsv"
     >>> task.cmdline # doctest: +SKIP
