@@ -72,42 +72,42 @@ Cluster:
 #   tests_outputs:
 #     - 
 
-# FEAT: # need a simpler test.fsf
-#   output_requirements:
-#     feat_dir: [fsf_file]
-#   output_callables:
-#     feat_dir: FEAT_output
-#   output_templates:
-#   inputs_drop:
-#   doctest:
-#     fsf_file: test.fsf
-#     cmdline: feat test.fsf
-#   tests_inputs:
-#     - 
-#   tests_outputs:
-#     - AttributeError
+FEAT: # need a simpler test.fsf
+  output_requirements:
+    feat_dir: [fsf_file]
+  output_callables:
+    feat_dir: FEAT_output
+  output_templates:
+  inputs_drop:
+  doctest:
+    fsf_file: test.fsf
+    cmdline: feat test.fsf
+  tests_inputs:
+    - 
+  tests_outputs:
+    - AttributeError
 
-# FEATModel:
-#   output_requirements:
-#     con_file: 
-#     design_cov: 
-#     design_file: 
-#     design_image: 
-#     fcon_file: 
+FEATModel:
+  output_requirements:
+    con_file: 
+    design_cov: 
+    design_file: 
+    design_image: 
+    fcon_file: 
 
-#   output_callables:
-#     con_file: FEATModel_output
-#     design_cov: FEATModel_output
-#     design_file: FEATModel_output
-#     design_image: FEATModel_output
-#     fcon_file: FEATModel_output
-#   output_templates:
-#   inputs_drop:
-#   doctest: # feat_model <design_name_root> [confound matrix text file]
-#   tests_inputs:
-#     - 
-#   tests_outputs:
-#     - AttributeError
+  output_callables:
+    con_file: FEATModel_output
+    design_cov: FEATModel_output
+    design_file: FEATModel_output
+    design_image: FEATModel_output
+    fcon_file: FEATModel_output
+  output_templates:
+  inputs_drop:
+  doctest: # feat_model <design_name_root> [confound matrix text file]
+  tests_inputs:
+    - 
+  tests_outputs:
+    - AttributeError
 
 # FEATRegister:
 #   output_requirements:
@@ -122,37 +122,46 @@ Cluster:
 #   tests_outputs:
 #     - AttributeError
 
-# FILMGLS: # manually generated
-#   output_requirements:
-#     corrections: 
-#     dof_file: 
-#     logfile: 
-#     param_estimates: 
-#     residual4d: 
-#     results_dir: 
-#     sigmasquareds: 
-#     thresholdac: 
-#   output_callables:
-#     corrections: FILMGLS_output
-#     dof_file: FILMGLS_output
-#     logfile: FILMGLS_output
-#     param_estimates: FILMGLS_output
-#     residual4d: FILMGLS_output
-#     results_dir: FILMGLS_output
-#     sigmasquareds: FILMGLS_output
-#     thresholdac: FILMGLS_output
-#   output_templates:
-#   inputs_drop:
-#   doctest:
-#     in_file: test.nii
-#     design_file: design.mat
-#     threshold: 10
-#     results_dir: stats
-#     cmdline: film_gls --in_file=test.nii design.mat 10
-#   tests_inputs:
-#     - 
-#   tests_outputs:
-#     - AttributeError
+FILMGLS: 
+  output_requirements:
+    corrections: 
+    dof_file: 
+    logfile: 
+    param_estimates: 
+    residual4d: 
+    results_dir: 
+    sigmasquareds: 
+    thresholdac: 
+  output_callables:
+    corrections: FILMGLS_output
+    dof_file: FILMGLS_output
+    logfile: FILMGLS_output
+    param_estimates: FILMGLS_output
+    residual4d: FILMGLS_output
+    results_dir: FILMGLS_output
+    sigmasquareds: FILMGLS_output
+    thresholdac: FILMGLS_output
+  output_templates:
+  inputs_drop:
+  doctest:
+    in_file: test.nii
+    design_file: design.mat
+    threshold: 10
+    results_dir: stats
+    cmdline: film_gls --in_file=test.nii design.mat 10
+  tests_inputs:
+    - in_file: test_film_gls.nii.gz
+      design_file: design_film_gls.mat
+      threshold: 10
+      results_dir: stats
+  tests_outputs:
+    - dof_file
+      logfile
+      param_estimates
+      residual4d
+      results_dir
+      sigmasquareds
+      thresholdac
 
 FLAMEO:
   output_requirements:
