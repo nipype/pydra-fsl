@@ -9,7 +9,6 @@ def Cluster_output(inputs):
 
     in_file = inputs.in_file
     
-
     if in_file not in [None, attr.NOTHING]:
         pth, fname, ext = split_filename(in_file)
         return f"{fname}_localmax.txt"
