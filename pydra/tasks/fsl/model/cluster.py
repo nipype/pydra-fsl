@@ -229,6 +229,7 @@ class Cluster(ShellCommandTask):
     >>> task.inputs.use_mm = True
     >>> task.cmdline # doctest: +SKIP
     'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm' 
+
     """
 
     input_spec = Cluster_input_spec
