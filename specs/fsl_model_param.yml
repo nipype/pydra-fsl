@@ -195,13 +195,8 @@ FLAMEO:
     t_con_file: design.con
     mask_file: mask.nii.gz
     run_mode: fe
-<<<<<<< HEAD
     cmdline: flameo --copefile=cope_merged.nii.gz --varcopefile=varcope_merged.nii.gz --maskfile=mask.nii.gz --designfile=design.mat --tcontrastsfile=design.con --covsplitfile=design.grp --runmode=fe --ld=stats
 
-=======
-    cmdline: flameo --copefile=cope_merged.nii.gz --covsplitfile=design.grp --designfile=design.mat --ld=stats --maskfile=mask.nii.gz --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope_merged.nii.gz
-
->>>>>>> 9511484e7454a220799195c97bbbab056cb2a460
   tests_inputs:
     - cope_file: cope_merged.nii.gz
       var_cope_file: varcope_merged.nii.gz
