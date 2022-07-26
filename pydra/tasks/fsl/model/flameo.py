@@ -332,7 +332,7 @@ class FLAMEO(ShellCommandTask):
     >>> task.inputs.mask_file = "mask.nii.gz"
     >>> task.inputs.run_mode = "fe"
     >>> task.cmdline
-    'flameo --copefile=cope_merged.nii.gz --covsplitfile=design.grp --designfile=design.mat --ld=stats --maskfile=mask.nii.gz --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope_merged.nii.gz'
+    'flameo --copefile=cope_merged.nii.gz --varcopefile=varcope_merged.nii.gz --maskfile=mask.nii.gz --designfile=design.mat --tcontrastsfile=design.con --covsplitfile=design.grp --runmode=fe --ld=stats'
     """
 
     input_spec = FLAMEO_input_spec

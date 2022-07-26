@@ -22,10 +22,9 @@ Cluster:
   inputs_drop:
   doctest:
     in_file: zstat1.nii.gz
-    out_localmax_txt_file: stats.txt
     threshold: 2.3
     use_mm: True
-    cmdline: cluster --in=zstat1.nii.gz --oindex=zstat1_index.nii.gz --olmax=zstat1_localmax.txt --thresh=2.3000000000 --mm
+    cmdline: cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm
   tests_inputs:
     - in_file: zstat1.nii.gz
       threshold: 2.3
@@ -146,7 +145,7 @@ FILMGLS:
     design_file: design.mat
     threshold: 10
     results_dir: stats
-    cmdline: film_gls --in_file=test.nii design.mat 10
+    cmdline: film_gls --rn=stats --in=test.nii --pd=design.mat --thr=10
   tests_inputs:
     - in_file: test_film_gls.nii.gz
       design_file: design_film_gls.mat
@@ -196,7 +195,7 @@ FLAMEO:
     t_con_file: design.con
     mask_file: mask.nii.gz
     run_mode: fe
-    cmdline: flameo --copefile=cope_merged.nii.gz --covsplitfile=design.grp --designfile=design.mat --ld=stats --maskfile=mask.nii.gz --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope_merged.nii.gz
+    cmdline: flameo --copefile=cope_merged.nii.gz --varcopefile=varcope_merged.nii.gz --maskfile=mask.nii.gz --designfile=design.mat --tcontrastsfile=design.con --covsplitfile=design.grp --runmode=fe --ld=stats
   
   tests_inputs:
     - cope_file: cope_merged.nii.gz
@@ -220,7 +219,7 @@ GLM:
   doctest:
     in_file: test.nii.gz
     design: confounds_regressors.tsv
-    cmdline: fsl_glm -i test.nii.gz -d confounds_regressors.tsv -o test_glm.nii.gz
+    cmdline: fsl_glm -i test.nii.gz -d confounds_regressors.tsv
   tests_inputs:
     - in_file: test.nii.gz
       design: confounds_regressors.tsv
@@ -271,7 +270,7 @@ MELODIC:
     s_des: subjectDesign.mat
     s_con: subjectDesign.con
     out_dir: groupICA.out
-    cmdline: melodic -i test.nii,test2.nii,test3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000
+    cmdline: melodic -i test.nii,test2.nii,test3.nii -o groupICA.out --nobet --bgthreshold=10 -a tica --tr=1.5 --Tdes=timeDesign.mat --Tcon=timeDesign.con --Sdes=subjectDesign.mat --Scon=subjectDesign.con --Ostats
   tests_inputs:
     - 
   tests_outputs:

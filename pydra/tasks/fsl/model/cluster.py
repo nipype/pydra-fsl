@@ -232,11 +232,10 @@ class Cluster(ShellCommandTask):
     -------
     >>> task = Cluster()
     >>> task.inputs.in_file = "zstat1.nii.gz"
-    >>> task.inputs.out_localmax_txt_file = "stats.txt"
     >>> task.inputs.threshold = 2.3
     >>> task.inputs.use_mm = True
     >>> task.cmdline
-    'cluster --in=zstat1.nii.gz --oindex=zstat1_index.nii.gz --olmax=zstat1_localmax.txt --thresh=2.3000000000 --mm'
+    'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm'
     """
 
     input_spec = Cluster_input_spec

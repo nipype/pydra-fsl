@@ -370,7 +370,7 @@ class FILMGLS(ShellCommandTask):
     >>> task.inputs.threshold = 10
     >>> task.inputs.results_dir = "stats"
     >>> task.cmdline
-    'film_gls --in_file=test.nii --pd=design.mat --thr=10'
+    'film_gls --rn=stats --in=test.nii --pd=design.mat --thr=10'
     """
 
     input_spec = FILMGLS_input_spec

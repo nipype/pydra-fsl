@@ -350,7 +350,7 @@ class MELODIC(ShellCommandTask):
     >>> task.inputs.s_con = "subjectDesign.con"
     >>> task.inputs.out_dir = "groupICA.out"
     >>> task.cmdline
-    'melodic -i test.nii,test2.nii,test3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000'
+    'melodic -i test.nii,test2.nii,test3.nii -o groupICA.out --nobet --bgthreshold=10 -a tica --tr=1.5 --Tdes=timeDesign.mat --Tcon=timeDesign.con --Sdes=subjectDesign.mat --Scon=subjectDesign.con --Ostats'
     """
 
     input_spec = MELODIC_input_spec
