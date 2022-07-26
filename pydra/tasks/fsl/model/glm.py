@@ -185,8 +185,8 @@ class GLM(ShellCommandTask):
     >>> task = GLM()
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.design = "confounds_regressors.tsv"
-    >>> task.cmdline
-    'fsl_glm -i test.nii.gz -d confounds_regressors.tsv' # doctest: +ELLIPSIS
+    >>> task.cmdline # doctest: +ELLIPSIS
+    'fsl_glm -i test.nii.gz -d confounds_regressors.tsv' 
     """
 
     input_spec = GLM_input_spec
