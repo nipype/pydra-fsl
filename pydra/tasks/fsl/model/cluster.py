@@ -223,11 +223,11 @@ class Cluster(ShellCommandTask):
     """
     Example
     -------
-    >>> task = Cluster()
+    >>> task = Cluster() # doctest: +ELLIPSIS
     >>> task.inputs.in_file = "zstat1.nii.gz"
     >>> task.inputs.threshold = 2.3
     >>> task.inputs.use_mm = True
-    >>> task.cmdline # doctest: +ELLIPSIS
+    >>> task.cmdline 
     'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm' 
     """
 
