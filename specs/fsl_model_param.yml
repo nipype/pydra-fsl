@@ -24,7 +24,7 @@ Cluster:
     in_file: zstat1.nii.gz
     threshold: 2.3
     use_mm: True
-    cmdline: cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm
+    cmdline: cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm # doctest: +ELLIPSIS
   tests_inputs:
     - in_file: zstat1.nii.gz
       threshold: 2.3
@@ -224,7 +224,7 @@ GLM:
   doctest:
     in_file: test.nii.gz
     design: confounds_regressors.tsv
-    cmdline: fsl_glm -i test.nii.gz -d confounds_regressors.tsv
+    cmdline: fsl_glm -i test.nii.gz -d confounds_regressors.tsv # doctest: +ELLIPSIS
   tests_inputs:
     - in_file: test.nii.gz
       design: confounds_regressors.tsv

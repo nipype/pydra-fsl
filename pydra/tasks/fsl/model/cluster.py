@@ -228,7 +228,7 @@ class Cluster(ShellCommandTask):
     >>> task.inputs.threshold = 2.3
     >>> task.inputs.use_mm = True
     >>> task.cmdline
-    'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm'
+    'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm' # doctest: +ELLIPSIS
     """
 
     input_spec = Cluster_input_spec
