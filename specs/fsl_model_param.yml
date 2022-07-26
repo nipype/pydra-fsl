@@ -30,10 +30,8 @@ Cluster:
     - in_file: zstat1.nii.gz
       threshold: 2.3
       use_mm: True
-      out_localmax_txt_file: zstat1_localmax.txt
-      out_index_file: zstat1_index.nii.gz 
   tests_outputs:
-    - [index_file, localmax_txt_file]
+    - [out_index_file,out_localmax_txt_file,out_localmax_vol_file,out_threshold_file,out_max_file,out_mean_file,out_pval_file,out_size_file,out_threshold_file]
     
     
 # ContrastMgr:
@@ -155,13 +153,7 @@ FILMGLS:
       threshold: 10
       results_dir: stats
   tests_outputs:
-    - dof_file
-      logfile
-      param_estimates
-      residual4d
-      results_dir
-      sigmasquareds
-      thresholdac
+    - [dof_file,logfile,param_estimates,residual4d,results_dir,sigmasquareds,thresholdac]
 
 FLAMEO:
   output_requirements:
