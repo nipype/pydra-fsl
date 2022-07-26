@@ -19,11 +19,11 @@
 #   tests_outputs:
 #     - AttributeError
 
-Complex:
+Complex: # this one needs to rethink, the callable is not shown up
   output_requirements:
 
   output_callables:
-    complex_out_file: complex_output
+    complex_out_file: Complex_output
   output_templates:
     imaginary_out_file: "{in_file}_imag"
     magnitude_out_file: "{in_file}_mag"
@@ -35,7 +35,8 @@ Complex:
   tests_outputs:
     - AttributeError
 
-ConvertWarp:
+
+ConvertWarp: # needs more test data
   output_requirements:
     out_file: [reference]
   output_templates:
@@ -47,15 +48,17 @@ ConvertWarp:
     out_file: test_concatwarp.nii.gz
     cmdline: convertwarp --ref=test.nii.gz --warp1=warpfield.nii --rel --out=test_concatwarp.nii.gz
   tests_inputs:
-    -
+    - 
   tests_outputs:
     - AttributeError
 
 ConvertXFM:
   output_requirements:
     out_file: [in_file]
+    
   output_templates:
-    out_file: ConvertXFM_output
+    out_file: [ConvertXFM_output]
+    
   doctest:
     in_file: flirt.mat
     invert_xfm: True
@@ -85,7 +88,7 @@ CopyGeom:
 
 ExtractROI:
   output_requirements:
-    roi_file: in_file
+    roi_file: [in_file]
   output_templates:
     roi_file: "{in_file}_trim"
   inputs_drop:
@@ -97,7 +100,7 @@ ExtractROI:
     roi_file: test_trim.nii.gz
     cmdline: fslroi test.nii.gz test_trim.nii.gz 0 3
   tests_inputs:
-    -
+    - in_file: test.nii.gz
       t_min: 0
       t_size: 1
   tests_outputs:
@@ -122,13 +125,10 @@ FilterRegressor:
     - AttributeError
 
 ImageMaths:
-
   output_requirements:
     out_file: [in_file]
-
   output_templates:
     out_file: "{in_file}_maths"
-
   inputs_drop:  # input from nipype interface that's not required by fsl
     - suffix
 
@@ -139,7 +139,6 @@ ImageMaths:
     cmdline: fslmaths test.nii.gz -add 5 test_maths.nii.gz
   tests_inputs:
     -
-
   tests_outputs:
     - out_file
 
@@ -186,14 +185,22 @@ InvWarp:
   tests_outputs:
     - AttributeError
 
-# Merge:
+# Merge: #need to fix
 #   output_requirements:
+#     merged_file: [in_files]
 #   output_templates:
+#     merged_file: "{in_files[0]}_merged"
 #   doctest:
+#     in_files: [test.nii, test2.nii]
+#     dimension: t
+#     tr: 2.25
+#     cmdline: fslmerge -tr test_merged.nii.gz test.nii test2.nii 2.25
 #   tests_inputs:
-#     -
+#     - in_files: [test.nii, test2.nii]
+#       dimension: t
+#       tr: 2.25
 #   tests_outputs:
-#     - AttributeError
+#     - merged_file
 
 # MotionOutliers:
 #   output_requirements:
@@ -276,18 +283,20 @@ InvWarp:
 #   tests_outputs:
 #     - AttributeError
 
-Slice:
-  output_requirements:
-    out_file: [in_file]
-  output_templates:
-  doctest:
-    in_file: test.nii.gz
-    out_base_name: sl
-    cmdline: fslslice test.nii.gz sl
-  tests_inputs:
-    -
-  tests_outputs:
-    -
+# Slice: #needs to fix
+#   output_requirements:
+#     out_files: [in_file]
+#   output_templates:
+#     out_files: [SLICE_output]
+#   doctest:
+#     in_file: test.nii.gz
+#     out_base_name: sl
+#     cmdline: fslslice test.nii.gz sl
+#   tests_inputs:
+#     - in_file: test.nii.gz
+#       out_base_name: sl
+#   tests_outputs:
+#     - out_files
 
 # Slicer:
 #   output_requirements:
@@ -316,7 +325,7 @@ Smooth:
     cmdline: fslmaths test.nii.gz -kernel gauss 3.397 -fmean test_smooth.nii.gz
 
   tests_inputs:
-    -
+    - in_file: test.nii.gz
       sigma: 3.397
   tests_outputs:
     - smoothed_file
