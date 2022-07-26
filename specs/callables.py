@@ -1,17 +1,16 @@
 def Cluster_output(inputs):
     import attr
-    from pydra.engine.helpers_file import split_filename 
-    
+    from pydra.engine.helpers_file import split_filename
+
     in_file = inputs.in_file
-    _, fname, ext = split_filename(in_file)
     
-    if inputs.out_localmax_txt_file:
+    if in_file not in [None, attr.NOTHING]:
+        pth, fname, ext = split_filename(in_file)
         return f"{fname}_localmax.txt"
     else:
         raise Exception(
-            "localmax_txt_file requires out_localmax_txt_file from input"
+            f"this function should be run only for out_localmax_txt_file not {name}"
         )
-        
 def Complex_output(inputs):
     import attr
 
