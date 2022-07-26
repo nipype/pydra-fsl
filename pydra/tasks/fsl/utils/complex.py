@@ -3,7 +3,7 @@ from pydra import ShellCommandTask
 import typing as ty
 
 
-def complex_output(inputs, in_file):
+def Complex_output(inputs):
     import attr
 
     if inputs.complex_cartesian:
@@ -253,7 +253,9 @@ input_fields = [
         },
     ),
 ]
-Complex_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+Complex_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = []
 Complex_output_spec = specs.SpecInfo(

@@ -2,6 +2,28 @@ from pydra.engine import specs
 from pydra import ShellCommandTask
 import typing as ty
 
+
+def ConvertXFM_output(inputs):
+    import attr
+
+    in_file = inputs.in_file
+    if inputs.invert_xfm:
+        return f"{in_file}_inv"
+    elif inputs.concat_xfm:
+        if inputs.in_file2.exists():
+            in_file2 = inputs.in_file2
+            return f"{in_file}_{in_file2}"
+        else:
+            raise Exception("in_file2 is needed to use concat_xfm")
+
+    elif inputs.fix_scale_skew:
+        return f"{in_file}_fix"
+    else:
+        raise Exception(
+            "this function requires invert_xfm, or concat_xfm," "or fix_scale_skew"
+        )
+
+
 input_fields = [
     (
         "in_file",
@@ -61,7 +83,7 @@ input_fields = [
             "help_string": "final transformation matrix",
             "argstr": "-omat {out_file}",
             "position": 1,
-            "output_file_template": "ConvertXFM_output",
+            "output_file_template": ConvertXFM_output,
         },
     ),
 ]

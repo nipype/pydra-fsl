@@ -35,7 +35,9 @@ input_fields = [
         },
     ),
 ]
-CopyGeom_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+CopyGeom_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = [
     (

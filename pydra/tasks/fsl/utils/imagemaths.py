@@ -50,7 +50,9 @@ input_fields = [
         },
     ),
 ]
-ImageMaths_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+ImageMaths_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = []
 ImageMaths_output_spec = specs.SpecInfo(

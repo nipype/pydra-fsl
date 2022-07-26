@@ -30,7 +30,9 @@ input_fields = [
         },
     ),
 ]
-Smooth_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+Smooth_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
 output_fields = []
 Smooth_output_spec = specs.SpecInfo(
