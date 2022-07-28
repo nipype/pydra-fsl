@@ -294,11 +294,11 @@ class BET(ShellCommandTask):
     Example
     -------
     >>> task = BET()
-    >>> task.inputs.in_file = "test1.nii.gz"
-    >>> task.inputs.out_file = "test1_brain.nii.gz"
+    >>> task.inputs.in_file = "test.nii.gz"
+    >>> task.inputs.out_file = "test_brain.nii.gz"
     >>> task.inputs.frac = 0.7
     >>> task.cmdline
-    'bet test1.nii.gz test1_brain.nii.gz -f 0.70'
+    'bet test.nii.gz test_brain.nii.gz -f 0.70'
     """
 
     input_spec = BET_input_spec
