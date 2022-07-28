@@ -3,12 +3,26 @@ from pathlib import Path
 from ..cluster import Cluster
 
 
-@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
+@pytest.mark.xfail(
+    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
+)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [
         (
-            {"in_file": "zstat1.nii.gz", "threshold": 2.3, "use_mm": True},
+            {
+                "in_file": "zstat1.nii.gz",
+                "threshold": 2.3,
+                "use_mm": True,
+                "out_index_file": "zstat1_index.nii.gz",
+                "out_threshold_file": "zstat1_threshold.nii.gz",
+                "out_localmax_txt_file": "zstat1_localmax.txt",
+                "out_localmax_vol_file": "zstat1_localmax.nii.gz",
+                "out_size_file": "zstat1_size.nii.gz",
+                "out_max_file": "zstat1_max.nii.gz",
+                "out_mean_file": "zstat1_mean.nii.gz",
+                "out_pval_file": "zstat1_pval.nii.gz",
+            },
             [
                 "out_index_file",
                 "out_localmax_txt_file",
@@ -49,7 +63,9 @@ def test_Cluster(test_data, inputs, outputs):
             except:
                 pass
         task = Cluster(**inputs)
-    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
+    assert set(task.generated_output_names) == set(
+        ["return_code", "stdout", "stderr"] + outputs
+    )
     res = task()
     print("RESULT: ", res)
     for out_nm in outputs:

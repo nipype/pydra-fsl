@@ -1,14 +1,30 @@
-def Cluster_output(inputs):
-    import attr
+def Cluster_output(field, inputs):
+    import os, attr
     from pydra.engine.helpers_file import split_filename
 
     in_file = inputs.in_file
+    name = field.name
+    pth, fname, ext = split_filename(in_file)
+    
+    if name == "index_file":
+        return os.path.join(pth, f"{fname}_index{ext}")
+    elif name == "localmax_txt_file":
+        return os.path.join(pth, f"{fname}_localmax.txt")
+    elif name == "localmax_vol_file":
+        return os.path.join(pth, f"{fname}_localmax{ext}")
+    elif name == "max_file":
+        return os.path.join(pth, f"{fname}_max{ext}")
+    elif name == "mean_file":
+        return os.path.join(pth, f"{fname}_mean{ext}")
+    elif name == "pval_file":
+        return os.path.join(pth, f"{fname}_pval{ext}")
+    elif name == "size_file":
+        return os.path.join(pth, f"{fname}_size{ext}")
+    elif name == "threshold_file":
+        return os.path.join(pth, f"{fname}_threshold{ext}")
 
-    if in_file not in [None, attr.NOTHING]:
-        pth, fname, ext = split_filename(in_file)
-        return f"{fname}_localmax.txt"
     else:
-        raise Exception(f"this function should be run only for out_localmax_txt_file not {name}")
+        raise Exception(f"this function should be run only for index_file, localmax_txt_file, localmax_vol_file, max_file, mean_file, pval_file, size_file, or threshold_file not {name}")
 
 
 def Complex_output(inputs):

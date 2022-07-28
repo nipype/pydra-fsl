@@ -3,17 +3,35 @@ from pydra import ShellCommandTask
 import typing as ty
 
 
-def Cluster_output(inputs):
-    import attr
+def Cluster_output(field, inputs):
+    import os, attr
     from pydra.engine.helpers_file import split_filename
 
     in_file = inputs.in_file
+    name = field.name
+    pth, fname, ext = split_filename(in_file)
 
-    if in_file not in [None, attr.NOTHING]:
-        pth, fname, ext = split_filename(in_file)
-        return f"{fname}_localmax.txt"
+    if name == "out_index_file":
+        return os.path.join(pth, f"{fname}_index{ext}")
+    elif name == "out_localmax_txt_file":
+        return os.path.join(pth, f"{fname}_localmax.txt")
+    elif name == "out_localmax_vol_file":
+        return os.path.join(pth, f"{fname}_localmax{ext}")
+    elif name == "out_max_file":
+        return os.path.join(pth, f"{fname}_max{ext}")
+    elif name == "out_mean_file":
+        return os.path.join(pth, f"{fname}_mean{ext}")
+    elif name == "out_pval_file":
+        return os.path.join(pth, f"{fname}_pval{ext}")
+    elif name == "out_size_file":
+        return os.path.join(pth, f"{fname}_size{ext}")
+    elif name == "out_threshold_file":
+        return os.path.join(pth, f"{fname}_threshold{ext}")
+
     else:
-        raise Exception(f"this function should be run only for out_localmax_txt_file not {name}")
+        raise Exception(
+            f"this function should be run only for index_file, localmax_txt_file, localmax_vol_file, max_file, mean_file, pval_file, size_file, or threshold_file not {name}"
+        )
 
 
 input_fields = [
@@ -33,74 +51,66 @@ input_fields = [
     ),
     (
         "out_index_file",
-        str,
+        ty.Any,
         {
             "help_string": "output of cluster index (in size order)",
             "argstr": "--oindex={out_index_file}",
-            "output_file_template": "{in_file}_index",
         },
     ),
     (
         "out_threshold_file",
-        str,
+        ty.Any,
         {
             "help_string": "thresholded image",
             "argstr": "--othresh={out_threshold_file}",
-            "output_file_template": "{in_file}_threshold",
         },
     ),
     (
         "out_localmax_txt_file",
-        str,
+        ty.Any,
         {
             "help_string": "local maxima text file",
             "argstr": "--olmax={out_localmax_txt_file}",
-            "output_file_template": Cluster_output,
         },
     ),
     (
         "out_localmax_vol_file",
-        str,
+        ty.Any,
         {
             "help_string": "output of local maxima volume",
             "argstr": "--olmaxim={out_localmax_vol_file}",
-            "output_file_template": "{in_file}_localmax",
         },
     ),
     (
         "out_size_file",
-        str,
+        ty.Any,
         {
             "help_string": "filename for output of size image",
             "argstr": "--osize={out_size_file}",
-            "output_file_template": "{in_file}_size",
         },
     ),
     (
         "out_max_file",
-        str,
+        ty.Any,
         {
             "help_string": "filename for output of max image",
             "argstr": "--omax={out_max_file}",
-            "output_file_template": "{in_file}_max",
         },
     ),
     (
         "out_mean_file",
-        str,
+        ty.Any,
         {
             "help_string": "filename for output of mean image",
             "argstr": "--omean={out_mean_file}",
-            "output_file_template": "{in_file}_mean",
         },
     ),
     (
         "out_pval_file",
-        str,
+        ty.Any,
         {
             "help_string": "filename for image output of log pvals",
             "argstr": "--opvals={out_pval_file}",
-            "output_file_template": "{in_file}_pval",
         },
     ),
     (
@@ -211,9 +221,84 @@ input_fields = [
         },
     ),
 ]
-Cluster_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
+Cluster_input_spec = specs.SpecInfo(
+    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
+)
 
-output_fields = []
+output_fields = [
+    (
+        "out_index_file",
+        specs.File,
+        {
+            "help_string": "output of cluster index (in size order)",
+            "requires": ["in_file", "out_index_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_threshold_file",
+        specs.File,
+        {
+            "help_string": "thresholded image",
+            "requires": ["in_file", "out_threshold_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_localmax_txt_file",
+        specs.File,
+        {
+            "help_string": "local maxima text file",
+            "requires": ["in_file", "out_localmax_txt_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_localmax_vol_file",
+        specs.File,
+        {
+            "help_string": "output of local maxima volume",
+            "requires": ["in_file", "out_localmax_vol_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_size_file",
+        specs.File,
+        {
+            "help_string": "filename for output of size image",
+            "requires": ["in_file", "out_size_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_max_file",
+        specs.File,
+        {
+            "help_string": "filename for output of max image",
+            "requires": ["in_file", "out_max_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_mean_file",
+        specs.File,
+        {
+            "help_string": "filename for output of mean image",
+            "requires": ["in_file", "out_mean_file"],
+            "callable": Cluster_output,
+        },
+    ),
+    (
+        "out_pval_file",
+        specs.File,
+        {
+            "help_string": "filename for image output of log pvals",
+            "requires": ["in_file", "out_pval_file"],
+            "callable": Cluster_output,
+        },
+    ),
+]
 Cluster_output_spec = specs.SpecInfo(
     name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )
@@ -227,8 +312,16 @@ class Cluster(ShellCommandTask):
     >>> task.inputs.in_file = "zstat1.nii.gz"
     >>> task.inputs.threshold = 2.3
     >>> task.inputs.use_mm = True
-    >>> task.cmdline # doctest: +SKIP
-    'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm'
+    >>> task.inputs.out_index_file = "zstat1_index.nii.gz"
+    >>> task.inputs.out_threshold_file = "zstat1_threshold.nii.gz"
+    >>> task.inputs.out_localmax_txt_file = "zstat1_localmax.txt"
+    >>> task.inputs.out_localmax_vol_file = "zstat1_localmax.nii.gz"
+    >>> task.inputs.out_size_file = "zstat1_size.nii.gz"
+    >>> task.inputs.out_max_file = "zstat1_max.nii.gz"
+    >>> task.inputs.out_mean_file = "zstat1_mean.nii.gz"
+    >>> task.inputs.out_pval_file = "zstat1_pval.nii.gz"
+    >>> task.cmdline
+    'cluster --in=zstat1.nii.gz --thresh=2.3000000000 --oindex=zstat1_index.nii.gz --othresh=zstat1_threshold.nii.gz --olmax=zstat1_localmax.txt --olmaxim=zstat1_localmax.nii.gz --osize=zstat1_size.nii.gz --omax=zstat1_max.nii.gz --omean=zstat1_mean.nii.gz --opvals=zstat1_pval.nii.gz --mm'
     """
 
     input_spec = Cluster_input_spec

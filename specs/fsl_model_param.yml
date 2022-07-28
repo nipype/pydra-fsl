@@ -1,34 +1,50 @@
 Cluster:
   output_requirements:
-    out_index_file: [in_file]
-    out_localmax_txt_file: [in_file]
-    out_localmax_vol_file: [in_file]
-    out_max_file: [in_file]
-    out_mean_file: [in_file]
-    out_pval_file: [in_file]
-    out_size_file: [in_file]
-    out_threshold_file: [in_file]
+    index_file: [in_file, out_index_file]
+    localmax_txt_file: [in_file, out_localmax_txt_file]
+    localmax_vol_file: [in_file, out_localmax_vol_file]
+    max_file: [in_file, out_max_file]
+    mean_file: [in_file, out_mean_file]
+    pval_file: [in_file, out_pval_file]
+    size_file: [in_file, out_size_file]
+    threshold_file: [in_file, out_threshold_file]
   output_callables:
-
+    index_file: Cluster_output
+    localmax_txt_file: Cluster_output
+    localmax_vol_file: Cluster_output
+    max_file: Cluster_output
+    mean_file: Cluster_output
+    pval_file: Cluster_output
+    size_file: Cluster_output
+    threshold_file: Cluster_output
   output_templates:
-    out_index_file: "{in_file}_index"
-    out_localmax_txt_file: [Cluster_output]
-    out_localmax_vol_file: "{in_file}_localmax"
-    out_max_file: "{in_file}_max"
-    out_mean_file: "{in_file}_mean"
-    out_pval_file: "{in_file}_pval"
-    out_size_file: "{in_file}_size"
-    out_threshold_file: "{in_file}_threshold"
+    
   inputs_drop:
   doctest:
     in_file: zstat1.nii.gz
     threshold: 2.3
     use_mm: True
-    cmdline: cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm # doctest: +ELLIPSIS
+    out_index_file: zstat1_index.nii.gz
+    out_threshold_file: zstat1_threshold.nii.gz
+    out_localmax_txt_file: zstat1_localmax.txt
+    out_localmax_vol_file: zstat1_localmax.nii.gz
+    out_size_file: zstat1_size.nii.gz
+    out_max_file: zstat1_max.nii.gz
+    out_mean_file: zstat1_mean.nii.gz
+    out_pval_file: zstat1_pval.nii.gz
+    cmdline: cluster --in=zstat1.nii.gz --thresh=2.3000000000 --mm
   tests_inputs:
     - in_file: zstat1.nii.gz
       threshold: 2.3
       use_mm: True
+      out_index_file: 'zstat1_index.nii.gz'
+      out_threshold_file: 'zstat1_threshold.nii.gz'
+      out_localmax_txt_file: 'zstat1_localmax.txt'
+      out_localmax_vol_file: 'zstat1_localmax.nii.gz'
+      out_size_file: 'zstat1_size.nii.gz'
+      out_max_file: 'zstat1_max.nii.gz'
+      out_mean_file: 'zstat1_mean.nii.gz'
+      out_pval_file: 'zstat1_pval.nii.gz'
   tests_outputs:
     - [out_index_file,out_localmax_txt_file,out_localmax_vol_file,out_threshold_file,out_max_file,out_mean_file,out_pval_file,out_size_file,out_threshold_file]
 
