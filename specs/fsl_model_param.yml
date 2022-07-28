@@ -18,7 +18,7 @@ Cluster:
     size_file: Cluster_output
     threshold_file: Cluster_output
   output_templates:
-    
+
   inputs_drop:
   doctest:
     in_file: zstat1.nii.gz
