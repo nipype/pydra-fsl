@@ -383,12 +383,12 @@ class FILMGLS(ShellCommandTask):
     Example
     -------
     >>> task = FILMGLS()
-    >>> task.inputs.in_file = "test.nii"
-    >>> task.inputs.design_file = "design.mat"
+    >>> task.inputs.in_file = "test_film_gls.nii.gz"
+    >>> task.inputs.design_file = "design_film_gls.mat"
     >>> task.inputs.threshold = 10
     >>> task.inputs.results_dir = "stats"
     >>> task.cmdline
-    'film_gls --rn=stats --in=test.nii --pd=design.mat --thr=10'
+    'film_gls --rn=stats --in=test_film_gls.nii.gz --pd=design_film_gls.mat --thr=10'
     """
 
     input_spec = FILMGLS_input_spec

@@ -157,11 +157,11 @@ FILMGLS:
   output_templates:
   inputs_drop:
   doctest:
-    in_file: test.nii
-    design_file: design.mat
+    in_file: test_film_gls.nii.gz
+    design_file: design_film_gls.mat
     threshold: 10
     results_dir: stats
-    cmdline: film_gls --rn=stats --in=test.nii --pd=design.mat --thr=10
+    cmdline: film_gls --rn=stats --in=test_film_gls.nii.gz --pd=design_film_gls.mat --thr=10
   tests_inputs:
     - in_file: test_film_gls.nii.gz
       design_file: design_film_gls.mat
@@ -276,7 +276,7 @@ MELODIC:
   inputs_drop:
   doctest:
     approach: tica
-    in_files: [test.nii,test2.nii,test3.nii]
+    in_files: [test2.nii,test3.nii]
     no_bet: True
     bg_threshold: 10
     tr_sec: 1.5
@@ -286,7 +286,7 @@ MELODIC:
     s_des: subjectDesign.mat
     s_con: subjectDesign.con
     out_dir: groupICA.out
-    cmdline: melodic -i test.nii,test2.nii,test3.nii -o groupICA.out --nobet --bgthreshold=10 -a tica --tr=1.5 --Tdes=timeDesign.mat --Tcon=timeDesign.con --Sdes=subjectDesign.mat --Scon=subjectDesign.con --Ostats
+    cmdline: melodic -i test2.nii,test3.nii -o groupICA.out --nobet --bgthreshold=10 -a tica --tr=1.5 --Tdes=timeDesign.mat --Tcon=timeDesign.con --Sdes=subjectDesign.mat --Scon=subjectDesign.con --Ostats
   tests_inputs:
     -
   tests_outputs:
