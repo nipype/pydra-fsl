@@ -5,7 +5,7 @@ def Cluster_output(field, inputs):
     in_file = inputs.in_file
     name = field.name
     pth, fname, ext = split_filename(in_file)
-    
+
     if name == "index_file":
         return os.path.join(pth, f"{fname}_index{ext}")
     elif name == "localmax_txt_file":
@@ -24,7 +24,9 @@ def Cluster_output(field, inputs):
         return os.path.join(pth, f"{fname}_threshold{ext}")
 
     else:
-        raise Exception(f"this function should be run only for index_file, localmax_txt_file, localmax_vol_file, max_file, mean_file, pval_file, size_file, or threshold_file not {name}")
+        raise Exception(
+            f"this function should be run only for index_file, localmax_txt_file, localmax_vol_file, max_file, mean_file, pval_file, size_file, or threshold_file not {name}"
+        )
 
 
 def Complex_output(inputs):
