@@ -65,8 +65,7 @@ input_fields = [
         {
             "help_string": "output of local maxima volume",
             "argstr": "--olmaxim={out_localmax_vol_file}",
-            "output_file_template":  "{in_file}_localmax",
-
+            "output_file_template": "{in_file}_localmax",
         },
     ),
     (
@@ -76,7 +75,7 @@ input_fields = [
         {
             "help_string": "filename for output of size image",
             "argstr": "--osize={out_size_file}",
-            "output_file_template":  "{in_file}_size"
+            "output_file_template": "{in_file}_size",
         },
     ),
     (
@@ -86,7 +85,7 @@ input_fields = [
         {
             "help_string": "filename for output of max image",
             "argstr": "--omax={out_max_file}",
-            "output_file_template":  "{in_file}_max"
+            "output_file_template": "{in_file}_max",
         },
     ),
     (
@@ -96,7 +95,7 @@ input_fields = [
         {
             "help_string": "filename for output of mean image",
             "argstr": "--omean={out_mean_file}",
-            "output_file_template":  "{in_file}_mean"
+            "output_file_template": "{in_file}_mean",
         },
     ),
     (
@@ -106,7 +105,7 @@ input_fields = [
         {
             "help_string": "filename for image output of log pvals",
             "argstr": "--opvals={out_pval_file}",
-            "output_file_template":  "{in_file}_pval"
+            "output_file_template": "{in_file}_pval",
         },
     ),
     (
@@ -217,13 +216,9 @@ input_fields = [
         },
     ),
 ]
-Cluster_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+Cluster_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
-output_fields = [
-    
-]
+output_fields = []
 Cluster_output_spec = specs.SpecInfo(
     name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
 )

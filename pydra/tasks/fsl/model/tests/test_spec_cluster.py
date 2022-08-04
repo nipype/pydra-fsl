@@ -7,12 +7,7 @@ from ..cluster import Cluster
     "inputs, outputs",
     [
         (
-            {
-                "in_file": "zstat1.nii.gz",
-                "threshold": 2.3,
-                "use_mm": True,
-                "out_index_file": True
-            },
+            {"in_file": "zstat1.nii.gz", "threshold": 2.3, "use_mm": True, "out_index_file": True},
             [
                 "out_index_file",
                 "out_localmax_txt_file",
