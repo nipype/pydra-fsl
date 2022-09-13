@@ -9,9 +9,7 @@ jobs:
       DOCKER_IMAGE: djarecka/fsl_py:6.0.4
 
     steps:
-    - ≈uses: actions/checkout@v2
-      with:
-        lfs: true
+    - uses: actions/checkout@v2
     - name: Pull docker image
       run: |
         docker pull $DOCKER_IMAGE
