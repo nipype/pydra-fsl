@@ -2,6 +2,31 @@ from pydra.engine import specs
 from pydra import ShellCommandTask
 import typing as ty
 
+
+def format_usans(field: ty.Sequence[ty.Tuple[str, float]] = None) -> str:
+    """Format usans argument to its appropriate argstr.
+
+    Examples
+    --------
+    >>> format_usans([])
+    '0'
+    >>> format_usans([('/path/to/file', 2.5)])
+    '1 /path/to/file 2.5'
+    >>> format_usans([('/path/to/file1', 10.5), ('/path/to/file2', 22.1)])
+    '2 /path/to/file1 10.5 /path/to/file2 22.1'
+    """
+    try:
+        n_usans = len(field)
+    except TypeError:
+        n_usans = 0
+
+    if n_usans > 0:
+        usan_bt = " ".join([f"{usan} {bt}" for usan, bt in field])
+        return f"{n_usans} {usan_bt}"
+    else:
+        return f"{n_usans}"
+
+
 input_fields = [
     (
         "in_file",
@@ -54,12 +79,12 @@ input_fields = [
         },
     ),
     (
-        "n_usans",
-        int,
-        0,
+        "usans",
+        ty.Sequence[ty.Tuple[str, float]],
+        [],
         {
             "help_string": "determines whether the smoothing area (USAN) is to be found from secondary images (0, 1 or 2). A negative value for any brightness threshold will auto-set the threshold at 10% of the robust range",
-            "argstr": "{n_usans}",
+            "formatter": format_usans,
             "position": 6,
         },
     ),
