@@ -30,7 +30,7 @@ all = [
     "pydra-fsl[doc]",
 ]
 dev = [
-    "pydra-fsl[dev]",
+    "pydra-fsl[test]",
     "nipype",
     "pyyaml",
     "black",
