@@ -54,12 +54,12 @@ input_fields = [
         },
     ),
     (
-        "usans",
-        list,
-        [],
+        "n_usans",
+        int,
+        0,
         {
             "help_string": "determines whether the smoothing area (USAN) is to be found from secondary images (0, 1 or 2). A negative value for any brightness threshold will auto-set the threshold at 10% of the robust range",
-            "argstr": "",
+            "argstr": "{n_usans}",
             "position": 6,
         },
     ),
