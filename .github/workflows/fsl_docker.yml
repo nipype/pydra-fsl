@@ -10,6 +10,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        lfs: true
     - name: Pull docker image
       run: |
         docker pull $DOCKER_IMAGE
