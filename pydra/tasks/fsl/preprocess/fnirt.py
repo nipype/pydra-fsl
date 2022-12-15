@@ -357,13 +357,7 @@ input_fields = [
 ]
 FNIRT_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
-output_fields = []
-FNIRT_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
-
 
 class FNIRT(ShellCommandTask):
     input_spec = FNIRT_input_spec
-    output_spec = FNIRT_output_spec
     executable = "fnirt"
