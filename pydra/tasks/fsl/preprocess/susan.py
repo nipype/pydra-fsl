@@ -15,16 +15,7 @@ def format_usans(field: ty.Sequence[ty.Tuple[str, float]]) -> str:
     >>> format_usans([('/path/to/file1', 10.5), ('/path/to/file2', 22.1)])
     '2 /path/to/file1 10.5 /path/to/file2 22.1'
     """
-    try:
-        n_usans = len(field)
-    except TypeError:
-        n_usans = 0
-
-    if n_usans > 0:
-        usan_bt = " ".join([f"{usan} {bt}" for usan, bt in field])
-        return f"{n_usans} {usan_bt}"
-    else:
-        return f"{n_usans}"
+    return " ".join([f"{len(field)}"] + [f"{usan} {bt}" for usan, bt in field])
 
 
 input_fields = [
