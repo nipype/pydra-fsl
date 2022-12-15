@@ -3,7 +3,7 @@ from pydra import ShellCommandTask
 import typing as ty
 
 
-def format_usans(field: ty.Sequence[ty.Tuple[str, float]] = None) -> str:
+def format_usans(field: ty.Sequence[ty.Tuple[str, float]]) -> str:
     """Format usans argument to its appropriate argstr.
 
     Examples
