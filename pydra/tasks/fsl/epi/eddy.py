@@ -193,9 +193,7 @@ input_fields = [
         {
             "help_string": "Name of .json text file with information about slice timing.",
             "argstr": "--json={json}",
-            "xor": (
-                "slice_order",
-            ),
+            "xor": ("slice_order",),
             "requires": [
                 "mporder",
             ],
@@ -428,9 +426,7 @@ input_fields = [
         {
             "help_string": "Name of text file completely specifying slice/group acquisition.",
             "argstr": "--slspec={slice_order}",
-            "xor": (
-                "json",
-            ),
+            "xor": ("json",),
             "requires": [
                 "mporder",
             ],
@@ -457,25 +453,24 @@ eddy_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs
 
 output_fields = []
 
-eddy_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
+eddy_output_spec = specs.SpecInfo(name="Output", fields=output_fields, bases=(specs.ShellOutSpec,))
 
 
 class Eddy(ShellCommandTask):
     """
-    Example
-    -------
->>> eddy = Eddy()
->>> eddy.inputs.in_file = "epi.nii"
->>> eddy.inputs.in_mask = "epi_mask.nii"
->>> eddy.inputs.in_index = "epi_index.txt"
->>> eddy.inputs.in_acqp = "epi_acqp.txt"
->>> eddy.inputs.in_bvec = "bvecs.scheme"
->>> eddy.inputs.in_bval = "bvals.scheme"
->>> eddy.cmdline
-    ‘eddy_openmp –flm=quadratic –ff=10.0 –acqp=epi_acqp.txt –bvals=bvals.scheme –bvecs=bvecs.scheme –imain=epi.nii –index=epi_index.txt –mask=epi_mask.nii –interp=spline –resamp=jac –niter=5 –nvoxhp=1000 –out=…/eddy_corrected –slm=none’
+        Example
+        -------
+    >>> eddy = Eddy()
+    >>> eddy.inputs.in_file = "epi.nii"
+    >>> eddy.inputs.in_mask = "epi_mask.nii"
+    >>> eddy.inputs.in_index = "epi_index.txt"
+    >>> eddy.inputs.in_acqp = "epi_acqp.txt"
+    >>> eddy.inputs.in_bvec = "bvecs.scheme"
+    >>> eddy.inputs.in_bval = "bvals.scheme"
+    >>> eddy.cmdline
+        ‘eddy_openmp –flm=quadratic –ff=10.0 –acqp=epi_acqp.txt –bvals=bvals.scheme –bvecs=bvecs.scheme –imain=epi.nii –index=epi_index.txt –mask=epi_mask.nii –interp=spline –resamp=jac –niter=5 –nvoxhp=1000 –out=…/eddy_corrected –slm=none’
     """
+
     input_spec = eddy_input_spec
     output_spec = eddy_output_spec
     executable = "eddy_openmp"
