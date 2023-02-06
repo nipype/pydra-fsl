@@ -19,7 +19,6 @@ import callables
 
 
 class FSLConverter:
-
     INPUT_KEYS = [
         "allowed_values",
         "argstr",
@@ -138,7 +137,7 @@ class FSLConverter:
                 el = list(el)
                 try:
                     el[1] = el[1].__name__
-                except (AttributeError):
+                except AttributeError:
                     el[1] = el[1]._name
                 spec_fields_str.append(tuple(el))
             return spec_fields_str
