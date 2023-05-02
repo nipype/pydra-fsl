@@ -48,10 +48,11 @@ input_fields = [
     ),
     (
         "fieldcoeff_file",
-        ty.Any,
+        str,
         {
             "help_string": "name of output file with field coefficients or true",
             "argstr": "--cout={fieldcoeff_file}",
+            "output_file_template": "{in_file}_fieldwarp",
         },
     ),
     (
@@ -65,31 +66,34 @@ input_fields = [
     ),
     (
         "field_file",
-        ty.Any,
+        str,
         {
             "help_string": "name of output file with field or true",
             "argstr": "--fout={field_file}",
+            "output_file_template": "{in_file}_field",
         },
     ),
     (
         "jacobian_file",
-        ty.Any,
+        str,
         {
             "help_string": "name of file for writing out the Jacobian of the field (for diagnostic or VBM purposes)",
             "argstr": "--jout={jacobian_file}",
+            "output_file_template": "{in_file}_field_jacobian",
         },
     ),
     (
         "modulatedref_file",
-        ty.Any,
+        str,
         {
             "help_string": "name of file for writing out intensity modulated --ref (for diagnostic purposes)",
             "argstr": "--refout={modulatedref_file}",
+            "output_file_template": "{in_file}_modulated",
         },
     ),
     (
         "out_intensitymap_file",
-        ty.Any,
+        str,
         {
             "help_string": "name of files for writing information pertaining to intensity mapping",
             "argstr": "--intout={out_intensitymap_file}",
@@ -353,50 +357,7 @@ input_fields = [
 ]
 FNIRT_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
-output_fields = [
-    (
-        "fieldcoeff_file",
-        specs.File,
-        {
-            "help_string": "file with field coefficients",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_fieldwarp",
-        },
-    ),
-    (
-        "field_file",
-        specs.File,
-        {
-            "help_string": "file with warp field",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_field",
-        },
-    ),
-    (
-        "jacobian_file",
-        specs.File,
-        {
-            "help_string": "file containing Jacobian of the field",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_field_jacobian",
-        },
-    ),
-    (
-        "modulatedref_file",
-        specs.File,
-        {
-            "help_string": "file containing intensity modulated --ref",
-            "requires": ["in_file"],
-            "output_file_template": "{in_file}_modulated",
-        },
-    ),
-]
-FNIRT_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
-
 
 class FNIRT(ShellCommandTask):
     input_spec = FNIRT_input_spec
-    output_spec = FNIRT_output_spec
     executable = "fnirt"

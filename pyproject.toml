@@ -1,3 +1,73 @@
+[build-system]
+requires = ["flit_scm"]
+build-backend = "flit_scm:buildapi"
+
+[project]
+name = "pydra-fsl"
+description = "FSL tasks for the Pydra dataflow engine"
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["pydra >=0.14.1"]
+license = {file = "LICENSE"}
+authors = [{name = "Nipype developers", email = "neuroimaging@python.org"}]
+keywords = ["pydra", "fsl"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Topic :: Scientific/Engineering",
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+all = [
+    "pydra-fsl[dev]",
+    "pydra-fsl[doc]",
+]
+dev = [
+    "pydra-fsl[test]",
+    "nipype",
+    "pyyaml",
+    "black",
+    "pre-commit",
+]
+doc = [
+    "packaging",
+    "sphinx >=2.1.2",
+    "sphinx_rtd_theme",
+    "sphinxcontrib-apidoc ~=0.3.0",
+    "sphinxcontrib-napoleon",
+    "sphinxcontrib-versioning",
+]
+docs = [
+    "pydra-fsl[doc]",
+]
+test = [
+    "pytest >=4.4.0",
+    "pytest-cov",
+    "pytest-env",
+    "pytest-xdist",
+    "pytest-rerunfailures",
+    "codecov",
+]
+tests = [
+    "pydra-fsl[test]",
+]
+
+[project.urls]
+repository = "https://github.com/nipype/pydra-fsl"
+
+[tool.flit.module]
+name = "pydra.tasks.fsl"
+
+[tool.setuptools_scm]
+write_to = "pydra/tasks/fsl/_version.py"
+
 [tool.black]
 line-length = 99
 target-version = ['py37']

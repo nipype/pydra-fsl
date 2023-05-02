@@ -1,4 +1,5 @@
 from attr import has
+from ast import literal_eval
 from nipype.interfaces import fsl
 from nipype.interfaces.base import traits_extension
 from pydra.engine import specs
@@ -18,7 +19,6 @@ import callables
 
 
 class FSLConverter:
-
     INPUT_KEYS = [
         "allowed_values",
         "argstr",
@@ -137,7 +137,7 @@ class FSLConverter:
                 el = list(el)
                 try:
                     el[1] = el[1].__name__
-                except (AttributeError):
+                except AttributeError:
                     el[1] = el[1]._name
                 spec_fields_str.append(tuple(el))
             return spec_fields_str
@@ -191,7 +191,7 @@ class FSLConverter:
             else:
                 tests_inp_error.append((tests_inputs[i], out))
 
-        spec_str = f"import os, pytest \nfrom pathlib import Path\n"
+        spec_str = f"import re, os, shutil, pytest \nfrom pathlib import Path\n"
         spec_str += f"from ..{self.interface_name.lower()} import {self.interface_name} \n\n"
         if run:
             spec_str += (
@@ -200,12 +200,28 @@ class FSLConverter:
             )
         spec_str += f"@pytest.mark.parametrize('inputs, outputs', {tests_inp_outp})\n"
         spec_str += f"def test_{self.interface_name}(test_data, inputs, outputs):\n"
-        spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"
-        spec_str += f"    if inputs is None: inputs = {{}}\n"
-        spec_str += f"    for key, val in inputs.items():\n"
-        spec_str += f"        try: inputs[key] = eval(val)\n"
-        spec_str += f"        except: pass\n"
-        spec_str += f"    task = {self.interface_name}(in_file=in_file, **inputs)\n"
+        spec_str += f"    if inputs is None:\n"
+        spec_str += f"        in_file = Path(test_data) / 'test.nii.gz'\n"
+        spec_str += f"        task = {self.interface_name}(in_file=in_file)\n"
+        spec_str += f"    else:\n"
+        spec_str += f"        for key, val in inputs.items():\n"
+        spec_str += f"            try:  \n"
+        spec_str += f"                pattern = r'\.[a-zA-Z]*'\n"
+        spec_str += f"                if isinstance(val, str):\n"
+        spec_str += f"                    if re.findall(pattern, val) != []:\n"
+        spec_str += f"                        inputs[key] = Path(test_data) / val\n"
+        spec_str += f"                    elif '_dir' in key:\n"
+        spec_str += f"                        dirpath = Path(test_data) / val\n"
+        spec_str += f"                        if dirpath.exists() and dirpath.is_dir():\n"
+        spec_str += f"                            shutil.rmtree(dirpath)\n"
+        spec_str += f"                        inputs[key] = Path(test_data) / val\n"
+        spec_str += f"                    else: inputs[key] = eval(val)\n"
+        spec_str += f"                elif isinstance(val, list):\n"
+        spec_str += f"                    if all (re.findall(pattern, _) != [] for _ in val):\n"
+        spec_str += f"                        inputs[key] = [Path(test_data)/_ for _ in val] \n"
+        spec_str += f"                else: inputs[key] = eval(val)\n"
+        spec_str += f"            except: pass\n"
+        spec_str += f"        task = {self.interface_name}(**inputs)\n"
         spec_str += (
             f"    assert set(task.generated_output_names) == "
             f"set(['return_code', 'stdout', 'stderr'] + outputs)\n"
@@ -214,7 +230,9 @@ class FSLConverter:
         if run:
             spec_str += f"    res = task()\n"
             spec_str += f"    print('RESULT: ', res)\n"
-            spec_str += f"    for out_nm in outputs: assert getattr(res.output, out_nm).exists()\n"
+            spec_str += f"    for out_nm in outputs:\n"
+            spec_str += f"        if isinstance(getattr(res.output, out_nm), list): assert [os.path.exists(x) for x in getattr(res.output, out_nm)]\n"
+            spec_str += f"        else: assert os.path.exists(getattr(res.output, out_nm))\n"
 
         # if test_inp_error is not empty, than additional test function will be created
         if tests_inp_error:
@@ -232,12 +250,28 @@ class FSLConverter:
         spec_str = "\n\n"
         spec_str += f"@pytest.mark.parametrize('inputs, error', {input_error})\n"
         spec_str += f"def test_{self.interface_name}_exception(test_data, inputs, error):\n"
-        spec_str += f"    in_file = Path(test_data) / 'test.nii.gz'\n"
-        spec_str += f"    if inputs is None: inputs = {{}}\n"
-        spec_str += f"    for key, val in inputs.items():\n"
-        spec_str += f"        try: inputs[key] = eval(val)\n"
-        spec_str += f"        except: pass\n"
-        spec_str += f"    task = {self.interface_name}(in_file=in_file, **inputs)\n"
+        spec_str += f"    if inputs is None:\n"
+        spec_str += f"        in_file = Path(test_data) / 'test.nii.gz'\n"
+        spec_str += f"        task = {self.interface_name}(in_file=in_file)\n"
+        spec_str += f"    else:\n"
+        spec_str += f"        for key, val in inputs.items():\n"
+        spec_str += f"            try:  \n"
+        spec_str += f"                pattern = r'\.[a-zA-Z]*'\n"
+        spec_str += f"                if isinstance(val, str):\n"
+        spec_str += f"                    if re.findall(pattern, val) != []:\n"
+        spec_str += f"                        inputs[key] = Path(test_data) / val\n"
+        spec_str += f"                    elif '_dir' in key:\n"
+        spec_str += f"                        dirpath = Path(test_data) / val\n"
+        spec_str += f"                        if dirpath.exists() and dirpath.is_dir():\n"
+        spec_str += f"                            shutil.rmtree(dirpath)\n"
+        spec_str += f"                        inputs[key] = Path(test_data) / val\n"
+        spec_str += f"                    else: inputs[key] = eval(val)\n"
+        spec_str += f"                elif isinstance(val, list):\n"
+        spec_str += f"                    if all (re.findall(pattern, _) != [] for _ in val):\n"
+        spec_str += f"                        inputs[key] = [Path(test_data)/_ for _ in val] \n"
+        spec_str += f"                else: inputs[key] = eval(val)\n"
+        spec_str += f"            except: pass\n"
+        spec_str += f"        task = {self.interface_name}(**inputs)\n"
         spec_str += f"    with pytest.raises(eval(error)):\n"
         spec_str += f"        task.generated_output_names\n"
 
@@ -314,7 +348,14 @@ class FSLConverter:
                 tp_pdr = str
         elif getattr(field, "genfile"):
             if nm in self.interface_spec["output_templates"]:
-                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
+                if isinstance(self.interface_spec["output_templates"][nm], list):
+                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][
+                        nm
+                    ][0]
+                else:
+                    metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][
+                        nm
+                    ]
                 if tp_pdr in [
                     specs.File,
                     specs.Directory,
@@ -335,7 +376,7 @@ class FSLConverter:
             return (tp_pdr, metadata_pdr), pos
 
     def convert_output_spec(self, fields_from_template):
-        """creating fields list for pydra input spec"""
+        """creating fields list for pydra output spec"""
         fields_pdr_l = []
         for name, fld in self.nipype_output_spec.traits().items():
             if (
@@ -346,9 +387,9 @@ class FSLConverter:
                 fields_pdr_l.append((name,) + fld_pdr)
         return fields_pdr_l
 
-    def pydra_fld_output(self, field, name):
+    def pydra_fld_output(self, field, nm):
         """converting a single nipype field to one element of fields for pydra output_spec"""
-        tp_pdr = self.pydra_type_converter(field, spec_type="output", name=name)
+        tp_pdr = self.pydra_type_converter(field, spec_type="output", name=nm)
 
         metadata_pdr = {}
         for key in self.OUTPUT_KEYS:
@@ -357,19 +398,19 @@ class FSLConverter:
             if val:
                 metadata_pdr[key_nm_pdr] = val
 
-        if self.interface_spec["output_requirements"][name]:
+        if self.interface_spec["output_requirements"][nm]:
             if all(
-                [isinstance(el, list) for el in self.interface_spec["output_requirements"][name]]
+                [isinstance(el, list) for el in self.interface_spec["output_requirements"][nm]]
             ):
-                requires_l = self.interface_spec["output_requirements"][name]
+                requires_l = self.interface_spec["output_requirements"][nm]
                 nested_flag = True
             elif all(
                 [
                     isinstance(el, (str, dict))
-                    for el in self.interface_spec["output_requirements"][name]
+                    for el in self.interface_spec["output_requirements"][nm]
                 ]
             ):
-                requires_l = [self.interface_spec["output_requirements"][name]]
+                requires_l = [self.interface_spec["output_requirements"][nm]]
                 nested_flag = False
             else:
                 Exception("has to be either list of list or list of str/dict")
@@ -386,23 +427,36 @@ class FSLConverter:
             if nested_flag is False:
                 metadata_pdr["requires"] = metadata_pdr["requires"][0]
 
-        if name in self.interface_spec["output_templates"]:
-            metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][name]
-        elif name in self.interface_spec["output_callables"]:
-            metadata_pdr["callable"] = self.interface_spec["output_callables"][name]
+        if nm in self.interface_spec["output_templates"]:
+            if isinstance(self.interface_spec["output_templates"][nm], list):
+                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm][
+                    0
+                ]
+            else:
+                metadata_pdr["output_file_template"] = self.interface_spec["output_templates"][nm]
+        elif nm in self.interface_spec["output_callables"]:
+            metadata_pdr["callable"] = self.interface_spec["output_callables"][nm]
         return (tp_pdr, metadata_pdr)
 
     def function_callables(self):
+        fun_names = []
         if not self.interface_spec["output_callables"]:
-            return ""
+            if self.interface_spec["output_templates"]:
+                tmpls = list(self.interface_spec["output_templates"].values())
+                for tmpl in tmpls:
+                    if isinstance(tmpl, list):
+                        fun_names.append(tmpl[0])
+                if len(fun_names) < 1:
+                    pass
         python_functions_spec = Path(os.path.dirname(__file__)) / "../specs/callables.py"
         if not python_functions_spec.exists():
             raise Exception(
-                "specs/callables.py file is needed if output_callables in the spec files"
+                "specs/callables.py file is needed if functions are used in the spec files"
             )
-        fun_str = ""
-        fun_names = list(set(self.interface_spec["output_callables"].values()))
+
+        fun_names.extend(list(set(self.interface_spec["output_callables"].values())))
         fun_names.sort()
+        fun_str = ""
         for fun_nm in fun_names:
             fun = getattr(callables, fun_nm)
             fun_str += inspect.getsource(fun) + "\n"
@@ -429,6 +483,16 @@ class FSLConverter:
             else:
                 tp_pdr = specs.MultiInputObj
         elif isinstance(tp, traits_extension.OutputMultiObject):
+            if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
+                tp_pdr = specs.MultiOutputFile
+            else:
+                tp_pdr = specs.MultiOutputObj
+        elif isinstance(tp, traits_extension.InputMultiPath):
+            if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
+                tp_pdr = specs.MultiInputFile
+            else:
+                tp_pdr = specs.MultiInputObj
+        elif isinstance(tp, traits_extension.OutputMultiPath):
             if isinstance(field.inner_traits[0].trait_type, traits_extension.File):
                 tp_pdr = specs.MultiOutputFile
             else:
