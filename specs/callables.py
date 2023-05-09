@@ -403,6 +403,7 @@ def MELODIC_output(field, inputs):
 
 #     return sorted(glob(fname_template))
 
+
 def Split_output(inputs):
     import os, glob
 

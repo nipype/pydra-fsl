@@ -42,6 +42,4 @@ def test_Split(test_data, inputs, outputs):
             except:
                 pass
         task = Split(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
