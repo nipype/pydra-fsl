@@ -20,7 +20,7 @@ input_fields = [
             "help_string": "output file",
             "argstr": "{roi_file}",
             "position": 1,
-            "output_file_template": "{in_file}_trim",
+            "output_file_template": "{in_file}_roi",
         },
     ),
     ("x_min", int, {"help_string": "", "argstr": "{x_min}", "position": 2}),
@@ -48,9 +48,9 @@ class ExtractROI(ShellCommandTask):
     >>> task.inputs.in_file = "test.nii.gz"
     >>> task.inputs.t_min = 0
     >>> task.inputs.t_size = 3
-    >>> task.inputs.roi_file = "test_trim.nii.gz"
+    >>> task.inputs.roi_file = "test_roi.nii.gz"
     >>> task.cmdline
-    'fslroi test.nii.gz test_trim.nii.gz 0 3'
+    'fslroi test.nii.gz test_roi.nii.gz 0 3'
     """
 
     input_spec = ExtractROI_input_spec

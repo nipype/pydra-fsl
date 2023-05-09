@@ -6,7 +6,21 @@ from ..extractroi import ExtractROI
 @pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize(
     "inputs, outputs",
-    [({"in_file": "test.nii.gz", "t_min": 0, "t_size": 1}, ["roi_file"])],
+    [
+        ({"in_file": "test.nii.gz", "t_min": 0, "t_size": 1}, ["roi_file"]),
+        (
+            {
+                "in_file": "test.nii.gz",
+                "x_min": 0,
+                "x_size": 1,
+                "y_min": 20,
+                "y_size": 1,
+                "z_min": 10,
+                "z_size": 1,
+            },
+            ["roi_file"],
+        ),
+    ],
 )
 def test_ExtractROI(test_data, inputs, outputs):
     if inputs is None:
