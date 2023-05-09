@@ -407,4 +407,4 @@ def Split_output(inputs):
     import os, glob
 
     output_dir = os.getcwd()
-    return sorted(glob.glob(output_dir, f"{inputs.output_basename}*.*"))
+    return sorted(glob.glob(os.path.join(output_dir, f"{inputs.output_basename}*.*")))
