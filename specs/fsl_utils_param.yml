@@ -90,20 +90,28 @@ ExtractROI:
   output_requirements:
     roi_file: [in_file]
   output_templates:
-    roi_file: "{in_file}_trim"
+    roi_file: "{in_file}_roi"
   inputs_drop:
     - crop_list
   doctest:
     in_file: test.nii.gz
     t_min: 0
     t_size: 3
-    roi_file: test_trim.nii.gz
-    cmdline: fslroi test.nii.gz test_trim.nii.gz 0 3
+    roi_file: test_roi.nii.gz
+    cmdline: fslroi test.nii.gz test_roi.nii.gz 0 3
   tests_inputs:
     - in_file: test.nii.gz
       t_min: 0
       t_size: 1
+    - in_file: test.nii.gz
+      x_min: 0
+      x_size: 1
+      y_min: 20
+      y_size: 1
+      z_min: 10
+      z_size: 1
   tests_outputs:
+    - roi_file
     - roi_file
 
 FilterRegressor:
