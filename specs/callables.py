@@ -392,13 +392,20 @@ def MELODIC_output(field, inputs):
     return outputs
 
 
-def SLICE_output(inputs):
-    import glob
+# def SLICE_output(inputs):
+#     import glob
 
-    suffix = "slice_*"
-    if inputs.out_base_name:
-        fname_template = f"{inputs.out_base_name}_{suffix}"
-    else:
-        fname_template = f"{inputs.in_file}_{suffix}"
+#     suffix = "slice_*"
+#     if inputs.out_base_name:
+#         fname_template = f"{inputs.out_base_name}_{suffix}"
+#     else:
+#         fname_template = f"{inputs.in_file}_{suffix}"
 
-    return sorted(glob(fname_template))
+#     return sorted(glob(fname_template))
+
+
+def Split_output(inputs):
+    import os, glob
+
+    output_dir = os.getcwd()
+    return sorted(glob.glob(os.path.join(output_dir, f"{inputs.output_basename}*.*")))
