@@ -346,7 +346,7 @@ Split:
       output_basename: test_split
       dimension: t
   tests_outputs:
-    - [out_files]
+    - out_files
 
 SwapDimensions:
   output_requirements:

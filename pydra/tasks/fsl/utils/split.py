@@ -7,7 +7,7 @@ def Split_output(inputs):
     import os, glob
 
     output_dir = os.getcwd()
-    return sorted(glob.glob(output_dir, f"{inputs.output_basename}*.*"))
+    return sorted(glob.glob(os.path.join(output_dir, f"{inputs.output_basename}*.*")))
 
 
 input_fields = [
@@ -22,9 +22,9 @@ input_fields = [
         },
     ),
     (
-        "out_base_name",
+        "output_basename",
         str,
-        {"help_string": "outputs prefix", "argstr": "{out_base_name}", "position": 1},
+        {"help_string": "outputs prefix", "argstr": "{output_basename}", "position": 1},
     ),
     (
         "dimension",
@@ -46,8 +46,9 @@ output_fields = [
         "out_files",
         specs.MultiOutputFile,
         {
+            "help_string": "output files",
             "requires": ["in_file", "output_basename", "dimension"],
-            "callable": "Split_output",
+            "callable": Split_output,
         },
     )
 ]
