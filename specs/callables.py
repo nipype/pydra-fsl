@@ -61,7 +61,6 @@ def ConvertXFM_output(inputs):
     else:
         raise Exception("this function requires invert_xfm, or concat_xfm," "or fix_scale_skew")
 
-
 def FAST_output(field, in_files, out_basename):
     import attr
 
@@ -148,6 +147,8 @@ def FAST_output_infile(field, in_files, out_basename):
 
 
 def FEAT_output(fsf_file):
+    import os
+    from glob import glob
     is_ica = False
     with open(fsf_file, "rt") as fp:
         text = fp.read()
@@ -173,6 +174,7 @@ def FEAT_output(fsf_file):
 
 def FEATModel_output(field, fsf_file):
     import os
+    from glob import glob
 
     # TODO: figure out file names and get rid off the globs
     outputs = {}
