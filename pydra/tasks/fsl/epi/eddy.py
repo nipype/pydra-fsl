@@ -363,9 +363,7 @@ input_fields = [
     ("cnr_maps", bool, {"help_string": "Output CNR-Maps", "argstr": "--cnr_maps"}),
     ("residuals", bool, {"help_string": "Output Residuals", "argstr": "--residuals"}),
 ]
-Eddy_input_spec = specs.SpecInfo(
-    name="Input", fields=input_fields, bases=(specs.ShellSpec,)
-)
+Eddy_input_spec = specs.SpecInfo(name="Input", fields=input_fields, bases=(specs.ShellSpec,))
 
 output_fields = [
     (
@@ -485,9 +483,7 @@ output_fields = [
         },
     ),
 ]
-Eddy_output_spec = specs.SpecInfo(
-    name="Output", fields=output_fields, bases=(specs.ShellOutSpec,)
-)
+Eddy_output_spec = specs.SpecInfo(name="Output", fields=output_fields, bases=(specs.ShellOutSpec,))
 
 
 class Eddy(ShellCommandTask):

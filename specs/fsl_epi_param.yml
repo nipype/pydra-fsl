@@ -18,21 +18,21 @@
 
 Eddy:
   output_requirements:
-    out_corrected: 
-    out_parameter: 
-    out_rotated_bvec: 
-    out_movement_rms: 
-    out_restricted_movement_rms: 
-    out_shell_alignment_parameters: 
-    out_shell_pe_translation_parameters: 
-    out_outlier_map: 
-    out_outlier_n_stdev_map: 
-    out_outlier_n_sqr_stdev_map: 
-    out_outlier_report: 
-    out_outlier_free: [repol]  
-    out_movement_over_time: [mporder]  
-    out_cnr_maps: [cnr_maps]  
-    out_residuals: [residuals]   
+    out_corrected:
+    out_parameter:
+    out_rotated_bvec:
+    out_movement_rms:
+    out_restricted_movement_rms:
+    out_shell_alignment_parameters:
+    out_shell_pe_translation_parameters:
+    out_outlier_map:
+    out_outlier_n_stdev_map:
+    out_outlier_n_sqr_stdev_map:
+    out_outlier_report:
+    out_outlier_free: [repol]
+    out_movement_over_time: [mporder]
+    out_cnr_maps: [cnr_maps]
+    out_residuals: [residuals]
   output_callables:
   output_templates:
     out_corrected: "{out_base}.nii.gz"

@@ -3,9 +3,7 @@ from pathlib import Path
 from ..eddy import Eddy
 
 
-@pytest.mark.xfail(
-    "FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError
-)
+@pytest.mark.xfail("FSLDIR" not in os.environ, reason="no FSL found", raises=FileNotFoundError)
 @pytest.mark.parametrize(
     "inputs, outputs",
     [
@@ -59,9 +57,7 @@ def test_Eddy(test_data, inputs, outputs):
             except:
                 pass
         task = Eddy(**inputs)
-    assert set(task.generated_output_names) == set(
-        ["return_code", "stdout", "stderr"] + outputs
-    )
+    assert set(task.generated_output_names) == set(["return_code", "stdout", "stderr"] + outputs)
     breakpoint()
     res = task()
     print("RESULT: ", res)
