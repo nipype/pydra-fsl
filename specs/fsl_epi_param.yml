@@ -16,14 +16,58 @@
 #   tests_inputs:
 #   tests_outputs:
 
-# Eddy:
-#   output_requirements:
-#   output_callables:
-#   output_templates:
-#   inputs_drop:
-#   doctest:
-#   tests_inputs:
-#   tests_outputs:
+Eddy:
+  output_requirements:
+    out_corrected:
+    out_parameter:
+    out_rotated_bvec:
+    out_movement_rms:
+    out_restricted_movement_rms:
+    out_shell_alignment_parameters:
+    out_shell_pe_translation_parameters:
+    out_outlier_map:
+    out_outlier_n_stdev_map:
+    out_outlier_n_sqr_stdev_map:
+    out_outlier_report:
+    out_outlier_free: [repol]
+    out_movement_over_time: [mporder]
+    out_cnr_maps: [cnr_maps]
+    out_residuals: [residuals]
+  output_callables:
+  output_templates:
+    out_corrected: "{out_base}.nii.gz"
+    out_parameter: "{out_base}.eddy_parameters"
+    out_rotated_bvec: "{out_base}.eddy_rotated_bvecs"
+    out_movement_rms: "{out_base}.eddy_movement_rms"
+    out_restricted_movement_rms: "{out_base}.eddy_restricted_movement_rms"
+    out_shell_alignment_parameters: "{out_base}.eddy_post_eddy_shell_alignment_parameters"
+    out_shell_pe_translation_parameters: "{out_base}.eddy_post_eddy_shell_PE_translation_parameters"
+    out_outlier_map: "{out_base}.eddy_outlier_map"
+    out_outlier_n_stdev_map: "{out_base}.eddy_outlier_n_stdev_map"
+    out_outlier_n_sqr_stdev_map: "{out_base}.eddy_outlier_n_sqr_stdev_map"
+    out_outlier_report: "{out_base}.eddy_outlier_report"
+    out_outlier_free: "{out_base}.eddy_outlier_free_data"
+    out_movement_over_time: "{out_base}.eddy_movement_over_time"
+    out_cnr_maps: "{out_base}.eddy_cnr_maps"
+    out_residuals: "{out_base}.eddy_residuals"
+  inputs_drop:
+  doctest:
+    in_file: test.nii.gz
+    in_mask: mask.nii.gz
+    in_index: test_index.txt
+    in_acqp: test_acqp.txt
+    in_bvec: bvecs.scheme
+    in_bval: bvals.scheme
+    cmdline: eddy_openmp --imain=test.nii.gz --mask=test_mask.nii.gz --index=test_index.txt --acqp=test_acqp.txt --bvecs=bvecs.scheme --bvals=bvals.scheme --verbose
+  tests_inputs:
+    - in_file: test.nii.gz
+      in_mask: mask.nii.gz
+      in_index: test_index.txt
+      in_acqp: test_acqp.txt
+      in_bvec: bvecs.scheme
+      in_bval: bvals.scheme
+  tests_outputs:
+    - [out_corrected, out_parameter, out_movement_rms, out_restricted_movement_rms, out_shell_alignment_parameters, out_shell_pe_translation_parameters, out_outlier_map, out_outlier_n_stdev_map, out_outlier_n_sqr_stdev_map, out_outlier_report]
 
 # EddyCorrect:
 #   output_requirements:
