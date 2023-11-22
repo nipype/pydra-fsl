@@ -226,7 +226,8 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_fwhm: '[8, 4, 2, 2]'
     # type=list|default=[]: FWHM (in mm) of gaussian smoothing kernel for input volume, default [6, 4, 2, 2]
-    subsampling_scheme: '[4, 2, 1, 1]    Specify the resolution of the warps    >>> fnirt_mprage.inputs.warp_resolution = (6, 6, 6)'
+    subsampling_scheme: '[4, 2, 1, 1]'
+    warp_resolution: '(6, 6, 6)'
     # type=list|default=[]: sub-sampling scheme, list, default [4, 2, 1, 1]
   imports: &id001
   # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item

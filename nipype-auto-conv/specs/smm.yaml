@@ -42,7 +42,7 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-   _p_map: generic/file
+    _p_map: generic/file
     activation_p_map: generic/file
     # type=file: 
     deactivation_p_map: generic/file

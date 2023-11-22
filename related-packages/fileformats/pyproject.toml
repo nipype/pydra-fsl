@@ -9,7 +9,7 @@ readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
     "fileformats >= 0.4",
-    "fileformats-medimage > = 0.2"
+    "fileformats-medimage >= 0.2"
 ]
 license = {file = "LICENSE"}
 authors = [
