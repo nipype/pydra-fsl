@@ -1,38 +1,37 @@
 [build-system]
-requires = ["flit_scm"]
-build-backend = "flit_scm:buildapi"
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
 
 [project]
 name = "pydra-fsl"
-description = "FSL tasks for the Pydra dataflow engine"
-readme = "README.md"
-requires-python = ">=3.7"
-dependencies = ["pydra >=0.14.1"]
+description = "Pydra tasks package for fsl"
+readme = "README.rst"
+requires-python = ">=3.8"
+dependencies = [
+    "pydra >=0.22",
+    "fileformats >=0.8.3",
+    "fileformats-datascience >=0.1",
+    "fileformats-medimage >=0.4.1",
+    "fileformats-medimage-fsl"
+]
 license = {file = "LICENSE"}
 authors = [{name = "Nipype developers", email = "neuroimaging@python.org"}]
-keywords = ["pydra", "fsl"]
+maintainers = [{name = "Nipype developers", email = "neuroimaging@python.org"}]
+keywords = ["pydra"]
 classifiers = [
-    "Development Status :: 3 - Alpha",
+    "Development Status :: 2 - Pre-Alpha",
     "Environment :: Console",
     "Intended Audience :: Science/Research",
     "License :: OSI Approved :: Apache Software License",
+    "Operating System :: MacOS :: MacOS X",
     "Operating System :: POSIX :: Linux",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3",
     "Topic :: Scientific/Engineering",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
-all = [
-    "pydra-fsl[dev]",
-    "pydra-fsl[doc]",
-]
 dev = [
-    "pydra-fsl[test]",
-    "nipype",
-    "pyyaml",
     "black",
     "pre-commit",
 ]
@@ -44,32 +43,41 @@ doc = [
     "sphinxcontrib-napoleon",
     "sphinxcontrib-versioning",
 ]
-docs = [
-    "pydra-fsl[doc]",
-]
 test = [
-    "pytest >=4.4.0",
+    "pytest >= 4.4.0",
     "pytest-cov",
     "pytest-env",
     "pytest-xdist",
     "pytest-rerunfailures",
     "codecov",
+    "fileformats-extras",
+    "fileformats-datascience-extras",
+    "fileformats-medimage-extras",
+    "fileformats-medimage-fsl-extras"
 ]
-tests = [
-    "pydra-fsl[test]",
-]
 
-[project.urls]
-repository = "https://github.com/nipype/pydra-fsl"
+[tool.hatch.version]
+source = "vcs"
 
-[tool.flit.module]
-name = "pydra.tasks.fsl"
+[tool.hatch.build.hooks.vcs]
+version-file = "pydra/tasks/fsl/_version.py"
 
-[tool.setuptools_scm]
-write_to = "pydra/tasks/fsl/_version.py"
+[tool.hatch.build.targets.wheel]
+packages = ["pydra"]
+include-only = ["pydra/tasks/fsl"]
 
 [tool.black]
-line-length = 99
-target-version = ['py37']
-skip-string-normalization = true
-extend-exclude = '_version.py|versioneer.py'
+target-version = ["py38"]
+exclude = "_version.py"
+
+[tool.codespell]
+ignore-words = ".codespell-ignorewords"
+
+[tool.flake8]
+doctests = true
+per-file-ignores = [
+    "__init__.py:F401,F403"
+]
+max-line-length = 88
+select = "C,E,F,W,B,B950"
+extend-ignore = ['E203', 'E501', 'E129', 'W503']

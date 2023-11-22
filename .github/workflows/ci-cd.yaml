@@ -1,0 +1,305 @@
+#This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+# For deployment, it will be necessary to create a PyPI API token and store it as a secret
+# https://docs.github.com/en/actions/reference/encrypted-secrets
+
+name: CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+    tags: [ '*' ]
+  pull_request:
+    branches: [ main, develop ]
+  repository_dispatch:
+    types: [create-release]
+
+jobs:
+
+  nipype-conv:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Revert version to most recent tag on upstream update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+    - name: Install build dependencies
+      run: python -m pip install --upgrade pip
+    - name: Install requirements
+      run: python -m pip install ./related-packages/fileformats -r ./nipype-auto-conv/requirements.txt
+    - name: Run automatic Nipype > Pydra conversion
+      run: ./nipype-auto-conv/generate
+    - uses: actions/upload-artifact@v3
+      with:
+        name: converted-nipype
+        path: pydra/tasks/fsl/auto
+
+  devcheck:
+    needs: [nipype-conv]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.11']  # Check oldest and newest versions
+        pip-flags: ['', '--editable']
+        pydra:
+        - 'pydra'
+        - '--editable git+https://github.com/nipype/pydra.git#egg=pydra'
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Revert version to most recent tag on upstream update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')    
+    - name: Download tasks converted from Nipype 
+      uses: actions/download-artifact@v3
+      with:
+        name: converted-nipype
+        path: pydra/tasks/fsl/auto
+    - name: Strip auto package from gitignore so it is included in package
+      run: |
+        sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install Pydra
+      run: |
+        pushd $HOME
+        pip install ${{ matrix.pydra }}
+        popd
+        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+    - name: Install task package
+      run: |
+        pip install "./related-packages/fileformats[dev]" "related-packages/fileformats-extras[dev]"
+        pip install ${{ matrix.pip-flags }} ".[dev]"
+        python -c "import pydra.tasks.fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import fileformats.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import fileformats.extras.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+  
+  fileformats-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.11']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Revert version to most recent tag on upstream update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install task package
+      run: |
+        pip install "./related-packages/fileformats[test]" "./related-packages/fileformats-extras[test]"
+        python -c "import fileformats.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+    - name: Test fileformats with pytest
+      run: |
+        cd ./fileformats
+        pytest -sv --cov fileformats.medimage_fsl --cov fileformats.extras.medimage_fsl --cov-report xml .
+
+  test:
+    needs: [nipype-conv, fileformats-test]
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: ['3.8']  # '3.11'
+    steps:
+    - name: Removed unnecessary tools to free space
+      run: |
+        sudo rm -rf /usr/share/dotnet
+        sudo rm -rf "$AGENT_TOOLSDIRECTORY"      
+    - name: Get Download cache Key
+      id: cache-key
+      run: echo "::set-output name=key::fsl-linux-ubuntu22_amd64-7.4.1"
+    - name: Cache FreeSurfer
+      uses: actions/cache@v2
+      with:
+        path: $HOME/downloads/fsl
+        key: ${{ steps.cache-key.outputs.key }}
+        restore-keys: |
+          fsl-linux-ubuntu22_amd64-7.4.1
+    - name: Download FreeSurfer
+      if: steps.cache-key.outputs.key != steps.cache-hit.outputs.key
+      run: |
+        mkdir -p $HOME/downloads/fsl
+        curl -s -o $HOME/downloads/fsl/fsl-linux-ubuntu22_amd64-7.4.1.tar.gz https://surfer.nmr.mgh.harvard.edu/pub/dist/fsl/7.4.1/fsl-linux-ubuntu22_amd64-7.4.1.tar.gz
+      shell: bash
+    - name: Install Freesurfer
+      env:
+        FREESURFER_LICENCE: ${{ secrets.FREESURFER_LICENCE }}
+      run: |
+        pushd $HOME/downloads/fsl
+        tar -zxpf fsl-linux-ubuntu22_amd64-7.4.1.tar.gz
+        mv fsl $HOME/
+        popd
+        export FREESURFER_HOME=$HOME/fsl
+        source $FREESURFER_HOME/SetUpFreeSurfer.sh
+        echo $FREESURFER_LICENCE > $FREESURFER_HOME/license.txt
+        export PATH=$FREESURFER_HOME/bin:$PATH
+    - uses: actions/checkout@v3
+    - name: Revert version to most recent tag on upstream update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')
+    - name: Download tasks converted from Nipype 
+      uses: actions/download-artifact@v3
+      with:
+        name: converted-nipype
+        path: pydra/tasks/fsl/auto
+    - name: Strip auto package from gitignore so it is included in package
+      run: |
+        sed -i '/\/src\/pydra\/tasks\/fsl\/auto/d' .gitignore
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install build dependencies
+      run: |
+        python -m pip install --upgrade pip
+    - name: Install task package
+      run: |
+        pip install "./related-packages/fileformats" "./related-packages/fileformats-extras" ".[test]"
+        python -c "import pydra.tasks.fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+    - name: Test with pytest
+      run: |
+        pytest -sv --doctest-modules ./pydra/tasks/fsl \
+            --cov pydra.tasks.fsl --cov-report xml
+    - uses: codecov/codecov-action@v3
+      if: ${{ always() }}
+      with:
+        files: coverage.xml,./fileformats/coverage.xml
+        name: pydra-fsl
+
+  deploy-fileformats:
+    needs: [devcheck, test]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install build tools
+      run: python -m pip install build twine
+    - name: Build source and wheel distributions
+      run: python -m build ./related-packages/fileformats
+    - name: Check distributions
+      run: twine check ./related-packages/fileformats/dist/*
+    - name: Check for PyPI token on tag
+      id: deployable
+      if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags')) || github.event_name == 'repository_dispatch'
+      env:
+        PYPI_API_TOKEN: "${{ secrets.PYPI_FILEFORMATS_API_TOKEN }}"
+      run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
+    - name: Upload to PyPI
+      if: steps.deployable.outputs.DEPLOY
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_FILEFORMATS_API_TOKEN }}
+        packages-dir: ./related-packages/fileformats/dist 
+
+  deploy-fileformats-extras:
+    needs: [deploy-fileformats]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0 
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install build tools
+      run: python -m pip install build twine
+    - name: Build source and wheel distributions
+      run: python -m build ./related-packages/fileformats-extras
+    - name: Check distributions
+      run: twine check ./related-packages/fileformats-extras/dist/*
+    - name: Check for PyPI token on tag
+      id: deployable
+      if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags')) || github.event_name == 'repository_dispatch'
+      env:
+        PYPI_API_TOKEN: "${{ secrets.PYPI_FILEFORMATS_EXTRAS_API_TOKEN }}"
+      run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
+    - name: Upload to PyPI
+      if: steps.deployable.outputs.DEPLOY
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_FILEFORMATS_EXTRAS_API_TOKEN }}
+        packages-dir: ./related-packages/fileformats-extras/dist 
+
+  deploy:
+    needs: [deploy-fileformats-extras]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+        fetch-depth: 0
+    - name: Download tasks converted from Nipype 
+      uses: actions/download-artifact@v3
+      with:
+        name: converted-nipype
+        path: pydra/tasks/fsl/auto
+    - name: Tag release with a post-release based on Nipype and Nipype2Pydra versions
+      if: github.event_name == 'repository_dispatch'
+      run: |
+        TAG=$(git tag -l | tail -n 1 | awk -F post '{print $1}')
+        POST=$(python -c "from pydra.tasks.fsl.auto._version import *; print(post_release)")
+        git checkout $TAG
+        git add -f pydra/tasks/fsl/auto/_version.py
+        git commit -am"added auto-generated version to make new tag for package version"
+        git tag ${TAG}post${POST}    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    - name: Install build tools
+      run: python -m pip install build twine
+    - name: Strip auto package from gitignore so it is included in package
+      run: |
+        sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
+    - name: Build source and wheel distributions
+      run: python -m build .
+    - name: Check distributions
+      run: twine check dist/*
+    - uses: actions/upload-artifact@v3
+      with:
+        name: distributions
+        path: dist/
+    - name: Check for PyPI token on tag
+      id: deployable
+      if: (github.event_name == 'push' && startsWith(github.ref, 'refs/tags')) || github.event_name == 'repository_dispatch'
+      env:
+        PYPI_API_TOKEN: "${{ secrets.PYPI_API_TOKEN }}"
+      run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
+    - name: Upload to PyPI
+      if: steps.deployable.outputs.DEPLOY
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        user: __token__
+        password: ${{ secrets.PYPI_API_TOKEN }}   
+
+# Deploy on tags if PYPI_API_TOKEN is defined in the repository secrets.
+# Secrets are not accessible in the if: condition [0], so set an output variable [1]
+# [0] https://github.community/t/16928
+# [1] https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-output-parameter        
