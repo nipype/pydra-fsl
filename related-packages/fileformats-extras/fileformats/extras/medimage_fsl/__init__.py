@@ -9,5 +9,5 @@ from fileformats.medimage_fsl import (
 
 
 @FileSet.generate_sample_data.register
-def gen_sample_con_data(con: Con, dest_dir: Path, seed: ty.Union[int, Random], stem: ty.Optional[str]):
+def gen_sample_con_data(con: Con, dest_dir: Path, seed: ty.Union[int, Random] = 0, stem: ty.Optional[str] = None) -> ty.Iterable[Path]:
     raise NotImplementedError
