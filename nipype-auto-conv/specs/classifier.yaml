@@ -27,6 +27,8 @@ inputs:
     artifacts_list_file: generic/file
     # type=file: Text file listing which ICs are artifacts; can be the output from classification or can be created manually
     # type=file|default=<undefined>: Text file listing which ICs are artifacts; can be the output from classification or can be created manually
+    mel_ica: generic/directory
+    # type=directory|default=<undefined>: Melodic output directory or directories
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:

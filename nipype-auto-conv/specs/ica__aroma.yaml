@@ -56,6 +56,13 @@ inputs:
     # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
     motion_parameters: text/text-file
     # type=file|default=<undefined>: motion parameters file
+    feat_dir: generic/directory
+    # type=directory|default=<undefined>: If a feat directory exists and temporal filtering has not been run yet, ICA_AROMA can use the files in this directory.
+    out_dir: generic/directory
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+    melodic_dir: generic/directory
+    # type=directory|default=<undefined>: path to MELODIC directory if MELODIC has already been run
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -73,6 +80,9 @@ outputs:
     # type=file: if generated: aggressively denoised volume
     nonaggr_denoised_file: generic/file
     # type=file: if generated: non aggressively denoised volume
+    out_dir: generic/directory
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields

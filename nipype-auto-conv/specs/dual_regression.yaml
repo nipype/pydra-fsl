@@ -57,6 +57,9 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    out_dir: generic/directory
+    # type=directory: 
+    # type=directory|default='output': This directory will be created to hold all output and logfiles
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields

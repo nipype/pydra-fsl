@@ -55,6 +55,9 @@ inputs:
     # type=file|default=<undefined>: input data file
     design_file: generic/file
     # type=file|default=<undefined>: design matrix file
+    results_dir: generic/directory
+    # type=directory: directory storing model estimation output
+    # type=directory|default='results': directory to store results in
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -78,6 +81,9 @@ outputs:
     # type=file: The FILM autocorrelation parameters
     logfile: generic/file
     # type=file: FILM run logfile
+    results_dir: generic/directory
+    # type=directory: directory storing model estimation output
+    # type=directory|default='results': directory to store results in
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields

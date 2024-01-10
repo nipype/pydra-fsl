@@ -45,8 +45,6 @@ inputs:
     # type=file|default=<undefined>: name of 4D file with images
     encoding_file: text/text-file
     # type=file|default=<undefined>: name of text file with PE directions/times
-    readout_times: generic/file+list-of
-    # type=inputmultiobject|default=[]: readout times (dwell times by # phase-encode steps minus 1)
     out_base: generic/file
     # type=file|default=<undefined>: base-name of output files (spline coefficients (Hz) and movement parameters)
     out_field: generic/file

@@ -22,6 +22,9 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    mel_ica: generic/directory
+    # type=directory: Melodic output directory or directories
+    # type=directory|default=<undefined>: Melodic output directory or directories
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -35,6 +38,9 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    mel_ica: generic/directory
+    # type=directory: Melodic output directory or directories
+    # type=directory|default=<undefined>: Melodic output directory or directories
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields

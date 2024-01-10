@@ -53,6 +53,10 @@ inputs:
     # type=file|default=<undefined>: b values file
     grad_dev: generic/file
     # type=file|default=<undefined>: grad_dev file, if gradnonlin, -g is True
+    logdir: generic/directory
+    # type=directory|default=<undefined>: 
+    out_dir: generic/directory
+    # type=directory|default='bedpostx': output directory
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:

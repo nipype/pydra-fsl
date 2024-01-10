@@ -55,6 +55,8 @@ inputs:
     # type=file|default=<undefined>: ascii matrix specifying f-contrasts
     cov_split_file: datascience/text-matrix
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
+    log_dir: generic/directory
+    # type=directory|default='stats': 
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -68,6 +70,8 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    stats_dir: generic/directory
+    # type=directory: directory storing model estimation output
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
