@@ -6,16 +6,16 @@
 # Docs
 # ----
 #  Use FSL  probtrackx for tractography on bedpostx results
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> pbx = fsl.ProbTrackX(samples_base_name='merged', mask='mask.nii',     seed='MASK_average_thal_right.nii', mode='seedmask',     xfm='trans.mat', n_samples=3, n_steps=10, force_dir=True, opd=True,     os2t=True, target_masks = ['targets_MASK1.nii', 'targets_MASK2.nii'],     thsamples='merged_thsamples.nii', fsamples='merged_fsamples.nii',     phsamples='merged_phsamples.nii', out_dir='.')
 #     >>> pbx.cmdline
 #     'probtrackx --forcedir -m mask.nii --mode=seedmask --nsamples=3 --nsteps=10 --opd --os2t --dir=. --samples=merged --seed=MASK_average_thal_right.nii --targetmasks=targets.txt --xfm=trans.mat'
-# 
-#     
+#
+#
 task_name: ProbTrackX
 nipype_name: ProbTrackX
 nipype_module: nipype.interfaces.fsl.dti
@@ -33,7 +33,7 @@ inputs:
     avoid_mp: generic/file
     # type=file|default=<undefined>: reject pathways passing through locations given by this mask
     fsamples: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     inv_xfm: generic/file
     # type=file|default=<undefined>: transformation matrix taking DTI space to seed space (compulsory when using a warp_field for seeds_to_dti)
     mask: medimage/nifti1
@@ -45,7 +45,7 @@ inputs:
     out_dir: Path
     # type=directory|default=<undefined>: directory to put the final volumes in
     phsamples: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     seed_ref: generic/file
     # type=file|default=<undefined>: reference vol to define seed space in simple mode - diffusion space assumed if absent
     stop_mask: generic/file
@@ -53,7 +53,7 @@ inputs:
     target_masks: medimage/nifti1+list-of
     # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
     thsamples: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     waypoints: generic/file
     # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
     xfm: datascience/text-matrix
@@ -106,11 +106,11 @@ tests:
     mesh:
     # type=file|default=<undefined>: Freesurfer-type surface descriptor (in ascii format)
     thsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     phsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     fsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     samples_base_name:
     # type=str|default='merged': the rootname/base_name for samples files
     mask:
@@ -185,8 +185,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -218,11 +218,11 @@ tests:
     target_masks:
     # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
     thsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     fsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     phsamples:
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     out_dir: '"."'
     # type=directory|default=<undefined>: directory to put the final volumes in
   imports:
@@ -233,8 +233,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -270,11 +270,11 @@ doctests:
     target_masks: '["targets_MASK1.nii", "targets_MASK2.nii"]'
     # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
     thsamples: '"merged_thsamples.nii"'
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     fsamples: '"merged_fsamples.nii"'
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     phsamples: '"merged_phsamples.nii"'
-    # type=inputmultiobject|default=[]: 
+    # type=inputmultiobject|default=[]:
     out_dir: '"."'
     # type=directory|default=<undefined>: directory to put the final volumes in
   imports:

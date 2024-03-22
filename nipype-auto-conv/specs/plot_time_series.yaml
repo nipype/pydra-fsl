@@ -6,19 +6,19 @@
 # Docs
 # ----
 # Use fsl_tsplot to create images of time course plots.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> plotter = fsl.PlotTimeSeries()
 #     >>> plotter.inputs.in_file = 'functional.par'
 #     >>> plotter.inputs.title = 'Functional timeseries'
 #     >>> plotter.inputs.labels = ['run1', 'run2']
 #     >>> plotter.run() #doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: PlotTimeSeries
 nipype_name: PlotTimeSeries
 nipype_module: nipype.interfaces.fsl.utils
@@ -116,8 +116,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

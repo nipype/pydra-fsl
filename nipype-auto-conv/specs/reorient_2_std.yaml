@@ -7,17 +7,17 @@
 # ----
 # fslreorient2std is a tool for reorienting the image to match the
 #     approximate orientation of the standard template images (MNI152).
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> reorient = Reorient2Std()
 #     >>> reorient.inputs.in_file = "functional.nii"
 #     >>> res = reorient.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: Reorient2Std
 nipype_name: Reorient2Std
 nipype_module: nipype.interfaces.fsl.utils
@@ -33,10 +33,10 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -54,16 +54,16 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
     out_file: out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -71,10 +71,10 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
@@ -89,8 +89,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

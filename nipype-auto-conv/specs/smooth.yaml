@@ -5,32 +5,32 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use fslmaths to smooth the image
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     Setting the kernel width using sigma:
-# 
+#
 #     >>> sm = Smooth()
 #     >>> sm.inputs.output_type = 'NIFTI_GZ'
 #     >>> sm.inputs.in_file = 'functional2.nii'
 #     >>> sm.inputs.sigma = 8.0
 #     >>> sm.cmdline # doctest: +ELLIPSIS
 #     'fslmaths functional2.nii -kernel gauss 8.000 -fmean functional2_smooth.nii.gz'
-# 
+#
 #     Setting the kernel width using fwhm:
-# 
+#
 #     >>> sm = Smooth()
 #     >>> sm.inputs.output_type = 'NIFTI_GZ'
 #     >>> sm.inputs.in_file = 'functional2.nii'
 #     >>> sm.inputs.fwhm = 8.0
 #     >>> sm.cmdline # doctest: +ELLIPSIS
 #     'fslmaths functional2.nii -kernel gauss 3.397 -fmean functional2_smooth.nii.gz'
-# 
+#
 #     One of sigma or fwhm must be set:
-# 
+#
 #     >>> from nipype.interfaces.fsl import Smooth
 #     >>> sm = Smooth()
 #     >>> sm.inputs.output_type = 'NIFTI_GZ'
@@ -39,8 +39,8 @@
 #     Traceback (most recent call last):
 #      ...
 #     ValueError: Smooth requires a value for one of the inputs ...
-# 
-#     
+#
+#
 task_name: Smooth
 nipype_name: Smooth
 nipype_module: nipype.interfaces.fsl.utils
@@ -56,10 +56,10 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     in_file: medimage/nifti1
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     smoothed_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -77,8 +77,8 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     smoothed_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -91,14 +91,14 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     sigma:
     # type=float|default=0.0: gaussian kernel sigma in mm (not voxels)
     fwhm:
     # type=float|default=0.0: gaussian kernel fwhm, will be converted to sigma in mm (not voxels)
     smoothed_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
@@ -113,8 +113,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -126,7 +126,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     sigma: '8.0'
     # type=float|default=0.0: gaussian kernel sigma in mm (not voxels)
   imports:
@@ -137,8 +137,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -150,7 +150,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     fwhm: '8.0'
     # type=float|default=0.0: gaussian kernel fwhm, will be converted to sigma in mm (not voxels)
   imports:
@@ -161,8 +161,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -174,7 +174,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
@@ -183,8 +183,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -200,7 +200,7 @@ doctests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file: '"functional2.nii"'
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     sigma: '8.0'
     # type=float|default=0.0: gaussian kernel sigma in mm (not voxels)
   imports:
@@ -217,7 +217,7 @@ doctests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file: '"functional2.nii"'
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     fwhm: '8.0'
     # type=float|default=0.0: gaussian kernel fwhm, will be converted to sigma in mm (not voxels)
   imports:
@@ -234,7 +234,7 @@ doctests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     in_file: '"functional2.nii"'
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys

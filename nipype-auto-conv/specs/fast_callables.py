@@ -151,7 +151,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
         inputs=inputs,
         stdout=stdout,
         stderr=stderr,
-        output_dir=output_dir
+        output_dir=output_dir,
     )
     if inputs.segments:
         outputs["tissue_class_files"] = []
@@ -163,7 +163,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                     inputs=inputs,
                     stdout=stdout,
                     stderr=stderr,
-                    output_dir=output_dir
+                    output_dir=output_dir,
                 )
             )
     if inputs.output_biascorrected is not attrs.NOTHING:
@@ -180,7 +180,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                         inputs=inputs,
                         stdout=stdout,
                         stderr=stderr,
-                        output_dir=output_dir
+                        output_dir=output_dir,
                     )
                 )
         else:
@@ -192,7 +192,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                     inputs=inputs,
                     stdout=stdout,
                     stderr=stderr,
-                    output_dir=output_dir
+                    output_dir=output_dir,
                 )
             )
 
@@ -202,7 +202,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
         inputs=inputs,
         stdout=stdout,
         stderr=stderr,
-        output_dir=output_dir
+        output_dir=output_dir,
     )
     if not inputs.no_pve:
         outputs["partial_volume_map"] = _gen_fname(
@@ -211,7 +211,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["partial_volume_files"] = []
         for i in range(nclasses):
@@ -222,7 +222,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                     inputs=inputs,
                     stdout=stdout,
                     stderr=stderr,
-                    output_dir=output_dir
+                    output_dir=output_dir,
                 )
             )
     if inputs.output_biasfield:
@@ -239,7 +239,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                         inputs=inputs,
                         stdout=stdout,
                         stderr=stderr,
-                        output_dir=output_dir
+                        output_dir=output_dir,
                     )
                 )
         else:
@@ -251,7 +251,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                     inputs=inputs,
                     stdout=stdout,
                     stderr=stderr,
-                    output_dir=output_dir
+                    output_dir=output_dir,
                 )
             )
 
@@ -265,7 +265,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
                     inputs=inputs,
                     stdout=stdout,
                     stderr=stderr,
-                    output_dir=output_dir
+                    output_dir=output_dir,
                 )
             )
     return outputs

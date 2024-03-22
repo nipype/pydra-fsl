@@ -6,17 +6,17 @@
 # Docs
 # ----
 # Use fslmerge to concatenate images
-# 
+#
 #     Images can be concatenated across time, x, y, or z dimensions. Across the
 #     time (t) dimension the TR is set by default to 1 sec.
-# 
+#
 #     Note: to set the TR to a different value, specify 't' for dimension and
 #     specify the TR value in seconds for the tr input. The dimension will be
 #     automatically updated to 'tr'.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import Merge
 #     >>> merger = Merge()
 #     >>> merger.inputs.in_files = ['functional2.nii', 'functional3.nii']
@@ -27,9 +27,9 @@
 #     >>> merger.inputs.tr = 2.25
 #     >>> merger.cmdline
 #     'fslmerge -tr functional2_merged.nii.gz functional2.nii functional3.nii 2.25'
-# 
-# 
-#     
+#
+#
+#
 task_name: Merge
 nipype_name: Merge
 nipype_module: nipype.interfaces.fsl.utils
@@ -45,10 +45,10 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     in_files: medimage/nifti1+list-of
-    # type=list|default=[]: 
+    # type=list|default=[]:
     merged_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -66,8 +66,8 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     merged_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -80,14 +80,14 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     in_files:
-    # type=list|default=[]: 
+    # type=list|default=[]:
     dimension:
     # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
     tr:
     # type=float|default=0.0: use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr
     merged_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
@@ -102,8 +102,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -113,7 +113,7 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     in_files:
-    # type=list|default=[]: 
+    # type=list|default=[]:
     dimension: '"t"'
     # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
     output_type: '"NIFTI_GZ"'
@@ -128,8 +128,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -143,7 +143,7 @@ doctests:
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
     in_files: '["functional2.nii", "functional3.nii"]'
-    # type=list|default=[]: 
+    # type=list|default=[]:
     dimension: '"t"'
     # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
     output_type: '"NIFTI_GZ"'

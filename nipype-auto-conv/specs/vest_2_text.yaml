@@ -5,10 +5,10 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use FSL Vest2Text`https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/GLM(2f)CreatingDesignMatricesByHand.html`_
 #     to convert your design.mat design.con and design.fts files into plain text.
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces.fsl import Vest2Text
@@ -17,7 +17,7 @@
 #     >>> v2t.cmdline
 #     'Vest2Text design.mat design.txt'
 #     >>> res = v2t.run() # doctest: +SKIP
-#     
+#
 task_name: Vest2Text
 nipype_name: Vest2Text
 nipype_module: nipype.interfaces.fsl.utils
@@ -86,8 +86,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -106,8 +106,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

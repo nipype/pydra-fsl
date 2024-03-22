@@ -6,17 +6,17 @@
 # Docs
 # ----
 # Generate FEAT specific files
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> level1design = Level1Design()
 #     >>> level1design.inputs.interscan_interval = 2.5
 #     >>> level1design.inputs.bases = {'dgamma':{'derivs': False}}
 #     >>> level1design.inputs.session_info = 'session_info.npz'
 #     >>> level1design.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: Level1Design
 nipype_name: Level1Design
 nipype_module: nipype.interfaces.fsl.model
@@ -80,8 +80,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

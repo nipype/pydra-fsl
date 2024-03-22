@@ -5,7 +5,7 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use FSL fsl_motion_outliers`http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSLMotionOutliers`_ to find outliers in timeseries (4d) data.
 #     Examples
 #     --------
@@ -15,7 +15,7 @@
 #     >>> mo.cmdline # doctest: +ELLIPSIS
 #     'fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt'
 #     >>> res = mo.run() # doctest: +SKIP
-#     
+#
 task_name: MotionOutliers
 nipype_name: MotionOutliers
 nipype_module: nipype.interfaces.fsl.utils
@@ -35,13 +35,13 @@ inputs:
     mask: generic/file
     # type=file|default=<undefined>: mask image for calculating metric
     out_file: Path
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output outlier file name
     out_metric_plot: Path
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
     out_metric_values: Path
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values (DVARS etc.) file name
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -60,13 +60,13 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     out_file: generic/file
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output outlier file name
     out_metric_plot: generic/file
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
     out_metric_values: generic/file
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values (DVARS etc.) file name
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -82,7 +82,7 @@ tests:
     in_file:
     # type=file|default=<undefined>: unfiltered 4D image
     out_file:
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output outlier file name
     mask:
     # type=file|default=<undefined>: mask image for calculating metric
@@ -95,10 +95,10 @@ tests:
     dummy:
     # type=int|default=0: number of dummy scans to delete (before running anything and creating EVs)
     out_metric_values:
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values (DVARS etc.) file name
     out_metric_plot:
-    # type=file: 
+    # type=file:
     # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
@@ -114,8 +114,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -134,8 +134,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

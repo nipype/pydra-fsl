@@ -8,17 +8,17 @@
 # Use FSL proj_thresh for thresholding some outputs of probtrack
 #     For complete details, see the FDT Documentation
 #     <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_thresh.html>
-# 
+#
 #     Example
 #     -------
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> ldir = ['seeds_to_M1.nii', 'seeds_to_M2.nii']
 #     >>> pThresh = fsl.ProjThresh(in_files=ldir, threshold=3)
 #     >>> pThresh.cmdline
 #     'proj_thresh seeds_to_M1.nii seeds_to_M2.nii 3'
-# 
-#     
+#
+#
 task_name: ProjThresh
 nipype_name: ProjThresh
 nipype_module: nipype.interfaces.fsl.dti
@@ -82,8 +82,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -104,8 +104,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

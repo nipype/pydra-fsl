@@ -5,16 +5,16 @@
 #
 # Docs
 # ----
-# 
+#
 #     Wraps the unwarping script `epidewarp.fsl
 #     <http://surfer.nmr.mgh.harvard.edu/fswiki/epidewarp.fsl>`_.
-# 
+#
 #     .. warning:: deprecated in FSL, please use
 #       :func:`niflow.nipype1.workflows.dmri.preprocess.epi.sdc_fmb` instead.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import EPIDeWarp
 #     >>> dewarp = EPIDeWarp()
 #     >>> dewarp.inputs.epi_file = "functional.nii"
@@ -24,9 +24,9 @@
 #     >>> dewarp.cmdline # doctest: +ELLIPSIS
 #     'epidewarp.fsl --mag magnitude.nii --dph phase.nii --epi functional.nii --esp 0.58 --exfdw .../exfdw.nii.gz --nocleanup --sigma 2 --tediff 2.46 --tmpdir .../temp --vsm .../vsm.nii.gz'
 #     >>> res = dewarp.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: EPIDeWarp
 nipype_name: EPIDeWarp
 nipype_module: nipype.interfaces.fsl.epi
@@ -133,8 +133,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -159,8 +159,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -6,10 +6,10 @@
 # Docs
 # ----
 # Use the FSL utility convert_xfm to modify FLIRT transformation matrices.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> invt = fsl.ConvertXFM()
 #     >>> invt.inputs.in_file = "flirt.mat"
@@ -17,9 +17,9 @@
 #     >>> invt.inputs.out_file = 'flirt_inv.mat'
 #     >>> invt.cmdline
 #     'convert_xfm -omat flirt_inv.mat -inverse flirt.mat'
-# 
-# 
-#     
+#
+#
+#
 task_name: ConvertXFM
 nipype_name: ConvertXFM
 nipype_module: nipype.interfaces.fsl.utils
@@ -101,8 +101,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -127,8 +127,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -6,19 +6,19 @@
 # Docs
 # ----
 # FSL run_first_all wrapper for segmentation of subcortical volumes
-# 
+#
 #     http://www.fmrib.ox.ac.uk/fsl/first/index.html
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> first = fsl.FIRST()
 #     >>> first.inputs.in_file = 'structural.nii'
 #     >>> first.inputs.out_file = 'segmented.nii'
 #     >>> res = first.run() #doctest: +SKIP
-# 
-#     
+#
+#
 task_name: FIRST
 nipype_name: FIRST
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -106,8 +106,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

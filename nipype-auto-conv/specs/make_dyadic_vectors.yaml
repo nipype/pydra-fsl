@@ -22,13 +22,13 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     mask: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     output: generic/file
-    # type=file|default='dyads': 
+    # type=file|default='dyads':
     phi_vol: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     theta_vol: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -46,9 +46,9 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     dispersion: generic/file
-    # type=file: 
+    # type=file:
     dyads: generic/file
-    # type=file: 
+    # type=file:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -61,13 +61,13 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     theta_vol:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     phi_vol:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     mask:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     output:
-    # type=file|default='dyads': 
+    # type=file|default='dyads':
     perc:
     # type=float|default=0.0: the {perc}% angle of the output cone of uncertainty (output will be in degrees)
     output_type:
@@ -84,8 +84,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -6,7 +6,7 @@
 # Docs
 # ----
 # Use fslmaths to perform a sequence of mathematical operations.
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces.fsl import MultiImageMaths
@@ -17,8 +17,8 @@
 #     >>> maths.inputs.out_file = "functional4.nii"
 #     >>> maths.cmdline
 #     'fslmaths functional.nii -add functional2.nii -mul -1 -div functional3.nii functional4.nii'
-# 
-#     
+#
+#
 task_name: MultiImageMaths
 nipype_name: MultiImageMaths
 nipype_module: nipype.interfaces.fsl.maths
@@ -102,8 +102,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -129,8 +129,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

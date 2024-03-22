@@ -5,15 +5,15 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use FSL `std2imgcoord <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/flirt/overview.html>`_
 #     to transform point sets to standard space coordinates. Accepts plain text coordinates
 #     files.
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import WarpPointsFromStd
 #     >>> warppoints = WarpPointsFromStd()
 #     >>> warppoints.inputs.in_coords = 'surf.txt'
@@ -24,9 +24,9 @@
 #     >>> warppoints.cmdline # doctest: +ELLIPSIS
 #     'std2imgcoord -mm -img T1.nii -std mni.nii -warp warpfield.nii surf.txt'
 #     >>> res = warppoints.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: WarpPointsFromStd
 nipype_name: WarpPointsFromStd
 nipype_module: nipype.interfaces.fsl.utils
@@ -106,8 +106,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -134,8 +134,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

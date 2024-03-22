@@ -6,10 +6,10 @@
 # Docs
 # ----
 # FSL FAST wrapper for segmentation and bias correction
-# 
+#
 #     For complete details, see the `FAST Documentation.
 #     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FAST>`_
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces import fsl
@@ -19,8 +19,8 @@
 #     >>> fast.cmdline
 #     'fast -o fast_ -S 1 structural.nii'
 #     >>> out = fast.run()  # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: FAST
 nipype_name: FAST
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -62,20 +62,20 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     bias_field: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     mixeltype: generic/file
     # type=file: path/name of mixeltype volume file _mixeltype
     partial_volume_files: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     partial_volume_map: generic/file
     # type=file: path/name of partial volume file _pveseg
     probability_maps: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     # type=bool|default=False: outputs individual probability maps
     restored_image: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     tissue_class_files: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     tissue_class_map: generic/file
     # type=file: path/name of binary segmented volume file one val for each class  _seg
   callables:
@@ -132,7 +132,7 @@ tests:
     manual_seg:
     # type=file|default=<undefined>: Filename containing intensities
     probability_maps:
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
     # type=bool|default=False: outputs individual probability maps
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
@@ -148,8 +148,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -170,8 +170,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

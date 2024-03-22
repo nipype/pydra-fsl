@@ -6,16 +6,16 @@
 # Docs
 # ----
 # Use FSL avscale command to extract info from mat file output of FLIRT
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> avscale = AvScale()
 #     >>> avscale.inputs.mat_file = 'flirt.mat'
 #     >>> res = avscale.run()  # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: AvScale
 nipype_name: AvScale
 nipype_module: nipype.interfaces.fsl.utils
@@ -68,7 +68,7 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     all_param:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     mat_file:
     # type=file|default=<undefined>: mat file to read
     ref_file:
@@ -85,8 +85,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

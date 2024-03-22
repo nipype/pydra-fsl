@@ -6,13 +6,13 @@
 # Docs
 # ----
 # Use fslswapdim to alter the orientation of an image.
-# 
+#
 #     This interface accepts a three-tuple corresponding to the new
 #     orientation.  You may either provide dimension ids in the form of
 #     (-)x, (-)y, or (-z), or nifti-syle dimension codes
 #     (RL, LR, AP, PA, IS, SI).
-# 
-#     
+#
+#
 task_name: SwapDimensions
 nipype_name: SwapDimensions
 nipype_module: nipype.interfaces.fsl.utils
@@ -86,8 +86,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

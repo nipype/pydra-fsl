@@ -6,10 +6,10 @@
 # Docs
 # ----
 # FSL BET wrapper for skull stripping
-# 
+#
 #     For complete details, see the `BET Documentation.
 #     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET/UserGuide>`_
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces import fsl
@@ -20,8 +20,8 @@
 #     >>> btr.cmdline
 #     'bet structural.nii brain_anat.nii -f 0.70'
 #     >>> res = btr.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: BET
 nipype_name: BET
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -151,8 +151,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -176,8 +176,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -5,14 +5,14 @@
 #
 # Docs
 # ----
-# 
-# 
+#
+#
 #     Runs FSL epi_reg script for simultaneous coregistration and fieldmap
 #     unwarping.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import EpiReg
 #     >>> epireg = EpiReg()
 #     >>> epireg.inputs.epi='epi.nii'
@@ -27,8 +27,8 @@
 #     >>> epireg.cmdline # doctest: +ELLIPSIS
 #     'epi_reg --echospacing=0.000670 --fmap=fieldmap_phase_fslprepared.nii --fmapmag=fieldmap_mag.nii --fmapmagbrain=fieldmap_mag_brain.nii --noclean --pedir=y --epi=epi.nii --t1=T1.nii --t1brain=T1_brain.nii --out=epi2struct'
 #     >>> epireg.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: EpiReg
 nipype_name: EpiReg
 nipype_module: nipype.interfaces.fsl.epi
@@ -157,8 +157,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -193,8 +193,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

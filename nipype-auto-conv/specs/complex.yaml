@@ -6,17 +6,17 @@
 # Docs
 # ----
 # fslcomplex is a tool for converting complex data
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> cplx = Complex()
 #     >>> cplx.inputs.complex_in_file = "complex.nii"
 #     >>> cplx.real_polar = True
 #     >>> res = cplx.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: Complex
 nipype_name: Complex
 nipype_module: nipype.interfaces.fsl.utils
@@ -32,32 +32,32 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     complex_in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     complex_in_file2: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     complex_out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     imaginary_in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     imaginary_out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     magnitude_in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     magnitude_out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     phase_in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     phase_out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     real_in_file: generic/file
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     real_out_file: Path
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -75,40 +75,40 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     complex_out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     imaginary_out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     magnitude_out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     phase_out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     real_out_file: generic/file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
     complex_out_file: complex_out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     imaginary_out_file: imaginary_out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     magnitude_out_file: magnitude_out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     phase_out_file: phase_out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     real_out_file: real_out_file
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -116,48 +116,48 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     complex_in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     complex_in_file2:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     real_in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     imaginary_in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     magnitude_in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     phase_in_file:
-    # type=file|default=<undefined>: 
+    # type=file|default=<undefined>:
     complex_out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     magnitude_out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     phase_out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     real_out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     imaginary_out_file:
-    # type=file: 
-    # type=file|default=<undefined>: 
+    # type=file:
+    # type=file|default=<undefined>:
     start_vol:
-    # type=int|default=0: 
+    # type=int|default=0:
     end_vol:
-    # type=int|default=0: 
+    # type=int|default=0:
     real_polar:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     real_cartesian:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     complex_cartesian:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     complex_polar:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     complex_split:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     complex_merge:
-    # type=bool|default=False: 
+    # type=bool|default=False:
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
@@ -172,8 +172,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

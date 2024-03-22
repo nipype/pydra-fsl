@@ -7,13 +7,13 @@
 # ----
 # Currently just a light wrapper around FLIRT,
 #     with no modifications
-# 
+#
 #     ApplyXFM is used to apply an existing transform to an image
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> from nipype.testing import example_data
 #     >>> applyxfm = fsl.preprocess.ApplyXFM()
@@ -23,8 +23,8 @@
 #     >>> applyxfm.inputs.reference = example_data('mni.nii')
 #     >>> applyxfm.inputs.apply_xfm = True
 #     >>> result = applyxfm.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: ApplyXFM
 nipype_name: ApplyXFM
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -217,8 +217,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

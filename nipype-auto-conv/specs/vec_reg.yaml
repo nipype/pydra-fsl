@@ -8,16 +8,16 @@
 # Use FSL vecreg for registering vector data
 #     For complete details, see the FDT Documentation
 #     <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_vecreg.html>
-# 
+#
 #     Example
 #     -------
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> vreg = fsl.VecReg(in_file='diffusion.nii',                  affine_mat='trans.mat',                  ref_vol='mni.nii',                  out_file='diffusion_vreg.nii')
 #     >>> vreg.cmdline
 #     'vecreg -t trans.mat -i diffusion.nii -o diffusion_vreg.nii -r mni.nii'
-# 
-#     
+#
+#
 task_name: VecReg
 nipype_name: VecReg
 nipype_module: nipype.interfaces.fsl.dti
@@ -119,8 +119,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -146,8 +146,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

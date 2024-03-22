@@ -7,11 +7,11 @@
 # ----
 # Use FSL `fnirtfileutils <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/fnirt/warp_utils.html>`_
 #     to convert field->coefficients, coefficients->field, coefficients->other_coefficients etc
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import WarpUtils
 #     >>> warputils = WarpUtils()
 #     >>> warputils.inputs.in_file = "warpfield.nii"
@@ -22,9 +22,9 @@
 #     >>> warputils.cmdline # doctest: +ELLIPSIS
 #     'fnirtfileutils --in=warpfield.nii --outformat=spline --ref=T1.nii --warpres=10.0000,10.0000,10.0000 --out=warpfield_coeffs.nii.gz'
 #     >>> res = invwarp.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: WarpUtils
 nipype_name: WarpUtils
 nipype_module: nipype.interfaces.fsl.utils
@@ -116,8 +116,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -144,8 +144,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

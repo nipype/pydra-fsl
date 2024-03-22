@@ -7,13 +7,13 @@
 # ----
 # Use FSL `img2imgcoord <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/flirt/overview.html>`_
 #     to transform point sets. Accepts plain text files and vtk files.
-# 
+#
 #     .. Note:: transformation of TrackVis trk files is not yet implemented
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import WarpPoints
 #     >>> warppoints = WarpPoints()
 #     >>> warppoints.inputs.in_coords = 'surf.txt'
@@ -24,9 +24,9 @@
 #     >>> warppoints.cmdline # doctest: +ELLIPSIS
 #     'img2imgcoord -mm -dest T1.nii -src epi.nii -warp warpfield.nii surf.txt'
 #     >>> res = warppoints.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: WarpPoints
 nipype_name: WarpPoints
 nipype_module: nipype.interfaces.fsl.utils
@@ -113,8 +113,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -141,8 +141,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

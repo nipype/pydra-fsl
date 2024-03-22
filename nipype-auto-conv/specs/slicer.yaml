@@ -6,11 +6,11 @@
 # Docs
 # ----
 # Use FSL's slicer command to output a png image from a volume.
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> from nipype.testing import example_data
 #     >>> slice = fsl.Slicer()
@@ -18,9 +18,9 @@
 #     >>> slice.inputs.all_axial = True
 #     >>> slice.inputs.image_width = 750
 #     >>> res = slice.run() #doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: Slicer
 nipype_name: Slicer
 nipype_module: nipype.interfaces.fsl.utils
@@ -126,8 +126,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

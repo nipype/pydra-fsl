@@ -8,8 +8,8 @@
 # Use fslmeants for printing the average timeseries (intensities) to
 #     the screen (or saves to a file). The average is taken over all voxels
 #     in the mask (or all voxels in the image if no mask is specified)
-# 
-#     
+#
+#
 task_name: ImageMeants
 nipype_name: ImageMeants
 nipype_module: nipype.interfaces.fsl.utils
@@ -99,8 +99,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

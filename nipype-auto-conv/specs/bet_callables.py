@@ -206,7 +206,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
     if ((inputs.mask is not attrs.NOTHING) and inputs.mask) or (
         (inputs.reduce_bias is not attrs.NOTHING) and inputs.reduce_bias
@@ -217,7 +217,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
     if (inputs.outline is not attrs.NOTHING) and inputs.outline:
         outputs["outline_file"] = _gen_fname(
@@ -226,7 +226,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
     if (inputs.surfaces is not attrs.NOTHING) and inputs.surfaces:
         outputs["inskull_mask_file"] = _gen_fname(
@@ -235,7 +235,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["inskull_mesh_file"] = _gen_fname(
             suffix="_inskull_mesh",
@@ -243,7 +243,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["outskull_mask_file"] = _gen_fname(
             suffix="_outskull_mask",
@@ -251,7 +251,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["outskull_mesh_file"] = _gen_fname(
             suffix="_outskull_mesh",
@@ -259,7 +259,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["outskin_mask_file"] = _gen_fname(
             suffix="_outskin_mask",
@@ -267,7 +267,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["outskin_mesh_file"] = _gen_fname(
             suffix="_outskin_mesh",
@@ -275,7 +275,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
         outputs["skull_mask_file"] = _gen_fname(
             suffix="_skull_mask",
@@ -283,7 +283,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
     if (inputs.skull is not attrs.NOTHING) and inputs.skull:
         outputs["skull_file"] = _gen_fname(
@@ -292,7 +292,7 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
             inputs=inputs,
             stdout=stdout,
             stderr=stderr,
-            output_dir=output_dir
+            output_dir=output_dir,
         )
     if (inputs.no_output is not attrs.NOTHING) and inputs.no_output:
         outputs["out_file"] = attrs.NOTHING

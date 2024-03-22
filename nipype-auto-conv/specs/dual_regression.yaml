@@ -6,10 +6,10 @@
 # Docs
 # ----
 # Wrapper Script for Dual Regression Workflow
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> dual_regression = DualRegression()
 #     >>> dual_regression.inputs.in_files = ["functional.nii", "functional2.nii", "functional3.nii"]
 #     >>> dual_regression.inputs.group_IC_maps_4D = "allFA.nii"
@@ -20,8 +20,8 @@
 #     >>> dual_regression.cmdline
 #     'dual_regression allFA.nii 0 -1 10 my_output_directory functional.nii functional2.nii functional3.nii'
 #     >>> dual_regression.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: DualRegression
 nipype_name: DualRegression
 nipype_module: nipype.interfaces.fsl.model
@@ -45,7 +45,7 @@ inputs:
     in_files: medimage/nifti1+list-of
     # type=inputmultiobject|default=[]: List all subjects' preprocessed, standard-space 4D datasets
     out_dir: Path
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -64,7 +64,7 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     out_dir: generic/directory
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -72,7 +72,7 @@ outputs:
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
     out_dir: '"my_output_directory"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
@@ -95,7 +95,7 @@ tests:
     n_perm:
     # type=int|default=0: Number of permutations for randomise; set to 1 for just raw tstat output, set to 0 to not run randomise at all.
     out_dir:
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
@@ -111,8 +111,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -132,7 +132,7 @@ tests:
     n_perm: '10'
     # type=int|default=0: Number of permutations for randomise; set to 1 for just raw tstat output, set to 0 to not run randomise at all.
     out_dir: '"my_output_directory"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
@@ -142,8 +142,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -167,7 +167,7 @@ doctests:
     n_perm: '10'
     # type=int|default=0: Number of permutations for randomise; set to 1 for just raw tstat output, set to 0 to not run randomise at all.
     out_dir: '"my_output_directory"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item

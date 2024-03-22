@@ -5,15 +5,15 @@
 #
 # Docs
 # ----
-# 
+#
 #     B0 inhomogeneities occur at interfaces of materials with different magnetic susceptibilities,
 #     such as tissue-air interfaces. These differences lead to distortion in the local magnetic field,
 #     as Maxwell’s equations need to be satisfied. An example of B0 inhomogneity is the first volume
 #     of the 4D volume ```$FSLDIR/data/possum/b0_ppm.nii.gz```.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import B0Calc
 #     >>> b0calc = B0Calc()
 #     >>> b0calc.inputs.in_file = 'tissue+air_map.nii'
@@ -21,8 +21,8 @@
 #     >>> b0calc.inputs.output_type = "NIFTI_GZ"
 #     >>> b0calc.cmdline
 #     'b0calc -i tissue+air_map.nii -o tissue+air_map_b0field.nii.gz --chi0=4.000000e-07 -d -9.450000e-06 --extendboundary=1.00 --b0x=0.00 --gx=0.0000 --b0y=0.00 --gy=0.0000 --b0=3.00 --gz=0.0000'
-# 
-#     
+#
+#
 task_name: B0Calc
 nipype_name: B0Calc
 nipype_module: nipype.interfaces.fsl.possum
@@ -115,8 +115,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -139,8 +139,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -5,18 +5,18 @@
 #
 # Docs
 # ----
-# 
+#
 #     Interface for FSL topup, a tool for estimating and correcting
 #     susceptibility induced distortions.
 #     `General reference
 #     <http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/ApplytopupUsersGuide>`_
 #     and `use example
 #     <http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/ExampleTopupFollowedByApplytopup>`_.
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import ApplyTOPUP
 #     >>> applytopup = ApplyTOPUP()
 #     >>> applytopup.inputs.in_files = ["epi.nii", "epi_rev.nii"]
@@ -27,8 +27,8 @@
 #     >>> applytopup.cmdline # doctest: +ELLIPSIS
 #     'applytopup --datain=topup_encoding.txt --imain=epi.nii,epi_rev.nii --inindex=1,2 --topup=topup --out=epi_corrected.nii.gz'
 #     >>> res = applytopup.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: ApplyTOPUP
 nipype_name: ApplyTOPUP
 nipype_module: nipype.interfaces.fsl.epi
@@ -117,8 +117,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -145,8 +145,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -7,7 +7,7 @@
 # ----
 # Use FSL's tbss_skeleton to skeletonise an FA image or project arbitrary
 #     values onto a skeleton.
-# 
+#
 #     There are two ways to use this interface.  To create a skeleton from an FA
 #     image, just supply the ``in_file`` and set ``skeleton_file`` to True (or
 #     specify a skeleton filename. To project values onto a skeleton, you must
@@ -17,17 +17,17 @@
 #     projection, but ``use_cingulum_mask`` is set to True by default.  This mask
 #     controls where the projection algorithm searches within a circular space
 #     around a tract, rather than in a single perpendicular direction.
-# 
+#
 #     Example
 #     -------
-# 
+#
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> skeletor = fsl.TractSkeleton()
 #     >>> skeletor.inputs.in_file = "all_FA.nii.gz"
 #     >>> skeletor.inputs.skeleton_file = True
 #     >>> skeletor.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: TractSkeleton
 nipype_name: TractSkeleton
 nipype_module: nipype.interfaces.fsl.dti
@@ -128,8 +128,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

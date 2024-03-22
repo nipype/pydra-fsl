@@ -8,7 +8,6 @@ from fileformats.medimage_fsl import (
 )
 
 
-
 @FileSet.generate_sample_data.register
 def gen_sample_con_data(con: Con, generator: SampleFileGenerator) -> ty.Iterable[Path]:
     raise NotImplementedError

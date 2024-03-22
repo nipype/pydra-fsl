@@ -6,7 +6,7 @@
 # Docs
 # ----
 # FSL slicetimer wrapper to perform slice timing correction
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces import fsl
@@ -15,8 +15,8 @@
 #     >>> st.inputs.in_file = example_data('functional.nii')
 #     >>> st.inputs.interleaved = True
 #     >>> result = st.run() #doctest: +SKIP
-# 
-#     
+#
+#
 task_name: SliceTimer
 nipype_name: SliceTimer
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -102,8 +102,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

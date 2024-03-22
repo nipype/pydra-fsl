@@ -6,13 +6,13 @@
 # Docs
 # ----
 # FSL FLIRT wrapper for coregistration
-# 
+#
 #     For complete details, see the `FLIRT Documentation.
 #     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT>`_
-# 
+#
 #     To print out the command line help, use:
 #         fsl.FLIRT().inputs_help()
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces import fsl
@@ -24,8 +24,8 @@
 #     >>> flt.cmdline # doctest: +ELLIPSIS
 #     'flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo'
 #     >>> res = flt.run() #doctest: +SKIP
-# 
-#     
+#
+#
 task_name: FLIRT
 nipype_name: FLIRT
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -218,8 +218,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -249,8 +249,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

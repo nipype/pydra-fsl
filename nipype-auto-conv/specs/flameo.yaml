@@ -6,12 +6,12 @@
 # Docs
 # ----
 # Use FSL flameo command to perform higher level model fits
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     Initialize FLAMEO with no options, assigning them when calling run:
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> flameo = fsl.FLAMEO()
 #     >>> flameo.inputs.cope_file = 'cope.nii.gz'
@@ -23,8 +23,8 @@
 #     >>> flameo.inputs.run_mode = 'fe'
 #     >>> flameo.cmdline
 #     'flameo --copefile=cope.nii.gz --covsplitfile=cov_split.mat --designfile=design.mat --ld=stats --maskfile=mask.nii --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope.nii.gz'
-# 
-#     
+#
+#
 task_name: FLAMEO
 nipype_name: FLAMEO
 nipype_module: nipype.interfaces.fsl.model
@@ -50,7 +50,7 @@ inputs:
     f_con_file: generic/file
     # type=file|default=<undefined>: ascii matrix specifying f-contrasts
     log_dir: generic/directory
-    # type=directory|default='stats': 
+    # type=directory|default='stats':
     mask_file: medimage/nifti1
     # type=file|default=<undefined>: mask file
     t_con_file: medimage-fsl/con
@@ -143,7 +143,7 @@ tests:
     outlier_iter:
     # type=int|default=0: Number of max iterations to use when inferring outliers. Default is 12.
     log_dir:
-    # type=directory|default='stats': 
+    # type=directory|default='stats':
     output_type:
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
@@ -158,8 +158,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -190,8 +190,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -6,20 +6,20 @@
 # Docs
 # ----
 # Use fslslice to split a 3D file into lots of 2D files (along z-axis).
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import Slice
 #     >>> slice = Slice()
 #     >>> slice.inputs.in_file = 'functional.nii'
 #     >>> slice.inputs.out_base_name = 'sl'
 #     >>> slice.cmdline
 #     'fslslice functional.nii sl'
-# 
-# 
-#     
+#
+#
+#
 task_name: Slice
 nipype_name: Slice
 nipype_module: nipype.interfaces.fsl.utils
@@ -53,7 +53,7 @@ outputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     out_files: generic/file+list-of
-    # type=outputmultiobject: 
+    # type=outputmultiobject:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -83,8 +83,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -105,8 +105,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -7,16 +7,16 @@
 # ----
 # Use FSL's distancemap to generate a map of the distance to the nearest
 #     nonzero voxel.
-# 
+#
 #     Example
 #     -------
-# 
+#
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> mapper = fsl.DistanceMap()
 #     >>> mapper.inputs.in_file = "skeleton_mask.nii.gz"
 #     >>> mapper.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: DistanceMap
 nipype_name: DistanceMap
 nipype_module: nipype.interfaces.fsl.dti
@@ -100,8 +100,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

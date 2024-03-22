@@ -5,13 +5,13 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use FSL Invwarp to invert a FNIRT warp
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import InvWarp
 #     >>> invwarp = InvWarp()
 #     >>> invwarp.inputs.warp = "struct2mni.nii"
@@ -20,9 +20,9 @@
 #     >>> invwarp.cmdline
 #     'invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii'
 #     >>> res = invwarp.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: InvWarp
 nipype_name: InvWarp
 nipype_module: nipype.interfaces.fsl.utils
@@ -109,8 +109,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -133,8 +133,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

@@ -6,25 +6,25 @@
 # Docs
 # ----
 # FSL FUGUE set of tools for EPI distortion correction
-# 
+#
 #     `FUGUE <http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FUGUE>`_ is, most generally,
 #     a set of tools for EPI distortion correction.
-# 
+#
 #     Distortions may be corrected for
 #         1. improving registration with non-distorted images (e.g. structurals),
 #            or
 #         2. dealing with motion-dependent changes.
-# 
+#
 #     FUGUE is designed to deal only with the first case -
 #     improving registration.
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
-# 
+#
+#
 #     Unwarping an input image (shift map is known):
-# 
+#
 #     >>> from nipype.interfaces.fsl.preprocess import FUGUE
 #     >>> fugue = FUGUE()
 #     >>> fugue.inputs.in_file = 'epi.nii'
@@ -35,10 +35,10 @@
 #     >>> fugue.cmdline # doctest: +ELLIPSIS
 #     'fugue --in=epi.nii --mask=epi_mask.nii --loadshift=vsm.nii --unwarpdir=y --unwarp=epi_unwarped.nii.gz'
 #     >>> fugue.run() #doctest: +SKIP
-# 
-# 
+#
+#
 #     Warping an input image (shift map is known):
-# 
+#
 #     >>> from nipype.interfaces.fsl.preprocess import FUGUE
 #     >>> fugue = FUGUE()
 #     >>> fugue.inputs.in_file = 'epi.nii'
@@ -50,10 +50,10 @@
 #     >>> fugue.cmdline # doctest: +ELLIPSIS
 #     'fugue --in=epi.nii --mask=epi_mask.nii --loadshift=vsm.nii --unwarpdir=y --warp=epi_warped.nii.gz'
 #     >>> fugue.run() #doctest: +SKIP
-# 
-# 
+#
+#
 #     Computing the vsm (unwrapped phase map is known):
-# 
+#
 #     >>> from nipype.interfaces.fsl.preprocess import FUGUE
 #     >>> fugue = FUGUE()
 #     >>> fugue.inputs.phasemap_in_file = 'epi_phasediff.nii'
@@ -65,9 +65,9 @@
 #     >>> fugue.cmdline # doctest: +ELLIPSIS
 #     'fugue --dwelltoasym=0.9390243902 --mask=epi_mask.nii --phasemap=epi_phasediff.nii --saveshift=epi_phasediff_vsm.nii.gz --unwarpdir=y'
 #     >>> fugue.run() #doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: FUGUE
 nipype_name: FUGUE
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -225,8 +225,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -253,8 +253,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -283,8 +283,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -313,8 +313,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

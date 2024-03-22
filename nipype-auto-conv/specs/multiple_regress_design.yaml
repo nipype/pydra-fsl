@@ -6,24 +6,24 @@
 # Docs
 # ----
 # Generate multiple regression design
-# 
+#
 #     .. note::
 #       FSL does not demean columns for higher level analysis.
-# 
+#
 #     Please see `FSL documentation
 #     <http://www.fmrib.ox.ac.uk/fsl/feat5/detail.html#higher>`_
 #     for more details on model specification for higher level analysis.
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import MultipleRegressDesign
 #     >>> model = MultipleRegressDesign()
 #     >>> model.inputs.contrasts = [['group mean', 'T',['reg1'],[1]]]
 #     >>> model.inputs.regressors = dict(reg1=[1, 1, 1], reg2=[2.,-4, 3])
 #     >>> model.run() # doctest: +SKIP
-# 
-#     
+#
+#
 task_name: MultipleRegressDesign
 nipype_name: MultipleRegressDesign
 nipype_module: nipype.interfaces.fsl.model
@@ -87,8 +87,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

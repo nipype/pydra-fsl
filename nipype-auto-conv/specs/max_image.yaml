@@ -6,7 +6,7 @@
 # Docs
 # ----
 # Use fslmaths to generate a max image across a given dimension.
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces.fsl.maths import MaxImage
@@ -15,8 +15,8 @@
 #     >>> maxer.dimension = "T"
 #     >>> maxer.cmdline  # doctest: +SKIP
 #     'fslmaths functional.nii -Tmax functional_max.nii'
-# 
-#     
+#
+#
 task_name: MaxImage
 nipype_name: MaxImage
 nipype_module: nipype.interfaces.fsl.maths
@@ -96,8 +96,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -116,8 +116,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

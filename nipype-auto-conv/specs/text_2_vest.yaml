@@ -5,10 +5,10 @@
 #
 # Docs
 # ----
-# 
+#
 #     Use FSL Text2Vest`https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/GLM(2f)CreatingDesignMatricesByHand.html`_
 #     to convert your plain text design matrix data into the format used by the FSL tools.
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces.fsl import Text2Vest
@@ -18,7 +18,7 @@
 #     >>> t2v.cmdline
 #     'Text2Vest design.txt design.mat'
 #     >>> res = t2v.run() # doctest: +SKIP
-#     
+#
 task_name: Text2Vest
 nipype_name: Text2Vest
 nipype_module: nipype.interfaces.fsl.utils
@@ -87,8 +87,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -110,8 +110,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

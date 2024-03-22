@@ -7,10 +7,10 @@
 # ----
 # Multivariate Exploratory Linear Optimised Decomposition into Independent
 #     Components
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> melodic_setup = MELODIC()
 #     >>> melodic_setup.inputs.approach = 'tica'
 #     >>> melodic_setup.inputs.in_files = ['functional.nii', 'functional2.nii', 'functional3.nii']
@@ -27,9 +27,9 @@
 #     >>> melodic_setup.cmdline
 #     'melodic -i functional.nii,functional2.nii,functional3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000'
 #     >>> melodic_setup.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: MELODIC
 nipype_name: MELODIC
 nipype_module: nipype.interfaces.fsl.model
@@ -55,7 +55,7 @@ inputs:
     mix: generic/file
     # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
     out_dir: Path
-    # type=directory: 
+    # type=directory:
     # type=directory|default=<undefined>: output directory name
     s_con: medimage-fsl/con
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
@@ -89,7 +89,7 @@ outputs:
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
     out_dir: '"groupICA.out"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default=<undefined>: output directory name
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
@@ -100,7 +100,7 @@ tests:
     in_files:
     # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     out_dir:
-    # type=directory: 
+    # type=directory:
     # type=directory|default=<undefined>: output directory name
     mask:
     # type=file|default=<undefined>: file name of mask for thresholding
@@ -208,8 +208,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -241,7 +241,7 @@ tests:
     s_con:
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
     out_dir: '"groupICA.out"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default=<undefined>: output directory name
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
@@ -251,8 +251,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -288,7 +288,7 @@ doctests:
     s_con: '"subjectDesign.con"'
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
     out_dir: '"groupICA.out"'
-    # type=directory: 
+    # type=directory:
     # type=directory|default=<undefined>: output directory name
   imports:
   # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item

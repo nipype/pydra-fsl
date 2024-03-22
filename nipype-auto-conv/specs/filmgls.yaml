@@ -6,31 +6,31 @@
 # Docs
 # ----
 # Use FSL film_gls command to fit a design matrix to voxel timeseries
-# 
+#
 #     Examples
 #     --------
-# 
+#
 #     Initialize with no options, assigning them when calling run:
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> fgls = fsl.FILMGLS()
 #     >>> res = fgls.run('in_file', 'design_file', 'thresh', rn='stats') #doctest: +SKIP
-# 
+#
 #     Assign options through the ``inputs`` attribute:
-# 
+#
 #     >>> fgls = fsl.FILMGLS()
 #     >>> fgls.inputs.in_file = 'functional.nii'
 #     >>> fgls.inputs.design_file = 'design.mat'
 #     >>> fgls.inputs.threshold = 10
 #     >>> fgls.inputs.results_dir = 'stats'
 #     >>> res = fgls.run() #doctest: +SKIP
-# 
+#
 #     Specify options when creating an instance:
-# 
+#
 #     >>> fgls = fsl.FILMGLS(in_file='functional.nii', design_file='design.mat', threshold=10, results_dir='stats')
 #     >>> res = fgls.run() #doctest: +SKIP
-# 
-#     
+#
+#
 task_name: FILMGLS
 nipype_name: FILMGLS
 nipype_module: nipype.interfaces.fsl.model
@@ -165,8 +165,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

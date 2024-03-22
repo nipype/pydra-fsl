@@ -6,35 +6,35 @@
 # Docs
 # ----
 # FSL FNIRT wrapper for non-linear registration
-# 
+#
 #     For complete details, see the `FNIRT Documentation.
 #     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT>`_
-# 
+#
 #     Examples
 #     --------
 #     >>> from nipype.interfaces import fsl
 #     >>> from nipype.testing import example_data
 #     >>> fnt = fsl.FNIRT(affine_file=example_data('trans.mat'))
 #     >>> res = fnt.run(ref_file=example_data('mni.nii', in_file=example_data('structural.nii')) #doctest: +SKIP
-# 
+#
 #     T1 -> Mni153
-# 
+#
 #     >>> from nipype.interfaces import fsl
 #     >>> fnirt_mprage = fsl.FNIRT()
 #     >>> fnirt_mprage.inputs.in_fwhm = [8, 4, 2, 2]
 #     >>> fnirt_mprage.inputs.subsampling_scheme = [4, 2, 1, 1]
-# 
+#
 #     Specify the resolution of the warps
-# 
+#
 #     >>> fnirt_mprage.inputs.warp_resolution = (6, 6, 6)
 #     >>> res = fnirt_mprage.run(in_file='structural.nii', ref_file='mni.nii', warped_file='warped.nii', fieldcoeff_file='fieldcoeff.nii')#doctest: +SKIP
-# 
+#
 #     We can check the command line and confirm that it's what we expect.
-# 
+#
 #     >>> fnirt_mprage.cmdline  #doctest: +SKIP
 #     'fnirt --cout=fieldcoeff.nii --in=structural.nii --infwhm=8,4,2,2 --ref=mni.nii --subsamp=4,2,1,1 --warpres=6,6,6 --iout=warped.nii'
-# 
-#     
+#
+#
 task_name: FNIRT
 nipype_name: FNIRT
 nipype_module: nipype.interfaces.fsl.preprocess
@@ -226,8 +226,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -253,8 +253,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

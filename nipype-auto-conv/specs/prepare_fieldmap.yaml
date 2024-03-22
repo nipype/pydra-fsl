@@ -5,17 +5,17 @@
 #
 # Docs
 # ----
-# 
+#
 #     Interface for the fsl_prepare_fieldmap script (FSL 5.0)
-# 
+#
 #     Prepares a fieldmap suitable for FEAT from SIEMENS data - saves output in
 #     rad/s format (e.g. ```fsl_prepare_fieldmap SIEMENS
 #     images_3_gre_field_mapping images_4_gre_field_mapping fmap_rads 2.65```).
-# 
-# 
+#
+#
 #     Examples
 #     --------
-# 
+#
 #     >>> from nipype.interfaces.fsl import PrepareFieldmap
 #     >>> prepare = PrepareFieldmap()
 #     >>> prepare.inputs.in_phase = "phase.nii"
@@ -24,9 +24,9 @@
 #     >>> prepare.cmdline # doctest: +ELLIPSIS
 #     'fsl_prepare_fieldmap SIEMENS phase.nii magnitude.nii .../phase_fslprepared.nii.gz 2.460000'
 #     >>> res = prepare.run() # doctest: +SKIP
-# 
-# 
-#     
+#
+#
+#
 task_name: PrepareFieldmap
 nipype_name: PrepareFieldmap
 nipype_module: nipype.interfaces.fsl.epi
@@ -105,8 +105,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -129,8 +129,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

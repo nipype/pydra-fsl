@@ -8,15 +8,15 @@
 # FSL Randomise: feeds the 4D projected FA data into GLM
 #     modelling and thresholding
 #     in order to find voxels which correlate with your model
-# 
+#
 #     Example
 #     -------
 #     >>> import nipype.interfaces.fsl as fsl
 #     >>> rand = fsl.Randomise(in_file='allFA.nii', mask = 'mask.nii', tcon='design.con', design_mat='design.mat')
 #     >>> rand.cmdline
 #     'randomise -i allFA.nii -o "randomise" -d design.mat -t design.con -m mask.nii'
-# 
-#     
+#
+#
 task_name: Randomise
 nipype_name: Randomise
 nipype_module: nipype.interfaces.fsl.model
@@ -150,8 +150,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true
@@ -177,8 +177,8 @@ tests:
   # be terminated before they complete for time-saving reasons, and therefore
   # these values will be ignored, when running in CI
   timeout: 10
-  # int - the value to set for the timeout in the generated test, 
-  # after which the test will be considered to have been initialised 
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
   # successfully. Set to 0 to disable the timeout (warning, this could
   # lead to the unittests taking a very long time to complete)
   xfail: true

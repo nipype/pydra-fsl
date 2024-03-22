@@ -19,7 +19,7 @@ This repository aims to be the canonical set of Pydra tasks for incorporating
 
 Part of this effort is to establish a (mostly) declarative language for describing tasks that
 potentially have intricate rules for determining the availability and names from the choice of
-inputs. 
+inputs.
 
 
 Automatically-generated vs manually-curated tasks
@@ -29,7 +29,7 @@ Automatically generated tasks can be found in the `pydra.tasks.fsl.auto` package
 These packages should be treated with extreme caution as they likely do not pass testing.
 Generated tasks that have been edited and pass testing are imported into one or more of the
 `pydra.tasks.fsl.v*` packages, corresponding to the version of the fsl toolkit
-they are designed for. 
+they are designed for.
 
 Tests
 -----
@@ -160,7 +160,7 @@ in the ``inputs > types`` and ``outputs > types`` dicts of the YAML spec.
 
 If the required file-type is not found implemented within fileformats, please see the `fileformats
 docs <https://arcanaframework.github.io/fileformats/developer.html>`__ for instructions on how to define
-new fileformat types, and see 
+new fileformat types, and see
 `fileformats-medimage-extras <https://github.com/ArcanaFramework/fileformats-medimage-extras/blob/6c2dabe91e95687eebc2639bb6f034cf9595ecfc/fileformats/extras/medimage/nifti.py#L30-L48>`__
 for an example on how to implement methods to generate sample data for them.
 
