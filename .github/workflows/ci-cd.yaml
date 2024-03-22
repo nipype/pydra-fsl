@@ -21,12 +21,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Revert version to most recent tag on upstream update
       if: github.event_name == 'repository_dispatch'
       run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')    
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
     - name: Install build dependencies
       run: python -m pip install --upgrade pip
     - name: Install requirements
@@ -50,7 +50,7 @@ jobs:
         - '--editable git+https://github.com/nipype/pydra.git#egg=pydra'
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     - name: Revert version to most recent tag on upstream update
       if: github.event_name == 'repository_dispatch'
       run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')    
@@ -63,7 +63,7 @@ jobs:
       run: |
         sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install build dependencies
@@ -90,12 +90,12 @@ jobs:
       matrix:
         python-version: ['3.8', '3.11']
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Revert version to most recent tag on upstream update
       if: github.event_name == 'repository_dispatch'
       run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install build dependencies
@@ -149,7 +149,7 @@ jobs:
         source $FREESURFER_HOME/SetUpFreeSurfer.sh
         echo $FREESURFER_LICENCE > $FREESURFER_HOME/license.txt
         export PATH=$FREESURFER_HOME/bin:$PATH
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Revert version to most recent tag on upstream update
       if: github.event_name == 'repository_dispatch'
       run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')
@@ -162,7 +162,7 @@ jobs:
       run: |
         sed -i '/\/src\/pydra\/tasks\/fsl\/auto/d' .gitignore
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
     - name: Install build dependencies
@@ -187,12 +187,12 @@ jobs:
     needs: [devcheck, test]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         fetch-depth: 0 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     - name: Install build tools
@@ -219,12 +219,12 @@ jobs:
     needs: [deploy-fileformats]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         fetch-depth: 0 
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     - name: Install build tools
@@ -251,7 +251,7 @@ jobs:
     needs: [deploy-fileformats-extras]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         submodules: recursive
         fetch-depth: 0
@@ -270,7 +270,7 @@ jobs:
         git commit -am"added auto-generated version to make new tag for package version"
         git tag ${TAG}post${POST}    
     - name: Set up Python
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: '3.11'
     - name: Install build tools
