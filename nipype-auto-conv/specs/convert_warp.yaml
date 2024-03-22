@@ -38,23 +38,26 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    reference: medimage/nifti1
-    # type=file|default=<undefined>: Name of a file in target space of the full transform.
-    out_file: generic/file
-    # type=file: Name of output file, containing the warp as field or coefficients.
-    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
-    premat: generic/file
-    # type=file|default=<undefined>: filename for pre-transform (affine matrix)
-    warp1: medimage/nifti1
-    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
     midmat: generic/file
     # type=file|default=<undefined>: Name of file containing mid-warp-affine transform
-    warp2: generic/file
-    # type=file|default=<undefined>: Name of file containing secondary warp-fields/coefficients (after warp1/midmat but before postmat). This could e.g. be a fnirt-transform from the average of a group of subjects to some standard space (e.g. MNI152).
+    out_file: Path
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
     postmat: generic/file
     # type=file|default=<undefined>: Name of file containing an affine transform (applied last). It could e.g. be an affine transform that maps the MNI152-space into a better approximation to the Talairach-space (if indeed there is one).
+    premat: generic/file
+    # type=file|default=<undefined>: filename for pre-transform (affine matrix)
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: Name of a file in target space of the full transform.
     shift_in_file: generic/file
     # type=file|default=<undefined>: Name of file containing a "shiftmap", a non-linear transform with displacements only in one direction (applied first, before premat). This would typically be a fieldmap that has been pre-processed using fugue that maps a subjects functional (EPI) data onto an undistorted space (i.e. a space that corresponds to his/her true anatomy).
+    warp1: medimage/nifti1
+    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
+    warp2: generic/file
+    # type=file|default=<undefined>: Name of file containing secondary warp-fields/coefficients (after warp1/midmat but before postmat). This could e.g. be a fnirt-transform from the average of a group of subjects to some standard space (e.g. MNI152).
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -122,7 +125,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -148,7 +151,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -169,16 +172,16 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    warp1:
+    warp1: '"warpfield.nii"'
     # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
-    reference:
+    reference: '"T1.nii"'
     # type=file|default=<undefined>: Name of a file in target space of the full transform.
     relwarp: 'True'
     # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

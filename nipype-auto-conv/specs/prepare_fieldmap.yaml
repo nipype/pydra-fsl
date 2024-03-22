@@ -41,13 +41,16 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_phase: medimage/nifti1
-    # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
     in_magnitude: medimage/nifti1
     # type=file|default=<undefined>: Magnitude difference map, brain extracted
-    out_fieldmap: generic/file
+    in_phase: medimage/nifti1
+    # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
+    out_fieldmap: Path
     # type=file: output name for prepared fieldmap
     # type=file|default=<undefined>: output name for prepared fieldmap
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -95,7 +98,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -119,7 +122,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -140,14 +143,14 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_phase:
+    in_phase: '"phase.nii"'
     # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
-    in_magnitude:
+    in_magnitude: '"magnitude.nii"'
     # type=file|default=<undefined>: Magnitude difference map, brain extracted
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

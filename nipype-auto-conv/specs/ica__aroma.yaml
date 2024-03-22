@@ -46,23 +46,26 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    feat_dir: generic/directory
+    # type=directory|default=<undefined>: If a feat directory exists and temporal filtering has not been run yet, ICA_AROMA can use the files in this directory.
+    fnirt_warp_file: medimage/nifti1
+    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
     in_file: medimage/nifti1
     # type=file|default=<undefined>: volume to be denoised
     mask: medimage/nifti-gz
     # type=file|default=<undefined>: path/name volume mask
     mat_file: datascience/text-matrix
     # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
-    fnirt_warp_file: medimage/nifti1
-    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
-    motion_parameters: text/text-file
-    # type=file|default=<undefined>: motion parameters file
-    feat_dir: generic/directory
-    # type=directory|default=<undefined>: If a feat directory exists and temporal filtering has not been run yet, ICA_AROMA can use the files in this directory.
-    out_dir: generic/directory
-    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
-    # type=directory|default='out': output directory
     melodic_dir: generic/directory
     # type=directory|default=<undefined>: path to MELODIC directory if MELODIC has already been run
+    motion_parameters: text/text-file
+    # type=file|default=<undefined>: motion parameters file
+    out_dir: Path
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -122,7 +125,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -155,7 +158,7 @@ tests:
     # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
     # type=directory|default='out': output directory
   imports: &id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: example_data
@@ -179,15 +182,15 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"functional.nii"'
     # type=file|default=<undefined>: volume to be denoised
-    mat_file:
+    mat_file: '"func_to_struct.mat"'
     # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
-    fnirt_warp_file:
+    fnirt_warp_file: '"warpfield.nii"'
     # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
-    motion_parameters:
+    motion_parameters: '"fsl_mcflirt_movpar.txt"'
     # type=file|default=<undefined>: motion parameters file
-    mask:
+    mask: '"mask.nii.gz"'
     # type=file|default=<undefined>: path/name volume mask
     denoise_type: '"both"'
     # type=enum|default='nonaggr'|allowed['aggr','both','no','nonaggr']: Type of denoising strategy: -no: only classification, no denoising -nonaggr (default): non-aggresssive denoising, i.e. partial component regression -aggr: aggressive denoising, i.e. full component regression -both: both aggressive and non-aggressive denoising (two outputs)
@@ -195,7 +198,7 @@ doctests:
     # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
     # type=directory|default='out': output directory
   imports: *id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

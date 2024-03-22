@@ -36,14 +36,20 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_files: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: List all subjects' preprocessed, standard-space 4D datasets
-    group_IC_maps_4D: medimage/nifti1
-    # type=file|default=<undefined>: 4D image containing spatial IC maps (melodic_IC) from the whole-group ICA analysis
-    design_file: generic/file
-    # type=file|default=<undefined>: Design matrix for final cross-subject modelling with randomise
     con_file: generic/file
     # type=file|default=<undefined>: Design contrasts for final cross-subject modelling with randomise
+    design_file: generic/file
+    # type=file|default=<undefined>: Design matrix for final cross-subject modelling with randomise
+    group_IC_maps_4D: medimage/nifti1
+    # type=file|default=<undefined>: 4D image containing spatial IC maps (melodic_IC) from the whole-group ICA analysis
+    in_files: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: List all subjects' preprocessed, standard-space 4D datasets
+    out_dir: Path
+    # type=directory: 
+    # type=directory|default='output': This directory will be created to hold all output and logfiles
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -98,7 +104,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -129,7 +135,7 @@ tests:
     # type=directory: 
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -150,9 +156,9 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_files:
+    in_files: '["functional.nii", "functional2.nii", "functional3.nii"]'
     # type=inputmultiobject|default=[]: List all subjects' preprocessed, standard-space 4D datasets
-    group_IC_maps_4D:
+    group_IC_maps_4D: '"allFA.nii"'
     # type=file|default=<undefined>: 4D image containing spatial IC maps (melodic_IC) from the whole-group ICA analysis
     des_norm: 'False'
     # type=bool|default=True: Whether to variance-normalise the timecourses used as the stage-2 regressors; True is default and recommended
@@ -164,7 +170,7 @@ doctests:
     # type=directory: 
     # type=directory|default='output': This directory will be created to hold all output and logfiles
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

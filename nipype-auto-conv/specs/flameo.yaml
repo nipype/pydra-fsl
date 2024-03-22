@@ -41,22 +41,25 @@ inputs:
   # passed to the field in the automatically generated unittests.
     cope_file: medimage/nifti-gz
     # type=file|default=<undefined>: cope regressor data file
-    var_cope_file: medimage/nifti-gz
-    # type=file|default=<undefined>: varcope weightings data file
-    dof_var_cope_file: generic/file
-    # type=file|default=<undefined>: dof data file for varcope data
-    mask_file: medimage/nifti1
-    # type=file|default=<undefined>: mask file
-    design_file: datascience/text-matrix
-    # type=file|default=<undefined>: design matrix file
-    t_con_file: medimage-fsl/con
-    # type=file|default=<undefined>: ascii matrix specifying t-contrasts
-    f_con_file: generic/file
-    # type=file|default=<undefined>: ascii matrix specifying f-contrasts
     cov_split_file: datascience/text-matrix
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
+    design_file: datascience/text-matrix
+    # type=file|default=<undefined>: design matrix file
+    dof_var_cope_file: generic/file
+    # type=file|default=<undefined>: dof data file for varcope data
+    f_con_file: generic/file
+    # type=file|default=<undefined>: ascii matrix specifying f-contrasts
     log_dir: generic/directory
     # type=directory|default='stats': 
+    mask_file: medimage/nifti1
+    # type=file|default=<undefined>: mask file
+    t_con_file: medimage-fsl/con
+    # type=file|default=<undefined>: ascii matrix specifying t-contrasts
+    var_cope_file: medimage/nifti-gz
+    # type=file|default=<undefined>: varcope weightings data file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -70,8 +73,30 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    copes: generic/file+list-of
+    # type=outputmultiobject: Contrast estimates for each contrast
+    fstats: generic/file+list-of
+    # type=outputmultiobject: f-stat file for each contrast
+    mrefvars: generic/file+list-of
+    # type=outputmultiobject: mean random effect variances for each contrast
+    pes: generic/file+list-of
+    # type=outputmultiobject: Parameter estimates for each column of the design matrix for each voxel
+    res4d: generic/file+list-of
+    # type=outputmultiobject: Model fit residual mean-squared error for each time point
     stats_dir: generic/directory
     # type=directory: directory storing model estimation output
+    tdof: generic/file+list-of
+    # type=outputmultiobject: temporal dof file for each contrast
+    tstats: generic/file+list-of
+    # type=outputmultiobject: t-stat file for each contrast
+    var_copes: generic/file+list-of
+    # type=outputmultiobject: Variance estimates for each contrast
+    weights: generic/file+list-of
+    # type=outputmultiobject: weights file for each contrast
+    zfstats: generic/file+list-of
+    # type=outputmultiobject: z stat file for each f contrast
+    zstats: generic/file+list-of
+    # type=outputmultiobject: z-stat file for each contrast
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -126,7 +151,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -158,7 +183,7 @@ tests:
     run_mode: '"fe"'
     # type=enum|default='fe'|allowed['fe','flame1','flame12','ols']: inference to perform
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -179,22 +204,22 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    cope_file:
+    cope_file: '"cope.nii.gz"'
     # type=file|default=<undefined>: cope regressor data file
-    var_cope_file:
+    var_cope_file: '"varcope.nii.gz"'
     # type=file|default=<undefined>: varcope weightings data file
-    cov_split_file:
+    cov_split_file: '"cov_split.mat"'
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
-    design_file:
+    design_file: '"design.mat"'
     # type=file|default=<undefined>: design matrix file
-    t_con_file:
+    t_con_file: '"design.con"'
     # type=file|default=<undefined>: ascii matrix specifying t-contrasts
-    mask_file:
+    mask_file: '"mask.nii"'
     # type=file|default=<undefined>: mask file
     run_mode: '"fe"'
     # type=enum|default='fe'|allowed['fe','flame1','flame12','ols']: inference to perform
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

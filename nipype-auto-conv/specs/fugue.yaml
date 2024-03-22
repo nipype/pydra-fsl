@@ -82,28 +82,31 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: medimage/nifti1
-    # type=file|default=<undefined>: filename of input volume
-    shift_in_file: medimage/nifti1
-    # type=file|default=<undefined>: filename for reading pixel shift volume
-    phasemap_in_file: medimage/nifti1
-    # type=file|default=<undefined>: filename for input phase image
     fmap_in_file: generic/file
     # type=file|default=<undefined>: filename for loading fieldmap (rad/s)
-    unwarped_file: generic/file
-    # type=file: unwarped file
-    # type=file|default=<undefined>: apply unwarping and save as filename
-    warped_file: generic/file
-    # type=file: forward warped file
-    # type=file|default=<undefined>: apply forward warping and save as filename
-    mask_file: medimage/nifti1
-    # type=file|default=<undefined>: filename for loading valid mask
-    shift_out_file: generic/file
-    # type=file: voxel shift map file
-    # type=file|default=<undefined>: filename for saving pixel shift volume
-    fmap_out_file: generic/file
+    fmap_out_file: Path
     # type=file: fieldmap file
     # type=file|default=<undefined>: filename for saving fieldmap (rad/s)
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: filename of input volume
+    mask_file: medimage/nifti1
+    # type=file|default=<undefined>: filename for loading valid mask
+    phasemap_in_file: medimage/nifti1
+    # type=file|default=<undefined>: filename for input phase image
+    shift_in_file: medimage/nifti1
+    # type=file|default=<undefined>: filename for reading pixel shift volume
+    shift_out_file: Path
+    # type=file: voxel shift map file
+    # type=file|default=<undefined>: filename for saving pixel shift volume
+    unwarped_file: Path
+    # type=file: unwarped file
+    # type=file|default=<undefined>: apply unwarping and save as filename
+    warped_file: Path
+    # type=file: forward warped file
+    # type=file|default=<undefined>: apply forward warping and save as filename
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -117,18 +120,18 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    fmap_out_file: generic/file
+    # type=file: fieldmap file
+    # type=file|default=<undefined>: filename for saving fieldmap (rad/s)
+    shift_out_file: generic/file
+    # type=file: voxel shift map file
+    # type=file|default=<undefined>: filename for saving pixel shift volume
     unwarped_file: generic/file
     # type=file: unwarped file
     # type=file|default=<undefined>: apply unwarping and save as filename
     warped_file: generic/file
     # type=file: forward warped file
     # type=file|default=<undefined>: apply forward warping and save as filename
-    shift_out_file: generic/file
-    # type=file: voxel shift map file
-    # type=file|default=<undefined>: filename for saving pixel shift volume
-    fmap_out_file: generic/file
-    # type=file: fieldmap file
-    # type=file|default=<undefined>: filename for saving fieldmap (rad/s)
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -215,7 +218,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -243,7 +246,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -273,7 +276,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -303,7 +306,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -324,18 +327,18 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"epi.nii"'
     # type=file|default=<undefined>: filename of input volume
-    mask_file:
+    mask_file: '"epi_mask.nii"'
     # type=file|default=<undefined>: filename for loading valid mask
-    shift_in_file:
+    shift_in_file: '"vsm.nii"  # Previously computed with fugue as well'
     # type=file|default=<undefined>: filename for reading pixel shift volume
     unwarp_direction: '"y"'
     # type=enum|default='x'|allowed['x','x-','y','y-','z','z-']: specifies direction of warping (default y)
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
@@ -345,20 +348,20 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"epi.nii"'
     # type=file|default=<undefined>: filename of input volume
     forward_warping: 'True'
     # type=bool|default=False: apply forward warping instead of unwarping
-    mask_file:
+    mask_file: '"epi_mask.nii"'
     # type=file|default=<undefined>: filename for loading valid mask
-    shift_in_file:
+    shift_in_file: '"vsm.nii"  # Previously computed with fugue as well'
     # type=file|default=<undefined>: filename for reading pixel shift volume
     unwarp_direction: '"y"'
     # type=enum|default='x'|allowed['x','x-','y','y-','z','z-']: specifies direction of warping (default y)
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
@@ -368,9 +371,9 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    phasemap_in_file:
+    phasemap_in_file: '"epi_phasediff.nii"'
     # type=file|default=<undefined>: filename for input phase image
-    mask_file:
+    mask_file: '"epi_mask.nii"'
     # type=file|default=<undefined>: filename for loading valid mask
     dwell_to_asym_ratio: (0.77e-3 * 3) / 2.46e-3
     # type=float|default=0.0: set the dwell to asym time ratio
@@ -381,7 +384,7 @@ doctests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

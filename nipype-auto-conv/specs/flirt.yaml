@@ -40,37 +40,40 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    fieldmap: generic/file
+    # type=file|default=<undefined>: fieldmap image in rads/s - must be already registered to the reference image
+    fieldmapmask: generic/file
+    # type=file|default=<undefined>: mask for fieldmap image
     in_file: medimage/nifti1
     # type=file|default=<undefined>: input file
-    reference: medimage/nifti1
-    # type=file|default=<undefined>: reference file
-    out_file: generic/file
-    # type=file: path/name of registered file (if generated)
-    # type=file|default=<undefined>: registered output file
-    out_matrix_file: generic/file
-    # type=file: path/name of calculated affine transform (if generated)
-    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
-    out_log: generic/file
-    # type=file: path/name of output log (if generated)
-    # type=file|default=<undefined>: output log
     in_matrix_file: generic/file
     # type=file|default=<undefined>: input 4x4 affine matrix
-    schedule: generic/file
-    # type=file|default=<undefined>: replaces default schedule
-    ref_weight: generic/file
-    # type=file|default=<undefined>: File for reference weighting volume
     in_weight: generic/file
     # type=file|default=<undefined>: File for input weighting volume
+    out_file: Path
+    # type=file: path/name of registered file (if generated)
+    # type=file|default=<undefined>: registered output file
+    out_log: Path
+    # type=file: path/name of output log (if generated)
+    # type=file|default=<undefined>: output log
+    out_matrix_file: Path
+    # type=file: path/name of calculated affine transform (if generated)
+    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
+    ref_weight: generic/file
+    # type=file|default=<undefined>: File for reference weighting volume
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: reference file
+    schedule: generic/file
+    # type=file|default=<undefined>: replaces default schedule
     wm_seg: generic/file
     # type=file|default=<undefined>: white matter segmentation volume needed by BBR cost function
     wmcoords: generic/file
     # type=file|default=<undefined>: white matter boundary coordinates for BBR cost function
     wmnorms: generic/file
     # type=file|default=<undefined>: white matter boundary normals for BBR cost function
-    fieldmap: generic/file
-    # type=file|default=<undefined>: fieldmap image in rads/s - must be already registered to the reference image
-    fieldmapmask: generic/file
-    # type=file|default=<undefined>: mask for fieldmap image
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -87,12 +90,12 @@ outputs:
     out_file: generic/file
     # type=file: path/name of registered file (if generated)
     # type=file|default=<undefined>: registered output file
-    out_matrix_file: generic/file
-    # type=file: path/name of calculated affine transform (if generated)
-    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
     out_log: generic/file
     # type=file: path/name of output log (if generated)
     # type=file|default=<undefined>: output log
+    out_matrix_file: generic/file
+    # type=file: path/name of calculated affine transform (if generated)
+    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -208,7 +211,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -236,7 +239,7 @@ tests:
     cost_func: '"mutualinfo"'
     # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
   imports: &id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: example_data
@@ -260,9 +263,9 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"structural.nii"'
     # type=file|default=<undefined>: input file
-    reference:
+    reference: '"mni.nii"'
     # type=file|default=<undefined>: reference file
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
@@ -271,7 +274,7 @@ doctests:
     cost_func: '"mutualinfo"'
     # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
   imports: *id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

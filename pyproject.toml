@@ -44,6 +44,7 @@ doc = [
     "sphinxcontrib-versioning",
 ]
 test = [
+    "nipype2pydra",
     "pytest >= 4.4.0",
     "pytest-cov",
     "pytest-env",

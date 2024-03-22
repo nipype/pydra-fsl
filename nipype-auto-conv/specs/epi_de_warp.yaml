@@ -41,14 +41,21 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    mag_file: medimage/nifti1
-    # type=file|default=<undefined>: Magnitude file
     dph_file: medimage/nifti1
     # type=file|default=<undefined>: Phase file assumed to be scaled from 0 to 4095
-    exf_file: generic/file
-    # type=file|default=<undefined>: example func volume (or use epi)
     epi_file: medimage/nifti1
     # type=file|default=<undefined>: EPI volume to unwarp
+    exf_file: generic/file
+    # type=file|default=<undefined>: example func volume (or use epi)
+    mag_file: medimage/nifti1
+    # type=file|default=<undefined>: Magnitude file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+    tmpdir: tmpdir_default
+    # type=string|default='': tmpdir
+    vsm: vsm_default
+    # type=string|default='': voxel shift map
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -62,27 +69,23 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    exf_mask: generic/file
+    # type=file: Mask from example functional volume
+    exfdw: generic/file
+    # type=file: dewarped functional volume example
+    # type=string|default='': dewarped example func volume
     unwarped_file: generic/file
     # type=file: unwarped epi file
     vsm_file: generic/file
     # type=file: voxel shift map
-    exfdw: generic/file
-    # type=file: dewarped functional volume example
-    # type=string|default='': dewarped example func volume
-    exf_mask: generic/file
-    # type=file: Mask from example functional volume
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
-    vsm: vsm
-    # type=string|default='': voxel shift map
     exfdw: exfdw
     # type=file: dewarped functional volume example
     # type=string|default='': dewarped example func volume
-    tmpdir: tmpdir
-    # type=string|default='': tmpdir
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -123,7 +126,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -149,7 +152,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -170,16 +173,16 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    epi_file:
+    epi_file: '"functional.nii"'
     # type=file|default=<undefined>: EPI volume to unwarp
-    mag_file:
+    mag_file: '"magnitude.nii"'
     # type=file|default=<undefined>: Magnitude file
-    dph_file:
+    dph_file: '"phase.nii"'
     # type=file|default=<undefined>: Phase file assumed to be scaled from 0 to 4095
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

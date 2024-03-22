@@ -38,6 +38,12 @@ inputs:
     # type=file|default=<undefined>: input transformation matrix
     in_file2: generic/file
     # type=file|default=<undefined>: second input matrix (for use with fix_scale_skew or concat_xfm)
+    out_file: Path
+    # type=file: output transformation matrix
+    # type=file|default=<undefined>: final transformation matrix
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -88,7 +94,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -113,7 +119,7 @@ tests:
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
   imports: &id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.interfaces.fsl as fsl
   expected_outputs:
@@ -135,7 +141,7 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"flirt.mat"'
     # type=file|default=<undefined>: input transformation matrix
     invert_xfm: 'True'
     # type=bool|default=False: invert input transformation
@@ -143,7 +149,7 @@ doctests:
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
   imports: *id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

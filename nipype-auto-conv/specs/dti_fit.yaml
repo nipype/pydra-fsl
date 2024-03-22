@@ -36,18 +36,21 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    dwi: medimage/nifti1
-    # type=file|default=<undefined>: diffusion weighted image data file
-    mask: medimage/nifti1
-    # type=file|default=<undefined>: bet binary mask file
-    bvecs: medimage/bvec
-    # type=file|default=<undefined>: b vectors file
     bvals: medimage/bval
     # type=file|default=<undefined>: b values file
+    bvecs: medimage/bvec
+    # type=file|default=<undefined>: b vectors file
     cni: generic/file
     # type=file|default=<undefined>: input counfound regressors
+    dwi: medimage/nifti1
+    # type=file|default=<undefined>: diffusion weighted image data file
     gradnonlin: generic/file
     # type=file|default=<undefined>: gradient non linearities
+    mask: medimage/nifti1
+    # type=file|default=<undefined>: bet binary mask file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -61,12 +64,8 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    V1: generic/file
-    # type=file: path/name of file with the 1st eigenvector
-    V2: generic/file
-    # type=file: path/name of file with the 2nd eigenvector
-    V3: generic/file
-    # type=file: path/name of file with the 3rd eigenvector
+    FA: generic/file
+    # type=file: path/name of file with the fractional anisotropy
     L1: generic/file
     # type=file: path/name of file with the 1st eigenvalue
     L2: generic/file
@@ -75,17 +74,21 @@ outputs:
     # type=file: path/name of file with the 3rd eigenvalue
     MD: generic/file
     # type=file: path/name of file with the mean diffusivity
-    FA: generic/file
-    # type=file: path/name of file with the fractional anisotropy
     MO: generic/file
     # type=file: path/name of file with the mode of anisotropy
     S0: generic/file
     # type=file: path/name of file with the raw T2 signal with no diffusion weighting
-    tensor: generic/file
-    # type=file: path/name of file with the 4D tensor volume
+    V1: generic/file
+    # type=file: path/name of file with the 1st eigenvector
+    V2: generic/file
+    # type=file: path/name of file with the 2nd eigenvector
+    V3: generic/file
+    # type=file: path/name of file with the 3rd eigenvector
     sse: generic/file
     # type=file: path/name of file with the summed squared error
     # type=bool|default=False: output sum of squared errors
+    tensor: generic/file
+    # type=file: path/name of file with the 4D tensor volume
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -137,7 +140,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -165,7 +168,7 @@ tests:
     mask:
     # type=file|default=<undefined>: bet binary mask file
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -186,18 +189,18 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    dwi:
+    dwi: '"diffusion.nii"'
     # type=file|default=<undefined>: diffusion weighted image data file
-    bvecs:
+    bvecs: '"bvecs"'
     # type=file|default=<undefined>: b vectors file
-    bvals:
+    bvals: '"bvals"'
     # type=file|default=<undefined>: b values file
     base_name: '"TP"'
     # type=str|default='dtifit_': base_name that all output files will start with
-    mask:
+    mask: '"mask.nii"'
     # type=file|default=<undefined>: bet binary mask file
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

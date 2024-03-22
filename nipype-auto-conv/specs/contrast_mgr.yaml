@@ -25,18 +25,21 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    tcon_file: generic/file
-    # type=file|default=<undefined>: contrast file containing T-contrasts
-    fcon_file: generic/file
-    # type=file|default=<undefined>: contrast file containing F-contrasts
-    param_estimates: generic/file+list-of
-    # type=inputmultiobject|default=[]: Parameter estimates for each column of the design matrix
     corrections: generic/file
     # type=file|default=<undefined>: statistical corrections used within FILM modelling
     dof_file: generic/file
     # type=file|default=<undefined>: degrees of freedom
+    fcon_file: generic/file
+    # type=file|default=<undefined>: contrast file containing F-contrasts
+    param_estimates: generic/file+list-of
+    # type=inputmultiobject|default=[]: Parameter estimates for each column of the design matrix
     sigmasquareds: generic/file
     # type=file|default=<undefined>: summary of residuals, See Woolrich, et. al., 2001
+    tcon_file: generic/file
+    # type=file|default=<undefined>: contrast file containing T-contrasts
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -50,6 +53,20 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    copes: generic/file+list-of
+    # type=outputmultiobject: Contrast estimates for each contrast
+    fstats: generic/file+list-of
+    # type=outputmultiobject: f-stat file for each contrast
+    neffs: generic/file+list-of
+    # type=outputmultiobject: neff file ?? for each contrast
+    tstats: generic/file+list-of
+    # type=outputmultiobject: t-stat file for each contrast
+    varcopes: generic/file+list-of
+    # type=outputmultiobject: Variance estimates for each contrast
+    zfstats: generic/file+list-of
+    # type=outputmultiobject: z-stat file for each F contrast
+    zstats: generic/file+list-of
+    # type=outputmultiobject: z-stat file for each contrast
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -84,7 +101,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

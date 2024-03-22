@@ -35,9 +35,12 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: text/text-file
     # type=file|default=<undefined>: plain text file representing your design, contrast, or f-test matrix
-    out_file: datascience/text-matrix
+    out_file: Path
     # type=file: matrix data in the format used by FSL tools
     # type=file|default=<undefined>: file name to store matrix data in the format used by FSL tools (e.g., design.mat, design.con design.fts)
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -77,7 +80,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -96,11 +99,11 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: plain text file representing your design, contrast, or f-test matrix
-    out_file:
+    out_file: '"design.mat"'
     # type=file: matrix data in the format used by FSL tools
     # type=file|default=<undefined>: file name to store matrix data in the format used by FSL tools (e.g., design.mat, design.con design.fts)
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -121,13 +124,13 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"design.txt"'
     # type=file|default=<undefined>: plain text file representing your design, contrast, or f-test matrix
-    out_file:
+    out_file: '"design.mat"'
     # type=file: matrix data in the format used by FSL tools
     # type=file|default=<undefined>: file name to store matrix data in the format used by FSL tools (e.g., design.mat, design.con design.fts)
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

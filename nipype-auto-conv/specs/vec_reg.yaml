@@ -32,22 +32,28 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: medimage/nifti1
-    # type=file|default=<undefined>: filename for input vector or tensor field
-    ref_vol: medimage/nifti1
-    # type=file|default=<undefined>: filename for reference (target) volume
     affine_mat: datascience/text-matrix
     # type=file|default=<undefined>: filename for affine transformation matrix
-    warp_field: generic/file
-    # type=file|default=<undefined>: filename for 4D warp field for nonlinear registration
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: filename for input vector or tensor field
+    mask: generic/file
+    # type=file|default=<undefined>: brain mask in input space
+    out_file: Path
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+    ref_mask: generic/file
+    # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
+    ref_vol: medimage/nifti1
+    # type=file|default=<undefined>: filename for reference (target) volume
     rotation_mat: generic/file
     # type=file|default=<undefined>: filename for secondary affine matrix if set, this will be used for the rotation of the vector/tensor field
     rotation_warp: generic/file
     # type=file|default=<undefined>: filename for secondary warp field if set, this will be used for the rotation of the vector/tensor field
-    mask: generic/file
-    # type=file|default=<undefined>: brain mask in input space
-    ref_mask: generic/file
-    # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
+    warp_field: generic/file
+    # type=file|default=<undefined>: filename for 4D warp field for nonlinear registration
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -106,7 +112,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -133,7 +139,7 @@ tests:
     # type=file: path/name of filename for the registered vector or tensor field
     # type=file|default=<undefined>: filename for output registered vector or tensor field
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -154,17 +160,17 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"diffusion.nii"'
     # type=file|default=<undefined>: filename for input vector or tensor field
-    affine_mat:
+    affine_mat: '"trans.mat"'
     # type=file|default=<undefined>: filename for affine transformation matrix
-    ref_vol:
+    ref_vol: '"mni.nii"'
     # type=file|default=<undefined>: filename for reference (target) volume
     out_file: '"diffusion_vreg.nii"'
     # type=file: path/name of filename for the registered vector or tensor field
     # type=file|default=<undefined>: filename for output registered vector or tensor field
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

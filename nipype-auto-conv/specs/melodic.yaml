@@ -44,26 +44,32 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    ICs: generic/file
+    # type=file|default=<undefined>: filename of the IC components file for mixture modelling
+    bg_image: generic/file
+    # type=file|default=<undefined>: specify background image for report (default: mean image)
     in_files: medimage/nifti1+list-of
     # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     mask: generic/file
     # type=file|default=<undefined>: file name of mask for thresholding
-    ICs: generic/file
-    # type=file|default=<undefined>: filename of the IC components file for mixture modelling
     mix: generic/file
     # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
-    smode: generic/file
-    # type=file|default=<undefined>: matrix of session modes for report generation
-    bg_image: generic/file
-    # type=file|default=<undefined>: specify background image for report (default: mean image)
-    t_des: datascience/text-matrix
-    # type=file|default=<undefined>: design matrix across time-domain
-    t_con: medimage-fsl/con
-    # type=file|default=<undefined>: t-contrast matrix across time-domain
-    s_des: datascience/text-matrix
-    # type=file|default=<undefined>: design matrix across subject-domain
+    out_dir: Path
+    # type=directory: 
+    # type=directory|default=<undefined>: output directory name
     s_con: medimage-fsl/con
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
+    s_des: datascience/text-matrix
+    # type=file|default=<undefined>: design matrix across subject-domain
+    smode: generic/file
+    # type=file|default=<undefined>: matrix of session modes for report generation
+    t_con: medimage-fsl/con
+    # type=file|default=<undefined>: t-contrast matrix across time-domain
+    t_des: datascience/text-matrix
+    # type=file|default=<undefined>: design matrix across time-domain
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -200,7 +206,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -243,7 +249,7 @@ tests:
     # type=directory: 
     # type=directory|default=<undefined>: output directory name
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -266,7 +272,7 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     approach: '"tica"'
     # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
-    in_files:
+    in_files: '["functional.nii", "functional2.nii", "functional3.nii"]'
     # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     no_bet: 'True'
     # type=bool|default=False: switch off BET
@@ -278,19 +284,19 @@ doctests:
     # type=float|default=0.0: threshold for Mixture Model based inference
     out_stats: 'True'
     # type=bool|default=False: output thresholded maps and probability maps
-    t_des:
+    t_des: '"timeDesign.mat"'
     # type=file|default=<undefined>: design matrix across time-domain
-    t_con:
+    t_con: '"timeDesign.con"'
     # type=file|default=<undefined>: t-contrast matrix across time-domain
-    s_des:
+    s_des: '"subjectDesign.mat"'
     # type=file|default=<undefined>: design matrix across subject-domain
-    s_con:
+    s_con: '"subjectDesign.con"'
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
     out_dir: '"groupICA.out"'
     # type=directory: 
     # type=directory|default=<undefined>: output directory name
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

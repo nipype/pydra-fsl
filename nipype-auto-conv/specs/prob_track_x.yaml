@@ -30,32 +30,41 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    avoid_mp: generic/file
+    # type=file|default=<undefined>: reject pathways passing through locations given by this mask
+    fsamples: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: 
+    inv_xfm: generic/file
+    # type=file|default=<undefined>: transformation matrix taking DTI space to seed space (compulsory when using a warp_field for seeds_to_dti)
+    mask: medimage/nifti1
+    # type=file|default=<undefined>: bet binary mask file in diffusion space
     mask2: generic/file
     # type=file|default=<undefined>: second bet binary mask (in diffusion space) in twomask_symm mode
     mesh: generic/file
     # type=file|default=<undefined>: Freesurfer-type surface descriptor (in ascii format)
-    thsamples: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: 
+    out_dir: Path
+    # type=directory|default=<undefined>: directory to put the final volumes in
     phsamples: medimage/nifti1+list-of
     # type=inputmultiobject|default=[]: 
-    fsamples: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: 
-    mask: medimage/nifti1
-    # type=file|default=<undefined>: bet binary mask file in diffusion space
-    target_masks: medimage/nifti1+list-of
-    # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
-    waypoints: generic/file
-    # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
     seed_ref: generic/file
     # type=file|default=<undefined>: reference vol to define seed space in simple mode - diffusion space assumed if absent
-    avoid_mp: generic/file
-    # type=file|default=<undefined>: reject pathways passing through locations given by this mask
     stop_mask: generic/file
     # type=file|default=<undefined>: stop tracking at locations given by this mask file
+    target_masks: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
+    thsamples: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: 
+    waypoints: generic/file
+    # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
     xfm: datascience/text-matrix
     # type=file|default=<undefined>: transformation matrix taking seed space to DTI space (either FLIRT matrix or FNIRT warp_field) - default is identity
-    inv_xfm: generic/file
-    # type=file|default=<undefined>: transformation matrix taking DTI space to seed space (compulsory when using a warp_field for seeds_to_dti)
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+    mode: mode_default
+    # type=enum|default='simple'|allowed['seedmask','simple','two_mask_symm']: options: simple (single seed voxel), seedmask (mask of seed voxels), twomask_symm (two bet binary masks)
+    out_dir: out_dir_default
+    # type=directory|default=<undefined>: directory to put the final volumes in
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -69,8 +78,14 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    fdt_paths: generic/file+list-of
+    # type=outputmultiobject: path/name of a 3D image file containing the output connectivity distribution to the seed mask
     log: generic/file
     # type=file: path/name of a text record of the command that was run
+    particle_files: generic/file+list-of
+    # type=list: Files describing all of the tract samples. Generated only if verbose is set to 2
+    targets: generic/file+list-of
+    # type=list: a list with all generated seeds_to_target files
     way_total: generic/file
     # type=file: path/name of a text file containing a single number corresponding to the total number of generated tracts that have not been rejected by inclusion/exclusion mask criteria
   callables:
@@ -78,10 +93,6 @@ outputs:
   # to set to the `callable` attribute of output fields
   templates:
   # dict[str, str] - `output_file_template` values to be provided to output fields
-    mode: '"seedmask"'
-    # type=enum|default='simple'|allowed['seedmask','simple','two_mask_symm']: options: simple (single seed voxel), seedmask (mask of seed voxels), twomask_symm (two bet binary masks)
-    out_dir: '"."'
-    # type=directory|default=<undefined>: directory to put the final volumes in
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -167,7 +178,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -215,7 +226,7 @@ tests:
     out_dir: '"."'
     # type=directory|default=<undefined>: directory to put the final volumes in
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -238,13 +249,13 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     samples_base_name: '"merged"'
     # type=str|default='merged': the rootname/base_name for samples files
-    mask:
+    mask: '"mask.nii"'
     # type=file|default=<undefined>: bet binary mask file in diffusion space
     seed: '"MASK_average_thal_right.nii"'
     # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
     mode: '"seedmask"'
     # type=enum|default='simple'|allowed['seedmask','simple','two_mask_symm']: options: simple (single seed voxel), seedmask (mask of seed voxels), twomask_symm (two bet binary masks)
-    xfm:
+    xfm: '"trans.mat"'
     # type=file|default=<undefined>: transformation matrix taking seed space to DTI space (either FLIRT matrix or FNIRT warp_field) - default is identity
     n_samples: '3'
     # type=int|default=5000: number of samples - default=5000
@@ -256,18 +267,18 @@ doctests:
     # type=bool|default=True: outputs path distributions
     os2t: 'True'
     # type=bool|default=False: Outputs seeds to targets
-    target_masks:
+    target_masks: '["targets_MASK1.nii", "targets_MASK2.nii"]'
     # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
-    thsamples:
+    thsamples: '"merged_thsamples.nii"'
     # type=inputmultiobject|default=[]: 
-    fsamples:
+    fsamples: '"merged_fsamples.nii"'
     # type=inputmultiobject|default=[]: 
-    phsamples:
+    phsamples: '"merged_phsamples.nii"'
     # type=inputmultiobject|default=[]: 
     out_dir: '"."'
     # type=directory|default=<undefined>: directory to put the final volumes in
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

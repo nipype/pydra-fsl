@@ -1,12 +1,14 @@
-FileFormats-fsl Extras
-======================================
+FileFormats-medimage-fsl Extras
+===============================
+
 .. image:: https://github.com/nipype/pydra-freesurfer/actions/workflows/ci-cd.yaml/badge.svg
     :target: https://github.com/nipype/pydra-freesurfer/actions/workflows/ci-cd.yaml
 
 
-This is a extras module for the `fileformats-fsl <https://github.com/nipype/pydra-freesurfer/>`__
+This is a extras module for the `fileformats-medimage-fsl <https://github.com/nipype/pydra-fsl/>`__
 fileformats extension package, which provides additional functionality to format classes (i.e. aside
-from basic identification and validation), such as conversion tools, metadata parsers, test data generators, etc...
+from basic identification and validation), such as conversion tools, metadata parsers,
+sample data generators, etc...
 
 
 Quick Installation
@@ -14,9 +16,10 @@ Quick Installation
 
 This extension can be installed for Python 3 using *pip*::
 
-    $ pip3 install fileformats-fsl-extras
+    $ pip3 install fileformats-medimage-fsl-extras
 
-This will install the core package and any other dependencies
+This will install the package, base packages, and any other dependencies required to
+implement the extra functionality.
 
 License
 -------

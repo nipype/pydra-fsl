@@ -23,13 +23,16 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    trained_wts_file: generic/file
-    # type=file|default=<undefined>: trained-weights file
     mel_icas: generic/directory+list-of
     # type=inputmultiobject|default=[]: Melodic output directories
-    output_directory: generic/directory
+    output_directory: Path
     # type=directory: Path to folder in which to store the results of the accuracy test.
     # type=directory|default=<undefined>: Path to folder in which to store the results of the accuracy test.
+    trained_wts_file: generic/file
+    # type=file|default=<undefined>: trained-weights file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -69,7 +72,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

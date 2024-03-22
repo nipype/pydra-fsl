@@ -8,9 +8,9 @@ description = "Extensions to add functionality to tool-specific *fileformats* cl
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
-    "fileformats >= 0.7",
+    "fileformats",
     "fileformats-medimage-fsl",
-    "pydra >= 0.22.0"
+    "pydra >= 0.23.0a"
 ]
 license = {file = "LICENSE"}
 authors = [

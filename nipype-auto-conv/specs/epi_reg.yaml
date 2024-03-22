@@ -45,21 +45,24 @@ inputs:
   # passed to the field in the automatically generated unittests.
     epi: medimage/nifti1
     # type=file|default=<undefined>: EPI image
-    t1_head: medimage/nifti1
-    # type=file|default=<undefined>: wholehead T1 image
-    t1_brain: medimage/nifti1
-    # type=file|default=<undefined>: brain extracted T1 image
     fmap: medimage/nifti1
     # type=file|default=<undefined>: fieldmap image (in rad/s)
     fmapmag: medimage/nifti1
     # type=file|default=<undefined>: fieldmap magnitude image - wholehead
     fmapmagbrain: medimage/nifti1
     # type=file|default=<undefined>: fieldmap magnitude image - brain extracted
-    wmseg: generic/file
-    # type=file: white matter segmentation used in flirt bbr
-    # type=file|default=<undefined>: white matter segmentation of T1 image, has to be named                  like the t1brain and end on _wmseg
+    t1_brain: medimage/nifti1
+    # type=file|default=<undefined>: brain extracted T1 image
+    t1_head: medimage/nifti1
+    # type=file|default=<undefined>: wholehead T1 image
     weight_image: generic/file
     # type=file|default=<undefined>: weighting image (in T1 space)
+    wmseg: Path
+    # type=file: white matter segmentation used in flirt bbr
+    # type=file|default=<undefined>: white matter segmentation of T1 image, has to be named                  like the t1brain and end on _wmseg
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -73,35 +76,35 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    out_file: generic/file
-    # type=file: unwarped and coregistered epi input
-    out_1vol: generic/file
-    # type=file: unwarped and coregistered single volume
-    fmap2str_mat: generic/file
-    # type=file: rigid fieldmap-to-structural transform
+    epi2str_inv: generic/file
+    # type=file: rigid structural-to-epi transform
+    epi2str_mat: generic/file
+    # type=file: rigid epi-to-structural transform
     fmap2epi_mat: generic/file
     # type=file: rigid fieldmap-to-epi transform
+    fmap2str_mat: generic/file
+    # type=file: rigid fieldmap-to-structural transform
     fmap_epi: generic/file
     # type=file: fieldmap in epi space
     fmap_str: generic/file
     # type=file: fieldmap in structural space
     fmapmag_str: generic/file
     # type=file: fieldmap magnitude image in structural space
-    epi2str_inv: generic/file
-    # type=file: rigid structural-to-epi transform
-    epi2str_mat: generic/file
-    # type=file: rigid epi-to-structural transform
-    shiftmap: generic/file
-    # type=file: shiftmap in epi space
     fullwarp: generic/file
     # type=file: warpfield to unwarp epi and transform into                     structural space
+    out_1vol: generic/file
+    # type=file: unwarped and coregistered single volume
+    out_file: generic/file
+    # type=file: unwarped and coregistered epi input
+    seg: generic/file
+    # type=file: white matter, gray matter, csf segmentation
+    shiftmap: generic/file
+    # type=file: shiftmap in epi space
+    wmedge: generic/file
+    # type=file: white matter edges for visualization
     wmseg: generic/file
     # type=file: white matter segmentation used in flirt bbr
     # type=file|default=<undefined>: white matter segmentation of T1 image, has to be named                  like the t1brain and end on _wmseg
-    seg: generic/file
-    # type=file: white matter, gray matter, csf segmentation
-    wmedge: generic/file
-    # type=file: white matter edges for visualization
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -147,7 +150,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -183,7 +186,7 @@ tests:
     pedir: '"y"'
     # type=enum|default='x'|allowed['-x','-y','-z','x','y','z']: phase encoding direction, dir = x/y/z/-x/-y/-z
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -204,26 +207,26 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    epi:
+    epi: '"epi.nii"'
     # type=file|default=<undefined>: EPI image
-    t1_head:
+    t1_head: '"T1.nii"'
     # type=file|default=<undefined>: wholehead T1 image
-    t1_brain:
+    t1_brain: '"T1_brain.nii"'
     # type=file|default=<undefined>: brain extracted T1 image
     out_base: '"epi2struct"'
     # type=string|default='epi2struct': output base name
-    fmap:
+    fmap: '"fieldmap_phase_fslprepared.nii"'
     # type=file|default=<undefined>: fieldmap image (in rad/s)
-    fmapmag:
+    fmapmag: '"fieldmap_mag.nii"'
     # type=file|default=<undefined>: fieldmap magnitude image - wholehead
-    fmapmagbrain:
+    fmapmagbrain: '"fieldmap_mag_brain.nii"'
     # type=file|default=<undefined>: fieldmap magnitude image - brain extracted
     echospacing: '0.00067'
     # type=float|default=0.0: Effective EPI echo spacing                                 (sometimes called dwell time) - in seconds
     pedir: '"y"'
     # type=enum|default='x'|allowed['-x','-y','-z','x','y','z']: phase encoding direction, dir = x/y/z/-x/-y/-z
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -39,10 +39,16 @@ inputs:
   # passed to the field in the automatically generated unittests.
     background_image: generic/file
     # type=file|default=<undefined>: image to use as background
+    out_file: Path
+    # type=file: combined image volume
+    # type=file|default=<undefined>: combined image volume
     stat_image: generic/file
     # type=file|default=<undefined>: statistical image to overlay in color
     stat_image2: generic/file
     # type=file|default=<undefined>: second statistical image to overlay in color
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -107,7 +113,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

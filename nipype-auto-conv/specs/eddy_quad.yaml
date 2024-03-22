@@ -43,20 +43,23 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    idx_file: generic/file
-    # type=file|default=<undefined>: File containing indices for all volumes into acquisition parameters
-    param_file: text/text-file
-    # type=file|default=<undefined>: File containing acquisition parameters
-    mask_file: generic/file
-    # type=file|default=<undefined>: Binary mask file
     bval_file: generic/file
     # type=file|default=<undefined>: b-values file
     bvec_file: generic/file
     # type=file|default=<undefined>: b-vectors file - only used when <base_name>.eddy_residuals file is present
     field: generic/file
     # type=file|default=<undefined>: TOPUP estimated field (in Hz)
+    idx_file: generic/file
+    # type=file|default=<undefined>: File containing indices for all volumes into acquisition parameters
+    mask_file: generic/file
+    # type=file|default=<undefined>: Binary mask file
+    param_file: text/text-file
+    # type=file|default=<undefined>: File containing acquisition parameters
     slice_spec: generic/file
     # type=file|default=<undefined>: Text file specifying slice/group acquisition
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -70,16 +73,22 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    avg_b0_pe_png: generic/file+list-of
+    # type=list: Image showing mid-sagittal, -coronal and -axial slices of each averaged pe-direction b0 volume. Generated when using the -f option.
+    avg_b_png: generic/file+list-of
+    # type=list: Image showing mid-sagittal, -coronal and -axial slices of each averaged b-shell volume.
+    clean_volumes: generic/file
+    # type=file: Text file containing a list of clean volumes, based on the eddy squared residuals. To generate a version of the pre-processed dataset without outlier volumes, use: `fslselectvols -i <eddy_corrected_data> -o eddy_corrected_data_clean --vols=vols_no_outliers.txt`
+    cnr_png: generic/file+list-of
+    # type=list: Image showing mid-sagittal, -coronal and -axial slices of each b-shell CNR volume. Generated when CNR maps are available.
     qc_json: generic/file
     # type=file: Single subject database containing quality metrics and data info.
     qc_pdf: generic/file
     # type=file: Single subject QC report.
-    vdm_png: generic/file
-    # type=file: Image showing mid-sagittal, -coronal and -axial slices of the voxel displacement map. Generated when using the -f option.
     residuals: generic/file
     # type=file: Text file containing the volume-wise mask-averaged squared residuals. Generated when residual maps are available.
-    clean_volumes: generic/file
-    # type=file: Text file containing a list of clean volumes, based on the eddy squared residuals. To generate a version of the pre-processed dataset without outlier volumes, use: `fslselectvols -i <eddy_corrected_data> -o eddy_corrected_data_clean --vols=vols_no_outliers.txt`
+    vdm_png: generic/file
+    # type=file: Image showing mid-sagittal, -coronal and -axial slices of the voxel displacement map. Generated when using the -f option.
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -118,7 +127,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -140,7 +149,7 @@ tests:
     output_dir: '"eddy_corrected.qc"'
     # type=str|default='': Output directory - default = '<base_name>.qc'
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -161,12 +170,12 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    param_file:
+    param_file: '"epi_acqp.txt"'
     # type=file|default=<undefined>: File containing acquisition parameters
     output_dir: '"eddy_corrected.qc"'
     # type=str|default='': Output directory - default = '<base_name>.qc'
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

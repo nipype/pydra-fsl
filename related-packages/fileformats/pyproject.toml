@@ -8,8 +8,8 @@ description = "Classes for representing different file formats in Python classes
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
-    "fileformats >= 0.4",
-    "fileformats-medimage >= 0.2"
+    "fileformats",
+    "fileformats-medimage"
 ]
 license = {file = "LICENSE"}
 authors = [

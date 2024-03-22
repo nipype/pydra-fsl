@@ -1,0 +1,6 @@
+Pydra-fsl
+Copyright 2024 Pydra Development Team
+
+The bases for the task interfaces defined in this package were semi-automatically converted
+from Nipype interfaces (https://github.com/nipy/nipype) using the Nipype2Pydra tool
+(https://github.com/nipype/nipype2pydra).

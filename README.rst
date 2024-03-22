@@ -1,11 +1,11 @@
-===============================
+==========================
 Pydra task package for fsl
-===============================
+==========================
 
-.. image:: https://github.com/nipype/pydra-fsl/actions/workflows/pythonpackage.yaml/badge.svg
-   :target: https://github.com/nipype/pydra-fsl/actions/workflows/pythonpackage.yaml
-.. .. image:: https://codecov.io/gh/nipype/pydra-fsl/branch/main/graph/badge.svg?token=UIS0OGPST7
-..    :target: https://codecov.io/gh/nipype/pydra-fsl
+.. image:: https://github.com/nipype/pydra-fsl/actions/workflows/ci-cd.yaml/badge.svg
+   :target: https://github.com/nipype/pydra-fsl/actions/workflows/ci-cd.yaml
+.. image:: https://codecov.io/gh/nipype/pydra-fsl/branch/main/graph/badge.svg?token=UIS0OGPST7
+   :target: https://codecov.io/gh/nipype/pydra-fsl
 .. image:: https://img.shields.io/pypi/pyversions/pydra-fsl.svg
    :target: https://pypi.python.org/pypi/pydra-fsl/
    :alt: Supported Python versions
@@ -71,6 +71,14 @@ Contributing to this package
 Developer installation
 ~~~~~~~~~~~~~~~~~~~~~~
 
+Install the `fileformats <https://arcanaframework.github.io/fileformats/>`__ packages
+corresponding to AFNI specific file formats
+
+
+.. code-block::
+
+   $ pip install -e ./related-packages/fileformats[dev]
+   $ pip install -e ./related-packages/fileformats-extras[dev]
 
 Install repo in developer mode from the source directory and install pre-commit to
 ensure consistent code-style and quality.
@@ -78,7 +86,7 @@ ensure consistent code-style and quality.
 .. code-block::
 
    $ pip install -e .[test,dev]
-$ pre-commit install
+   $ pre-commit install
 
 Next install the requirements for running the auto-conversion script and generate the
 Pydra task interfaces from their Nipype counterparts
@@ -93,7 +101,8 @@ The run the conversion script to convert Nipype interfaces to Pydra
 
    $ nipype-auto-conv/generate
 
-## Methodology
+Methodology
+~~~~~~~~~~~
 
 The development of this package is expected to have two phases
 

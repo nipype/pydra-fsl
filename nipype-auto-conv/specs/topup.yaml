@@ -41,21 +41,24 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: medimage/nifti1
-    # type=file|default=<undefined>: name of 4D file with images
     encoding_file: text/text-file
     # type=file|default=<undefined>: name of text file with PE directions/times
-    out_base: generic/file
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: name of 4D file with images
+    out_base: Path
     # type=file|default=<undefined>: base-name of output files (spline coefficients (Hz) and movement parameters)
-    out_field: generic/file
-    # type=file: name of image file with field (Hz)
-    # type=file|default=<undefined>: name of image file with field (Hz)
-    out_corrected: generic/file
+    out_corrected: Path
     # type=file: name of 4D image file with unwarped images
     # type=file|default=<undefined>: name of 4D image file with unwarped images
-    out_logfile: generic/file
+    out_field: Path
+    # type=file: name of image file with field (Hz)
+    # type=file|default=<undefined>: name of image file with field (Hz)
+    out_logfile: Path
     # type=file: name of log-file
     # type=file|default=<undefined>: name of log-file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -69,21 +72,27 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    out_fieldcoef: generic/file
-    # type=file: file containing the field coefficients
-    out_movpar: generic/file
-    # type=file: movpar.txt output file
+    out_corrected: generic/file
+    # type=file: name of 4D image file with unwarped images
+    # type=file|default=<undefined>: name of 4D image file with unwarped images
     out_enc_file: generic/file
     # type=file: encoding directions file output for applytopup
     out_field: generic/file
     # type=file: name of image file with field (Hz)
     # type=file|default=<undefined>: name of image file with field (Hz)
-    out_corrected: generic/file
-    # type=file: name of 4D image file with unwarped images
-    # type=file|default=<undefined>: name of 4D image file with unwarped images
+    out_fieldcoef: generic/file
+    # type=file: file containing the field coefficients
+    out_jacs: generic/file+list-of
+    # type=list: Jacobian images
     out_logfile: generic/file
     # type=file: name of log-file
     # type=file|default=<undefined>: name of log-file
+    out_mats: generic/file+list-of
+    # type=list: realignment matrices
+    out_movpar: generic/file
+    # type=file: movpar.txt output file
+    out_warps: generic/file+list-of
+    # type=list: warpfield images
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -157,7 +166,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -181,7 +190,7 @@ tests:
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -202,14 +211,14 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"b0_b0rev.nii"'
     # type=file|default=<undefined>: name of 4D file with images
-    encoding_file:
+    encoding_file: '"topup_encoding.txt"'
     # type=file|default=<undefined>: name of text file with PE directions/times
     output_type: '"NIFTI_GZ"'
     # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

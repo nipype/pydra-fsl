@@ -1,7 +1,8 @@
+from ._version import __version__  # noqa: F401
 from pathlib import Path
 import typing as ty
 from random import Random
-from fileformats.core import FileSet
+from fileformats.core import FileSet, SampleFileGenerator
 from fileformats.medimage_fsl import (
     Con,
 )
@@ -9,5 +10,5 @@ from fileformats.medimage_fsl import (
 
 
 @FileSet.generate_sample_data.register
-def gen_sample_con_data(con: Con, dest_dir: Path, seed: ty.Union[int, Random] = 0, stem: ty.Optional[str] = None) -> ty.Iterable[Path]:
+def gen_sample_con_data(con: Con, generator: SampleFileGenerator) -> ty.Iterable[Path]:
     raise NotImplementedError

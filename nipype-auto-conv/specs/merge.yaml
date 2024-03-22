@@ -46,9 +46,12 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_files: medimage/nifti1+list-of
     # type=list|default=[]: 
-    merged_file: generic/file
+    merged_file: Path
     # type=file: 
     # type=file|default=<undefined>: 
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -92,7 +95,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -118,7 +121,7 @@ tests:
     tr: '2.25'
     # type=float|default=0.0: use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -139,7 +142,7 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_files:
+    in_files: '["functional2.nii", "functional3.nii"]'
     # type=list|default=[]: 
     dimension: '"t"'
     # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
@@ -148,7 +151,7 @@ doctests:
     tr: '2.25'
     # type=float|default=0.0: use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

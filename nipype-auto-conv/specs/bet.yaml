@@ -38,8 +38,14 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: medimage/nifti1
     # type=file|default=<undefined>: input file to skull strip
+    out_file: Path
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
     t2_guided: generic/file
     # type=file|default=<undefined>: as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -53,31 +59,31 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    out_file: medimage/nifti1
-    # type=file: path/name of skullstripped file (if generated)
-    # type=file|default=<undefined>: name of output skull stripped image
-    mask_file: generic/file
-    # type=file: path/name of binary brain mask (if generated)
-    outline_file: generic/file
-    # type=file: path/name of outline file (if generated)
-    meshfile: generic/file
-    # type=file: path/name of vtk mesh file (if generated)
     inskull_mask_file: generic/file
     # type=file: path/name of inskull mask (if generated)
     inskull_mesh_file: generic/file
     # type=file: path/name of inskull mesh outline (if generated)
-    outskull_mask_file: generic/file
-    # type=file: path/name of outskull mask (if generated)
-    outskull_mesh_file: generic/file
-    # type=file: path/name of outskull mesh outline (if generated)
+    mask_file: generic/file
+    # type=file: path/name of binary brain mask (if generated)
+    meshfile: generic/file
+    # type=file: path/name of vtk mesh file (if generated)
+    out_file: medimage/nifti1
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+    outline_file: generic/file
+    # type=file: path/name of outline file (if generated)
     outskin_mask_file: generic/file
     # type=file: path/name of outskin mask (if generated)
     outskin_mesh_file: generic/file
     # type=file: path/name of outskin mesh outline (if generated)
-    skull_mask_file: generic/file
-    # type=file: path/name of skull mask (if generated)
+    outskull_mask_file: generic/file
+    # type=file: path/name of outskull mask (if generated)
+    outskull_mesh_file: generic/file
+    # type=file: path/name of outskull mesh outline (if generated)
     skull_file: generic/file
     # type=file: path/name of skull file (if generated)
+    skull_mask_file: generic/file
+    # type=file: path/name of skull mask (if generated)
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -138,7 +144,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -163,7 +169,7 @@ tests:
     # type=file: path/name of skullstripped file (if generated)
     # type=file|default=<undefined>: name of output skull stripped image
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -184,7 +190,7 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"structural.nii"'
     # type=file|default=<undefined>: input file to skull strip
     frac: '0.7'
     # type=float|default=0.0: fractional intensity threshold
@@ -192,7 +198,7 @@ doctests:
     # type=file: path/name of skullstripped file (if generated)
     # type=file|default=<undefined>: name of output skull stripped image
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

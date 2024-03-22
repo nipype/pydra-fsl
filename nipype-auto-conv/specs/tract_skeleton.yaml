@@ -42,21 +42,24 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: generic/file
-    # type=file|default=<undefined>: input image (typically mean FA volume)
-    distance_map: generic/file
-    # type=file|default=<undefined>: distance map image
-    search_mask_file: generic/file
-    # type=file|default=<undefined>: mask in which to use alternate search rule
-    data_file: generic/file
-    # type=file|default=<undefined>: 4D data to project onto skeleton (usually FA)
     alt_data_file: generic/file
     # type=file|default=<undefined>: 4D non-FA data to project onto skeleton
     alt_skeleton: generic/file
     # type=file|default=<undefined>: alternate skeleton to use
-    projected_data: generic/file
+    data_file: generic/file
+    # type=file|default=<undefined>: 4D data to project onto skeleton (usually FA)
+    distance_map: generic/file
+    # type=file|default=<undefined>: distance map image
+    in_file: generic/file
+    # type=file|default=<undefined>: input image (typically mean FA volume)
+    projected_data: Path
     # type=file: input data projected onto skeleton
     # type=file|default=<undefined>: input data projected onto skeleton
+    search_mask_file: generic/file
+    # type=file|default=<undefined>: mask in which to use alternate search rule
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -118,7 +121,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

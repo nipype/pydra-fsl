@@ -33,12 +33,15 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: generic/file
-    # type=file|default=<undefined>: input data file
-    out_file: generic/file
-    # type=file|default='segmented': output data file
     affine_file: generic/file
     # type=file|default=<undefined>: Affine matrix to use (e.g. img2std.mat) (does not re-run registration)
+    in_file: generic/file
+    # type=file|default=<undefined>: input data file
+    out_file: Path
+    # type=file|default='segmented': output data file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -52,10 +55,14 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    bvars: generic/file+list-of
+    # type=outputmultiobject: bvars for each subcortical region
     original_segmentations: generic/file
     # type=file: 3D image file containing the segmented regions as integer values. Uses CMA labelling
     segmentation_file: generic/file
     # type=file: 4D image file containing a single volume per segmented region
+    vtk_surfaces: generic/file+list-of
+    # type=outputmultiobject: VTK format meshes for each subcortical region
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -92,7 +99,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

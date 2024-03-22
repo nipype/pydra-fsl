@@ -26,12 +26,15 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
     # type=file|default=<undefined>: input filename
-    out_roi: generic/file
+    out_roi: Path
     # type=file: ROI volume output name
     # type=file|default=<undefined>: ROI volume output name
-    out_transform: generic/file
+    out_transform: Path
     # type=file: Transformation matrix in_file to out_roi output name
     # type=file|default=<undefined>: Transformation matrix in_file to out_roi output name
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -79,7 +82,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

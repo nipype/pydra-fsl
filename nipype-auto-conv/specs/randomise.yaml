@@ -31,18 +31,21 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: medimage/nifti1
-    # type=file|default=<undefined>: 4D input file
     design_mat: datascience/text-matrix
     # type=file|default=<undefined>: design matrix file
-    tcon: medimage-fsl/con
-    # type=file|default=<undefined>: t contrasts file
     fcon: generic/file
     # type=file|default=<undefined>: f contrasts file
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: 4D input file
     mask: medimage/nifti1
     # type=file|default=<undefined>: mask image
+    tcon: medimage-fsl/con
+    # type=file|default=<undefined>: t contrasts file
     x_block_labels: generic/file
     # type=file|default=<undefined>: exchangeability block labels file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
   metadata:
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
@@ -56,6 +59,18 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    f_corrected_p_files: generic/file+list-of
+    # type=list: f contrast FWE (Family-wise error) corrected p values files
+    f_p_files: generic/file+list-of
+    # type=list: f contrast uncorrected p values files
+    fstat_files: generic/file+list-of
+    # type=list: f contrast raw statistic
+    t_corrected_p_files: generic/file+list-of
+    # type=list: t contrast FWE (Family-wise error) corrected p values files
+    t_p_files: generic/file+list-of
+    # type=list: f contrast uncorrected p values files
+    tstat_files: generic/file+list-of
+    # type=list: t contrast raw statistic
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
@@ -128,7 +143,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -154,7 +169,7 @@ tests:
     design_mat:
     # type=file|default=<undefined>: design matrix file
   imports: &id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.interfaces.fsl as fsl
   expected_outputs:
@@ -176,16 +191,16 @@ doctests:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
-    in_file:
+    in_file: '"allFA.nii"'
     # type=file|default=<undefined>: 4D input file
-    mask:
+    mask: '"mask.nii"'
     # type=file|default=<undefined>: mask image
-    tcon:
+    tcon: '"design.con"'
     # type=file|default=<undefined>: t contrasts file
-    design_mat:
+    design_mat: '"design.mat"'
     # type=file|default=<undefined>: design matrix file
   imports: *id001
-  # list[nipype2pydra.task.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
