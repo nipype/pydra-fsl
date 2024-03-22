@@ -14,10 +14,12 @@ Pydra task package for fsl
    :alt: Latest Version
 
 
-This package contains a collection of Pydra task interfaces for the fsl toolkit.
-The basis of this collection has been formed by the semi-automatic conversion of
-existing `Nipype <https://github.com/nipy/nipype>`__ interfaces to Pydra using the
-`Nipype2Pydra <https://github.com/nipype/nipype2pydra>`__ tool
+This repository aims to be the canonical set of Pydra tasks for incorporating
+`FSL <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/>`__ tools into a Pydra workflow.
+
+Part of this effort is to establish a (mostly) declarative language for describing tasks that
+potentially have intricate rules for determining the availability and names from the choice of
+inputs. 
 
 
 Automatically-generated vs manually-curated tasks
@@ -161,3 +163,151 @@ docs <https://arcanaframework.github.io/fileformats/developer.html>`__ for instr
 new fileformat types, and see 
 `fileformats-medimage-extras <https://github.com/ArcanaFramework/fileformats-medimage-extras/blob/6c2dabe91e95687eebc2639bb6f034cf9595ecfc/fileformats/extras/medimage/nifti.py#L30-L48>`__
 for an example on how to implement methods to generate sample data for them.
+
+
+Interface progress
+==================
+
+Below is a list of all planned interfaces, with completed interfaces checked. The list was copied from the nipype documentation at https://nipype.readthedocs.io/en/latest/api/generated/nipype.interfaces.fsl.html.
+
+Preprocess
+----------
+
+- [x] ApplyWarp (`applywarp`)
+- [ ] ApplyXFM (`flirt`)
+- [x] BET (`bet`)
+- [x] FAST (`fast`)
+- [x] FIRST (`first`)
+- [x] FLIRT (`flirt`)
+- [x] FNIRT (`fnirt`)
+- [ ] FUGUE (`fugue`)
+- [x] MCFLIRT (`mcflirt`)
+- [x] PRELUDE (`prelude`)
+- [x] SUSAN (`susan`)
+- [x] SliceTimer (`slicetimer`)
+
+AROMA
+-----
+
+- [ ] ICA_AROMA (`ICA_AROMA.py`)
+
+DTI
+---
+
+- [ ] BEDPOSTX / BEDPOSTX5 (`bedpostx`)
+- [ ] DTIFit (`dtifit`)
+- [ ] DistanceMap (`distancemap`)
+- [ ] FSLXCommand (`xfibres` and `bedpost`)
+- [ ] FindTheBiggest (`find_the_biggest`)
+- [ ] MakeDyadicVectors (`make_dyadic_vectors`)
+- [ ] ProbTrackX (`probtrackx`)
+- [ ] ProbTrackX2 (`probtrackx2`)
+- [ ] ProjThresh (`proj_thresh`)
+- [ ] TractSkeleton (`tbss_skeleton`)
+- [ ] VecReg (`vecreg`)
+- [ ] XFibres / XFibres5 (`xfibres`)
+
+EPI
+---
+
+- [ ] ApplyTOPUP (`applytopup`)
+- [ ] EPIDeWarp (`epidewarp.fsl`; depreciated)
+- [ ] Eddy (`eddy_openmp`)
+- [ ] EddyCorrect (`eddy_correct`; depreciated)
+- [ ] EddyQuad (`eddy_quad`)
+- [ ] EpiReg (`epi_reg`)
+- [ ] PrepareFieldmap (`fsl_prepare_fieldmap`)
+- [ ] SigLoss (`sigloss`)
+- [ ] TOPUP (`topup`)
+
+FIX
+---
+
+- [ ] Classifier (`fix -c`)
+- [ ] Cleaner (`fix -a`)
+- [ ] FeatureExtractor (`fix -f`)
+- [ ] Training (`fix -t`)
+- [ ] TrainingSetCreator
+
+Utils
+-----
+
+- [ ] AvScale (`avscale`)
+- [ ] Complex (`fslcomplex`)
+- [ ] ConvertWarp (`convertwarp`)
+- [ ] ConvertXFM (`convert_xfm`)
+- [ ] CopyGeom (`fslcpgeom`)
+- [ ] ExtractROI (`fslroi`)
+- [ ] FilterRegressor (`fsl_regfilt`)
+- [ ] ImageMaths (`fslmaths`)
+- [ ] ImageMeants (`fslmeants`)
+- [ ] ImageStats (`fslstats`)
+- [ ] InvWarp (`invwarp`)
+- [ ] Merge (`fslmerge`)
+- [ ] MotionOutliers (`fsl_motion_outliers`)
+- [ ] Overlay (`overlay`)
+- [ ] PlotMotionParams (`fsl_tsplot`)
+- [ ] PlotTimeSeries (`fsl_tsplot`)
+- [ ] PowerSpectrum (`fslpspec`)
+- [ ] Reorient2Std (`fslreorient2std`)
+- [ ] RobustFOV (`robustfov`)
+- [ ] SigLoss (`sigloss`)
+- [ ] Slice (`fslslice`)
+- [ ] Slicer (`slicer`)
+- [ ] Smooth (`fslmaths`)
+- [ ] Split (`fslsplit`)
+- [ ] SwapDimensions (`fslswapdim`)
+- [ ] Text2Vest (`text2vest`)
+- [ ] Vest2Text (`vest2text`)
+- [ ] WarpPoints (`img2imgcoord`)
+- [ ] WarpPointsFromStd (`std2imgcoord`)
+- [ ] WarpPointsToStd (`img2stdcoord`)
+- [ ] WarpUtils (`fnirtfileutils`)
+
+POSSUM
+------
+
+- [ ] B0Calc (`b0calc`)
+
+### Model
+
+- [ ] Cluster (`cluster`)
+- [ ] ContrastMgr (`contrast_mgr`)
+- [ ] DualRegression (`dual_regression`)
+- [ ] FEAT (`feat`)
+- [ ] FEATModel (`feat_model`)
+- [ ] FEATRegister
+- [ ] FILMGLS (`film_gls`)
+- [ ] FLAMEO (`flameo`)
+- [ ] GLM (`fsl_glm`)
+- [ ] L2Model
+- [ ] Level1Design
+- [ ] MELODIC (`melodic`)
+- [ ] MultipleRegressDesign
+- [ ] Randomise (`randomise`)
+- [ ] SMM (`mm --ld=logdir`)
+- [ ] SmoothEstimate (`smoothest`)
+
+Maths
+-----
+
+- [ ] AR1Image (`fslmaths`)
+- [ ] ApplyMask (`fslmaths`)
+- [ ] BinaryMaths (`fslmaths`)
+- [ ] ChangeDataType (`fslmaths`)
+- [ ] DilateImage (`fslmaths`)
+- [ ] ErodeImage (`fslmaths`)
+- [ ] IsotropicSmooth (`fslmaths`)
+- [ ] MathsCommand (`fslmaths`)
+- [ ] MaxImage (`fslmaths`)
+- [ ] MaxnImage (`fslmaths`)
+- [ ] MeanImage (`fslmaths`)
+- [ ] MedianImage (`fslmaths`)
+- [ ] MinImage (`fslmaths`)
+- [ ] MultiImageMaths (`fslmaths`)
+- [ ] PercentileImage (`fslmaths`)
+- [ ] SpatialFilter (`fslmaths`)
+- [ ] StdImage (`fslmaths`)
+- [ ] TemporalFilter (`fslmaths`)
+- [ ] Threshold (`fslmaths`)
+- [ ] UnaryMaths (`fslmaths`)

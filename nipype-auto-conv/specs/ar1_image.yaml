@@ -62,7 +62,7 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     dimension:
-    # type=enum|default='T'|allowed['T','X','Y','Z']: dimension to find AR(1) coefficientacross
+    # type=enum|default='T'|allowed['T','X','Y','Z']: dimension to find AR(1) coefficient across
     in_file:
     # type=file|default=<undefined>: image to operate on
     out_file:

@@ -22,7 +22,7 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    mel_icas: generic/directory+list-of
+    mel_icas: generic/file+list-of
     # type=inputmultiobject|default=[]: Melodic output directories
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`

@@ -152,7 +152,7 @@ tests:
     c_thresh:
     # type=float|default=0.0: curvature threshold - default=0.2
     sample_random_points:
-    # type=bool|default=False: sample random points within seed voxels
+    # type=float|default=0.0: sample random points within seed voxels
     step_length:
     # type=float|default=0.0: step_length in mm - default=0.5
     loop_check:
@@ -166,7 +166,7 @@ tests:
     mod_euler:
     # type=bool|default=False: use modified euler streamlining
     random_seed:
-    # type=bool|default=False: random seed
+    # type=int|default=0: random seed
     s2tastext:
     # type=bool|default=False: output seed-to-target counts as a text file (useful when seeding from a mesh)
     verbose:
