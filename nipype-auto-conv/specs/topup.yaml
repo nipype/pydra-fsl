@@ -56,10 +56,23 @@ inputs:
     # type=file: name of image file with field (Hz)
     out_logfile: Path
     # type=file: name of log-file
+    # type=file|default=<undefined>: name of log-file
+    warp_res: typing.List[float]
+    subsamp: typing.List[int]
+    fwhm: typing.List[float]
+    reg_lambda: typing.List[float]
+    regmod: str
+    estmov: typing.List[int]
+    minmet: typing.List[int]
+    splineorder: int
+    interp: str
+    scale: bool
   callable_defaults:
-  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
-  # to set as the `default` method of input fields
+    # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+    # to set as the `default` method of input fields
   metadata:
+    scale:
+      argstr: "--scale {int(scale)}"
   # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
 outputs:
   omit:
