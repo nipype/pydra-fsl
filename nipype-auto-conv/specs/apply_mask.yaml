@@ -20,7 +20,7 @@ inputs:
     # from the nipype interface, but you may want to be more specific, particularly
     # for file types, where specifying the format also specifies the file that will be
     # passed to the field in the automatically generated unittests.
-    mask_file: medimage/nifti-gz
+    mask_file: medimage/mask+nifti-gz
     # type=file|default=<undefined>: binary image defining mask space
     in_file: medimage/nifti-gz
     # type=file|default=<undefined>: image to operate on
