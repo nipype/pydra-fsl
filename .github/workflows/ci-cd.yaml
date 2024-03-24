@@ -45,7 +45,7 @@ jobs:
     - name: Run automatic Nipype > Pydra conversion
       run: ./nipype-auto-conv/generate
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: converted-nipype
         path: pydra/tasks/fsl/auto
@@ -71,7 +71,7 @@ jobs:
       run: git checkout $(git tag -l | grep 'v.*' | tail -n 1 | awk -F post '{print $1}')
 
     - name: Download tasks converted from Nipype
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: converted-nipype
         path: pydra/tasks/fsl/auto
@@ -152,7 +152,7 @@ jobs:
         fsl-znzlib fsl_mrs fsl_sub fsl_sub_plugin_sge fsl_sub_plugin_slurm
 
     - name: Download tasks converted from Nipype
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: converted-nipype
         path: pydra/tasks/fsl/auto
@@ -303,7 +303,7 @@ jobs:
       run: git checkout ${{ steps.latest_tag.outputs.TAG }}
 
     - name: Download tasks converted from Nipype
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: converted-nipype
         path: pydra/tasks/fsl/auto
@@ -357,7 +357,7 @@ jobs:
     - name: Check distributions
       run: twine check dist/*
 
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: distributions
         path: dist/
@@ -393,6 +393,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Generate progress report
         id: generate-report
         run: |
@@ -402,14 +405,14 @@ jobs:
       - name: Report progress to Nipype2Pydra repo
         if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
         run: >-
-          curl -XPOST -u "${{ env.POST_RELEASE_PAT }}" -H "Accept: application/vnd.github.everest-preview+json"
+          curl -XPOST -u "${{ env.REPORT_PROGRESS_PAT }}" -H "Accept: application/vnd.github.everest-preview+json"
           "https://api.github.com/repos/nipype/pydra-fsl/dispatches"
           -d '{
             "event_type": "progress-report",
             "client_payload": ${{ steps.generate-report.output.progress_report }}
           }'
         env:
-          PAT: ${{ env.PROGRESS_REPORT_PAT }}
+          PAT: ${{ env.REPORT_PROGRESS_PAT }}
 
 
 # Deploy on tags if PYPI_API_TOKEN is defined in the repository secrets.
