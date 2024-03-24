@@ -134,20 +134,20 @@ jobs:
         conda install -c conda-forge -c https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/public/
         ciftilib cli11 elc fsl-add_module fsl-armawrap fsl-asl_mfree fsl-avwutils fsl-base
         fsl-basil fsl-basisfield fsl-baycest fsl-bet2 fsl-bianca fsl-biancadata fsl-bint
-        fsl-cluster fsl-copain fsl-cprob fsl-cudabasisfield-cuda-10 fsl-cudimot fsl-data_atlases
+        fsl-cluster fsl-copain fsl-cprob fsl-cudimot fsl-data_atlases
         fsl-data_atlases_xtract fsl-data_first_models_317_bin fsl-data_first_models_336_bin fsl-data_linearmni
         fsl-data_omm fsl-data_possum fsl-data_standard fsl-deface fsl-discreteopt fsl-dpm fsl-dwssfp
-        fsl-easyfeat fsl-eddy fsl-eddy-cuda-10 fsl-eddy_qc fsl-fabber_core fsl-fabber_models_asl fsl-fabber_models_cest
+        fsl-easyfeat fsl-eddy fsl-eddy_qc fsl-fabber_core fsl-fabber_models_asl fsl-fabber_models_cest
         fsl-fabber_models_dce fsl-fabber_models_dsc fsl-fabber_models_dualecho fsl-fabber_models_dwi
         fsl-fabber_models_pet fsl-fabber_models_qbold fsl-fabber_models_t1 fsl-fast4 fsl-fastpdlib
-        fsl-fdt fsl-fdt-cuda-10 fsl-feat5 fsl-film fsl-filmbabe fsl-first fsl-first_lib fsl-flameo
+        fsl-fdt fsl-feat5 fsl-film fsl-filmbabe fsl-first fsl-first_lib fsl-flameo
         fsl-flirt fsl-fnirt fsl-fugue fsl-get_standard fsl-giftiio fsl-gps fsl-gradunwarp fsl-gui-bet
         fsl-gui-desktop fsl-installer fsl-lesions fsl-libgdc fsl-libmeshutils fsl-libvis fsl-load_dicom fsl-mcflirt
         fsl-melodic fsl-meshclass fsl-misc_c fsl-misc_scripts fsl-misc_tcl fsl-miscmaths fsl-miscvis
-        fsl-mist fsl-mm fsl-mmorf-cuda-10 fsl-msm fsl-msmreglib fsl-mvdisc fsl-nets fsl-newimage
-        fsl-newmesh fsl-newnifti fsl-newran fsl-oxford_asl fsl-possum fsl-ptx2 fsl-ptx2-cuda-10 fsl-pyfeeds
+        fsl-mist fsl-mm fsl-msm fsl-msmreglib fsl-mvdisc fsl-nets fsl-newimage
+        fsl-newmesh fsl-newnifti fsl-newran fsl-oxford_asl fsl-possum fsl-ptx2 fsl-pyfeeds
         fsl-pyfeeds-tests fsl-pyfix fsl-qboot fsl-randomise fsl-relax fsl-shapemodel fsl-siena fsl-slicetimer
-        fsl-sub fsl-sub-plugin-sge fsl-sub-plugin-slurm fsl-surface fsl-susan fsl-swe fsl-tbss fsl-tirl
+        fsl-sub fsl-sub-plugin-sge fsl-sub-plugin-slurm fsl-surface fsl-susan fsl-swe fsl-tbss
         fsl-topup fsl-utils fsl-vbm fsl-verbena fsl-vtkio fsl-warpfns fsl-wire fsl-xtract fsl-xtract_data
         fsl-znzlib fsl_mrs fsl_sub fsl_sub_plugin_sge fsl_sub_plugin_slurm
 
