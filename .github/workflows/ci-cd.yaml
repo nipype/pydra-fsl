@@ -141,12 +141,12 @@ jobs:
         fsl-fabber_models_dce fsl-fabber_models_dsc fsl-fabber_models_dualecho fsl-fabber_models_dwi
         fsl-fabber_models_pet fsl-fabber_models_qbold fsl-fabber_models_t1 fsl-fast4 fsl-fastpdlib
         fsl-fdt fsl-feat5 fsl-film fsl-filmbabe fsl-first fsl-first_lib fsl-flameo
-        fsl-flirt fsl-fnirt fsl-fugue fsl-get_standard fsl-giftiio fsl-gps fsl-gui-bet
+        fsl-flirt fsl-fnirt fsl-fugue fsl-get_standard fsl-giftiio fsl-gps
         fsl-gui-desktop fsl-installer fsl-lesions fsl-libgdc fsl-libmeshutils fsl-libvis fsl-load_dicom fsl-mcflirt
         fsl-melodic fsl-meshclass fsl-misc_c fsl-misc_scripts fsl-misc_tcl fsl-miscmaths fsl-miscvis
         fsl-mist fsl-mm fsl-msm fsl-msmreglib fsl-mvdisc fsl-nets fsl-newimage
         fsl-newmesh fsl-newnifti fsl-newran fsl-oxford_asl fsl-possum fsl-ptx2 fsl-pyfeeds
-        fsl-pyfeeds-tests fsl-pyfix fsl-qboot fsl-randomise fsl-relax fsl-shapemodel fsl-siena fsl-slicetimer
+        fsl-pyfeeds-tests fsl-qboot fsl-randomise fsl-relax fsl-shapemodel fsl-siena fsl-slicetimer
         fsl-sub fsl-sub-plugin-sge fsl-sub-plugin-slurm fsl-surface fsl-susan fsl-swe fsl-tbss
         fsl-topup fsl-utils fsl-vbm fsl-verbena fsl-vtkio fsl-warpfns fsl-wire fsl-xtract fsl-xtract_data
         fsl-znzlib fsl_mrs fsl_sub fsl_sub_plugin_sge fsl_sub_plugin_slurm
