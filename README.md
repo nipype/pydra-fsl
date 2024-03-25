@@ -25,16 +25,16 @@ for FMRI, MRI and DTI brain imaging data.
 
 ## Available tasks
 
-| Module | Tasks                                                                                                       |
-|--------|-------------------------------------------------------------------------------------------------------------|
-| bet    | BET, RobustFOV                                                                                              |
-| eddy   | Eddy                                                                                                        |
-| fast   | FAST                                                                                                        |
-| flirt  | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                 |
-| fnirt  | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                      |
-| fugue  | FUGUE                                                                                                       |
-| susan  | SUSAN                                                                                                       |
-| utils  | fslmaths, FSLFFT, FSLROI, FSLChFileType, FSLInfo, FSLMerge, FSLReorient2Std, FSLSlice, FSLSplit, FSLSwapDim |
+| Module | Tasks                                                                                                                      |
+|--------|----------------------------------------------------------------------------------------------------------------------------|
+| bet    | BET, RobustFOV                                                                                                             |
+| eddy   | Eddy                                                                                                                       |
+| fast   | FAST                                                                                                                       |
+| flirt  | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                |
+| fnirt  | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                                     |
+| fugue  | FUGUE                                                                                                                      |
+| susan  | SUSAN                                                                                                                      |
+| utils  | fslmaths, FSLFFT, FSLROI, FSLChFileType, FSLInfo, FSLInterleave, FSLMerge, FSLReorient2Std, FSLSlice, FSLSplit, FSLSwapDim |
 
 ## Installation
 
