@@ -19,6 +19,7 @@ Register two images together:
 import os
 
 import attrs
+
 import pydra
 
 __all__ = ["FNIRT"]
