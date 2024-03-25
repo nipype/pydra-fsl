@@ -392,7 +392,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "input image with outliers replaced by predictions",
             "output_file_template": "{output_basename}.eddy_outlier_free_data",
-            "requires": {"replace_outliers"},
+            "requires": ["replace_outliers"],
         }
     )
 
@@ -400,7 +400,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "movement parameters per time-point (slice or group)",
             "output_file_template": "{output_basename}.eddy_movement_over_time",
-            "requires": {"movement_prediction_order"},
+            "requires": ["movement_prediction_order"],
         }
     )
 
@@ -408,7 +408,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "path to optional CNR maps image",
             "output_file_template": "{output_basename}.eddy_cnr_maps",
-            "requires": {"write_cnr_maps"},
+            "requires": ["write_cnr_maps"],
         }
     )
 
@@ -416,7 +416,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "path to optional residuals image",
             "output_file_template": "{output_basename}.eddy_residuals",
-            "requires": {"write_residuals"},
+            "requires": ["write_residuals"],
         }
     )
 

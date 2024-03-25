@@ -165,7 +165,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
                 "one segmentation mask per class, each voxel is assigned a value of "
                 "1 if belonging to the class 0 otherwise."
             ),
-            "requires": {"save_segmentation_masks"},
+            "requires": ["save_segmentation_masks"],
             "callable": get_segmentation_masks,
         }
     )
@@ -173,7 +173,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
     probability_maps: ty.List[str] = attrs.field(
         metadata={
             "help_string": "posterior probablity mapping for each class",
-            "requires": {"save_probability_maps"},
+            "requires": ["save_probability_maps"],
             "callable": get_probability_maps,
         }
     )
@@ -181,7 +181,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
     partial_volume_maps: ty.List[str] = attrs.field(
         metadata={
             "help_string": "partial volume mapping for each class",
-            "requires": {("no_partial_volume_estimation", False)},
+            "requires": [("no_partial_volume_estimation", False)],
             "callable": get_partial_volume_maps,
         }
     )
@@ -189,7 +189,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
     bias_field_image: str = attrs.field(
         metadata={
             "help_string": "estimated bias field",
-            "requires": {"save_bias_field_image"},
+            "requires": ["save_bias_field_image"],
             "callable": get_bias_field_image,
         }
     )
@@ -197,7 +197,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
     bias_corrected_image: str = attrs.field(
         metadata={
             "help_string": "restored input image after bias field correction",
-            "requires": {"save_bias_corrected_image"},
+            "requires": ["save_bias_corrected_image"],
             "callable": get_bias_corrected_image,
         }
     )

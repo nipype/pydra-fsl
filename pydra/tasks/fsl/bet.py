@@ -118,7 +118,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "brain surface outline",
             "output_file_template": "{output_image}_overlay",
-            "requires": {"save_brain_surface_outline"},
+            "requires": ["save_brain_surface_outline"],
         }
     )
 
@@ -126,7 +126,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "brain mask",
             "output_file_template": "{output_image}_mask",
-            "requires": {"save_brain_mask"},
+            "requires": ["save_brain_mask"],
         }
     )
 
@@ -134,7 +134,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         metadata={
             "help_string": "skull image",
             "output_file_template": "{output_image}_skull",
-            "requires": {"save_skull_image"},
+            "requires": ["save_skull_image"],
         }
     )
 
@@ -143,7 +143,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
             "help_string": "brain surface mesh",
             "output_file_template": "{output_image}_mesh.vtk",
             "keep_extension": False,
-            "requires": {"save_brain_surface_mesh"},
+            "requires": ["save_brain_surface_mesh"],
         }
     )
 
