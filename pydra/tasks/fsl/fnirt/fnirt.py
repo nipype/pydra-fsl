@@ -187,7 +187,7 @@ class FNIRTSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "weight of warpfield regularisation",
             "argstr": "--lambda",
-        }
+        },
     )
 
     jacobian_range: ty.Tuple[float, float] = attrs.field(
