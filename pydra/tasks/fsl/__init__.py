@@ -11,7 +11,7 @@ from .bet import BET, RobustFOV
 from .eddy import Eddy
 from .fast import FAST
 from .flirt import FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM
-from .fnirt import FNIRT, ApplyWarp, ConvertWarp
+from .fnirt import FNIRT, ApplyWarp, ConvertWarp, InvWarp
 from .fslmerge import FSLMerge
 from .fslreorient2std import FSLReorient2Std
 from .fslroi import FSLROI
