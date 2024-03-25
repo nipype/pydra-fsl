@@ -5,7 +5,7 @@ sources = ["src"]
 [envs.default]
 dependencies = ["pytest"]
 [envs.default.scripts]
-test = "pytest {args:src}"
+test = "pytest {args}"
 
 [[envs.all.matrix]]
 python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
