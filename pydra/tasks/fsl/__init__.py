@@ -16,8 +16,10 @@ __all__ = [
     "FSLReorient2Std",
     "FSLROI",
     "RobustFOV",
+    "fslmaths",
 ]
 
+from . import fslmaths
 from .bet import BET
 from .convert_xfm import ConvertXFM
 from .eddy import Eddy
