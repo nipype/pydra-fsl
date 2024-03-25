@@ -37,7 +37,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    acqp_file: os.PathLike = attrs.field(
+    acquisition_parameters_file: os.PathLike = attrs.field(
         metadata={
             "help_string": "acquisition parameters for the diffusion protocol",
             "mandatory": True,
