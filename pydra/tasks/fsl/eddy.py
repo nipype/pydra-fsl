@@ -237,7 +237,7 @@ class EddySpec(pydra.specs.ShellSpec):
     temporal_order: int = attrs.field(
         default=0,
         metadata={
-            "help_string": "temporal order of movement",
+            "help_string": "order of movement model",
             "argstr": "--mporder",
         },
     )
@@ -316,6 +316,13 @@ class EddySpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "bypass checks for data shelling",
             "argstr": "--data_is_shelled",
+        }
+    )
+
+    random_seed: int = attrs.field(
+        metadata={
+            "help_string": "random seed for voxel selection",
+            "argstr": "--initrand",
         }
     )
 
