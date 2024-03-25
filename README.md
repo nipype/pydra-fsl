@@ -14,6 +14,13 @@ construction, manipulation, and distributed execution.
 [FSL][fsl] is a comprehensive library of analysis tools
 for FMRI, MRI and DTI brain imaging data.
 
+**Table of contents**
+
+- [Available interfaces](#available-interfaces)
+- [Installation](#installation)
+- [Development](#development)
+- [License](#license)
+
 ## Available interfaces
 
 - bet
