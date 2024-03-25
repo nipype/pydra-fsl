@@ -13,6 +13,7 @@ __all__ = [
     "FSLMerge",
     "FSLReorient2Std",
     "FSLROI",
+    "SUSAN",
     "fslmaths",
 ]
 
@@ -23,6 +24,7 @@ from .fnirt import FNIRT
 from .fslmerge import FSLMerge
 from .fslreorient2std import FSLReorient2Std
 from .fslroi import FSLROI
+from .susan import SUSAN
 
 __all__ += bet.__all__
 __all__ += flirt.__all__
