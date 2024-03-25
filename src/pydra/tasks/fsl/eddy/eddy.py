@@ -3,39 +3,48 @@ eddy
 ====
 
 Correct for artifacts induced by Eddy currents and subject motion.
+
+Examples
+--------
+
+>>> task = Eddy(
+...     input_image="input.nii",
+...     brain_mask="brain.nii",
+...     encoding_file="params.txt",
+...     index_file="index.txt",
+...     bvec_file="input.bvec",
+...     bval_file="input.bval",
+...     fieldmap_image="fieldmap.nii",
+... )
+>>> task.cmdline    # doctest: +ELLIPSIS
+'eddy --imain input.nii --mask brain.nii --acqp params.txt --index index.txt \
+--bvecs input.bvec --bvals input.bval --field fieldmap.nii --out eddy ...'
 """
 
 __all__ = ["Eddy"]
 
-import os
+from os import PathLike
+from pathlib import PurePath
 
-import attrs
+from attrs import define, field
+from pydra.engine.specs import File, ShellOutSpec, ShellSpec, SpecInfo
+from pydra.engine.task import ShellCommandTask
 
-import pydra
 
-
-@attrs.define(slots=False, kw_only=True)
-class EddySpec(pydra.specs.ShellSpec):
+@define(slots=False, kw_only=True)
+class EddySpec(ShellSpec):
     """Specifications for eddy."""
 
     # Parameters that specify input files.
-    input_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input image as a 4D volume of all images acquired in the diffusion protocol",
-            "mandatory": True,
-            "argstr": "--imain",
-        }
+    input_image: PathLike = field(
+        metadata={"help_string": "input image as a 4D volume", "mandatory": True, "argstr": "--imain"}
     )
 
-    mask_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "brain mask as a single volume image",
-            "mandatory": True,
-            "argstr": "--mask",
-        }
+    brain_mask: PathLike = field(
+        metadata={"help_string": "brain mask as a single volume image", "mandatory": True, "argstr": "--mask"}
     )
 
-    acquisition_parameters_file: os.PathLike = attrs.field(
+    encoding_file: PathLike = field(
         metadata={
             "help_string": "acquisition parameters for the diffusion protocol",
             "mandatory": True,
@@ -43,49 +52,23 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    index_file: os.PathLike = attrs.field(
+    index_file: PathLike = field(
         metadata={
-            "help_string": "mapping from volume index to acquisition parameters",
+            "help_string": "mapping from volume index to encoding parameters",
             "mandatory": True,
             "argstr": "--index",
         }
     )
 
-    bvec_file: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "diffusion directions",
-            "mandatory": True,
-            "argstr": "--bvecs",
-        }
+    bvec_file: PathLike = field(
+        metadata={"help_string": "diffusion directions", "mandatory": True, "argstr": "--bvecs"}
     )
 
-    bval_file: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "diffusion weighting",
-            "mandatory": True,
-            "argstr": "--bvals",
-        }
-    )
+    bval_file: PathLike = field(metadata={"help_string": "diffusion weighting", "mandatory": True, "argstr": "--bvals"})
 
-    topup_file: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "topup output file",
-            "mandatory": True,
-            "argstr": "--topup",
-            "xor": {"fieldmap_image"},
-        }
-    )
+    fieldmap_image: PathLike = field(metadata={"help_string": "fieldmap image", "mandatory": True, "argstr": "--field"})
 
-    fieldmap_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "fieldmap file",
-            "mandatory": True,
-            "argstr": "--field",
-            "xor": {"topup_file"},
-        }
-    )
-
-    fieldmap_matrix: os.PathLike = attrs.field(
+    fieldmap_matrix: PathLike = field(
         metadata={
             "help_string": "rigid-body transformation matrix from fieldmap to first input volume",
             "argstr": "--field_mat",
@@ -93,24 +76,17 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    no_peas: bool = attrs.field(
-        metadata={
-            "help_string": "do not perform post-Eddy alignment of shells",
-            "argstr": "--dont_peas",
-        }
+    no_peas: bool = field(
+        metadata={"help_string": "do not perform post-Eddy alignment of shells", "argstr": "--dont_peas"}
     )
 
     # Parameters specifying names of output-files.
-    output_basename: str = attrs.field(
-        default="eddy",
-        metadata={
-            "help_string": "basename for output files",
-            "argstr": "--out",
-        },
+    output_basename: str = field(
+        default="eddy", metadata={"help_string": "basename for output files", "argstr": "--out"}
     )
 
     # Parameters specifying how eddy should be run.
-    first_level_model: str = attrs.field(
+    first_level_model: str = field(
         default="quadratic",
         metadata={
             "help_string": "model for the magnetic field generated by Eddy currents",
@@ -119,7 +95,7 @@ class EddySpec(pydra.specs.ShellSpec):
         },
     )
 
-    second_level_model: str = attrs.field(
+    second_level_model: str = field(
         default="none",
         metadata={
             "help_string": "model for how diffusion gradients generate Eddy currents",
@@ -128,7 +104,7 @@ class EddySpec(pydra.specs.ShellSpec):
         },
     )
 
-    fwhm: float = attrs.field(
+    fwhm: float = field(
         default=0,
         metadata={
             "help_string": "filter width used for pre-conditioning data prior to estimating distortions",
@@ -136,22 +112,13 @@ class EddySpec(pydra.specs.ShellSpec):
         },
     )
 
-    num_iterations: int = attrs.field(
-        default=5,
-        metadata={
-            "help_string": "number of iterations for eddy",
-            "argstr": "--niter",
-        },
+    num_iterations: int = field(
+        default=5, metadata={"help_string": "number of iterations for eddy", "argstr": "--niter"}
     )
 
-    fill_empty_planes: bool = attrs.field(
-        metadata={
-            "help_string": "detect and fill empty planes",
-            "argstr": "--fep",
-        }
-    )
+    fill_empty_planes: bool = field(metadata={"help_string": "detect and fill empty planes", "argstr": "--fep"})
 
-    interpolation: str = attrs.field(
+    interpolation: str = field(
         default="spline",
         metadata={
             "help_string": "interpolation method for the estimation phase",
@@ -160,35 +127,24 @@ class EddySpec(pydra.specs.ShellSpec):
         },
     )
 
-    resampling: str = attrs.field(
+    resampling: str = field(
         default="jac",
-        metadata={
-            "help_string": "final resampling strategy",
-            "argstr": "--resamp",
-            "allowed_values": {"jac", "lsr"},
-        },
+        metadata={"help_string": "final resampling strategy", "argstr": "--resamp", "allowed_values": {"jac", "lsr"}},
     )
 
-    num_voxels: int = attrs.field(
+    num_voxels: int = field(
         default=1000,
-        metadata={
-            "help_string": "number of voxels to use for GP hyperparameter estimation",
-            "argstr": "--nvoxhp",
-        },
+        metadata={"help_string": "number of voxels to use for GP hyperparameter estimation", "argstr": "--nvoxhp"},
     )
 
-    fudge_factor: int = attrs.field(
-        default=10,
-        metadata={
-            "help_string": "fudge factor for Q-space smoothing during estimation",
-            "argstr": "--ff",
-        },
+    fudge_factor: int = field(
+        default=10, metadata={"help_string": "fudge factor for Q-space smoothing during estimation", "argstr": "--ff"}
     )
 
     # Parameters for outlier replacement (ol)
-    replace_outliers: bool = attrs.field(metadata={"help_string": "replace outliers", "argstr": "--repol"})
+    replace_outliers: bool = field(metadata={"help_string": "replace outliers", "argstr": "--repol"})
 
-    outlier_num_stdevs: int = attrs.field(
+    outlier_num_stdevs: int = field(
         metadata={
             "help_string": "number of times off the standard deviation to qualify as outlier",
             "argstr": "--ol_nstd",
@@ -196,7 +152,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    outlier_num_voxels: int = attrs.field(
+    outlier_num_voxels: int = field(
         metadata={
             "help_string": "minimum number of voxels in a slice to qualify for outlier detection",
             "argstr": "--ol_nvox",
@@ -204,7 +160,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    outlier_type: str = attrs.field(
+    outlier_type: str = field(
         metadata={
             "help_string": "type of outliers detected",
             "argstr": "--ol_type",
@@ -213,45 +169,26 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    multiband_factor: int = attrs.field(
-        metadata={
-            "help_string": "multiband factor",
-            "argstr": "--mb",
-        }
-    )
+    multiband_factor: int = field(metadata={"help_string": "multiband factor", "argstr": "--mb"})
 
-    multiband_offset: int = attrs.field(
-        metadata={
-            "help_string": "multiband slice offset",
-            "argstr": "--mb_offs",
-            "requires": {"multiband_factor"},
-        }
+    multiband_offset: int = field(
+        metadata={"help_string": "multiband slice offset", "argstr": "--mb_offs", "requires": {"multiband_factor"}}
     )
 
     # Parameters for intra-volume movement correction (s2v)
-    movement_prediction_order: int = attrs.field(
-        default=0,
-        metadata={
-            "help_string": "order of movement prediction model",
-            "argstr": "--mporder",
-        },
+    movement_prediction_order: int = field(
+        default=0, metadata={"help_string": "order of movement prediction model", "argstr": "--mporder"}
     )
 
-    s2v_num_iterations: int = attrs.field(
-        metadata={
-            "help_string": "number of iterations for s2v movement estimation",
-            "argstr": "--s2v_niter",
-        }
+    s2v_num_iterations: int = field(
+        metadata={"help_string": "number of iterations for s2v movement estimation", "argstr": "--s2v_niter"}
     )
 
-    s2v_lambda: float = attrs.field(
-        metadata={
-            "help_string": "weighting of regularization for s2v movement estimation",
-            "argstr": "--s2v_lambda",
-        }
+    s2v_lambda: float = field(
+        metadata={"help_string": "weighting of regularization for s2v movement estimation", "argstr": "--s2v_lambda"}
     )
 
-    s2v_interpolation: str = attrs.field(
+    s2v_interpolation: str = field(
         metadata={
             "help_string": "interpolation method for s2v movement estimation.",
             "argstr": "--s2v_interp",
@@ -259,7 +196,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    slice_grouping_file: os.PathLike = attrs.field(
+    slice_grouping_file: PathLike = field(
         metadata={
             "help_string": "file containing slice grouping information",
             "argstr": "--slspec",
@@ -267,7 +204,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    slice_timing_file: os.PathLike = attrs.field(
+    slice_timing_file: PathLike = field(
         metadata={
             "help_string": "file containing slice timing information",
             "argstr": "--json",
@@ -276,14 +213,14 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
     # Parameters for move-by-susceptibility correction (mbs)
-    estimate_move_by_susceptibility: bool = attrs.field(
+    estimate_move_by_susceptibility: bool = field(
         metadata={
             "help_string": "estimate susceptibility-induced field changes due to subject motion",
             "argstr": "--estimate_move_by_susceptibility",
         }
     )
 
-    mbs_num_iterations: int = attrs.field(
+    mbs_num_iterations: int = field(
         metadata={
             "help_string": "number of iterations for MBS field estimation",
             "argstr": "--mbs_niter",
@@ -291,7 +228,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    mbs_lambda: int = attrs.field(
+    mbs_lambda: int = field(
         metadata={
             "help_string": "weighting of regularization for MBS field estimation",
             "argstr": "--mbs_lambda",
@@ -299,7 +236,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    mbs_knot_spacing: int = attrs.field(
+    mbs_knot_spacing: int = field(
         metadata={
             "help_string": "knot-spacing for MBS field estimation",
             "argstr": "--mbs_ksp",
@@ -308,88 +245,65 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
     # Miscellaneous parameters.
-    data_is_shelled: bool = attrs.field(
-        metadata={
-            "help_string": "bypass checks for data shelling",
-            "argstr": "--data_is_shelled",
-        }
+    data_is_shelled: bool = field(
+        metadata={"help_string": "bypass checks for data shelling", "argstr": "--data_is_shelled"}
     )
 
-    random_seed: int = attrs.field(
-        metadata={
-            "help_string": "random seed for voxel selection",
-            "argstr": "--initrand",
-        }
-    )
+    random_seed: int = field(metadata={"help_string": "random seed for voxel selection", "argstr": "--initrand"})
 
-    save_cnr_maps: bool = attrs.field(
-        metadata={
-            "help_string": "save shell-wise CNR maps",
-            "argstr": "--cnr_maps",
-        }
-    )
+    save_cnr_maps: bool = field(metadata={"help_string": "save shell-wise CNR maps", "argstr": "--cnr_maps"})
 
-    save_residuals: bool = attrs.field(
-        metadata={
-            "help_string": "save residuals for all scans",
-            "argstr": "--residuals",
-        }
-    )
+    save_residuals: bool = field(metadata={"help_string": "save residuals for all scans", "argstr": "--residuals"})
 
-    verbose: bool = attrs.field(
-        metadata={
-            "help_string": "enable verbose logging",
-            "argstr": "-v",
-        }
-    )
+    verbose: bool = field(metadata={"help_string": "enable verbose logging", "argstr": "--verbose"})
 
 
-class EddyOutSpec(pydra.specs.ShellOutSpec):
+class EddyOutSpec(ShellOutSpec):
     """Output specification for eddy."""
 
-    corrected_image: pydra.specs.File = attrs.field(
+    corrected_image: File = field(
         metadata={
             "help_string": "input image corrected for distortions",
             "output_file_template": "{output_basename}.nii.gz",
         }
     )
 
-    parameters_file: pydra.specs.File = attrs.field(
+    parameters_file: File = field(
         metadata={
             "help_string": "registration parameters for movement and EC",
             "output_file_template": "{output_basename}.eddy_parameters",
         }
     )
 
-    rotated_bvec_file: pydra.specs.File = attrs.field(
+    rotated_bvec_file: File = field(
         metadata={
             "help_string": "rotated b-vecs",
             "output_file_template": "{output_basename}.eddy_rotated_bvecs",
         }
     )
 
-    movement_rms_matrix: pydra.specs.File = attrs.field(
+    movement_rms_matrix: File = field(
         metadata={
             "help_string": "movement induced RMS",
             "output_file_template": "{output_basename}.eddy_movement_rms",
         }
     )
 
-    restricted_movement_rms_matrix: pydra.specs.File = attrs.field(
+    restricted_movement_rms_matrix: File = field(
         metadata={
             "help_string": "movement induced RMS without translation in the PE direction",
             "output_file_template": "{output_basename}.eddy_restricted_movement_rms",
         }
     )
 
-    displacement_fields_image: pydra.specs.File = attrs.field(
+    displacement_fields_image: File = field(
         metadata={
             "help_string": "displacement fields in millimeters",
             "output_file_template": "{output_basename}.eddy_displacement_fields",
         }
     )
 
-    outlier_free_image: pydra.specs.File = attrs.field(
+    outlier_free_image: File = field(
         metadata={
             "help_string": "input image with outliers replaced by predictions",
             "output_file_template": "{output_basename}.eddy_outlier_free_data",
@@ -397,7 +311,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    movement_over_time_file: pydra.specs.File = attrs.field(
+    movement_over_time_file: File = field(
         metadata={
             "help_string": "movement parameters per time-point (slice or group)",
             "output_file_template": "{output_basename}.eddy_movement_over_time",
@@ -405,7 +319,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    cnr_maps_image: pydra.specs.File = attrs.field(
+    cnr_maps_image: File = field(
         metadata={
             "help_string": "path to optional CNR maps image",
             "output_file_template": "{output_basename}.eddy_cnr_maps",
@@ -413,7 +327,7 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    residuals_image: pydra.specs.File = attrs.field(
+    residuals_image: File = field(
         metadata={
             "help_string": "path to optional residuals image",
             "output_file_template": "{output_basename}.eddy_residuals",
@@ -422,11 +336,11 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
     )
 
 
-class Eddy(pydra.engine.ShellCommandTask):
+class Eddy(ShellCommandTask):
     """Task definition for eddy."""
 
     executable = "eddy"
 
-    input_spec = pydra.specs.SpecInfo(name="EddyInput", bases=(EddySpec,))
+    input_spec = SpecInfo(name="Inputs", bases=(EddySpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="EddyOutput", bases=(EddyOutSpec,))
+    output_spec = SpecInfo(name="Outputs", bases=(EddyOutSpec,))
