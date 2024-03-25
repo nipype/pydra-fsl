@@ -6,16 +6,16 @@ Examples
 --------
 
 >>> task = InvWarp(
-...     input_warp_image="warpvol.nii",
+...     input_warpfield="warpvol.nii",
 ...     reference_image= "refvol.nii",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'invwarp --warp warpvol.nii --ref refvol.nii --out .../warpvol_invwarp.nii'
+'invwarp --warp warpvol.nii --ref refvol.nii --out ...warpvol_invwarp.nii'
 
 >>> task = InvWarp(
-...     input_warp_image="warpvol.nii",
+...     input_warpfield="warpvol.nii",
 ...     reference_image= "refvol.nii",
-...     output_warp_image="invwarpvol.nii",
+...     output_warpfield="invwarpvol.nii",
 ...     no_jacobian_constraints=True,
 ... )
 >>> task.cmdline
@@ -38,7 +38,7 @@ from . import specs
 class InvWarpSpec(pydra.specs.ShellSpec):
     """Specifications for invwarp."""
 
-    input_warp_image: os.PathLike = attrs.field(
+    input_warpfield: os.PathLike = attrs.field(
         metadata={
             "help_string": "input warp image",
             "mandatory": True,
@@ -54,20 +54,20 @@ class InvWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_warp_image: str = attrs.field(
+    output_warpfield: str = attrs.field(
         metadata={
             "help_string": "output inverse warp image",
             "argstr": "--out",
-            "output_file_template": "{input_warp_image}_invwarp",
+            "output_file_template": "{input_warpfield}_invwarp",
         }
     )
 
-    warp_field_as: str = attrs.field(
+    warpfield_as: str = attrs.field(
         metadata={
             "help_string": "treat deformation field as absolute (abs) or relative (rel)",
-            "argstr": "--{warp_field_as}",
+            "argstr": "--{warpfield_as}",
             "allowed_values": {"abs", "rel"},
-            "requires": {"warp_image"},
+            "requires": {"input_warpfield"},
         }
     )
 

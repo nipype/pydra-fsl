@@ -8,12 +8,12 @@ Examples
 >>> task = ApplyWarp(
 ...     input_image="invol.nii",
 ...     reference_image="refvol.nii",
-...     warp_image="warpvol.nii",
-...     warp_field_as="abs",
+...     input_warpfield="warpvol.nii",
+...     warpfield_as="abs",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'applywarp --in invol.nii --ref refvol.nii --out .../invol_warped.nii \
---warp warpvol.nii --abs --interp trilinear'
+'applywarp --in invol.nii --ref refvol.nii --out ...invol_warped.nii \
+--warp warpvol.nii --abs ...'
 
 >>> task = ApplyWarp(
 ...     input_image="invol.nii",
@@ -22,8 +22,7 @@ Examples
 ...     use_sqform=True,
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'applywarp --in invol.nii --ref refvol.nii --out outvol.nii \
---interp trilinear --usesqform'
+'applywarp --in invol.nii --ref refvol.nii --out outvol.nii ... --usesqform'
 """
 
 __all__ = ["ApplyWarp"]
@@ -44,7 +43,7 @@ class ApplyWarpSpec(pydra.specs.ShellSpec):
 
     input_image: os.PathLike = attrs.field(
         metadata={
-            "help_string": "input image to warp",
+            "help_string": "input image",
             "mandatory": True,
             "argstr": "--in",
         }
@@ -60,25 +59,25 @@ class ApplyWarpSpec(pydra.specs.ShellSpec):
 
     output_image: str = attrs.field(
         metadata={
-            "help_string": "output warped image",
+            "help_string": "output image",
             "argstr": "--out",
             "output_file_template": "{input_image}_warped",
         }
     )
 
-    warp_image: os.PathLike = attrs.field(
+    input_warpfield: os.PathLike = attrs.field(
         metadata={
             "help_string": "deformation field or coefficients",
             "argstr": "--warp",
         }
     )
 
-    warp_field_as: str = attrs.field(
+    warpfield_as: str = attrs.field(
         metadata={
             "help_string": "treat deformation field as absolute (abs) or relative (rel)",
-            "argstr": "--{warp_field_as}",
+            "argstr": "--{warpfield_as}",
             "allowed_values": {"abs", "rel"},
-            "requires": {"warp_image"},
+            "requires": {"input_warpfield"},
         }
     )
 

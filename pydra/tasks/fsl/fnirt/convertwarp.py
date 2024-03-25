@@ -10,25 +10,25 @@ Examples
 ...     pre_affine_matrix="affine.mat",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'convertwarp --ref refvol.nii --out .../refvol_warp.nii --premat affine.mat \
---jacobian .../refvol_jac.nii'
+'convertwarp --ref refvol.nii --out ...refvol_warp.nii --premat affine.mat \
+--jacobian ...refvol_jac.nii'
 
 >>> task = ConvertWarp(
 ...     reference_image="refvol.nii",
-...     output_warp_image="outwarp.nii",
+...     output_warpfield="outwarp.nii",
 ...     pre_affine_matrix="pre.mat",
-...     warp_image1="warp1.nii",
-...     warp_image2="warp2.nii",
+...     pre_warpfield="warp1.nii",
+...     post_warpfield="warp2.nii",
 ...     post_affine_matrix="post.mat",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
 'convertwarp --ref refvol.nii --out outwarp.nii --premat pre.mat \
 --warp1 warp1.nii --warp2 warp2.nii --postmat post.mat --jacobian \
-.../refvol_jac.nii'
+...refvol_jac.nii'
 
 >>> task = ConvertWarp(
 ...     reference_image="refvol.nii",
-...     shiftmap_image="shiftmap.nii",
+...     input_shiftmap="shiftmap.nii",
 ...     shift_direction="y-",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
@@ -59,7 +59,7 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_warp_image: str = attrs.field(
+    output_warpfield: str = attrs.field(
         metadata={
             "help_string": "output deformation field image",
             "argstr": "--out",
@@ -74,9 +74,9 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    warp_image1: os.PathLike = attrs.field(
+    pre_warpfield: os.PathLike = attrs.field(
         metadata={
-            "help_string": "initial warp following pre-affine",
+            "help_string": "warp following pre-affine transform",
             "argstr": "--warp1",
         }
     )
@@ -88,9 +88,9 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    warp_image2: os.PathLike = attrs.field(
+    post_warpfield: os.PathLike = attrs.field(
         metadata={
-            "help_string": "secondary warp preceding post-affine",
+            "help_string": "warp preceding post-affine transform",
             "argstr": "--warp2",
         }
     )
@@ -102,7 +102,7 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    shiftmap_image: os.PathLike = attrs.field(
+    input_shiftmap: os.PathLike = attrs.field(
         metadata={
             "help_string": "shiftmap image (applied first)",
             "argstr": "--shiftmap",
@@ -113,7 +113,7 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "direction to apply shiftmap",
             "argstr": "--shiftdir",
-            "requires": {"shiftmap_image"},
+            "requires": {"input_shiftmap"},
             "allowed_values": {"x", "y", "z", "x-", "y-", "z-"},
         }
     )
@@ -149,18 +149,18 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    warp_field_as: str = attrs.field(
+    warpfield_as: str = attrs.field(
         metadata={
             "help_string": "treat deformation field as absolute (abs) or relative (rel)",
-            "argstr": "--{input_warp_field_as}",
+            "argstr": "--{warpfield_as}",
             "allowed_values": {"abs", "rel"},
         }
     )
 
-    output_warp_field_as: str = attrs.field(
+    output_warpfield_as: str = attrs.field(
         metadata={
             "help_string": "save output deformation field as absolute (abs) or relative (rel)",
-            "argstr": "--{output_warp_field_as}out",
+            "argstr": "--{output_warpfield_as}out",
             "allowed_values": {"abs", "rel"},
         }
     )
