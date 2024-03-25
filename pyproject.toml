@@ -4,17 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pydra-fsl"
-description = "Pydra tasks package for fsl"
-readme = "README.rst"
-requires-python = ">=3.8"
-dependencies = [
-  "pydra >=0.22",
-  "fileformats >=0.8.3",
-  "fileformats-datascience >=0.1",
-  "fileformats-medimage >=0.4.1",
-  "fileformats-medimage-fsl",
-]
-license = { file = "LICENSE" }
+version = "0.0.6"
+description = "Pydra tasks for FSL"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "Apache-2.0"
 keywords = ["pydra", "neuroimaging", "fsl"]
 authors = [
   { name = "Nipype developers", email = "neuroimaging@python.org" },
