@@ -202,14 +202,14 @@ class TopupSpec(ShellSpec):
 class TopupOutSpec(ShellOutSpec):
     """Output specifications for topup."""
 
-    output_field_coefficients_image: File = field(
+    field_coefficients_image: File = field(
         metadata={
             "help_string": "output field coefficients",
             "output_file_template": "{output_basename}_fieldcoef.nii.gz",
         }
     )
 
-    output_movement_parameters_file: File = field(
+    movement_parameters_file: File = field(
         metadata={
             "help_string": "output movement parameters",
             "output_file_template": "{output_basename}_movpar.txt",
