@@ -17,13 +17,14 @@ Examples
 >>> task.cmdline
 'convert_xfm -omat AtoC.mat -concat BtoC.mat AtoB.mat'
 """
+
+__all__ = ["ConvertXFM"]
+
 import os
 
 import attrs
 
 import pydra
-
-__all__ = ["ConvertXFM"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -66,6 +67,6 @@ class ConvertXFMSpec(pydra.specs.ShellSpec):
 class ConvertXFM(pydra.engine.ShellCommandTask):
     """Task definition for convert_xfm."""
 
-    input_spec = pydra.specs.SpecInfo(name="ConvertXFMInput", bases=(ConvertXFMSpec,))
-
     executable = "convert_xfm"
+
+    input_spec = pydra.specs.SpecInfo(name="ConvertXFMInput", bases=(ConvertXFMSpec,))

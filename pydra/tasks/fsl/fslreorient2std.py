@@ -1,5 +1,5 @@
 """
-fslreorient2std
+FSLReorient2Std
 ===============
 
 Change orientation of the image to match the one used
@@ -12,13 +12,14 @@ Examples
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslreorient2std -m ...image_r2std.mat image.nii ...image_r2std.nii'
 """
+
+__all__ = ["FSLReorient2Std"]
+
 import os
 
 import attrs
 
 import pydra
-
-__all__ = ["FSLReorient2Std"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -56,8 +57,8 @@ class FSLReorient2StdSpec(pydra.specs.ShellSpec):
 class FSLReorient2Std(pydra.engine.ShellCommandTask):
     """Task definition for fslreorient2std."""
 
+    executable = "fslreorient2std"
+
     input_spec = pydra.specs.SpecInfo(
         name="FSLReorient2StdInput", bases=(FSLReorient2StdSpec,)
     )
-
-    executable = "fslreorient2std"

@@ -12,6 +12,9 @@ Examples
 >>> task.cmdline  # doctest: +ELLIPSIS
 'robustfov -i image.nii -r ...image_rfov.nii -b 170 -m ...image_rfov.mat'
 """
+
+__all__ = ["RobustFOV"]
+
 import os
 
 import attrs
@@ -60,6 +63,6 @@ class RobustFOVSpec(pydra.specs.ShellSpec):
 class RobustFOV(pydra.engine.ShellCommandTask):
     """Task definition for robustfov."""
 
-    input_spec = pydra.specs.SpecInfo(name="RobustFOVInput", bases=(RobustFOVSpec,))
-
     executable = "robustfov"
+
+    input_spec = pydra.specs.SpecInfo(name="RobustFOVInput", bases=(RobustFOVSpec,))

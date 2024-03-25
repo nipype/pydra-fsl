@@ -30,6 +30,9 @@ Extract a temporal window starting at 5 onwards:
 >>> task.cmdline
 'fslroi input.nii output.nii 5 -1'
 """
+
+__all__ = ["FSLROI"]
+
 import os
 
 import attrs
@@ -127,6 +130,6 @@ class FSLROISpec(pydra.specs.ShellSpec):
 class FSLROI(pydra.engine.ShellCommandTask):
     """Task definition for fslroi."""
 
-    input_spec = pydra.engine.specs.SpecInfo(name="FSLROIInput", bases=(FSLROISpec,))
-
     executable = "fslroi"
+
+    input_spec = pydra.engine.specs.SpecInfo(name="FSLROIInput", bases=(FSLROISpec,))

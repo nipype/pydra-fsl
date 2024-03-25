@@ -6,16 +6,6 @@ imported.
 >>> import pydra.tasks.fsl
 """
 
-from .bet import BET
-from .convert_xfm import ConvertXFM
-from .fast import FAST
-from .flirt import FLIRT
-from .fnirt import FNIRT
-from .fslmerge import FSLMerge
-from .fslreorient2std import FSLReorient2Std
-from .fslroi import FSLROI
-from .robustfov import RobustFOV
-
 __all__ = [
     "BET",
     "ConvertXFM",
@@ -27,3 +17,14 @@ __all__ = [
     "FSLROI",
     "RobustFOV",
 ]
+
+from .bet import BET
+from .convert_xfm import ConvertXFM
+from .eddy import Eddy
+from .fast import FAST
+from .flirt import FLIRT
+from .fnirt import FNIRT
+from .fslmerge import FSLMerge
+from .fslreorient2std import FSLReorient2Std
+from .fslroi import FSLROI
+from .robustfov import RobustFOV

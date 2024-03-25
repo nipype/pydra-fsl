@@ -1,8 +1,8 @@
 """
-FLIRT
-=====
+FMRIB's Linear Image Registration Tool (FLIRT)
+==============================================
 
-FLIRT (FMRIB's Linear Image Registration Tool) is a robust and accurate tool
+FLIRT  is a robust and accurate tool
 for affine registration of intra- and inter-modal brain images.
 
 Examples
@@ -41,17 +41,6 @@ Perform a single slice registration:
 ...     reference_image="refslice",
 ...     output_image="outslice",
 ...     output_matrix="i2r.mat",
-<<<<<<< HEAD
-...     use_2d_rigid_body_transformation=True,
-...     verbose=True,
-... )
->>> task.cmdline
-<<<<<<< HEAD
-'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -2D -v'
-=======
-'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -cost corratio -2D'
->>>>>>> 319197b (ENH: Add cost function parameter to FLIRT)
-=======
 ...     interpolation="nearestneighbour",
 ...     use_2d_registration=True,
 ...     verbose=True,
@@ -59,16 +48,15 @@ Perform a single slice registration:
 >>> task.cmdline
 'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -cost corratio \
 -interp nearestneighbour -2D -v'
->>>>>>> 84ff031 (ENH: Add interpolation parameter for FLIRT)
 """
+
+__all__ = ["FLIRT"]
 
 import os
 
 import attrs
 
 import pydra
-
-__all__ = ["FLIRT"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -188,6 +176,6 @@ class FLIRTSpec(pydra.specs.ShellSpec):
 class FLIRT(pydra.engine.ShellCommandTask):
     """Task definition for FLIRT."""
 
-    input_spec = pydra.specs.SpecInfo(name="FLIRTInput", bases=(FLIRTSpec,))
-
     executable = "flirt"
+
+    input_spec = pydra.specs.SpecInfo(name="FLIRTInput", bases=(FLIRTSpec,))

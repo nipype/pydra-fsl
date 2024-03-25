@@ -1,8 +1,8 @@
 """
-FNIRT
-=====
+FSL Non-linear Image Registration Tool (FNIRT)
+==============================================
 
-FNIRT (FSL Non-linear Image Registration Tool) performs non-linear registration of brain images.
+FNIRT performs non-linear registration of brain images.
 
 Examples
 --------
@@ -16,13 +16,14 @@ Register two images together:
 >>> task.cmdline
 'fnirt --ref template.nii --in input.nii'
 """
+
+__all__ = ["FNIRT"]
+
 import os
 
 import attrs
 
 import pydra
-
-__all__ = ["FNIRT"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -48,6 +49,6 @@ class FNIRTSpec(pydra.specs.ShellSpec):
 class FNIRT(pydra.engine.ShellCommandTask):
     """Task definition for FNIRT."""
 
-    input_spec = pydra.specs.SpecInfo(name="FNIRTInput", bases=(FNIRTSpec,))
-
     executable = "fnirt"
+
+    input_spec = pydra.specs.SpecInfo(name="FNIRTInput", bases=(FNIRTSpec,))

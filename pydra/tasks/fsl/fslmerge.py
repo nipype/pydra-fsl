@@ -13,14 +13,14 @@ Examples
 'fslmerge -t ...merged vol1.nii vol2.nii'
 """
 
+__all__ = ["FSLMerge"]
+
 import os
 import typing as ty
 
 import attrs
 
 import pydra
-
-__all__ = ["FSLMerge"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -73,9 +73,6 @@ class FSLMergeSpec(pydra.specs.ShellSpec):
 class FSLMerge(pydra.engine.ShellCommandTask):
     """Task definition for fslmerge."""
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FSLMergeInput",
-        bases=(FSLMergeSpec,),
-    )
-
     executable = "fslmerge"
+
+    input_spec = pydra.specs.SpecInfo(name="FSLMergeInput", bases=(FSLMergeSpec,))

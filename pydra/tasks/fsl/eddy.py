@@ -5,13 +5,13 @@ eddy
 Correct for artifacts induced by Eddy currents and subject motion.
 """
 
+__all__ = ["Eddy"]
+
 import os
 
 import attrs
 
 import pydra
-
-__all__ = ["Eddy"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -431,8 +431,8 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
 class Eddy(pydra.engine.ShellCommandTask):
     """Task definition for eddy."""
 
+    executable = "eddy"
+
     input_spec = pydra.specs.SpecInfo(name="EddyInput", bases=(EddySpec,))
 
     output_spec = pydra.specs.SpecInfo(name="EddyOutput", bases=(EddyOutSpec,))
-
-    executable = "eddy"

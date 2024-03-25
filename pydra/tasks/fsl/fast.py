@@ -1,15 +1,19 @@
 """
-FAST
-====
+FMRIB's Automated Segmentation Tool (FAST)
+==========================================
+
+FAST performs automtic segmentation of 3D images of the brain
+using hidden Markov random field model and the expectation-maximization algorithm.
 """
+
+__all__ = ["FAST"]
+
 import os
 import typing as ty
 
 import attrs
 
 import pydra
-
-__all__ = ["FAST"]
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -202,8 +206,8 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
 class FAST(pydra.engine.ShellCommandTask):
     """Task definition for FAST."""
 
+    executable = "fast"
+
     input_spec = pydra.specs.SpecInfo(name="FASTInput", bases=(FASTSpec,))
 
     output_spec = pydra.specs.SpecInfo(name="FASTOuput", bases=(FASTOutSpec,))
-
-    executable = "fast"
