@@ -16,7 +16,7 @@ import attrs
 
 import pydra
 
-from .convert_xfm import BaseConvertXFMSpec, ConvertXFM
+from .convertxfm import BaseConvertXFMSpec, ConvertXFM
 
 
 @attrs.define(slots=False, kw_only=True)
