@@ -34,7 +34,7 @@ for FMRI, MRI and DTI brain imaging data.
 | fnirt  | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                      |
 | fugue  | FUGUE                                                                                       |
 | susan  | SUSAN                                                                                       |
-| utils  | fslmaths, FSLROI, FSLInfo, FSLMerge, FSLReorient2Std, FSLSlice, FSLSplit                    |
+| utils  | fslmaths, FSLROI, FSLInfo, FSLMerge, FSLReorient2Std, FSLSlice, FSLSplit, FSLSwapDim        |
 
 ## Installation
 
