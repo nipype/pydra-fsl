@@ -31,6 +31,8 @@ import attrs
 
 import pydra
 
+from . import specs
+
 
 @attrs.define(slots=False, kw_only=True)
 class InvWarpSpec(pydra.specs.ShellSpec):
@@ -92,17 +94,13 @@ class InvWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    verbose: bool = attrs.field(
-        metadata={
-            "help_string": "enable verbose logging",
-            "argstr": "--verbose",
-        }
-    )
-
 
 class InvWarp(pydra.engine.ShellCommandTask):
     """Task definition for invwarp."""
 
     executable = "invwarp"
 
-    input_spec = pydra.specs.SpecInfo(name="InvWarpInput", bases=(InvWarpSpec,))
+    input_spec = pydra.specs.SpecInfo(
+        name="InvWarpInput",
+        bases=(InvWarpSpec, specs.VerboseSpec),
+    )

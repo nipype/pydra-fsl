@@ -33,6 +33,8 @@ import attrs
 
 import pydra
 
+from . import specs
+
 
 @attrs.define(slots=False, kw_only=True)
 class FNIRTFileUtilsSpec(pydra.specs.ShellSpec):
@@ -108,13 +110,6 @@ class FNIRTFileUtilsSpec(pydra.specs.ShellSpec):
         }
     )
 
-    verbose: bool = attrs.field(
-        metadata={
-            "help_string": "enable verbose logging",
-            "argstr": "--verbose",
-        }
-    )
-
 
 class FNIRTFileUtils(pydra.engine.ShellCommandTask):
     """Task definition for fnirtfileutils."""
@@ -122,5 +117,6 @@ class FNIRTFileUtils(pydra.engine.ShellCommandTask):
     executable = "fnirtfileutils"
 
     input_spec = pydra.specs.SpecInfo(
-        name="FNIRTFileUtilsInput", bases=(FNIRTFileUtilsSpec,)
+        name="FNIRTFileUtilsInput",
+        bases=(FNIRTFileUtilsSpec, specs.VerboseSpec),
     )

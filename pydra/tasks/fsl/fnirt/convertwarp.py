@@ -44,6 +44,8 @@ import attrs
 
 import pydra
 
+from . import specs
+
 
 @attrs.define(slots=False, kw_only=True)
 class ConvertWarpSpec(pydra.specs.ShellSpec):
@@ -163,17 +165,13 @@ class ConvertWarpSpec(pydra.specs.ShellSpec):
         }
     )
 
-    verbose: bool = attrs.field(
-        metadata={
-            "help_string": "enable verbose logging",
-            "argstr": "--verbose",
-        }
-    )
-
 
 class ConvertWarp(pydra.engine.ShellCommandTask):
     """Task definition for convertwarp."""
 
     executable = "convertwarp"
 
-    input_spec = pydra.specs.SpecInfo(name="ConvertWarpInput", bases=(ConvertWarpSpec,))
+    input_spec = pydra.specs.SpecInfo(
+        name="ConvertWarpInput",
+        bases=(ConvertWarpSpec, specs.VerboseSpec),
+    )
