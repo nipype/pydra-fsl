@@ -13,8 +13,8 @@ Examples
 ...     method="jac",
 ... )
 >>> task.cmdline    # doctest: +ELLIPSIS
-'applytopup --imain blipup.nii --datain parameters.txt --inindex 1 \
---topup fieldmap --out blipup_topup.nii --method jac ...'
+'applytopup --imain=blipup.nii --datain=parameters.txt --inindex=1 \
+--topup=fieldmap --out=blipup_topup.nii --method=jac ...'
 
 >>> task = ApplyTopup(
 ...     input_image=["blipup.nii", "blipdown.nii"],
@@ -25,8 +25,8 @@ Examples
 ...     output_image="corrected.nii",
 ... )
 >>> task.cmdline    # doctest: +ELLIPSIS
-'applytopup --imain blipup.nii,blipdown.nii --datain parameters.txt \
---inindex 1,2,3 --topup topup --out corrected.nii ...'
+'applytopup --imain=blipup.nii,blipdown.nii --datain=parameters.txt \
+--inindex=1,2,3 --topup=topup --out=corrected.nii ...'
 """
 
 __all__ = ["ApplyTopup"]
@@ -46,7 +46,7 @@ def _to_input_image(field: Union[PathLike, Sequence[PathLike]]) -> str:
     except TypeError:
         paths = [PurePath(path) for path in field]
 
-    return f"--imain {','.join(str(path) for path in paths)}"
+    return f"--imain={','.join(str(path) for path in paths)}"
 
 
 def _to_input_index(field: Union[int, Sequence[int]]) -> str:
@@ -55,7 +55,7 @@ def _to_input_index(field: Union[int, Sequence[int]]) -> str:
     except TypeError:
         indexes = [field]
 
-    return f"--inindex {','.join(str(index) for index in indexes)}"
+    return f"--inindex={','.join(str(index) for index in indexes)}"
 
 
 def _to_topup_basename(fieldmap_image: PathLike, field_coefficients_image: PathLike) -> str:
@@ -66,7 +66,7 @@ def _to_topup_basename(fieldmap_image: PathLike, field_coefficients_image: PathL
         path = PurePath(fieldmap_image)
         basename = path.parent / path.name.split(".", 1)[0]
 
-    return f"--topup {str(basename)}"
+    return f"--topup={str(basename)}"
 
 
 def _to_output_image(
@@ -83,7 +83,7 @@ def _to_output_image(
         name, ext = path.name.split(".", 1)
         path = path.with_name(f"{name}_topup.{ext}")
 
-    return f"--out {path}"
+    return f"--out={path}"
 
 
 @define(slots=False, kw_only=True)
@@ -102,7 +102,7 @@ class ApplyTopupSpec(ShellSpec):
         metadata={
             "help_string": "text file containing phase encoding directions and timings",
             "mandatory": True,
-            "argstr": "--datain",
+            "argstr": "--datain={encoding_file}",
         }
     )
 
@@ -135,9 +135,7 @@ class ApplyTopupSpec(ShellSpec):
         }
     )
 
-    movement_parameters_file: PathLike = field(
-        metadata={"help_string": "movement parameters file computed by topup", "argstr": None}
-    )
+    movement_parameters_file: PathLike = field(metadata={"help_string": "movement parameters file computed by topup"})
 
     output_image: PathLike = field(
         metadata={"help_string": "output image", "argstr": "--out", "formatter": _to_output_image}
@@ -147,7 +145,7 @@ class ApplyTopupSpec(ShellSpec):
         default="lsr",
         metadata={
             "help_string": "resampling method",
-            "argstr": "--method",
+            "argstr": "--method={method}",
             "allowed_values": {"jac", "lsr", "vb2D", "vb3D", "vb4D"},
         },
     )
@@ -156,7 +154,7 @@ class ApplyTopupSpec(ShellSpec):
         default="spline",
         metadata={
             "help_string": "interpolation model",
-            "argstr": "--interp",
+            "argstr": "--interp={interpolation}",
             "allowed_values": {"spline", "trilinear"},
         },
     )
@@ -165,7 +163,7 @@ class ApplyTopupSpec(ShellSpec):
         default="preserve",
         metadata={
             "help_string": "force output datatype",
-            "argstr": "--datatype",
+            "argstr": "--datatype={datatype}",
             "allowed_values": {"preserve", "char", "short", "int", "float", "double"},
         },
     )
