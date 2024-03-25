@@ -75,9 +75,7 @@ class SearchSpec(pydra.specs.ShellSpec):
         default=[-90, 90],
         metadata={
             "help_string": "range of search angles in x",
-            "formatter": lambda field, no_search: (
-                "" if no_search else f"-searchrx {field[0]} {field[1]}"
-            ),
+            "formatter": lambda field, no_search: ("" if no_search else f"-searchrx {field[0]} {field[1]}"),
         },
     )
 
@@ -85,9 +83,7 @@ class SearchSpec(pydra.specs.ShellSpec):
         default=[-90, 90],
         metadata={
             "help_string": "range of search angles in y",
-            "formatter": lambda field, no_search: (
-                "" if no_search else f"-searchry {field[0]} {field[1]}"
-            ),
+            "formatter": lambda field, no_search: ("" if no_search else f"-searchry {field[0]} {field[1]}"),
         },
     )
 
@@ -95,9 +91,7 @@ class SearchSpec(pydra.specs.ShellSpec):
         default=[-90, 90],
         metadata={
             "help_string": "range of search angles in z",
-            "formatter": lambda field, no_search: (
-                "" if no_search else f"-searchrz {field[0]} {field[1]}"
-            ),
+            "formatter": lambda field, no_search: ("" if no_search else f"-searchrz {field[0]} {field[1]}"),
         },
     )
 

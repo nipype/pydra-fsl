@@ -2,15 +2,9 @@ name: test
 
 on:
   push:
-    paths:
-      - '.github/workflows/test.yaml'
-      - 'pydra/**'
-      - 'tests/**'
+    branches: [ main ]
   pull_request:
-    paths:
-      - '.github/workflows/test.yaml'
-      - 'pydra/**'
-      - 'tests/**'
+    branches: [ main ]
   workflow_dispatch:
 
 permissions:
@@ -48,4 +42,4 @@ jobs:
       - name: Install Hatch
         run: pipx install hatch
       - name: Test codebase
-        run: hatch run +python=${{ matrix.python-version }} test:cov
+        run: hatch run test

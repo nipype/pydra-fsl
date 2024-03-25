@@ -113,10 +113,6 @@ class FSLChFileType(pydra.engine.ShellCommandTask):
 
     executable = "fslchfiletype"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FSLChFileTypeInput", bases=(FSLChFileTypeSpec,)
-    )
+    input_spec = pydra.specs.SpecInfo(name="FSLChFileTypeInput", bases=(FSLChFileTypeSpec,))
 
-    output_spec = pydra.specs.SpecInfo(
-        name="FSLChFileTypeOutput", bases=(FSLChFileTypeOutSpec,)
-    )
+    output_spec = pydra.specs.SpecInfo(name="FSLChFileTypeOutput", bases=(FSLChFileTypeOutSpec,))

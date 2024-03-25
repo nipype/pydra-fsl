@@ -94,9 +94,7 @@ class ApplyXFMSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "force resampling to isotropic resolution",
             "formatter": lambda isotropic_resolution: (
-                f"-applyisoxfm {isotropic_resolution}"
-                if isotropic_resolution
-                else "-applyxfm"
+                f"-applyisoxfm {isotropic_resolution}" if isotropic_resolution else "-applyxfm"
             ),
         },
     )

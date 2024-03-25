@@ -41,13 +41,9 @@ class BETSpec(pydra.specs.ShellSpec):
         metadata={"help_string": "save brain surface outline", "argstr": "-o"}
     )
 
-    save_brain_mask: bool = attrs.field(
-        metadata={"help_string": "save binary brain mask", "argstr": "-m"}
-    )
+    save_brain_mask: bool = attrs.field(metadata={"help_string": "save binary brain mask", "argstr": "-m"})
 
-    save_skull_image: bool = attrs.field(
-        metadata={"help_string": "save approximate skull image", "argstr": "-s"}
-    )
+    save_skull_image: bool = attrs.field(metadata={"help_string": "save approximate skull image", "argstr": "-s"})
 
     save_brain_surface_mesh: bool = attrs.field(
         metadata={
@@ -78,19 +74,14 @@ class BETSpec(pydra.specs.ShellSpec):
 
     head_radius: float = attrs.field(
         metadata={
-            "help_string": (
-                "Head radius (in millimeters)."
-                " Initial surface sphere is set to half of this value."
-            ),
+            "help_string": ("Head radius (in millimeters)." " Initial surface sphere is set to half of this value."),
             "argstr": "-r",
         }
     )
 
     center_of_gravity: ty.Tuple[int, int, int] = attrs.field(
         metadata={
-            "help_string": (
-                "centre-of-gravity (in voxel coordinates) of initial mesh surface"
-            ),
+            "help_string": ("centre-of-gravity (in voxel coordinates) of initial mesh surface"),
             "argstr": "-c",
         }
     )
@@ -206,8 +197,6 @@ class BET(pydra.engine.ShellCommandTask):
 
     executable = "bet"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="BETInput", bases=(BETSpec, BETVariationsSpec)
-    )
+    input_spec = pydra.specs.SpecInfo(name="BETInput", bases=(BETSpec, BETVariationsSpec))
 
     output_spec = pydra.specs.SpecInfo(name="BETOutput", bases=(BETOutSpec,))

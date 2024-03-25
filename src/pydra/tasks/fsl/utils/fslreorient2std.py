@@ -59,6 +59,4 @@ class FSLReorient2Std(pydra.engine.ShellCommandTask):
 
     executable = "fslreorient2std"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FSLReorient2StdInput", bases=(FSLReorient2StdSpec,)
-    )
+    input_spec = pydra.specs.SpecInfo(name="FSLReorient2StdInput", bases=(FSLReorient2StdSpec,))

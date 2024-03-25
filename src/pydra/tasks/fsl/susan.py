@@ -89,10 +89,7 @@ class SUSANSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "find smoothing area from secondary images (up to 2)",
             "formatter": lambda field: (
-                " ".join(
-                    [f"{len(field or [])}"]
-                    + [f"{usan} {bt}" for usan, bt in field or []]
-                )
+                " ".join([f"{len(field or [])}"] + [f"{usan} {bt}" for usan, bt in field or []])
             ),
         },
     )

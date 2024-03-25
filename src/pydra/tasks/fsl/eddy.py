@@ -21,9 +21,7 @@ class EddySpec(pydra.specs.ShellSpec):
     # Parameters that specify input files.
     input_image: os.PathLike = attrs.field(
         metadata={
-            "help_string": (
-                "input image as a 4D volume of all images acquired in the diffusion protocol"
-            ),
+            "help_string": ("input image as a 4D volume of all images acquired in the diffusion protocol"),
             "mandatory": True,
             "argstr": "--imain",
         }
@@ -133,9 +131,7 @@ class EddySpec(pydra.specs.ShellSpec):
     fwhm: float = attrs.field(
         default=0,
         metadata={
-            "help_string": (
-                "filter width used for pre-conditionning data prior to estimating distortions"
-            ),
+            "help_string": ("filter width used for pre-conditionning data prior to estimating distortions"),
             "argstr": "--fwhm",
         },
     )
@@ -190,9 +186,7 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
     # Parameters for outlier replacement (ol)
-    replace_outliers: bool = attrs.field(
-        metadata={"help_string": "replace outliers", "argstr": "--repol"}
-    )
+    replace_outliers: bool = attrs.field(metadata={"help_string": "replace outliers", "argstr": "--repol"})
 
     outlier_num_stdevs: int = attrs.field(
         metadata={
