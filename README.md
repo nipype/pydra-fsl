@@ -57,7 +57,7 @@ pipx install hatch
 To run the test suite:
 
 ```console
-hatch run test:no-cov
+hatch run test
 ```
 
 To fix linting issues:
@@ -68,26 +68,16 @@ hatch run lint:fix
 
 ## License
 
-`pydra-fsl` is distributed under the terms of the [Apache License, Version 2.0][license].
+This project is distributed under the terms of the [Apache License, Version 2.0][license].
 
 [pypi-project]: https://pypi.org/project/pydra-fsl
-
 [pypi-version]: https://img.shields.io/pypi/v/pydra-fsl.svg
-
 [pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-fsl.svg
-
 [pypi-downloads]: https://static.pepy.tech/badge/pydra-fsl
-
 [status-test]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/test.yaml/badge.svg
-
 [pydra]: https://pydra.readthedocs.io/
-
 [fsl]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSL
-
 [fsl-install]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation
-
 [fsl-license]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Licence
-
 [hatch]: https://hatch.pypa.io/
-
 [license]: https://spdx.org/licenses/Apache-2.0.html
