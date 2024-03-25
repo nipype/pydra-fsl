@@ -18,7 +18,7 @@ import pydra
 
 
 @attrs.define(slots=False, kw_only=True)
-class BETSpec:
+class BETSpec(pydra.specs.ShellSpec):
     """Specifications for BET."""
 
     input_image: os.PathLike = attrs.field(
