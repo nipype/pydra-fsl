@@ -3,6 +3,7 @@
 [![PyPI - Version][pypi-version]][pypi-project]
 [![PyPI - Python Version][pypi-pyversions]][pypi-project]
 [![PyPI - Downloads][pypi-downloads]][pypi-project]
+![][status-test]
 
 ----
 
@@ -81,6 +82,8 @@ hatch run lint:fix
 [pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-fsl.svg
 
 [pypi-downloads]: https://static.pepy.tech/badge/pydra-fsl
+
+[status-test]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/test.yaml/badge.svg
 
 [pydra]: https://pydra.readthedocs.io/
 
