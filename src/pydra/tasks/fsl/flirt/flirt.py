@@ -11,35 +11,55 @@ Examples
 Register two images together:
 
 >>> task = FLIRT(
-...     input_image="invol",
-...     reference_image="refvol",
-...     output_image="outvol",
+...     input_image="invol.nii",
+...     reference_image="refvol.nii",
 ...     output_matrix="invol2refvol.mat",
 ...     cost_function="mutualinfo",
 ...     degrees_of_freedom=6,
 ... )
->>> task.cmdline
-'flirt -in invol -ref refvol -omat invol2refvol.mat -out outvol \
--dof 6 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 \
--cost mutualinfo -bins 256 -interp trilinear'
+>>> task.cmdline  # doctest: +ELLIPSIS
+'flirt -in invol.nii -ref refvol.nii -out ...invol_flirt.nii -omat invol2refvol.mat ... -cost mutualinfo ...'
 
 Perform a single slice registration:
 
 >>> task = FLIRT(
-...     input_image="inslice",
-...     reference_image="refslice",
-...     output_image="outslice",
+...     input_image="inslice.nii",
+...     reference_image="refslice.nii",
+...     output_image="outslice.nii",
 ...     output_matrix="i2r.mat",
 ...     interpolation="nearestneighbour",
 ...     use_2d_registration=True,
 ...     no_search=True,
 ... )
 >>> task.cmdline
-'flirt -in inslice -ref refslice -omat i2r.mat -out outslice -2D \
--nosearch -cost corratio -bins 256 -interp nearestneighbour'
+'flirt -in inslice.nii -ref refslice.nii -out outslice.nii -omat i2r.mat -2D -nosearch ... -interp nearestneighbour'
+
+Apply a transformation:
+
+>>> task = ApplyXFM(
+...     input_image="invol.nii",
+...     output_image="outvol.nii",
+...     reference_image="refvol.nii",
+...     input_matrix="affine.mat",
+... )
+>>> task.cmdline  # doctest: +ELLIPSIS
+'flirt -in invol.nii -ref refvol.nii -out outvol.nii -init affine.mat -applyxfm ...'
+
+Apply a trasnformation and force isotropic resampling to 1 mm:
+
+>>> task = ApplyXFM(
+...     input_image="invol.nii",
+...     output_image="outvol.nii",
+...     reference_image="refvol.nii",
+...     input_matrix="affine.mat",
+...     isotropic_resolution=1,
+...     padding_size=5,
+... )
+>>> task.cmdline  # doctest: +ELLIPSIS
+'flirt -in invol.nii -ref refvol.nii -out outvol.nii -init affine.mat -applyisoxfm 1 -paddingsize 5 ...'
 """
 
-__all__ = ["FLIRT"]
+__all__ = ["FLIRT", "ApplyXFM"]
 
 import os
 
@@ -51,8 +71,8 @@ from . import specs
 
 
 @attrs.define(slots=False, kw_only=True)
-class FLIRTSpec(pydra.specs.ShellSpec):
-    """Specifications for FLIRT."""
+class BaseSpec(pydra.specs.ShellSpec):
+    """Common specifications for FLIRT-based tasks."""
 
     input_image: os.PathLike = attrs.field(
         metadata={
@@ -70,25 +90,9 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         }
     )
 
-    input_matrix: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input transformation matrix",
-            "argstr": "-init",
-        }
-    )
-
-    output_matrix: str = attrs.field(
-        metadata={
-            "help_string": "output transformation matrix",
-            "argstr": "-omat",
-            "output_file_template": "{input_image}_flirt.mat",
-            "keep_extension": False,
-        }
-    )
-
     output_image: str = attrs.field(
         metadata={
-            "help_string": "output volume",
+            "help_string": "output image",
             "argstr": "-out",
             "output_file_template": "{input_image}_flirt",
         }
@@ -105,6 +109,27 @@ class FLIRTSpec(pydra.specs.ShellSpec):
                 "float",
                 "double",
             },
+        }
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
+class FLIRTSpec(BaseSpec):
+    """Specifications for FLIRT."""
+
+    input_matrix: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "input transformation matrix",
+            "argstr": "-init",
+        }
+    )
+
+    output_matrix: str = attrs.field(
+        metadata={
+            "help_string": "output transformation matrix",
+            "argstr": "-omat",
+            "output_file_template": "{input_image}_flirt.mat",
+            "keep_extension": False,
         }
     )
 
@@ -125,13 +150,6 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         }
     )
 
-    verbose: bool = attrs.field(
-        metadata={
-            "help_string": "enable verbose logging",
-            "argstr": "-v",
-        }
-    )
-
 
 class FLIRT(pydra.engine.ShellCommandTask):
     """Task definition for FLIRT."""
@@ -146,5 +164,44 @@ class FLIRT(pydra.engine.ShellCommandTask):
             specs.CostFunctionSpec,
             specs.InterpolationSpec,
             specs.WeightingSpec,
+            specs.VerboseSpec,
         ),
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
+class ApplyXFMSpec(BaseSpec):
+    """Specifications for ApplyXFM."""
+
+    input_matrix: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "input transformation matrix",
+            "mandatory": True,
+            "argstr": "-init",
+        }
+    )
+
+    isotropic_resolution: float = attrs.field(
+        default=0.0,
+        metadata={
+            "help_string": "force resampling to isotropic resolution",
+            "formatter": lambda isotropic_resolution: (
+                f"-applyisoxfm {isotropic_resolution}" if isotropic_resolution else "-applyxfm"
+            ),
+        },
+    )
+
+    padding_size: float = attrs.field(
+        metadata={
+            "help_string": "padding size in voxels",
+            "argstr": "-paddingsize",
+        }
+    )
+
+
+class ApplyXFM(FLIRT):
+    """Task definition for ApplyXFM."""
+
+    input_spec = pydra.specs.SpecInfo(
+        name="ApplyXFMInput", bases=(ApplyXFMSpec, specs.InterpolationSpec, specs.VerboseSpec)
     )
