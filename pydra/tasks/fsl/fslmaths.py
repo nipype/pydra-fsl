@@ -87,20 +87,10 @@ class FSLMaths(pydra.engine.ShellCommandTask):
 class MulSpec(pydra.specs.ShellSpec):
     """Specifications for fslmaths' mul."""
 
-    operation: str = attrs.field(
-        default="mul",
-        metadata={
-            "help_string": "operation (image multiplication)",
-            "argstr": "-{operation}",
-            "allowed_values": {"mul"},
-        },
-    )
-
     other_image: os.PathLike = attrs.field(
         metadata={
-            "help_string": "other image used as operand",
-            "argstr": "",
-            "requires": {"operation"},
+            "help_string": "multiply input with other image",
+            "argstr": "-mul",
         }
     )
 
