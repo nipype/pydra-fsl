@@ -1,6 +1,10 @@
 """
 BET
 ===
+
+BET (Brain Extraction Tool) removes non-brain tissues from whole-head images.
+It can also estimate the inner and outer skull surfaces, and outer scalp surface,
+when provided with good quality T1 and T2 input images.
 """
 
 import os
