@@ -1,4 +1,4 @@
-# pydra-tasks-fsl
+# pydra-fsl
 
 [![PyPI - Version][pypi-version]][pypi-project]
 [![PyPI - Python Version][pypi-pyversions]][pypi-project]

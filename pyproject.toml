@@ -15,6 +15,7 @@ dependencies = [
   "fileformats-medimage-fsl",
 ]
 license = { file = "LICENSE" }
+keywords = ["pydra", "neuroimaging", "fsl"]
 authors = [
   { name = "Nipype developers", email = "neuroimaging@python.org" },
   { name = "Ghislain Vaillant", email = "ghislain.vaillant@icm-institute.org" },
@@ -23,7 +24,6 @@ maintainers = [
   { name = "Nipype developers", email = "neuroimaging@python.org" },
   { name = "Ghislain Vaillant", email = "ghislain.vaillant@icm-institute.org" },
 ]
-keywords = ["pydra"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",
