@@ -2,6 +2,9 @@
 FLIRT
 =====
 
+FLIRT (FMRIB's Linear Image Registration Tool) is a robust and accurate tool
+for affine registration of intra- and inter-modal brain images.
+
 Examples
 --------
 
@@ -52,7 +55,7 @@ __all__ = ["FLIRT"]
 
 @attrs.define(slots=False, kw_only=True)
 class FLIRTSpec(pydra.specs.ShellSpec):
-    """Specifications for FSL FLIRT."""
+    """Specifications for FLIRT."""
 
     input_image: os.PathLike = attrs.field(
         metadata={"help_string": "input volume", "argstr": "-in"}
@@ -105,7 +108,7 @@ class FLIRTSpec(pydra.specs.ShellSpec):
 
 
 class FLIRT(pydra.engine.ShellCommandTask):
-    """Task definition for FSL FLIRT."""
+    """Task definition for FLIRT."""
 
     input_spec = pydra.specs.SpecInfo(name="FLIRTInput", bases=(FLIRTSpec,))
 
