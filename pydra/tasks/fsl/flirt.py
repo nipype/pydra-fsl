@@ -38,11 +38,13 @@ Perform a single slice registration:
 ...     reference_image="refslice",
 ...     output_image="outslice",
 ...     output_matrix="i2r.mat",
-...     use_2d_registration=True,
+...     use_2d_rigid_body_transformation=True,
+...     verbose=True,
 ... )
 >>> task.cmdline
-'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -2D'
+'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -2D -v'
 """
+
 import os
 
 import attrs
@@ -111,6 +113,14 @@ class FLIRTSpec(pydra.specs.ShellSpec):
             "argstr": "-2D",
             "xor": {"degrees_of_freedom"},
         }
+    )
+
+    verbose: bool = attrs.field(
+        default=False,
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        },
     )
 
 
