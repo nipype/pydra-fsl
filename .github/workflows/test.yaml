@@ -2,9 +2,15 @@ name: test
 
 on:
   push:
-    branches: [ main ]
+    paths:
+      - '.github/workflows/test.yaml'
+      - 'pydra/**'
+      - 'tests/**'
   pull_request:
-    branches: [ main ]
+    paths:
+      - '.github/workflows/test.yaml'
+      - 'pydra/**'
+      - 'tests/**'
   workflow_dispatch:
 
 permissions:
