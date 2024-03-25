@@ -20,7 +20,8 @@ Register two images together:
 ... )
 >>> task.cmdline
 'flirt -in invol -ref refvol -omat invol2refvol.mat -out outvol \
--dof 6 -cost mutualinfo -bins 256 -interp trilinear'
+-dof 6 -searchrx -90 90 -searchry -90 90 -searchrz -90 90 \
+-cost mutualinfo -bins 256 -interp trilinear'
 
 Perform a single slice registration:
 
@@ -31,10 +32,11 @@ Perform a single slice registration:
 ...     output_matrix="i2r.mat",
 ...     interpolation="nearestneighbour",
 ...     use_2d_registration=True,
+...     no_search=True,
 ... )
 >>> task.cmdline
 'flirt -in inslice -ref refslice -omat i2r.mat -out outslice -2D \
--cost corratio -bins 256 -interp nearestneighbour'
+-nosearch -cost corratio -bins 256 -interp nearestneighbour'
 """
 
 __all__ = ["FLIRT"]
@@ -138,5 +140,10 @@ class FLIRT(pydra.engine.ShellCommandTask):
 
     input_spec = pydra.specs.SpecInfo(
         name="FLIRTInput",
-        bases=(FLIRTSpec, specs.CostFunctionSpec, specs.InterpolationSpec),
+        bases=(
+            FLIRTSpec,
+            specs.SearchSpec,
+            specs.CostFunctionSpec,
+            specs.InterpolationSpec,
+        ),
     )
