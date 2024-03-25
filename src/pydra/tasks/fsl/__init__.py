@@ -20,7 +20,7 @@ from .flirt import (
     Std2ImgCoord,
 )
 from .fnirt import FNIRT, ApplyWarp, ConvertWarp, FNIRTFileUtils, InvWarp
-from .fugue import FUGUE, SigLoss
+from .fugue import FUGUE, Prelude, SigLoss
 from .susan import SUSAN
 from .utils import (
     FSLFFT,
