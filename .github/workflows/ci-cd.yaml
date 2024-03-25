@@ -388,31 +388,31 @@ jobs:
         prerelease: false
 
 
-  report_progress:
-    needs: [deploy]
-    runs-on: ubuntu-latest
-    steps:
+  # report_progress:
+  #   needs: [deploy]
+  #   runs-on: ubuntu-latest
+  #   steps:
 
-      - name: Checkout
-        uses: actions/checkout@v4
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Generate progress report
-        id: generate-report
-        run: |
-          tools/report_progress.py outputs/progress-report.json
-          echo "progress_report=$(cat outputs/progress-report.json)" >> $GITHUB_OUTPUT
+  #     - name: Generate progress report
+  #       id: generate-report
+  #       run: |
+  #         tools/report_progress.py outputs/progress-report.json
+  #         echo "progress_report=$(cat outputs/progress-report.json)" >> $GITHUB_OUTPUT
 
-      - name: Report progress to Nipype2Pydra repo
-        if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-        run: >-
-          curl -XPOST -u "${{ env.REPORT_PROGRESS_PAT }}" -H "Accept: application/vnd.github.everest-preview+json"
-          "https://api.github.com/repos/nipype/pydra-fsl/dispatches"
-          -d '{
-            "event_type": "progress-report",
-            "client_payload": ${{ steps.generate-report.output.progress_report }}
-          }'
-        env:
-          PAT: ${{ env.REPORT_PROGRESS_PAT }}
+  #     - name: Report progress to Nipype2Pydra repo
+  #       if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
+  #       run: >-
+  #         curl -XPOST -u "${{ env.REPORT_PROGRESS_PAT }}" -H "Accept: application/vnd.github.everest-preview+json"
+  #         "https://api.github.com/repos/nipype/pydra-fsl/dispatches"
+  #         -d '{
+  #           "event_type": "progress-report",
+  #           "client_payload": ${{ steps.generate-report.output.progress_report }}
+  #         }'
+  #       env:
+  #         PAT: ${{ env.REPORT_PROGRESS_PAT }}
 
 
 # Deploy on tags if PYPI_API_TOKEN is defined in the repository secrets.
