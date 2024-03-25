@@ -181,4 +181,3 @@ cython_debug/
 /related-packages/fileformats/fileformats/medimage_fsl/_version.py
 /related-packages/fileformats-extras/fileformats/extras/medimage_fsl/_version.py
 /pydra/tasks/fsl/auto
-/pydra/tasks/fsl/_version.py
