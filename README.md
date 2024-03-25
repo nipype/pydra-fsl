@@ -42,6 +42,10 @@ for FMRI, MRI and DTI brain imaging data.
 pip install pydra-tasks-fsl
 ```
 
+A separate installation of FSL is required to use this package.
+Please review the FSL [installation instructions][fsl-install]
+and [licensing details][fsl-license].
+
 ## Development
 
 This project is managed with [Hatch][hatch]:
@@ -75,6 +79,10 @@ hatch run lint:fix
 [pydra]: https://pydra.readthedocs.io/
 
 [fsl]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSL
+
+[fsl-install]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation
+
+[fsl-license]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Licence
 
 [hatch]: https://hatch.pypa.io/
 
