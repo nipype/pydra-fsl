@@ -8,6 +8,7 @@ __all__ = [
 ]
 
 import os
+import pathlib
 import typing as ty
 
 import attrs
@@ -114,5 +115,76 @@ class WeightingSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "weights for input image",
             "argstr": "-inweight",
+        }
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
+class VerboseSpec(pydra.specs.ShellSpec):
+    verbose: bool = attrs.field(
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        }
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
+class BaseCoordSpec(pydra.specs.ShellSpec):
+    input_coordinates: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "input coordinates",
+            "mandatory": True,
+            "argstr": "",
+            "position": -1,
+        }
+    )
+
+    output_coordinates: str = attrs.field(
+        metadata={
+            "help_string": "output coordinates",
+            "output_file_template": "{input_coordinates}_out",
+        }
+    )
+
+    affine_matrix: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "affine transformation matrix",
+            "argstr": "-xfm",
+        }
+    )
+
+    input_warpfield: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "input warpfield image",
+            "argstr": "-warp",
+        }
+    )
+
+    unit: str = attrs.field(
+        default="vox",
+        metadata={
+            "help_string": "unit of coordinates: voxels (vox) or millimeters (mm)",
+            "argstr": "-{unit}",
+            "allowed_values": {"vox", "mm"},
+        },
+    )
+
+
+def _get_output_coordinates(output_coordinates: str, stdout):
+    output_coordinates = pathlib.Path.cwd() / output_coordinates
+
+    with open(output_coordinates, mode="w") as f:
+        f.write(stdout)
+
+    return output_coordinates
+
+
+@attrs.define(slots=False, kw_only=True)
+class CoordOutSpec(pydra.specs.ShellOutSpec):
+    output_coordinates: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "output coordinates",
+            "callable": _get_output_coordinates,
         }
     )
