@@ -7,9 +7,9 @@ Examples
 
 >>> task = FSLSwapDim(
 ...     input_image="input.nii",
-...     x="y",
-...     y="x",
-...     z="-z",
+...     new_x="y",
+...     new_y="x",
+...     new_z="-z",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslswapdim input.nii y x -z ...input_swapped.nii'
@@ -17,9 +17,9 @@ Examples
 >>> task = FSLSwapDim(
 ...     input_image="input.nii",
 ...     output_image="output.nii",
-...     x="RL",
-...     y="PA",
-...     z="IS",
+...     new_x="RL",
+...     new_y="PA",
+...     new_z="IS",
 ... )
 >>> task.cmdline
 'fslswapdim input.nii RL PA IS output.nii'
@@ -38,7 +38,20 @@ import pydra
 class FSLSwapDimSpec(pydra.specs.ShellSpec):
     """Specifications for fslswapdim."""
 
-    ALLOWED_AXES = {"-x", "x", "y", "-y", "z", "-z", "RL", "LR", "AP", "PA", "SI", "IS"}
+    ALLOWED_AXES = {
+        "x",
+        "-x",
+        "y",
+        "-y",
+        "z",
+        "-z",
+        "LR",
+        "RL",
+        "AP",
+        "PA",
+        "SI",
+        "IS",
+    }
 
     input_image: os.PathLike = attrs.field(
         metadata={
@@ -48,7 +61,7 @@ class FSLSwapDimSpec(pydra.specs.ShellSpec):
         }
     )
 
-    x: str = attrs.field(
+    new_x: str = attrs.field(
         metadata={
             "help_string": "new x-axis",
             "mandatory": True,
@@ -57,7 +70,7 @@ class FSLSwapDimSpec(pydra.specs.ShellSpec):
         }
     )
 
-    y: str = attrs.field(
+    new_y: str = attrs.field(
         metadata={
             "help_string": "new y-axis",
             "mandatory": True,
@@ -66,7 +79,7 @@ class FSLSwapDimSpec(pydra.specs.ShellSpec):
         }
     )
 
-    z: str = attrs.field(
+    new_z: str = attrs.field(
         metadata={
             "help_string": "new z-axis",
             "mandatory": True,
