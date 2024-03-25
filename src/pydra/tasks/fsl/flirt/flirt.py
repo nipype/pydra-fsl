@@ -61,78 +61,51 @@ Apply a trasnformation and force isotropic resampling to 1 mm:
 
 __all__ = ["FLIRT", "ApplyXFM"]
 
-import os
+from os import PathLike
 
-import attrs
-
-import pydra
+from attrs import define, field
+from pydra.engine.specs import ShellSpec, SpecInfo
+from pydra.engine.task import ShellCommandTask
 
 from . import specs
 
 
-@attrs.define(slots=False, kw_only=True)
-class BaseSpec(pydra.specs.ShellSpec):
+@define(slots=False, kw_only=True)
+class BaseSpec(ShellSpec):
     """Common specifications for FLIRT-based tasks."""
 
-    input_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input image",
-            "mandatory": True,
-            "argstr": "-in",
-        }
+    input_image: PathLike = field(metadata={"help_string": "input image", "mandatory": True, "argstr": "-in"})
+
+    reference_image: PathLike = field(metadata={"help_string": "reference image", "mandatory": True, "argstr": "-ref"})
+
+    output_image: str = field(
+        metadata={"help_string": "output image", "argstr": "-out", "output_file_template": "{input_image}_flirt"}
     )
 
-    reference_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "reference image",
-            "mandatory": True,
-            "argstr": "-ref",
-        }
-    )
-
-    output_image: str = attrs.field(
-        metadata={
-            "help_string": "output image",
-            "argstr": "-out",
-            "output_file_template": "{input_image}_flirt",
-        }
-    )
-
-    output_datatype: str = attrs.field(
+    output_datatype: str = field(
         metadata={
             "help_string": "output datatype",
             "argstr": "-datatype",
-            "allowed_values": {
-                "char",
-                "short",
-                "int",
-                "float",
-                "double",
-            },
+            "allowed_values": {"char", "short", "int", "float", "double"},
         }
     )
 
 
-@attrs.define(slots=False, kw_only=True)
+@define(slots=False, kw_only=True)
 class FLIRTSpec(BaseSpec):
     """Specifications for FLIRT."""
 
-    input_weights: os.PathLike = attrs.field(
+    input_weights: PathLike = field(
         metadata={"help_string": "voxel-wise weighting for input image", "argstr": "-inweight"}
     )
 
-    reference_weights: os.PathLike = attrs.field(
+    reference_weights: PathLike = field(
         metadata={"help_string": "voxel-wise weighting for reference image", "argstr": "-refweight"}
     )
 
-    input_matrix: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input transformation matrix",
-            "argstr": "-init",
-        }
-    )
+    input_matrix: PathLike = field(metadata={"help_string": "input transformation matrix", "argstr": "-init"})
 
-    output_matrix: str = attrs.field(
+    output_matrix: str = field(
         metadata={
             "help_string": "output transformation matrix",
             "argstr": "-omat",
@@ -141,7 +114,7 @@ class FLIRTSpec(BaseSpec):
         }
     )
 
-    degrees_of_freedom: int = attrs.field(
+    degrees_of_freedom: int = field(
         metadata={
             "help_string": "degrees of freedom for the registration model",
             "argstr": "-dof",
@@ -150,7 +123,7 @@ class FLIRTSpec(BaseSpec):
         }
     )
 
-    use_2d_registration: bool = attrs.field(
+    use_2d_registration: bool = field(
         metadata={
             "help_string": "use rigid-body registration model in 2D",
             "argstr": "-2D",
@@ -159,13 +132,13 @@ class FLIRTSpec(BaseSpec):
     )
 
 
-class FLIRT(pydra.engine.ShellCommandTask):
+class FLIRT(ShellCommandTask):
     """Task definition for FLIRT."""
 
     executable = "flirt"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FLIRTInput",
+    input_spec = SpecInfo(
+        name="Inputs",
         bases=(
             FLIRTSpec,
             specs.SearchSpec,
@@ -177,19 +150,15 @@ class FLIRT(pydra.engine.ShellCommandTask):
     )
 
 
-@attrs.define(slots=False, kw_only=True)
+@define(slots=False, kw_only=True)
 class ApplyXFMSpec(BaseSpec):
     """Specifications for ApplyXFM."""
 
-    input_matrix: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input transformation matrix",
-            "mandatory": True,
-            "argstr": "-init",
-        }
+    input_matrix: PathLike = field(
+        metadata={"help_string": "input transformation matrix", "mandatory": True, "argstr": "-init"}
     )
 
-    isotropic_resolution: float = attrs.field(
+    isotropic_resolution: float = field(
         default=0.0,
         metadata={
             "help_string": "force resampling to isotropic resolution",
@@ -199,17 +168,10 @@ class ApplyXFMSpec(BaseSpec):
         },
     )
 
-    padding_size: float = attrs.field(
-        metadata={
-            "help_string": "padding size in voxels",
-            "argstr": "-paddingsize",
-        }
-    )
+    padding_size: float = field(metadata={"help_string": "padding size in voxels", "argstr": "-paddingsize"})
 
 
 class ApplyXFM(FLIRT):
     """Task definition for ApplyXFM."""
 
-    input_spec = pydra.specs.SpecInfo(
-        name="ApplyXFMInput", bases=(ApplyXFMSpec, specs.InterpolationSpec, specs.VerboseSpec)
-    )
+    input_spec = SpecInfo(name="Inputs", bases=(ApplyXFMSpec, specs.InterpolationSpec, specs.VerboseSpec))
