@@ -1,16 +1,46 @@
 """
 Topup
 =====
+
+Examples
+--------
+
+Minimal call to `topup`:
+
+>>> task = Topup(input_image="input.nii", encoding_file="encoding.txt")
+>>> task.cmdline  # doctest: +ELLIPSIS
+'topup --imain input.nii --datain encoding.txt --out input_topup \
+--fout ...input_fieldmap.nii --iout ...input_unwarped.nii ...'
+
+Using a multiple resolution approach:
+
+>>> task = Topup(
+...     input_image="input.nii",
+...     encoding_file="encoding.txt",
+...     subsampling_per_level=(4, 2, 1),
+...     smoothing_per_level=(8.0, 4.0, 0.0),
+... )
+>>> task.cmdline  # doctest: +ELLIPSIS
+'topup --imain input.nii --datain encoding.txt ... --subsamp 4,2,1 --fwhm 8.0,4.0,0.0 ...'
 """
 
 __all__ = ["Topup"]
 
 from os import PathLike
+from pathlib import PurePath
 from typing import Iterable
 
 from attrs import define, field
 from pydra.engine.specs import File, ShellOutSpec, ShellSpec, SpecInfo
 from pydra.engine.task import ShellCommandTask
+
+
+def to_field_per_level(field, param) -> str:
+    return f"--{param} {','.join([str(elem) for elem in field])}"
+
+
+def to_output_basename(field, input_image) -> str:
+    return f"--out {field or PurePath(input_image).name.split('.', 1)[0] + '_topup'}"
 
 
 @define(slots=False, kw_only=True)
@@ -28,8 +58,10 @@ class TopupSpec(ShellSpec):
     )
 
     output_basename: str = field(
-        default="topup",
-        metadata={"help_string": "output basename for field coefficients and movement parameters", "argstr": "--out"},
+        metadata={
+            "help_string": "output basename for field coefficients and movement parameters",
+            "formatter": to_output_basename,
+        },
     )
 
     output_fieldmap_image: str = field(
@@ -49,35 +81,50 @@ class TopupSpec(ShellSpec):
     )
 
     warp_resolution_per_level: Iterable[float] = field(
-        default=(10,),
-        metadata={"help_string": "resolution of warp basis in millimeters for a given level", "argstr": "--warpres..."},
+        default=(10.0,),
+        metadata={
+            "help_string": "resolution of warp basis in millimeters for a given level",
+            "formatter": lambda field: to_field_per_level(field, "warpres"),
+        },
     )
 
     subsampling_per_level: Iterable[int] = field(
         default=(1,),
-        metadata={"help_string": "subsampling factor for a given level", "argstr": "--subsamp..."},
+        metadata={
+            "help_string": "subsampling factor for a given level",
+            "formatter": lambda field: to_field_per_level(field, "subsamp"),
+        },
     )
 
     smoothing_per_level: Iterable[float] = field(
-        default=(8,),
-        metadata={"help_string": "FWHM of smoothing kernel in millimeters for a given level", "argstr": "--fwhm..."},
+        default=(8.0,),
+        metadata={
+            "help_string": "FWHM of smoothing kernel in millimeters for a given level",
+            "formatter": lambda field: to_field_per_level(field, "fwhm"),
+        },
     )
 
     max_iterations_per_level: Iterable[int] = field(
         default=(5,),
-        metadata={"help_string": "maximum number of non-linear iterations for a given level", "argstr": "--miter..."},
+        metadata={
+            "help_string": "maximum number of non-linear iterations for a given level",
+            "formatter": lambda field: to_field_per_level(field, "miter"),
+        },
     )
 
     regularisation_per_level: Iterable[float] = field(
-        default=(0,),
-        metadata={"help_string": "weight of regularisation for a given level", "argstr": "--lambda..."},
+        default=(0.0,),
+        metadata={
+            "help_string": "weight of regularisation for a given level",
+            "formatter": lambda field: to_field_per_level(field, "lambda"),
+        },
     )
 
     estimate_movement_per_level: Iterable[int] = field(
         default=(1,),
         metadata={
             "help_string": "wether to estimate (1) or keep movement parameters constant (0) for a given level",
-            "argstr": "--estmov...",
+            "formatter": lambda field: to_field_per_level(field, "estmov"),
             "allowed_values": {0, 1},
         },
     )
@@ -89,7 +136,7 @@ class TopupSpec(ShellSpec):
                 "which minimisation method to use for a given level "
                 "(0: Levenberg-Marquardt, 1: Scaled Conjugate Gradient)"
             ),
-            "argstr": "--minmet...",
+            "formatter": lambda field: to_field_per_level(field, "minmet"),
             "allowed_values": {0, 1},
         },
     )
