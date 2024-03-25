@@ -28,7 +28,7 @@ for FMRI, MRI and DTI brain imaging data.
 | Module   | Tasks                                                                                                                                                     |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
 | bet      | BET, RobustFOV                                                                                                                                            |
-| eddy     | Eddy                                                                                                                                                      |
+| eddy     | Eddy, ApplyTopup, Topup                                                                                                                                   |
 | fast     | FAST                                                                                                                                                      |
 | flirt    | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, FixScaleSkew, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                                 |
 | fnirt    | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                                                                    |
