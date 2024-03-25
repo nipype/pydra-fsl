@@ -31,8 +31,11 @@ for FMRI, MRI and DTI brain imaging data.
 - eddy
 - fast
 - flirt
-    - convert_xfm
     - flirt
+    - apply_xfm
+    - concat_xfm
+    - convert_xfm
+    - invert_xfm
 - fnirt
     - fnirt
 - utils
