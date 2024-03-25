@@ -327,6 +327,20 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
+    write_cnr_maps: bool = attrs.field(
+        metadata={
+            "help_string": "write shell-wise CNR maps",
+            "argstr": "--cnr_maps",
+        }
+    )
+
+    write_residuals: bool = attrs.field(
+        metadata={
+            "help_string": "write residuals for all scans",
+            "argstr": "--residuals",
+        }
+    )
+
 
 class Eddy(pydra.engine.ShellCommandTask):
     """Task definition for eddy."""
