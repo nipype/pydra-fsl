@@ -32,6 +32,7 @@ from .utils import (
     FSLReorient2Std,
     FSLSelectVols,
     FSLSlice,
+    FSLSmoothFill,
     FSLSplit,
     FSLSwapDim,
     fslmaths,
