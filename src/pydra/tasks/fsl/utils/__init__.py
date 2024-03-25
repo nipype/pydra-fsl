@@ -1,4 +1,3 @@
-from . import fslmaths
 from .fslchfiletype import FSLChFileType
 from .fslfft import FSLFFT
 from .fslinfo import FSLInfo

@@ -6,6 +6,7 @@ imported.
 >>> import pydra.tasks.fsl
 """
 
+from . import fslmaths
 from .bet import BET, RobustFOV
 from .eddy import Eddy
 from .fast import FAST
@@ -35,5 +36,4 @@ from .utils import (
     FSLSmoothFill,
     FSLSplit,
     FSLSwapDim,
-    fslmaths,
 )
