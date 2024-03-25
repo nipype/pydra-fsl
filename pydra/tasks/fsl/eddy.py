@@ -74,11 +74,11 @@ class EddySpec(pydra.specs.ShellSpec):
             "help_string": "topup output file",
             "mandatory": True,
             "argstr": "--topup",
-            "xor": {"fmap_file"},
+            "xor": {"fieldmap_image"},
         }
     )
 
-    fmap_file: os.PathLike = attrs.field(
+    fieldmap_image: os.PathLike = attrs.field(
         metadata={
             "help_string": "fieldmap file",
             "mandatory": True,
@@ -87,11 +87,11 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    fmap_matrix: os.PathLike = attrs.field(
+    fieldmap_matrix: os.PathLike = attrs.field(
         metadata={
             "help_string": "rigid-body transformation matrix from fieldmap to first input volume",
             "argstr": "--field_mat",
-            "requires": {"fmap_file"},
+            "requires": {"fieldmap_image"},
         }
     )
 
