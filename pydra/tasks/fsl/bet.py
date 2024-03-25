@@ -20,7 +20,7 @@ __all__ = ["BET"]
 class BETSpec:
     """Specifications for BET."""
 
-    input_image_file: os.PathLike = attrs.field(
+    input_image: os.PathLike = attrs.field(
         metadata={
             "help_string": "input image",
             "mandatory": True,
@@ -28,12 +28,11 @@ class BETSpec:
         }
     )
 
-    output_image_file: str = attrs.field(
+    output_image: str = attrs.field(
         metadata={
             "help_string": "output image",
             "argstr": "",
-            "output_file_template": "{input_image_file}_bet",
-            "requires": {"input_image_file"},
+            "output_file_template": "{input_image}_bet",
         }
     )
 
