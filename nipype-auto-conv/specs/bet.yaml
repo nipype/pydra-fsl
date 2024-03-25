@@ -1,0 +1,204 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.preprocess.BET' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# FSL BET wrapper for skull stripping
+#
+#     For complete details, see the `BET Documentation.
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET/UserGuide>`_
+#
+#     Examples
+#     --------
+#     >>> from nipype.interfaces import fsl
+#     >>> btr = fsl.BET()
+#     >>> btr.inputs.in_file = 'structural.nii'
+#     >>> btr.inputs.frac = 0.7
+#     >>> btr.inputs.out_file = 'brain_anat.nii'
+#     >>> btr.cmdline
+#     'bet structural.nii brain_anat.nii -f 0.70'
+#     >>> res = btr.run() # doctest: +SKIP
+#
+#
+task_name: BET
+nipype_name: BET
+nipype_module: nipype.interfaces.fsl.preprocess
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: input file to skull strip
+    out_file: Path
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+    t2_guided: generic/file
+    # type=file|default=<undefined>: as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    inskull_mask_file: generic/file
+    # type=file: path/name of inskull mask (if generated)
+    inskull_mesh_file: generic/file
+    # type=file: path/name of inskull mesh outline (if generated)
+    mask_file: generic/file
+    # type=file: path/name of binary brain mask (if generated)
+    meshfile: generic/file
+    # type=file: path/name of vtk mesh file (if generated)
+    out_file: medimage/nifti1
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+    outline_file: generic/file
+    # type=file: path/name of outline file (if generated)
+    outskin_mask_file: generic/file
+    # type=file: path/name of outskin mask (if generated)
+    outskin_mesh_file: generic/file
+    # type=file: path/name of outskin mesh outline (if generated)
+    outskull_mask_file: generic/file
+    # type=file: path/name of outskull mask (if generated)
+    outskull_mesh_file: generic/file
+    # type=file: path/name of outskull mesh outline (if generated)
+    skull_file: generic/file
+    # type=file: path/name of skull file (if generated)
+    skull_mask_file: generic/file
+    # type=file: path/name of skull mask (if generated)
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+    out_file: '"brain_anat.nii"'
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file to skull strip
+    out_file:
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+    outline:
+    # type=bool|default=False: create surface outline image
+    mask:
+    # type=bool|default=False: create binary mask image
+    skull:
+    # type=bool|default=False: create skull image
+    no_output:
+    # type=bool|default=False: Don't generate segmented output
+    frac:
+    # type=float|default=0.0: fractional intensity threshold
+    vertical_gradient:
+    # type=float|default=0.0: vertical gradient in fractional intensity threshold (-1, 1)
+    radius:
+    # type=int|default=0: head radius
+    center:
+    # type=list|default=[]: center of gravity in voxels
+    threshold:
+    # type=bool|default=False: apply thresholding to segmented brain image and mask
+    mesh:
+    # type=bool|default=False: generate a vtk mesh brain surface
+    robust:
+    # type=bool|default=False: robust brain centre estimation (iterates BET several times)
+    padding:
+    # type=bool|default=False: improve BET if FOV is very small in Z (by temporarily padding end slices)
+    remove_eyes:
+    # type=bool|default=False: eye & optic nerve cleanup (can be useful in SIENA)
+    surfaces:
+    # type=bool|default=False: run bet2 and then betsurf to get additional skull and scalp surfaces (includes registrations)
+    t2_guided:
+    # type=file|default=<undefined>: as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)
+    functional:
+    # type=bool|default=False: apply to 4D fMRI data
+    reduce_bias:
+    # type=bool|default=False: bias field and neck cleanup
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file to skull strip
+    frac: '0.7'
+    # type=float|default=0.0: fractional intensity threshold
+    out_file: '"brain_anat.nii"'
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: bet structural.nii brain_anat.nii -f 0.70
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"structural.nii"'
+    # type=file|default=<undefined>: input file to skull strip
+    frac: '0.7'
+    # type=float|default=0.0: fractional intensity threshold
+    out_file: '"brain_anat.nii"'
+    # type=file: path/name of skullstripped file (if generated)
+    # type=file|default=<undefined>: name of output skull stripped image
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

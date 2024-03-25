@@ -1,0 +1,297 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.model.MELODIC' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Multivariate Exploratory Linear Optimised Decomposition into Independent
+#     Components
+#
+#     Examples
+#     --------
+#
+#     >>> melodic_setup = MELODIC()
+#     >>> melodic_setup.inputs.approach = 'tica'
+#     >>> melodic_setup.inputs.in_files = ['functional.nii', 'functional2.nii', 'functional3.nii']
+#     >>> melodic_setup.inputs.no_bet = True
+#     >>> melodic_setup.inputs.bg_threshold = 10
+#     >>> melodic_setup.inputs.tr_sec = 1.5
+#     >>> melodic_setup.inputs.mm_thresh = 0.5
+#     >>> melodic_setup.inputs.out_stats = True
+#     >>> melodic_setup.inputs.t_des = 'timeDesign.mat'
+#     >>> melodic_setup.inputs.t_con = 'timeDesign.con'
+#     >>> melodic_setup.inputs.s_des = 'subjectDesign.mat'
+#     >>> melodic_setup.inputs.s_con = 'subjectDesign.con'
+#     >>> melodic_setup.inputs.out_dir = 'groupICA.out'
+#     >>> melodic_setup.cmdline
+#     'melodic -i functional.nii,functional2.nii,functional3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000'
+#     >>> melodic_setup.run() # doctest: +SKIP
+#
+#
+#
+task_name: MELODIC
+nipype_name: MELODIC
+nipype_module: nipype.interfaces.fsl.model
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    ICs: generic/file
+    # type=file|default=<undefined>: filename of the IC components file for mixture modelling
+    bg_image: generic/file
+    # type=file|default=<undefined>: specify background image for report (default: mean image)
+    in_files: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
+    mask: generic/file
+    # type=file|default=<undefined>: file name of mask for thresholding
+    mix: generic/file
+    # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
+    out_dir: Path
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+    s_con: medimage-fsl/con
+    # type=file|default=<undefined>: t-contrast matrix across subject-domain
+    s_des: datascience/text-matrix
+    # type=file|default=<undefined>: design matrix across subject-domain
+    smode: generic/file
+    # type=file|default=<undefined>: matrix of session modes for report generation
+    t_con: medimage-fsl/con
+    # type=file|default=<undefined>: t-contrast matrix across time-domain
+    t_des: datascience/text-matrix
+    # type=file|default=<undefined>: design matrix across time-domain
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+    out_dir: '"groupICA.out"'
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_files:
+    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
+    out_dir:
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+    mask:
+    # type=file|default=<undefined>: file name of mask for thresholding
+    no_mask:
+    # type=bool|default=False: switch off masking
+    update_mask:
+    # type=bool|default=False: switch off mask updating
+    no_bet:
+    # type=bool|default=False: switch off BET
+    bg_threshold:
+    # type=float|default=0.0: brain/non-brain threshold used to mask non-brain voxels, as a percentage (only if --nobet selected)
+    dim:
+    # type=int|default=0: dimensionality reduction into #num dimensions (default: automatic estimation)
+    dim_est:
+    # type=str|default='': use specific dim. estimation technique: lap, bic, mdl, aic, mean (default: lap)
+    sep_whiten:
+    # type=bool|default=False: switch on separate whitening
+    sep_vn:
+    # type=bool|default=False: switch off joined variance normalization
+    migp:
+    # type=bool|default=False: switch on MIGP data reduction
+    migpN:
+    # type=int|default=0: number of internal Eigenmaps
+    migp_shuffle:
+    # type=bool|default=False: randomise MIGP file order (default: TRUE)
+    migp_factor:
+    # type=int|default=0: Internal Factor of mem-threshold relative to number of Eigenmaps (default: 2)
+    num_ICs:
+    # type=int|default=0: number of IC's to extract (for deflation approach)
+    approach:
+    # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
+    non_linearity:
+    # type=str|default='': nonlinearity: gauss, tanh, pow3, pow4
+    var_norm:
+    # type=bool|default=False: switch off variance normalization
+    pbsc:
+    # type=bool|default=False: switch off conversion to percent BOLD signal change
+    cov_weight:
+    # type=float|default=0.0: voxel-wise weights for the covariance matrix (e.g. segmentation information)
+    epsilon:
+    # type=float|default=0.0: minimum error change
+    epsilonS:
+    # type=float|default=0.0: minimum error change for rank-1 approximation in TICA
+    maxit:
+    # type=int|default=0: maximum number of iterations before restart
+    max_restart:
+    # type=int|default=0: maximum number of restarts
+    mm_thresh:
+    # type=float|default=0.0: threshold for Mixture Model based inference
+    no_mm:
+    # type=bool|default=False: switch off mixture modelling on IC maps
+    ICs:
+    # type=file|default=<undefined>: filename of the IC components file for mixture modelling
+    mix:
+    # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
+    smode:
+    # type=file|default=<undefined>: matrix of session modes for report generation
+    rem_cmp:
+    # type=list|default=[]: component numbers to remove
+    report:
+    # type=bool|default=False: generate Melodic web report
+    bg_image:
+    # type=file|default=<undefined>: specify background image for report (default: mean image)
+    tr_sec:
+    # type=float|default=0.0: TR in seconds
+    log_power:
+    # type=bool|default=False: calculate log of power for frequency spectrum
+    t_des:
+    # type=file|default=<undefined>: design matrix across time-domain
+    t_con:
+    # type=file|default=<undefined>: t-contrast matrix across time-domain
+    s_des:
+    # type=file|default=<undefined>: design matrix across subject-domain
+    s_con:
+    # type=file|default=<undefined>: t-contrast matrix across subject-domain
+    out_all:
+    # type=bool|default=False: output everything
+    out_unmix:
+    # type=bool|default=False: output unmixing matrix
+    out_stats:
+    # type=bool|default=False: output thresholded maps and probability maps
+    out_pca:
+    # type=bool|default=False: output PCA results
+    out_white:
+    # type=bool|default=False: output whitening/dewhitening matrices
+    out_orig:
+    # type=bool|default=False: output the original ICs
+    out_mean:
+    # type=bool|default=False: output mean volume
+    report_maps:
+    # type=str|default='': control string for spatial map images (see slicer)
+    remove_deriv:
+    # type=bool|default=False: removes every second entry in paradigm file (EV derivatives)
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    approach: '"tica"'
+    # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
+    in_files:
+    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
+    no_bet: 'True'
+    # type=bool|default=False: switch off BET
+    bg_threshold: '10'
+    # type=float|default=0.0: brain/non-brain threshold used to mask non-brain voxels, as a percentage (only if --nobet selected)
+    tr_sec: '1.5'
+    # type=float|default=0.0: TR in seconds
+    mm_thresh: '0.5'
+    # type=float|default=0.0: threshold for Mixture Model based inference
+    out_stats: 'True'
+    # type=bool|default=False: output thresholded maps and probability maps
+    t_des:
+    # type=file|default=<undefined>: design matrix across time-domain
+    t_con:
+    # type=file|default=<undefined>: t-contrast matrix across time-domain
+    s_des:
+    # type=file|default=<undefined>: design matrix across subject-domain
+    s_con:
+    # type=file|default=<undefined>: t-contrast matrix across subject-domain
+    out_dir: '"groupICA.out"'
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: melodic -i functional.nii,functional2.nii,functional3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    approach: '"tica"'
+    # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
+    in_files: '["functional.nii", "functional2.nii", "functional3.nii"]'
+    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
+    no_bet: 'True'
+    # type=bool|default=False: switch off BET
+    bg_threshold: '10'
+    # type=float|default=0.0: brain/non-brain threshold used to mask non-brain voxels, as a percentage (only if --nobet selected)
+    tr_sec: '1.5'
+    # type=float|default=0.0: TR in seconds
+    mm_thresh: '0.5'
+    # type=float|default=0.0: threshold for Mixture Model based inference
+    out_stats: 'True'
+    # type=bool|default=False: output thresholded maps and probability maps
+    t_des: '"timeDesign.mat"'
+    # type=file|default=<undefined>: design matrix across time-domain
+    t_con: '"timeDesign.con"'
+    # type=file|default=<undefined>: t-contrast matrix across time-domain
+    s_des: '"subjectDesign.mat"'
+    # type=file|default=<undefined>: design matrix across subject-domain
+    s_con: '"subjectDesign.con"'
+    # type=file|default=<undefined>: t-contrast matrix across subject-domain
+    out_dir: '"groupICA.out"'
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

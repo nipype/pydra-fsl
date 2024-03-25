@@ -1,0 +1,204 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.aroma.ICA_AROMA' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     Interface for the ICA_AROMA.py script.
+#
+#     ICA-AROMA (i.e. 'ICA-based Automatic Removal Of Motion Artifacts') concerns
+#     a data-driven method to identify and remove motion-related independent
+#     components from fMRI data. To that end it exploits a small, but robust
+#     set of theoretically motivated features, preventing the need for classifier
+#     re-training and therefore providing direct and easy applicability.
+#
+#     See link for further documentation: https://github.com/rhr-pruim/ICA-AROMA
+#
+#     Example
+#     -------
+#
+#     >>> from nipype.interfaces.fsl import ICA_AROMA
+#     >>> from nipype.testing import example_data
+#     >>> AROMA_obj = ICA_AROMA()
+#     >>> AROMA_obj.inputs.in_file = 'functional.nii'
+#     >>> AROMA_obj.inputs.mat_file = 'func_to_struct.mat'
+#     >>> AROMA_obj.inputs.fnirt_warp_file = 'warpfield.nii'
+#     >>> AROMA_obj.inputs.motion_parameters = 'fsl_mcflirt_movpar.txt'
+#     >>> AROMA_obj.inputs.mask = 'mask.nii.gz'
+#     >>> AROMA_obj.inputs.denoise_type = 'both'
+#     >>> AROMA_obj.inputs.out_dir = 'ICA_testout'
+#     >>> AROMA_obj.cmdline  # doctest: +ELLIPSIS
+#     'ICA_AROMA.py -den both -warp warpfield.nii -i functional.nii -m mask.nii.gz -affmat func_to_struct.mat -mc fsl_mcflirt_movpar.txt -o .../ICA_testout'
+#
+task_name: ICA_AROMA
+nipype_name: ICA_AROMA
+nipype_module: nipype.interfaces.fsl.aroma
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    feat_dir: generic/directory
+    # type=directory|default=<undefined>: If a feat directory exists and temporal filtering has not been run yet, ICA_AROMA can use the files in this directory.
+    fnirt_warp_file: medimage/nifti1
+    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: volume to be denoised
+    mask: medimage/nifti-gz
+    # type=file|default=<undefined>: path/name volume mask
+    mat_file: datascience/text-matrix
+    # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
+    melodic_dir: generic/directory
+    # type=directory|default=<undefined>: path to MELODIC directory if MELODIC has already been run
+    motion_parameters: text/text-file
+    # type=file|default=<undefined>: motion parameters file
+    out_dir: Path
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    aggr_denoised_file: generic/file
+    # type=file: if generated: aggressively denoised volume
+    nonaggr_denoised_file: generic/file
+    # type=file: if generated: non aggressively denoised volume
+    out_dir: generic/directory
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    feat_dir:
+    # type=directory|default=<undefined>: If a feat directory exists and temporal filtering has not been run yet, ICA_AROMA can use the files in this directory.
+    in_file:
+    # type=file|default=<undefined>: volume to be denoised
+    out_dir:
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+    mask:
+    # type=file|default=<undefined>: path/name volume mask
+    dim:
+    # type=int|default=0: Dimensionality reduction when running MELODIC (default is automatic estimation)
+    TR:
+    # type=float|default=0.0: TR in seconds. If this is not specified the TR will be extracted from the header of the fMRI nifti file.
+    melodic_dir:
+    # type=directory|default=<undefined>: path to MELODIC directory if MELODIC has already been run
+    mat_file:
+    # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
+    fnirt_warp_file:
+    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
+    motion_parameters:
+    # type=file|default=<undefined>: motion parameters file
+    denoise_type:
+    # type=enum|default='nonaggr'|allowed['aggr','both','no','nonaggr']: Type of denoising strategy: -no: only classification, no denoising -nonaggr (default): non-aggresssive denoising, i.e. partial component regression -aggr: aggressive denoising, i.e. full component regression -both: both aggressive and non-aggressive denoising (two outputs)
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: volume to be denoised
+    mat_file:
+    # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
+    fnirt_warp_file:
+    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
+    motion_parameters:
+    # type=file|default=<undefined>: motion parameters file
+    mask:
+    # type=file|default=<undefined>: path/name volume mask
+    denoise_type: '"both"'
+    # type=enum|default='nonaggr'|allowed['aggr','both','no','nonaggr']: Type of denoising strategy: -no: only classification, no denoising -nonaggr (default): non-aggresssive denoising, i.e. partial component regression -aggr: aggressive denoising, i.e. full component regression -both: both aggressive and non-aggressive denoising (two outputs)
+    out_dir: '"ICA_testout"'
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+  imports: &id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  - module: nipype.testing
+    name: example_data
+    alias:
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: ICA_AROMA.py -den both -warp warpfield.nii -i functional.nii -m mask.nii.gz -affmat func_to_struct.mat -mc fsl_mcflirt_movpar.txt -o .../ICA_testout
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"functional.nii"'
+    # type=file|default=<undefined>: volume to be denoised
+    mat_file: '"func_to_struct.mat"'
+    # type=file|default=<undefined>: path/name of the mat-file describing the affine registration (e.g. FSL FLIRT) of the functional data to structural space (.mat file)
+    fnirt_warp_file: '"warpfield.nii"'
+    # type=file|default=<undefined>: File name of the warp-file describing the non-linear registration (e.g. FSL FNIRT) of the structural data to MNI152 space (.nii.gz)
+    motion_parameters: '"fsl_mcflirt_movpar.txt"'
+    # type=file|default=<undefined>: motion parameters file
+    mask: '"mask.nii.gz"'
+    # type=file|default=<undefined>: path/name volume mask
+    denoise_type: '"both"'
+    # type=enum|default='nonaggr'|allowed['aggr','both','no','nonaggr']: Type of denoising strategy: -no: only classification, no denoising -nonaggr (default): non-aggresssive denoising, i.e. partial component regression -aggr: aggressive denoising, i.e. full component regression -both: both aggressive and non-aggressive denoising (two outputs)
+    out_dir: '"ICA_testout"'
+    # type=directory: directory contains (in addition to the denoised files): melodic.ica + classified_motion_components + classification_overview + feature_scores + melodic_ic_mni)
+    # type=directory|default='out': output directory
+  imports: *id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

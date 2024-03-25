@@ -1,0 +1,12 @@
+black
+attrs>=22.1.0
+nipype
+tqdm
+pydra
+PyYAML>=6.0
+fileformats >=0.8
+fileformats-medimage >=0.4
+fileformats-datascience >= 0.1
+fileformats-medimage-fsl
+traits
+nipype2pydra

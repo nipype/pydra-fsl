@@ -1,0 +1,198 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.preprocess.MCFLIRT' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# FSL MCFLIRT wrapper for within-modality motion correction
+#
+#     For complete details, see the `MCFLIRT Documentation.
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/MCFLIRT>`_
+#
+#     Examples
+#     --------
+#     >>> from nipype.interfaces import fsl
+#     >>> mcflt = fsl.MCFLIRT()
+#     >>> mcflt.inputs.in_file = 'functional.nii'
+#     >>> mcflt.inputs.cost = 'mutualinfo'
+#     >>> mcflt.inputs.out_file = 'moco.nii'
+#     >>> mcflt.cmdline
+#     'mcflirt -in functional.nii -cost mutualinfo -out moco.nii'
+#     >>> res = mcflt.run()  # doctest: +SKIP
+#
+#
+task_name: MCFLIRT
+nipype_name: MCFLIRT
+nipype_module: nipype.interfaces.fsl.preprocess
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: timeseries to motion-correct
+    init: generic/file
+    # type=file|default=<undefined>: initial transformation matrix
+    out_file: Path
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+    ref_file: generic/file
+    # type=file|default=<undefined>: target image for motion correction
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    mat_file: generic/file+list-of
+    # type=outputmultiobject: transformation matrices
+    mean_img: generic/file
+    # type=file: mean timeseries image (if mean_vol=True)
+    out_file: medimage/nifti1
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+    par_file: generic/file
+    # type=file: text-file with motion parameters
+    rms_files: generic/file+list-of
+    # type=outputmultiobject: absolute and relative displacement parameters
+    std_img: generic/file
+    # type=file: standard deviation image
+    variance_img: generic/file
+    # type=file: variance image
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+    out_file: '"moco.nii"'
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: timeseries to motion-correct
+    out_file:
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+    cost:
+    # type=enum|default='mutualinfo'|allowed['corratio','leastsquares','mutualinfo','normcorr','normmi','woods']: cost function to optimize
+    bins:
+    # type=int|default=0: number of histogram bins
+    dof:
+    # type=int|default=0: degrees of freedom for the transformation
+    ref_vol:
+    # type=int|default=0: volume to align frames to
+    scaling:
+    # type=float|default=0.0: scaling factor to use
+    smooth:
+    # type=float|default=0.0: smoothing factor for the cost function
+    rotation:
+    # type=int|default=0: scaling factor for rotation tolerances
+    stages:
+    # type=int|default=0: stages (if 4, perform final search with sinc interpolation
+    init:
+    # type=file|default=<undefined>: initial transformation matrix
+    interpolation:
+    # type=enum|default='spline'|allowed['nn','sinc','spline']: interpolation method for transformation
+    use_gradient:
+    # type=bool|default=False: run search on gradient images
+    use_contour:
+    # type=bool|default=False: run search on contour images
+    mean_vol:
+    # type=bool|default=False: register to mean volume
+    stats_imgs:
+    # type=bool|default=False: produce variance and std. dev. images
+    save_mats:
+    # type=bool|default=False: save transformation matrices
+    save_plots:
+    # type=bool|default=False: save transformation parameters
+    save_rms:
+    # type=bool|default=False: save rms displacement parameters
+    ref_file:
+    # type=file|default=<undefined>: target image for motion correction
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: timeseries to motion-correct
+    cost: '"mutualinfo"'
+    # type=enum|default='mutualinfo'|allowed['corratio','leastsquares','mutualinfo','normcorr','normmi','woods']: cost function to optimize
+    out_file: '"moco.nii"'
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: mcflirt -in functional.nii -cost mutualinfo -out moco.nii
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"functional.nii"'
+    # type=file|default=<undefined>: timeseries to motion-correct
+    cost: '"mutualinfo"'
+    # type=enum|default='mutualinfo'|allowed['corratio','leastsquares','mutualinfo','normcorr','normmi','woods']: cost function to optimize
+    out_file: '"moco.nii"'
+    # type=file: motion-corrected timeseries
+    # type=file|default=<undefined>: file to write
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

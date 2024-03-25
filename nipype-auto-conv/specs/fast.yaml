@@ -1,0 +1,195 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.preprocess.FAST' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# FSL FAST wrapper for segmentation and bias correction
+#
+#     For complete details, see the `FAST Documentation.
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FAST>`_
+#
+#     Examples
+#     --------
+#     >>> from nipype.interfaces import fsl
+#     >>> fast = fsl.FAST()
+#     >>> fast.inputs.in_files = 'structural.nii'
+#     >>> fast.inputs.out_basename = 'fast_'
+#     >>> fast.cmdline
+#     'fast -o fast_ -S 1 structural.nii'
+#     >>> out = fast.run()  # doctest: +SKIP
+#
+#
+task_name: FAST
+nipype_name: FAST
+nipype_module: nipype.interfaces.fsl.preprocess
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_files: medimage/nifti1+list-of
+    # type=inputmultiobject|default=[]: image, or multi-channel set of images, to be segmented
+    init_transform: generic/file
+    # type=file|default=<undefined>: <standard2input.mat> initialise using priors
+    manual_seg: generic/file
+    # type=file|default=<undefined>: Filename containing intensities
+    other_priors: generic/file+list-of
+    # type=inputmultiobject|default=[]: alternative prior images
+    out_basename: Path
+    # type=file|default=<undefined>: base name of output files
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    bias_field: generic/file+list-of
+    # type=outputmultiobject:
+    mixeltype: generic/file
+    # type=file: path/name of mixeltype volume file _mixeltype
+    partial_volume_files: generic/file+list-of
+    # type=outputmultiobject:
+    partial_volume_map: generic/file
+    # type=file: path/name of partial volume file _pveseg
+    probability_maps: generic/file+list-of
+    # type=outputmultiobject:
+    # type=bool|default=False: outputs individual probability maps
+    restored_image: generic/file+list-of
+    # type=outputmultiobject:
+    tissue_class_files: generic/file+list-of
+    # type=outputmultiobject:
+    tissue_class_map: generic/file
+    # type=file: path/name of binary segmented volume file one val for each class  _seg
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_files:
+    # type=inputmultiobject|default=[]: image, or multi-channel set of images, to be segmented
+    out_basename:
+    # type=file|default=<undefined>: base name of output files
+    number_classes:
+    # type=range|default=1: number of tissue-type classes
+    output_biasfield:
+    # type=bool|default=False: output estimated bias field
+    output_biascorrected:
+    # type=bool|default=False: output restored image (bias-corrected image)
+    img_type:
+    # type=enum|default=1|allowed[1,2,3]: int specifying type of image: (1 = T1, 2 = T2, 3 = PD)
+    bias_iters:
+    # type=range|default=1: number of main-loop iterations during bias-field removal
+    bias_lowpass:
+    # type=range|default=4: bias field smoothing extent (FWHM) in mm
+    init_seg_smooth:
+    # type=range|default=0.0001: initial segmentation spatial smoothness (during bias field estimation)
+    segments:
+    # type=bool|default=False: outputs a separate binary image for each tissue type
+    init_transform:
+    # type=file|default=<undefined>: <standard2input.mat> initialise using priors
+    other_priors:
+    # type=inputmultiobject|default=[]: alternative prior images
+    no_pve:
+    # type=bool|default=False: turn off PVE (partial volume estimation)
+    no_bias:
+    # type=bool|default=False: do not remove bias field
+    use_priors:
+    # type=bool|default=False: use priors throughout
+    segment_iters:
+    # type=range|default=1: number of segmentation-initialisation iterations
+    mixel_smooth:
+    # type=range|default=0.0: spatial smoothness for mixeltype
+    iters_afterbias:
+    # type=range|default=1: number of main-loop iterations after bias-field removal
+    hyper:
+    # type=range|default=0.0: segmentation spatial smoothness
+    verbose:
+    # type=bool|default=False: switch on diagnostic messages
+    manual_seg:
+    # type=file|default=<undefined>: Filename containing intensities
+    probability_maps:
+    # type=outputmultiobject:
+    # type=bool|default=False: outputs individual probability maps
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_files:
+    # type=inputmultiobject|default=[]: image, or multi-channel set of images, to be segmented
+    out_basename: '"fast_"'
+    # type=file|default=<undefined>: base name of output files
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: fast -o fast_ -S 1 structural.nii
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_files: '"structural.nii"'
+    # type=inputmultiobject|default=[]: image, or multi-channel set of images, to be segmented
+    out_basename: '"fast_"'
+    # type=file|default=<undefined>: base name of output files
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

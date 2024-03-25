@@ -1,0 +1,175 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.model.FILMGLS' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL film_gls command to fit a design matrix to voxel timeseries
+#
+#     Examples
+#     --------
+#
+#     Initialize with no options, assigning them when calling run:
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> fgls = fsl.FILMGLS()
+#     >>> res = fgls.run('in_file', 'design_file', 'thresh', rn='stats') #doctest: +SKIP
+#
+#     Assign options through the ``inputs`` attribute:
+#
+#     >>> fgls = fsl.FILMGLS()
+#     >>> fgls.inputs.in_file = 'functional.nii'
+#     >>> fgls.inputs.design_file = 'design.mat'
+#     >>> fgls.inputs.threshold = 10
+#     >>> fgls.inputs.results_dir = 'stats'
+#     >>> res = fgls.run() #doctest: +SKIP
+#
+#     Specify options when creating an instance:
+#
+#     >>> fgls = fsl.FILMGLS(in_file='functional.nii', design_file='design.mat', threshold=10, results_dir='stats')
+#     >>> res = fgls.run() #doctest: +SKIP
+#
+#
+task_name: FILMGLS
+nipype_name: FILMGLS
+nipype_module: nipype.interfaces.fsl.model
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    design_file: generic/file
+    # type=file|default=<undefined>: design matrix file
+    fcon_file: generic/file
+    # type=file|default=<undefined>: contrast file containing F-contrasts
+    in_file: generic/file
+    # type=file|default=<undefined>: input data file
+    results_dir: Path
+    # type=directory: directory storing model estimation output
+    # type=directory|default='results': directory to store results in
+    surface: generic/file
+    # type=file|default=<undefined>: input surface for autocorr smoothing in surface-based analyses
+    tcon_file: generic/file
+    # type=file|default=<undefined>: contrast file containing T-contrasts
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    copes: generic/file+list-of
+    # type=outputmultiobject: Contrast estimates for each contrast
+    dof_file: generic/file
+    # type=file: degrees of freedom
+    fstats: generic/file+list-of
+    # type=outputmultiobject: f-stat file for each contrast
+    logfile: generic/file
+    # type=file: FILM run logfile
+    param_estimates: generic/file+list-of
+    # type=outputmultiobject: Parameter estimates for each column of the design matrix
+    residual4d: generic/file
+    # type=file: Model fit residual mean-squared error for each time point
+    results_dir: generic/directory
+    # type=directory: directory storing model estimation output
+    # type=directory|default='results': directory to store results in
+    sigmasquareds: generic/file
+    # type=file: summary of residuals, See Woolrich, et. al., 2001
+    thresholdac: generic/file
+    # type=file: The FILM autocorrelation parameters
+    tstats: generic/file+list-of
+    # type=outputmultiobject: t-stat file for each contrast
+    varcopes: generic/file+list-of
+    # type=outputmultiobject: Variance estimates for each contrast
+    zfstats: generic/file+list-of
+    # type=outputmultiobject: z-stat file for each F contrast
+    zstats: generic/file+list-of
+    # type=outputmultiobject: z-stat file for each contrast
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    threshold:
+    # type=float|default=-1000.0: threshold
+    tcon_file:
+    # type=file|default=<undefined>: contrast file containing T-contrasts
+    fcon_file:
+    # type=file|default=<undefined>: contrast file containing F-contrasts
+    mode:
+    # type=enum|default='volumetric'|allowed['surface','volumetric']: Type of analysis to be done
+    surface:
+    # type=file|default=<undefined>: input surface for autocorr smoothing in surface-based analyses
+    in_file:
+    # type=file|default=<undefined>: input data file
+    design_file:
+    # type=file|default=<undefined>: design matrix file
+    smooth_autocorr:
+    # type=bool|default=False: Smooth auto corr estimates
+    mask_size:
+    # type=int|default=0: susan mask size
+    brightness_threshold:
+    # type=range|default=0: susan brightness threshold, otherwise it is estimated
+    full_data:
+    # type=bool|default=False: output full data
+    autocorr_estimate_only:
+    # type=bool|default=False: perform autocorrelation estimation only
+    fit_armodel:
+    # type=bool|default=False: fits autoregressive model - default is to use tukey with M=sqrt(numvols)
+    tukey_window:
+    # type=int|default=0: tukey window size to estimate autocorr
+    multitaper_product:
+    # type=int|default=0: multitapering with slepian tapers and num is the time-bandwidth product
+    use_pava:
+    # type=bool|default=False: estimates autocorr using PAVA
+    autocorr_noestimate:
+    # type=bool|default=False: do not estimate autocorrs
+    output_pwdata:
+    # type=bool|default=False: output prewhitened data and average design matrix
+    results_dir:
+    # type=directory: directory storing model estimation output
+    # type=directory|default='results': directory to store results in
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests: []

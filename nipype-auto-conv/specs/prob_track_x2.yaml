@@ -1,0 +1,307 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.dti.ProbTrackX2' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL  probtrackx2 for tractography on bedpostx results
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> pbx2 = fsl.ProbTrackX2()
+#     >>> pbx2.inputs.seed = 'seed_source.nii.gz'
+#     >>> pbx2.inputs.thsamples = 'merged_th1samples.nii.gz'
+#     >>> pbx2.inputs.fsamples = 'merged_f1samples.nii.gz'
+#     >>> pbx2.inputs.phsamples = 'merged_ph1samples.nii.gz'
+#     >>> pbx2.inputs.mask = 'nodif_brain_mask.nii.gz'
+#     >>> pbx2.inputs.out_dir = '.'
+#     >>> pbx2.inputs.n_samples = 3
+#     >>> pbx2.inputs.n_steps = 10
+#     >>> pbx2.cmdline
+#     'probtrackx2 --forcedir -m nodif_brain_mask.nii.gz --nsamples=3 --nsteps=10 --opd --dir=. --samples=merged --seed=seed_source.nii.gz'
+#
+task_name: ProbTrackX2
+nipype_name: ProbTrackX2
+nipype_module: nipype.interfaces.fsl.dti
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    avoid_mp: generic/file
+    # type=file|default=<undefined>: reject pathways passing through locations given by this mask
+    colmask4: generic/file
+    # type=file|default=<undefined>: Mask for columns of matrix4 (default=seed mask)
+    fopd: generic/file
+    # type=file|default=<undefined>: Other mask for binning tract distribution
+    fsamples: medimage/nifti-gz+list-of
+    # type=inputmultiobject|default=[]:
+    inv_xfm: generic/file
+    # type=file|default=<undefined>: transformation matrix taking DTI space to seed space (compulsory when using a warp_field for seeds_to_dti)
+    lrtarget3: generic/file
+    # type=file|default=<undefined>: Column-space mask used for Nxn connectivity matrix
+    mask: medimage/nifti-gz
+    # type=file|default=<undefined>: bet binary mask file in diffusion space
+    out_dir: Path
+    # type=directory|default=<undefined>: directory to put the final volumes in
+    phsamples: medimage/nifti-gz+list-of
+    # type=inputmultiobject|default=[]:
+    seed_ref: generic/file
+    # type=file|default=<undefined>: reference vol to define seed space in simple mode - diffusion space assumed if absent
+    stop_mask: generic/file
+    # type=file|default=<undefined>: stop tracking at locations given by this mask file
+    target2: generic/file
+    # type=file|default=<undefined>: Low resolution binary brain mask for storing connectivity distribution in matrix2 mode
+    target3: generic/file
+    # type=file|default=<undefined>: Mask used for NxN connectivity matrix (or Nxn if lrtarget3 is set)
+    target4: generic/file
+    # type=file|default=<undefined>: Brain mask in DTI space
+    target_masks: generic/file+list-of
+    # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
+    thsamples: medimage/nifti-gz+list-of
+    # type=inputmultiobject|default=[]:
+    waypoints: generic/file
+    # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
+    xfm: generic/file
+    # type=file|default=<undefined>: transformation matrix taking seed space to DTI space (either FLIRT matrix or FNIRT warp_field) - default is identity
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+    out_dir: out_dir_default
+    # type=directory|default=<undefined>: directory to put the final volumes in
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    fdt_paths: generic/file+list-of
+    # type=outputmultiobject: path/name of a 3D image file containing the output connectivity distribution to the seed mask
+    log: generic/file
+    # type=file: path/name of a text record of the command that was run
+    lookup_tractspace: generic/file
+    # type=file: lookup_tractspace generated by --omatrix2 option
+    matrix1_dot: generic/file
+    # type=file: Output matrix1.dot - SeedToSeed Connectivity
+    matrix2_dot: generic/file
+    # type=file: Output matrix2.dot - SeedToLowResMask
+    matrix3_dot: generic/file
+    # type=file: Output matrix3 - NxN connectivity matrix
+    network_matrix: generic/file
+    # type=file: the network matrix generated by --omatrix1 option
+    particle_files: generic/file+list-of
+    # type=list: Files describing all of the tract samples. Generated only if verbose is set to 2
+    targets: generic/file+list-of
+    # type=list: a list with all generated seeds_to_target files
+    way_total: generic/file
+    # type=file: path/name of a text file containing a single number corresponding to the total number of generated tracts that have not been rejected by inclusion/exclusion mask criteria
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    simple:
+    # type=bool|default=False: rack from a list of voxels (seed must be a ASCII list of coordinates)
+    fopd:
+    # type=file|default=<undefined>: Other mask for binning tract distribution
+    waycond:
+    # type=enum|default='OR'|allowed['AND','OR']: Waypoint condition. Either "AND" (default) or "OR"
+    wayorder:
+    # type=bool|default=False: Reject streamlines that do not hit waypoints in given order. Only valid if waycond=AND
+    onewaycondition:
+    # type=bool|default=False: Apply waypoint conditions to each half tract separately
+    omatrix1:
+    # type=bool|default=False: Output matrix1 - SeedToSeed Connectivity
+    distthresh1:
+    # type=float|default=0.0: Discards samples (in matrix1) shorter than this threshold (in mm - default=0)
+    omatrix2:
+    # type=bool|default=False: Output matrix2 - SeedToLowResMask
+    target2:
+    # type=file|default=<undefined>: Low resolution binary brain mask for storing connectivity distribution in matrix2 mode
+    omatrix3:
+    # type=bool|default=False: Output matrix3 (NxN connectivity matrix)
+    target3:
+    # type=file|default=<undefined>: Mask used for NxN connectivity matrix (or Nxn if lrtarget3 is set)
+    lrtarget3:
+    # type=file|default=<undefined>: Column-space mask used for Nxn connectivity matrix
+    distthresh3:
+    # type=float|default=0.0: Discards samples (in matrix3) shorter than this threshold (in mm - default=0)
+    omatrix4:
+    # type=bool|default=False: Output matrix4 - DtiMaskToSeed (special Oxford Sparse Format)
+    colmask4:
+    # type=file|default=<undefined>: Mask for columns of matrix4 (default=seed mask)
+    target4:
+    # type=file|default=<undefined>: Brain mask in DTI space
+    meshspace:
+    # type=enum|default='caret'|allowed['caret','first','freesurfer','vox']: Mesh reference space - either "caret" (default) or "freesurfer" or "first" or "vox"
+    thsamples:
+    # type=inputmultiobject|default=[]:
+    phsamples:
+    # type=inputmultiobject|default=[]:
+    fsamples:
+    # type=inputmultiobject|default=[]:
+    samples_base_name:
+    # type=str|default='merged': the rootname/base_name for samples files
+    mask:
+    # type=file|default=<undefined>: bet binary mask file in diffusion space
+    seed:
+    # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
+    target_masks:
+    # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
+    waypoints:
+    # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
+    network:
+    # type=bool|default=False: activate network mode - only keep paths going through at least one seed mask (required if multiple seed masks)
+    seed_ref:
+    # type=file|default=<undefined>: reference vol to define seed space in simple mode - diffusion space assumed if absent
+    out_dir:
+    # type=directory|default=<undefined>: directory to put the final volumes in
+    force_dir:
+    # type=bool|default=True: use the actual directory name given - i.e. do not add + to make a new directory
+    opd:
+    # type=bool|default=True: outputs path distributions
+    correct_path_distribution:
+    # type=bool|default=False: correct path distribution for the length of the pathways
+    os2t:
+    # type=bool|default=False: Outputs seeds to targets
+    avoid_mp:
+    # type=file|default=<undefined>: reject pathways passing through locations given by this mask
+    stop_mask:
+    # type=file|default=<undefined>: stop tracking at locations given by this mask file
+    xfm:
+    # type=file|default=<undefined>: transformation matrix taking seed space to DTI space (either FLIRT matrix or FNIRT warp_field) - default is identity
+    inv_xfm:
+    # type=file|default=<undefined>: transformation matrix taking DTI space to seed space (compulsory when using a warp_field for seeds_to_dti)
+    n_samples:
+    # type=int|default=5000: number of samples - default=5000
+    n_steps:
+    # type=int|default=0: number of steps per sample - default=2000
+    dist_thresh:
+    # type=float|default=0.0: discards samples shorter than this threshold (in mm - default=0)
+    c_thresh:
+    # type=float|default=0.0: curvature threshold - default=0.2
+    sample_random_points:
+    # type=float|default=0.0: sample random points within seed voxels
+    step_length:
+    # type=float|default=0.0: step_length in mm - default=0.5
+    loop_check:
+    # type=bool|default=False: perform loop_checks on paths - slower, but allows lower curvature threshold
+    use_anisotropy:
+    # type=bool|default=False: use anisotropy to constrain tracking
+    rand_fib:
+    # type=enum|default=0|allowed[0,1,2,3]: options: 0 - default, 1 - to randomly sample initial fibres (with f > fibthresh), 2 - to sample in proportion fibres (with f>fibthresh) to f, 3 - to sample ALL populations at random (even if f<fibthresh)
+    fibst:
+    # type=int|default=0: force a starting fibre for tracking - default=1, i.e. first fibre orientation. Only works if randfib==0
+    mod_euler:
+    # type=bool|default=False: use modified euler streamlining
+    random_seed:
+    # type=int|default=0: random seed
+    s2tastext:
+    # type=bool|default=False: output seed-to-target counts as a text file (useful when seeding from a mesh)
+    verbose:
+    # type=enum|default=0|allowed[0,1,2]: Verbose level, [0-2]. Level 2 is required to output particle files.
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    seed: '"seed_source.nii.gz"'
+    # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
+    thsamples:
+    # type=inputmultiobject|default=[]:
+    fsamples:
+    # type=inputmultiobject|default=[]:
+    phsamples:
+    # type=inputmultiobject|default=[]:
+    mask:
+    # type=file|default=<undefined>: bet binary mask file in diffusion space
+    out_dir: '"."'
+    # type=directory|default=<undefined>: directory to put the final volumes in
+    n_samples: '3'
+    # type=int|default=5000: number of samples - default=5000
+    n_steps: '10'
+    # type=int|default=0: number of steps per sample - default=2000
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: probtrackx2 --forcedir -m nodif_brain_mask.nii.gz --nsamples=3 --nsteps=10 --opd --dir=. --samples=merged --seed=seed_source.nii.gz
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    seed: '"seed_source.nii.gz"'
+    # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
+    thsamples: '"merged_th1samples.nii.gz"'
+    # type=inputmultiobject|default=[]:
+    fsamples: '"merged_f1samples.nii.gz"'
+    # type=inputmultiobject|default=[]:
+    phsamples: '"merged_ph1samples.nii.gz"'
+    # type=inputmultiobject|default=[]:
+    mask: '"nodif_brain_mask.nii.gz"'
+    # type=file|default=<undefined>: bet binary mask file in diffusion space
+    out_dir: '"."'
+    # type=directory|default=<undefined>: directory to put the final volumes in
+    n_samples: '3'
+    # type=int|default=5000: number of samples - default=5000
+    n_steps: '10'
+    # type=int|default=0: number of steps per sample - default=2000
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

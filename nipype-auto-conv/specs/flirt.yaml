@@ -1,0 +1,280 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.preprocess.FLIRT' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# FSL FLIRT wrapper for coregistration
+#
+#     For complete details, see the `FLIRT Documentation.
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT>`_
+#
+#     To print out the command line help, use:
+#         fsl.FLIRT().inputs_help()
+#
+#     Examples
+#     --------
+#     >>> from nipype.interfaces import fsl
+#     >>> from nipype.testing import example_data
+#     >>> flt = fsl.FLIRT(bins=640, cost_func='mutualinfo')
+#     >>> flt.inputs.in_file = 'structural.nii'
+#     >>> flt.inputs.reference = 'mni.nii'
+#     >>> flt.inputs.output_type = "NIFTI_GZ"
+#     >>> flt.cmdline # doctest: +ELLIPSIS
+#     'flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo'
+#     >>> res = flt.run() #doctest: +SKIP
+#
+#
+task_name: FLIRT
+nipype_name: FLIRT
+nipype_module: nipype.interfaces.fsl.preprocess
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    fieldmap: generic/file
+    # type=file|default=<undefined>: fieldmap image in rads/s - must be already registered to the reference image
+    fieldmapmask: generic/file
+    # type=file|default=<undefined>: mask for fieldmap image
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: input file
+    in_matrix_file: generic/file
+    # type=file|default=<undefined>: input 4x4 affine matrix
+    in_weight: generic/file
+    # type=file|default=<undefined>: File for input weighting volume
+    out_file: Path
+    # type=file: path/name of registered file (if generated)
+    # type=file|default=<undefined>: registered output file
+    out_log: Path
+    # type=file: path/name of output log (if generated)
+    # type=file|default=<undefined>: output log
+    out_matrix_file: Path
+    # type=file: path/name of calculated affine transform (if generated)
+    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
+    ref_weight: generic/file
+    # type=file|default=<undefined>: File for reference weighting volume
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: reference file
+    schedule: generic/file
+    # type=file|default=<undefined>: replaces default schedule
+    wm_seg: generic/file
+    # type=file|default=<undefined>: white matter segmentation volume needed by BBR cost function
+    wmcoords: generic/file
+    # type=file|default=<undefined>: white matter boundary coordinates for BBR cost function
+    wmnorms: generic/file
+    # type=file|default=<undefined>: white matter boundary normals for BBR cost function
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: generic/file
+    # type=file: path/name of registered file (if generated)
+    # type=file|default=<undefined>: registered output file
+    out_log: generic/file
+    # type=file: path/name of output log (if generated)
+    # type=file|default=<undefined>: output log
+    out_matrix_file: generic/file
+    # type=file: path/name of calculated affine transform (if generated)
+    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file
+    reference:
+    # type=file|default=<undefined>: reference file
+    out_file:
+    # type=file: path/name of registered file (if generated)
+    # type=file|default=<undefined>: registered output file
+    out_matrix_file:
+    # type=file: path/name of calculated affine transform (if generated)
+    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
+    out_log:
+    # type=file: path/name of output log (if generated)
+    # type=file|default=<undefined>: output log
+    in_matrix_file:
+    # type=file|default=<undefined>: input 4x4 affine matrix
+    apply_xfm:
+    # type=bool|default=False: apply transformation supplied by in_matrix_file or uses_qform to use the affine matrix stored in the reference header
+    apply_isoxfm:
+    # type=float|default=0.0: as applyxfm but forces isotropic resampling
+    datatype:
+    # type=enum|default='char'|allowed['char','double','float','int','short']: force output data type
+    cost:
+    # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
+    cost_func:
+    # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
+    uses_qform:
+    # type=bool|default=False: initialize using sform or qform
+    display_init:
+    # type=bool|default=False: display initial matrix
+    angle_rep:
+    # type=enum|default='quaternion'|allowed['euler','quaternion']: representation of rotation angles
+    interp:
+    # type=enum|default='trilinear'|allowed['nearestneighbour','sinc','spline','trilinear']: final interpolation method used in reslicing
+    sinc_width:
+    # type=int|default=0: full-width in voxels
+    sinc_window:
+    # type=enum|default='rectangular'|allowed['blackman','hanning','rectangular']: sinc window
+    bins:
+    # type=int|default=0: number of histogram bins
+    dof:
+    # type=int|default=0: number of transform degrees of freedom
+    no_resample:
+    # type=bool|default=False: do not change input sampling
+    force_scaling:
+    # type=bool|default=False: force rescaling even for low-res images
+    min_sampling:
+    # type=float|default=0.0: set minimum voxel dimension for sampling
+    padding_size:
+    # type=int|default=0: for applyxfm: interpolates outside image by size
+    searchr_x:
+    # type=list|default=[]: search angles along x-axis, in degrees
+    searchr_y:
+    # type=list|default=[]: search angles along y-axis, in degrees
+    searchr_z:
+    # type=list|default=[]: search angles along z-axis, in degrees
+    no_search:
+    # type=bool|default=False: set all angular searches to ranges 0 to 0
+    coarse_search:
+    # type=int|default=0: coarse search delta angle
+    fine_search:
+    # type=int|default=0: fine search delta angle
+    schedule:
+    # type=file|default=<undefined>: replaces default schedule
+    ref_weight:
+    # type=file|default=<undefined>: File for reference weighting volume
+    in_weight:
+    # type=file|default=<undefined>: File for input weighting volume
+    no_clamp:
+    # type=bool|default=False: do not use intensity clamping
+    no_resample_blur:
+    # type=bool|default=False: do not use blurring on downsampling
+    rigid2D:
+    # type=bool|default=False: use 2D rigid body mode - ignores dof
+    save_log:
+    # type=bool|default=False: save to log file
+    verbose:
+    # type=int|default=0: verbose mode, 0 is least
+    bgvalue:
+    # type=float|default=0: use specified background value for points outside FOV
+    wm_seg:
+    # type=file|default=<undefined>: white matter segmentation volume needed by BBR cost function
+    wmcoords:
+    # type=file|default=<undefined>: white matter boundary coordinates for BBR cost function
+    wmnorms:
+    # type=file|default=<undefined>: white matter boundary normals for BBR cost function
+    fieldmap:
+    # type=file|default=<undefined>: fieldmap image in rads/s - must be already registered to the reference image
+    fieldmapmask:
+    # type=file|default=<undefined>: mask for fieldmap image
+    pedir:
+    # type=int|default=0: phase encode direction of EPI - 1/2/3=x/y/z & -1/-2/-3=-x/-y/-z
+    echospacing:
+    # type=float|default=0.0: value of EPI echo spacing - units of seconds
+    bbrtype:
+    # type=enum|default='signed'|allowed['global_abs','local_abs','signed']: type of bbr cost function: signed [default], global_abs, local_abs
+    bbrslope:
+    # type=float|default=0.0: value of bbr slope
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file
+    reference:
+    # type=file|default=<undefined>: reference file
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    bins: '640'
+    # type=int|default=0: number of histogram bins
+    cost_func: '"mutualinfo"'
+    # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
+  imports: &id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  - module: nipype.testing
+    name: example_data
+    alias:
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"structural.nii"'
+    # type=file|default=<undefined>: input file
+    reference: '"mni.nii"'
+    # type=file|default=<undefined>: reference file
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    bins: '640'
+    # type=int|default=0: number of histogram bins
+    cost_func: '"mutualinfo"'
+    # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
+  imports: *id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

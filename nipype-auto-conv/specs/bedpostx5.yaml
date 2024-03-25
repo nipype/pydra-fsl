@@ -1,0 +1,231 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.dti.BEDPOSTX5' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     BEDPOSTX stands for Bayesian Estimation of Diffusion Parameters Obtained
+#     using Sampling Techniques. The X stands for modelling Crossing Fibres.
+#     bedpostx runs Markov Chain Monte Carlo sampling to build up distributions
+#     on diffusion parameters at each voxel. It creates all the files necessary
+#     for running probabilistic tractography. For an overview of the modelling
+#     carried out within bedpostx see this `technical report
+#     <http://www.fmrib.ox.ac.uk/analysis/techrep/tr03tb1/tr03tb1/index.html>`_.
+#
+#
+#     .. note:: Consider using
+#       :func:`niflow.nipype1.workflows.fsl.dmri.create_bedpostx_pipeline` instead.
+#
+#
+#     Example
+#     -------
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> bedp = fsl.BEDPOSTX5(bvecs='bvecs', bvals='bvals', dwi='diffusion.nii',
+#     ...                     mask='mask.nii', n_fibres=1)
+#     >>> bedp.cmdline
+#     'bedpostx bedpostx -b 0 --burnin_noard=0 --forcedir -n 1 -j 5000 -s 1 --updateproposalevery=40'
+#
+#
+task_name: BEDPOSTX5
+nipype_name: BEDPOSTX5
+nipype_module: nipype.interfaces.fsl.dti
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    bvals: medimage/bval
+    # type=file|default=<undefined>: b values file
+    bvecs: medimage/bvec
+    # type=file|default=<undefined>: b vectors file
+    dwi: medimage/nifti1
+    # type=file|default=<undefined>: diffusion weighted image data file
+    grad_dev: generic/file
+    # type=file|default=<undefined>: grad_dev file, if gradnonlin, -g is True
+    logdir: generic/directory
+    # type=directory|default=<undefined>:
+    mask: medimage/nifti1
+    # type=file|default=<undefined>: bet binary mask file
+    out_dir: generic/directory
+    # type=directory|default='bedpostx': output directory
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    dyads: generic/file+list-of
+    # type=outputmultiobject: Mean of PDD distribution in vector form.
+    dyads_dispersion: generic/file+list-of
+    # type=outputmultiobject: Dispersion
+    mean_S0samples: generic/file
+    # type=file: Mean of distribution on T2wbaseline signal intensity S0
+    mean_dsamples: generic/file
+    # type=file: Mean of distribution on diffusivity d
+    mean_fsamples: generic/file+list-of
+    # type=outputmultiobject: Mean of distribution on f anisotropy
+    mean_phsamples: generic/file+list-of
+    # type=outputmultiobject: Mean of distribution on phi
+    mean_thsamples: generic/file+list-of
+    # type=outputmultiobject: Mean of distribution on theta
+    merged_fsamples: generic/file+list-of
+    # type=outputmultiobject: Samples from the distribution on anisotropic volume fraction
+    merged_phsamples: generic/file+list-of
+    # type=outputmultiobject: Samples from the distribution on phi
+    merged_thsamples: generic/file+list-of
+    # type=outputmultiobject: Samples from the distribution on theta
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      dwi:
+      # type=file|default=<undefined>: diffusion weighted image data file
+      mask:
+      # type=file|default=<undefined>: bet binary mask file
+      bvecs:
+      # type=file|default=<undefined>: b vectors file
+      bvals:
+      # type=file|default=<undefined>: b values file
+      logdir:
+      # type=directory|default=<undefined>:
+      n_fibres:
+      # type=range|default=2: Maximum number of fibres to fit in each voxel
+      model:
+      # type=enum|default=1|allowed[1,2,3]: use monoexponential (1, default, required for single-shell) or multiexponential (2, multi-shell) model
+      fudge:
+      # type=int|default=0: ARD fudge factor
+      n_jumps:
+      # type=int|default=5000: Num of jumps to be made by MCMC
+      burn_in:
+      # type=range|default=0: Total num of jumps at start of MCMC to be discarded
+      sample_every:
+      # type=range|default=1: Num of jumps for each sample (MCMC)
+      out_dir:
+      # type=directory|default='bedpostx': output directory
+      gradnonlin:
+      # type=bool|default=False: consider gradient nonlinearities, default off
+      grad_dev:
+      # type=file|default=<undefined>: grad_dev file, if gradnonlin, -g is True
+      use_gpu:
+      # type=bool|default=False: Use the GPU version of bedpostx
+      burn_in_no_ard:
+      # type=range|default=0: num of burnin jumps before the ard is imposed
+      update_proposal_every:
+      # type=range|default=40: Num of jumps for each update to the proposal density std (MCMC)
+      seed:
+      # type=int|default=0: seed for pseudo random number generator
+      no_ard:
+      # type=bool|default=False: Turn ARD off on all fibres
+      all_ard:
+      # type=bool|default=False: Turn ARD on on all fibres
+      no_spat:
+      # type=bool|default=False: Initialise with tensor, not spatially
+      non_linear:
+      # type=bool|default=False: Initialise with nonlinear fitting
+      cnlinear:
+      # type=bool|default=False: Initialise with constrained nonlinear fitting
+      rician:
+      # type=bool|default=False: use Rician noise modeling
+      f0_noard:
+      # type=bool|default=False: Noise floor model: add to the model an unattenuated signal compartment f0
+      f0_ard:
+      # type=bool|default=False: Noise floor model: add to the model an unattenuated signal compartment f0
+      force_dir:
+      # type=bool|default=True: use the actual directory name given (do not add + to make a new directory)
+      output_type:
+      # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+      args:
+      # type=str|default='': Additional parameters to the command
+      environ:
+      # type=dict|default={}: Environment variables
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      bvecs:
+      # type=file|default=<undefined>: b vectors file
+      bvals:
+      # type=file|default=<undefined>: b values file
+      dwi:
+      # type=file|default=<undefined>: diffusion weighted image data file
+      mask:
+      # type=file|default=<undefined>: bet binary mask file
+      n_fibres: "1"
+      # type=range|default=2: Maximum number of fibres to fit in each voxel
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+doctests:
+  - cmdline: bedpostx bedpostx -b 0 --burnin_noard=0 --forcedir -n 1 -j 5000 -s 1 --updateproposalevery=40
+    # str - the expected cmdline output
+    inputs:
+      # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+      # If the field is of file-format type and the value is None, then the
+      # '.mock()' method of the corresponding class is used instead.
+      bvecs: '"bvecs"'
+      # type=file|default=<undefined>: b vectors file
+      bvals: '"bvals"'
+      # type=file|default=<undefined>: b values file
+      dwi: '"diffusion.nii"'
+      # type=file|default=<undefined>: diffusion weighted image data file
+      mask: '"mask.nii"'
+      # type=file|default=<undefined>: bet binary mask file
+      n_fibres: "1"
+      # type=range|default=2: Maximum number of fibres to fit in each voxel
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    directive:
+    # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

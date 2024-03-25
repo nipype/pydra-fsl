@@ -1,0 +1,237 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.epi.TOPUP' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     Interface for FSL topup, a tool for estimating and correcting
+#     susceptibility induced distortions. See FSL documentation for
+#     `reference <http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/TOPUP>`_,
+#     `usage examples
+#     <http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/topup/ExampleTopupFollowedByApplytopup>`_,
+#     and `exemplary config files
+#     <https://github.com/ahheckel/FSL-scripts/blob/master/rsc/fsl/fsl4/topup/b02b0.cnf>`_.
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import TOPUP
+#     >>> topup = TOPUP()
+#     >>> topup.inputs.in_file = "b0_b0rev.nii"
+#     >>> topup.inputs.encoding_file = "topup_encoding.txt"
+#     >>> topup.inputs.output_type = "NIFTI_GZ"
+#     >>> topup.cmdline # doctest: +ELLIPSIS
+#     'topup --config=b02b0.cnf --datain=topup_encoding.txt --imain=b0_b0rev.nii --out=b0_b0rev_base --iout=b0_b0rev_corrected.nii.gz --fout=b0_b0rev_field.nii.gz --jacout=jac --logout=b0_b0rev_topup.log --rbmout=xfm --dfout=warpfield'
+#     >>> res = topup.run() # doctest: +SKIP
+#
+#
+task_name: TOPUP
+nipype_name: TOPUP
+nipype_module: nipype.interfaces.fsl.epi
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    encoding_file: text/text-file
+    # type=file|default=<undefined>: name of text file with PE directions/times
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: name of 4D file with images
+    out_base: Path
+    # type=file|default=<undefined>: base-name of output files (spline coefficients (Hz) and movement parameters)
+    readout_times: generic/file+list-of
+    # type=inputmultiobject|default=[]: readout times (dwell times by # phase-encode steps minus 1)
+    out_corrected: Path
+    # type=file: name of 4D image file with unwarped images
+    # type=file|default=<undefined>: name of 4D image file with unwarped images
+    out_field: Path
+    # type=file: name of image file with field (Hz)
+    out_logfile: Path
+    # type=file: name of log-file
+    # type=file|default=<undefined>: name of log-file
+    warp_res: typing.List[float]
+    subsamp: typing.List[int]
+    fwhm: typing.List[float]
+    reg_lambda: typing.List[float]
+    regmod: str
+    estmov: typing.List[int]
+    minmet: typing.List[int]
+    splineorder: int
+    interp: str
+    scale: bool
+  callable_defaults:
+    # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+    # to set as the `default` method of input fields
+  metadata:
+    scale:
+      argstr: "--scale {int(scale)}"
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    out_corrected: generic/file
+    # type=file: name of 4D image file with unwarped images
+    # type=file|default=<undefined>: name of 4D image file with unwarped images
+    out_enc_file: generic/file
+    # type=file: encoding directions file output for applytopup
+    out_field: generic/file
+    # type=file: name of image file with field (Hz)
+    # type=file|default=<undefined>: name of image file with field (Hz)
+    out_fieldcoef: generic/file
+    # type=file: file containing the field coefficients
+    out_jacs: generic/file+list-of
+    # type=list: Jacobian images
+    out_logfile: generic/file
+    # type=file: name of log-file
+    # type=file|default=<undefined>: name of log-file
+    out_mats: generic/file+list-of
+    # type=list: realignment matrices
+    out_movpar: generic/file
+    # type=file: movpar.txt output file
+    out_warps: generic/file+list-of
+    # type=list: warpfield images
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      in_file:
+      # type=file|default=<undefined>: name of 4D file with images
+      encoding_file:
+      # type=file|default=<undefined>: name of text file with PE directions/times
+      encoding_direction:
+      # type=list|default=[]: encoding direction for automatic generation of encoding_file
+      readout_times:
+      # type=inputmultiobject|default=[]: readout times (dwell times by # phase-encode steps minus 1)
+      out_base:
+      # type=file|default=<undefined>: base-name of output files (spline coefficients (Hz) and movement parameters)
+      out_field:
+      # type=file: name of image file with field (Hz)
+      # type=file|default=<undefined>: name of image file with field (Hz)
+      out_warp_prefix:
+      # type=str|default='warpfield': prefix for the warpfield images (in mm)
+      out_mat_prefix:
+      # type=str|default='xfm': prefix for the realignment matrices
+      out_jac_prefix:
+      # type=str|default='jac': prefix for the warpfield images
+      out_corrected:
+      # type=file: name of 4D image file with unwarped images
+      # type=file|default=<undefined>: name of 4D image file with unwarped images
+      out_logfile:
+      # type=file: name of log-file
+      # type=file|default=<undefined>: name of log-file
+      warp_res:
+      # type=float|default=0.0: (approximate) resolution (in mm) of warp basis for the different sub-sampling levels
+      subsamp:
+      # type=int|default=0: sub-sampling scheme
+      fwhm:
+      # type=float|default=0.0: FWHM (in mm) of gaussian smoothing kernel
+      config:
+      # type=string|default='b02b0.cnf': Name of config file specifying command line arguments
+      max_iter:
+      # type=int|default=0: max # of non-linear iterations
+      reg_lambda:
+      # type=float|default=0.0: Weight of regularisation, default depending on --ssqlambda and --regmod switches.
+      ssqlambda:
+      # type=enum|default=1|allowed[0,1]: Weight lambda by the current value of the ssd. If used (=1), the effective weight of regularisation term becomes higher for the initial iterations, therefore initial steps are a little smoother than they would without weighting. This reduces the risk of finding a local minimum.
+      regmod:
+      # type=enum|default='bending_energy'|allowed['bending_energy','membrane_energy']: Regularisation term implementation. Defaults to bending_energy. Note that the two functions have vastly different scales. The membrane energy is based on the first derivatives and the bending energy on the second derivatives. The second derivatives will typically be much smaller than the first derivatives, so input lambda will have to be larger for bending_energy to yield approximately the same level of regularisation.
+      estmov:
+      # type=enum|default=1|allowed[0,1]: estimate movements if set
+      minmet:
+      # type=enum|default=0|allowed[0,1]: Minimisation method 0=Levenberg-Marquardt, 1=Scaled Conjugate Gradient
+      splineorder:
+      # type=int|default=0: order of spline, 2->Qadratic spline, 3->Cubic spline
+      numprec:
+      # type=enum|default='double'|allowed['double','float']: Precision for representing Hessian, double or float.
+      interp:
+      # type=enum|default='spline'|allowed['linear','spline']: Image interpolation model, linear or spline.
+      scale:
+      # type=enum|default=0|allowed[0,1]: If set (=1), the images are individually scaled to a common mean
+      regrid:
+      # type=enum|default=1|allowed[0,1]: If set (=1), the calculations are done in a different grid
+      output_type:
+      # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+      args:
+      # type=str|default='': Additional parameters to the command
+      environ:
+      # type=dict|default={}: Environment variables
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      in_file:
+      # type=file|default=<undefined>: name of 4D file with images
+      encoding_file:
+      # type=file|default=<undefined>: name of text file with PE directions/times
+      output_type: '"NIFTI_GZ"'
+      # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+doctests:
+  - cmdline: topup --config=b02b0.cnf --datain=topup_encoding.txt --imain=b0_b0rev.nii --out=b0_b0rev_base --iout=b0_b0rev_corrected.nii.gz --fout=b0_b0rev_field.nii.gz --jacout=jac --logout=b0_b0rev_topup.log --rbmout=xfm --dfout=warpfield
+    # str - the expected cmdline output
+    inputs:
+      # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+      # If the field is of file-format type and the value is None, then the
+      # '.mock()' method of the corresponding class is used instead.
+      in_file: '"b0_b0rev.nii"'
+      # type=file|default=<undefined>: name of 4D file with images
+      encoding_file: '"topup_encoding.txt"'
+      # type=file|default=<undefined>: name of text file with PE directions/times
+      output_type: '"NIFTI_GZ"'
+      # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    directive:
+    # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
