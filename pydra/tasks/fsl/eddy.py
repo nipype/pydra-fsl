@@ -261,6 +261,7 @@ class EddySpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "interpolation method for s2v movement estimation.",
             "argstr": "--s2v_interp",
+            "allowed_values": {"spline", "trilinear"},
         }
     )
 
