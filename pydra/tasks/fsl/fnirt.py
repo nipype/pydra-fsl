@@ -21,6 +21,8 @@ import os
 import attrs
 import pydra
 
+__all__ = ["FNIRT"]
+
 
 @attrs.define(slots=False, kw_only=True)
 class FNIRTSpec(pydra.specs.ShellSpec):
