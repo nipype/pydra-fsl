@@ -18,12 +18,12 @@ for FMRI, MRI and DTI brain imaging data.
 
 **Table of contents**
 
-- [Available interfaces](#available-interfaces)
+- [Available tasks](#available-tasks)
 - [Installation](#installation)
 - [Development](#development)
 - [License](#license)
 
-## Available interfaces
+## Available tasks
 
 - bet
     - bet
@@ -37,6 +37,10 @@ for FMRI, MRI and DTI brain imaging data.
     - convert_xfm
     - invert_xfm
 - fnirt
+    - fnirt
+    - applywarp
+    - convertwarp
+    - invwarp
 - susan
 - utils
     - fslmaths
