@@ -12,4 +12,5 @@ from .fast import FAST
 from .flirt import FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM
 from .fnirt import FNIRT, ApplyWarp, ConvertWarp, InvWarp
 from .susan import SUSAN
-from .utils import FSLROI, FSLInfo, FSLMerge, FSLReorient2Std, fslmaths
+from .utils import (FSLROI, FSLInfo, FSLMerge, FSLReorient2Std, FSLSplit,
+                    fslmaths)
