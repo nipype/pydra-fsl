@@ -18,7 +18,7 @@ Examples
 'convert_xfm -omat AtoC.mat -concat BtoC.mat AtoB.mat'
 """
 
-__all__ = ["ConvertXFM"]
+__all__ = ["ConvertXFM", "BaseConvertXFMSpec"]
 
 import os
 
@@ -28,8 +28,8 @@ import pydra
 
 
 @attrs.define(slots=False, kw_only=True)
-class ConvertXFMSpec(pydra.specs.ShellSpec):
-    """Specifications for convert_xfm."""
+class BaseConvertXFMSpec(pydra.specs.ShellSpec):
+    """Base specifications for all tasks using convert_xfm."""
 
     input_matrix: os.PathLike = attrs.field(
         metadata={
@@ -47,6 +47,11 @@ class ConvertXFMSpec(pydra.specs.ShellSpec):
             "output_file_template": "{input_matrix}_cxfm",
         }
     )
+
+
+@attrs.define(slots=False, kw_only=True)
+class ConvertXFMSpec(BaseConvertXFMSpec):
+    """Specifications for convert_xfm."""
 
     concat_matrix: os.PathLike = attrs.field(
         metadata={
