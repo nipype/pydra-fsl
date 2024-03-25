@@ -9,8 +9,8 @@ Minimal call to `topup`:
 
 >>> task = Topup(input_image="input.nii", encoding_file="encoding.txt")
 >>> task.cmdline  # doctest: +ELLIPSIS
-'topup --imain input.nii --datain encoding.txt --out input_topup \
---fout ...input_fieldmap.nii --iout ...input_unwarped.nii ...'
+'topup --imain=input.nii --datain=encoding.txt --out=input_topup \
+--fout=...input_fieldmap.nii --iout=...input_unwarped.nii ...'
 
 Using a multiple resolution approach:
 
@@ -21,7 +21,7 @@ Using a multiple resolution approach:
 ...     smoothing_per_level=(8.0, 4.0, 0.0),
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'topup --imain input.nii --datain encoding.txt ... --subsamp 4,2,1 --fwhm 8.0,4.0,0.0 ...'
+'topup --imain=input.nii --datain=encoding.txt ... --subsamp=4,2,1 --fwhm=8.0,4.0,0.0 ...'
 """
 
 __all__ = ["Topup"]
@@ -36,24 +36,26 @@ from pydra.engine.task import ShellCommandTask
 
 
 def to_field_per_level(field, param) -> str:
-    return f"--{param} {','.join([str(elem) for elem in field])}"
+    return f"--{param}={','.join([str(elem) for elem in field])}"
 
 
 def to_output_basename(field, input_image) -> str:
-    return f"--out {field or PurePath(input_image).name.split('.', 1)[0] + '_topup'}"
+    return f"--out={field or PurePath(input_image).name.split('.', 1)[0] + '_topup'}"
 
 
 @define(slots=False, kw_only=True)
 class TopupSpec(ShellSpec):
     """Specifications for topup."""
 
-    input_image: PathLike = field(metadata={"help_string": "input image", "mandatory": True, "argstr": "--imain"})
+    input_image: PathLike = field(
+        metadata={"help_string": "input image", "mandatory": True, "argstr": "--imain={input_image}"}
+    )
 
     encoding_file: PathLike = field(
         metadata={
             "help_string": "text file containing phase encoding directions and timings",
             "mandatory": True,
-            "argstr": "--datain",
+            "argstr": "--datain={encoding_file}",
         }
     )
 
@@ -67,7 +69,7 @@ class TopupSpec(ShellSpec):
     output_fieldmap_image: str = field(
         metadata={
             "help_string": "output fieldmap image",
-            "argstr": "--fout",
+            "argstr": "--fout={output_fieldmap_image}",
             "output_file_template": "{input_image}_fieldmap",
         }
     )
@@ -75,7 +77,7 @@ class TopupSpec(ShellSpec):
     output_unwarped_image: str = field(
         metadata={
             "help_string": "output unwarped image",
-            "argstr": "--iout",
+            "argstr": "--iout={output_unwarped_image}",
             "output_file_template": "{input_image}_unwarped",
         }
     )
@@ -145,7 +147,7 @@ class TopupSpec(ShellSpec):
         default=True,
         metadata={
             "help_string": "weight regularisation by sum-of-squares",
-            "formatter": lambda field: f"--ssqlambda {int(field)}",
+            "formatter": lambda field: f"--ssqlambda={field:d}",
         },
     )
 
@@ -153,7 +155,7 @@ class TopupSpec(ShellSpec):
         default="bending_energy",
         metadata={
             "help_string": "regularisation model",
-            "argstr": "--regmod",
+            "argstr": "--regmod={regularisation_model}",
             "allowed_values": {"bending_energy", "membrane_energy"},
         },
     )
@@ -162,26 +164,34 @@ class TopupSpec(ShellSpec):
         default=3,
         metadata={
             "help_string": "use quadratic (2) or cubic (3) splines",
-            "argstr": "--splineorder",
+            "argstr": "--splineorder={spline_order}",
             "allowed_values": {2, 3},
         },
     )
 
     precision: str = field(
         default="double",
-        metadata={"help_string": "numerical precision", "argstr": "--numprec", "allowed_values": {"float", "double"}},
+        metadata={
+            "help_string": "numerical precision",
+            "argstr": "--numprec={precision}",
+            "allowed_values": {"float", "double"},
+        },
     )
 
     interpolation: str = field(
         default="spline",
-        metadata={"help_string": "interpolation model", "argstr": "--interp", "allowed_values": {"linear", "spline"}},
+        metadata={
+            "help_string": "interpolation model",
+            "argstr": "--interp={interpolation}",
+            "allowed_values": {"linear", "spline"},
+        },
     )
 
     scale: bool = field(
         default=False,
         metadata={
             "help_string": "scale images to a common mean",
-            "formatter": lambda field: f"--scale {int(field)}",
+            "formatter": lambda field: f"--scale={field:d}",
         },
     )
 
@@ -189,11 +199,13 @@ class TopupSpec(ShellSpec):
         default=True,
         metadata={
             "help_string": "perform calculations on a different grid",
-            "formatter": lambda field: f"--regrid {int(field)}",
+            "formatter": lambda field: f"--regrid={field:d}",
         },
     )
 
-    num_threads: int = field(default=1, metadata={"help_string": "number of threads to use", "argstr": "--nthr"})
+    num_threads: int = field(
+        default=1, metadata={"help_string": "number of threads to use", "argstr": "--nthr={num_threads}"}
+    )
 
     verbose: bool = field(metadata={"help_string": "enable verbose logging", "argstr": "--verbose"})
 
