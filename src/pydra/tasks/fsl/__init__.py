@@ -30,6 +30,7 @@ from .utils import (
     FSLInterleave,
     FSLMerge,
     FSLReorient2Std,
+    FSLSelectVols,
     FSLSlice,
     FSLSplit,
     FSLSwapDim,
