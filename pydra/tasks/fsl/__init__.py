@@ -24,6 +24,7 @@ from .fugue import FUGUE
 from .susan import SUSAN
 from .utils import (
     FSLROI,
+    FSLChFileType,
     FSLInfo,
     FSLMerge,
     FSLReorient2Std,

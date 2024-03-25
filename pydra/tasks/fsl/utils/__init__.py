@@ -1,4 +1,5 @@
 from . import fslmaths
+from .fslchfiletype import FSLChFileType
 from .fslinfo import FSLInfo
 from .fslmerge import FSLMerge
 from .fslreorient2std import FSLReorient2Std
