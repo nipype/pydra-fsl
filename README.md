@@ -25,15 +25,15 @@ for FMRI, MRI and DTI brain imaging data.
 
 ## Available tasks
 
-| Module | Tasks                                             |
-|--------|---------------------------------------------------|
-| bet    | BET, RobustFOV                                    |
-| eddy   | Eddy                                              |
-| fast   | FAST                                              |
-| flirt  | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM |
-| fnirt  | FNIRT, ApplyWarp, ConvertWarp, InvWarp            |
-| susan  | SUSAN                                             |
-| utils  | fslmaths, fslmerge, fslreorient2std, fslroi       |
+| Module | Tasks                                                          |
+|--------|----------------------------------------------------------------|
+| bet    | BET, RobustFOV                                                 |
+| eddy   | Eddy                                                           |
+| fast   | FAST                                                           |
+| flirt  | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM              |
+| fnirt  | FNIRT, ApplyWarp, ConvertWarp, InvWarp                         |
+| susan  | SUSAN                                                          |
+| utils  | fslmaths, FSLROI, FSLInfo, FSLMerge, FSLReorient2Std, FSLSplit |
 
 ## Installation
 
