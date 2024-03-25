@@ -17,7 +17,7 @@ FSL interfaces are available within the `pydra.tasks.fsl` package.
 .. automodule:: pydra.tasks.fsl.utils
 """
 
-from . import fslmaths
+from . import maths
 from .bet import BET, RobustFOV
 from .eddy import ApplyTopup, Eddy, Topup
 from .fast import FAST
@@ -66,3 +66,4 @@ FSLSlice = Slice
 FSLSmoothFill = SmoothFill
 FSLSplit = Split
 FSLSwapDim = SwapDim
+fslmaths = maths

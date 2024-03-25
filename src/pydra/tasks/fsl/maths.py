@@ -9,22 +9,18 @@ Examples
 
 Convert input image to float:
 
->>> task = FSLMaths(input_image="input.nii")
->>> task.cmdline  # doctest: +ELLIPSIS
-'fslmaths input.nii .../input_fslmaths.nii -odt float'
+>>> task = Maths(input_image="input.nii")
+>>> task.cmdline    # doctest: +ELLIPSIS
+'fslmaths input.nii .../input_fslmaths.nii'
 
-Apply mask to input image:
+Multiply input image with a binary mask:
 
->>> task = Mul(
-...     input_image="input.nii",
-...     other_image="mask.nii",
-...     output_image="output.nii",
-... )
+>>> task = Mul(input_image="input.nii", other_image="mask.nii", output_image="output.nii")
 >>> task.cmdline
-'fslmaths input.nii -mul mask.nii output.nii -odt float'
+'fslmaths input.nii -mul mask.nii output.nii'
 """
 
-__all__ = ["FSLMaths", "Mul"]
+__all__ = ["Maths", "MathsSpec", "Mul"]
 
 from os import PathLike
 
@@ -33,8 +29,8 @@ from pydra.engine.specs import ShellSpec, SpecInfo
 from pydra.engine.task import ShellCommandTask
 
 
-@define(slots=False, kw_only=True)
-class FSLMathsSpec(ShellSpec):
+@define(kw_only=True)
+class MathsSpec(ShellSpec):
     """Specifications for fslmaths."""
 
     _datatypes = {"char", "short", "int", "float", "double", "input"}
@@ -57,21 +53,20 @@ class FSLMathsSpec(ShellSpec):
     )
 
     output_datatype: str = field(
-        default="float",
-        metadata={"help_string": "output datatype", "argstr": "-odt", "position": -1, "allowed_values": _datatypes},
+        metadata={"help_string": "output datatype", "argstr": "-odt", "position": -1, "allowed_values": _datatypes}
     )
 
 
-class FSLMaths(ShellCommandTask):
+class Maths(ShellCommandTask):
     """Task definition for fslmaths."""
 
     executable = "fslmaths"
 
-    input_spec = SpecInfo(name="Input", bases=(FSLMathsSpec,))
+    input_spec = SpecInfo(name="Input", bases=(MathsSpec,))
 
 
 @define(kw_only=True)
-class MulSpec(FSLMathsSpec):
+class MulSpec(MathsSpec):
     """Specifications for fslmaths' mul."""
 
     other_image: PathLike = field(
@@ -79,7 +74,13 @@ class MulSpec(FSLMathsSpec):
     )
 
 
-class Mul(FSLMaths):
+class Mul(Maths):
     """Task definition for fslmaths' mul."""
 
     input_spec = SpecInfo(name="Input", bases=(MulSpec,))
+
+
+# TODO: Drop compatibility alias for 0.x
+FSLMaths = Maths
+FSLMathsSpec = MathsSpec
+__all__ += ["FSLMaths", "FSLMathsSpec"]
