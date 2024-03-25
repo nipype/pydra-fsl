@@ -25,12 +25,11 @@ Apply a saved transformation to another image:
 >>> task = FLIRT(
 ...     input_image="newvol",
 ...     reference_image="refvol",
-...     output_image="outvol",
 ...     input_matrix="invol2refvol.mat",
 ...     apply_transformation=True,
 ... )
 >>> task.cmdline
-'flirt -in newvol -ref refvol -out outvol -init invol2refvol.mat -applyxfm'
+'flirt -in newvol -ref refvol -out ...newvol_flirt -init invol2refvol.mat -omat ...newvol_flirt.mat -applyxfm'
 
 Perform a single slice registration:
 
@@ -65,8 +64,12 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         metadata={"help_string": "reference volume", "argstr": "-ref"}
     )
 
-    output_image: os.PathLike = attrs.field(
-        metadata={"help_string": "output volume", "argstr": "-out"}
+    output_image: str = attrs.field(
+        metadata={
+            "help_string": "output volume",
+            "argstr": "-out",
+            "output_file_template": "{input_image}_flirt",
+        }
     )
 
     input_matrix: os.PathLike = attrs.field(
@@ -76,10 +79,12 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_matrix: os.PathLike = attrs.field(
+    output_matrix: str = attrs.field(
         metadata={
             "help_string": "output transformation as 4x4 matrix",
             "argstr": "-omat",
+            "output_file_template": "{input_image}_flirt.mat",
+            "keep_extension": False,
         }
     )
 
