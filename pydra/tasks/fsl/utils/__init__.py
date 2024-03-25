@@ -4,3 +4,4 @@ from .fslmerge import FSLMerge
 from .fslreorient2std import FSLReorient2Std
 from .fslroi import FSLROI
 from .fslsplit import FSLSlice, FSLSplit
+from .fslswapdim import FSLSwapDim
