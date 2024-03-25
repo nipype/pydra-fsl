@@ -111,6 +111,59 @@ class BETSpec(pydra.specs.ShellSpec):
 
 
 @attrs.define(slots=False, kw_only=True)
+class BETVariationsSpec(pydra.specs.ShellSpec):
+    """Specifications for BET variations."""
+
+    _xor = {
+        "with_robust_brain_center_estimation",
+        "with_eye_and_optic_nerve_cleanup",
+        "with_bias_field_and_neck_cleanup",
+        "with_small_fov_in_z",
+        "with_4d_fmri_data",
+    }
+
+    with_robust_brain_center_estimation: bool = attrs.field(
+        metadata={
+            "help_string": "iterate BET several times to improve robustness",
+            "argstr": "-R",
+            "xor": _xor,
+        }
+    )
+
+    with_eye_and_optic_nerve_cleanup: bool = attrs.field(
+        metadata={
+            "help_string": "remove eye and optic nerve",
+            "argstr": "-S",
+            "xor": _xor | {"save_brain_surface_outline"},
+        }
+    )
+
+    with_bias_field_and_neck_cleanup: bool = attrs.field(
+        metadata={
+            "help_string": "remove bias field and neck",
+            "argstr": "-B",
+            "xor": _xor,
+        }
+    )
+
+    with_small_fov_in_z: bool = attrs.field(
+        metadata={
+            "help_string": "improve BET for very small FOV in Z",
+            "argstr": "-Z",
+            "xor": _xor,
+        }
+    )
+
+    with_4d_fmri_data: bool = attrs.field(
+        metadata={
+            "help_string": "apply BET to 4D FMRI data",
+            "argstr": "-F",
+            "xor": _xor | {"fractional_intensity_threshold"},
+        }
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
 class BETOutSpec(pydra.specs.ShellOutSpec):
     """Output specifications for BET."""
 
@@ -153,6 +206,8 @@ class BET(pydra.engine.ShellCommandTask):
 
     executable = "bet"
 
-    input_spec = pydra.specs.SpecInfo(name="BETInput", bases=(BETSpec,))
+    input_spec = pydra.specs.SpecInfo(
+        name="BETInput", bases=(BETSpec, BETVariationsSpec)
+    )
 
     output_spec = pydra.specs.SpecInfo(name="BETOutput", bases=(BETOutSpec,))
