@@ -23,6 +23,7 @@ from .fnirt import FNIRT, ApplyWarp, ConvertWarp, FNIRTFileUtils, InvWarp
 from .fugue import FUGUE
 from .susan import SUSAN
 from .utils import (
+    FSLFFT,
     FSLROI,
     FSLChFileType,
     FSLInfo,
