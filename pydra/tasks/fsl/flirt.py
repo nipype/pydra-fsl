@@ -11,7 +11,7 @@ Register two images together:
 ...     input_image="invol",
 ...     reference_image="refvol",
 ...     output_image="outvol",
-...     output_transformation="invol2refvol.mat",
+...     output_matrix="invol2refvol.mat",
 ...     degrees_of_freedom=6,
 ... )
 >>> task.cmdline
@@ -23,7 +23,7 @@ Apply a saved transformation to another image:
 ...     input_image="newvol",
 ...     reference_image="refvol",
 ...     output_image="outvol",
-...     input_transformation="invol2refvol.mat",
+...     input_matrix="invol2refvol.mat",
 ...     apply_transformation=True,
 ... )
 >>> task.cmdline
@@ -35,7 +35,7 @@ Perform a single slice registration:
 ...     input_image="inslice",
 ...     reference_image="refslice",
 ...     output_image="outslice",
-...     output_transformation="i2r.mat",
+...     output_matrix="i2r.mat",
 ...     use_2d_rigid_body_transformation=True,
 ... )
 >>> task.cmdline
@@ -66,14 +66,14 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         metadata={"help_string": "output volume", "argstr": "-out"}
     )
 
-    input_transformation: os.PathLike = attrs.field(
+    input_matrix: os.PathLike = attrs.field(
         metadata={
             "help_string": "input transformation as 4x4 matrix",
             "argstr": "-init",
         }
     )
 
-    output_transformation: os.PathLike = attrs.field(
+    output_matrix: os.PathLike = attrs.field(
         metadata={
             "help_string": "output transformation as 4x4 matrix",
             "argstr": "-omat",
@@ -92,7 +92,7 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "apply transformation without optimization",
             "argstr": "-applyxfm",
-            "requires": {"input_transformation"},
+            "requires": {"input_matrix"},
         }
     )
 
