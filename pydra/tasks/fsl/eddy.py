@@ -235,10 +235,10 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
     # Parameters for intra-volume movement correction (s2v)
-    temporal_order: int = attrs.field(
+    movement_prediction_order: int = attrs.field(
         default=0,
         metadata={
-            "help_string": "order of movement model",
+            "help_string": "order of movement prediction model",
             "argstr": "--mporder",
         },
     )
