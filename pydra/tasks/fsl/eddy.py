@@ -194,7 +194,7 @@ class EddySpec(pydra.specs.ShellSpec):
         metadata={"help_string": "replace outliers", "argstr": "--repol"}
     )
 
-    ol_num_std: int = attrs.field(
+    outlier_num_std: int = attrs.field(
         metadata={
             "help_string": "number of std off to qualify as outlier",
             "argstr": "--ol_nstd",
@@ -202,7 +202,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    ol_num_voxels: int = attrs.field(
+    outlier_num_voxels: int = attrs.field(
         metadata={
             "help_string": "minimum number of voxels in a slice to qualify for outlier detection",
             "argstr": "--ol_nvox",
@@ -210,7 +210,7 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    ol_type: str = attrs.field(
+    outlier_type: str = attrs.field(
         metadata={
             "help_string": "type of outliers detected",
             "argstr": "--ol_type",
