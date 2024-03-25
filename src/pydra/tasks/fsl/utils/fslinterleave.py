@@ -34,9 +34,9 @@ import pydra
 class FSLInterleaveSpec(pydra.specs.ShellSpec):
     """Specifications for fslinterleave."""
 
-    input_image: os.PathLike = attrs.field(metadata={"help_string": "input image", "argstr": ""})
+    input_image: os.PathLike = attrs.field(metadata={"help_string": "input image", "mandatory": True, "argstr": ""})
 
-    other_image: os.PathLike = attrs.field(metadata={"help_string": "other image", "argstr": ""})
+    other_image: os.PathLike = attrs.field(metadata={"help_string": "other image", "mandatory": True, "argstr": ""})
 
     output_image: str = attrs.field(
         metadata={
