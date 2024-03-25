@@ -41,7 +41,7 @@ for FMRI, MRI and DTI brain imaging data.
 ## Installation
 
 ```console
-pip install pydra-tasks-fsl
+pip install pydra-fsl
 ```
 
 A separate installation of FSL is required to use this package.
