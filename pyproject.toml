@@ -93,6 +93,10 @@ parallel = true
 
 [tool.coverage.report]
 
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
 minversion = "6.0"
 # addopts = ["--doctest-modules", "--doctest-continue-on-failure"]
 testpaths = ["pydra"]
