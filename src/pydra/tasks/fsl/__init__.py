@@ -8,7 +8,7 @@ imported.
 
 from . import fslmaths
 from .bet import BET, RobustFOV
-from .eddy import Eddy, Topup
+from .eddy import ApplyTopup, Eddy, Topup
 from .fast import FAST
 from .flirt import (
     FLIRT,
