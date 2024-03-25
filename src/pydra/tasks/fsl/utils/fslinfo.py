@@ -127,6 +127,6 @@ class FSLInfo(pydra.engine.ShellCommandTask):
 
     executable = "fslinfo"
 
-    input_spec = pydra.specs.SpecInfo(name="FSLInfoInput", bases=(FSLInfoSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLInfoSpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="FSLInfoOutput", bases=(FSLInfoOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(FSLInfoOutSpec,))

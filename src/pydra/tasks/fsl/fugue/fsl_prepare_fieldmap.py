@@ -57,4 +57,4 @@ class FSLPrepareFieldmap(pydra.engine.ShellCommandTask):
 
     executable = "fsl_prepare_fieldmap"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(FSLPrepareFieldmapSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLPrepareFieldmapSpec,))

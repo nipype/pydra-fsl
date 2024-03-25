@@ -197,6 +197,6 @@ class BET(pydra.engine.ShellCommandTask):
 
     executable = "bet"
 
-    input_spec = pydra.specs.SpecInfo(name="BETInput", bases=(BETSpec, BETVariationsSpec))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(BETSpec, BETVariationsSpec))
 
-    output_spec = pydra.specs.SpecInfo(name="BETOutput", bases=(BETOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(BETOutSpec,))

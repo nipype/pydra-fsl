@@ -147,7 +147,4 @@ class ApplyWarp(pydra.engine.ShellCommandTask):
 
     executable = "applywarp"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="ApplyWarpInput",
-        bases=(ApplyWarpSpec, specs.VerboseSpec),
-    )
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(ApplyWarpSpec, specs.VerboseSpec))

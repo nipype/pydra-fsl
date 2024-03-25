@@ -149,4 +149,4 @@ class Prelude(pydra.engine.ShellCommandTask):
 
     executable = "prelude"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(PreludeSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(PreludeSpec,))

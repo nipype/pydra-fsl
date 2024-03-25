@@ -83,4 +83,4 @@ class FSLROI(ShellCommandTask):
 
     executable = "fslroi"
 
-    input_spec = SpecInfo(name="Inputs", bases=(FSLROISpec,))
+    input_spec = SpecInfo(name="Input", bases=(FSLROISpec,))

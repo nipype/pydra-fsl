@@ -67,7 +67,7 @@ class FSLMaths(ShellCommandTask):
 
     executable = "fslmaths"
 
-    input_spec = SpecInfo(name="Inputs", bases=(FSLMathsSpec,))
+    input_spec = SpecInfo(name="Input", bases=(FSLMathsSpec,))
 
 
 @define(kw_only=True)
@@ -82,4 +82,4 @@ class MulSpec(FSLMathsSpec):
 class Mul(FSLMaths):
     """Task definition for fslmaths' mul."""
 
-    input_spec = SpecInfo(name="Inputs", bases=(MulSpec,))
+    input_spec = SpecInfo(name="Input", bases=(MulSpec,))

@@ -53,4 +53,4 @@ class FSLFFT(pydra.engine.ShellCommandTask):
 
     executable = "fslfft"
 
-    input_spec = pydra.specs.SpecInfo(name="FSLFFTInput", bases=(FSLFFTSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLFFTSpec,))

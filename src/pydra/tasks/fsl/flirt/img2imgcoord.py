@@ -56,6 +56,6 @@ class Img2ImgCoord(pydra.engine.ShellCommandTask):
 
     executable = "img2imgcoord"
 
-    input_spec = pydra.specs.SpecInfo(name="Img2ImgCoordInput", bases=(Img2ImgCoordSpec, specs.VerboseSpec))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(Img2ImgCoordSpec, specs.VerboseSpec))
 
-    output_spec = pydra.specs.SpecInfo(name="Img2ImgCoordOutput", bases=(Img2ImgCoordOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(Img2ImgCoordOutSpec,))

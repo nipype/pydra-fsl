@@ -43,4 +43,4 @@ class FSLSmoothFill(pydra.engine.ShellCommandTask):
 
     executable = "fslsmoothfill"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(FSLSmoothFillSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLSmoothFillSpec,))

@@ -262,7 +262,4 @@ class FNIRT(pydra.engine.ShellCommandTask):
 
     executable = "fnirt"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FNIRTInput",
-        bases=(FNIRTSpec, specs.VerboseSpec),
-    )
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FNIRTSpec, specs.VerboseSpec))

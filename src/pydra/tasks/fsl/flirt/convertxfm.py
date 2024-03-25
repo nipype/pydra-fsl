@@ -81,7 +81,7 @@ class ConvertXFM(pydra.engine.ShellCommandTask):
 
     executable = "convert_xfm"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(ConvertXFMSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(ConvertXFMSpec,))
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -96,7 +96,7 @@ class ConcatXFMSpec(BaseSpec):
 class ConcatXFM(ConvertXFM):
     """Task definition for matrix concatenation using convert_xfm."""
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(ConcatXFMSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(ConcatXFMSpec,))
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -109,7 +109,7 @@ class InvertXFMSpec(BaseSpec):
 class InvertXFM(ConvertXFM):
     """Task definition for matrix inversion using convert_xfm."""
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(InvertXFMSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(InvertXFMSpec,))
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -128,4 +128,4 @@ class FixScaleSkewSpec(BaseSpec):
 class FixScaleSkew(ConvertXFM):
     """Task definition for fixing matrix scaling and skewness using convert_xfm."""
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(FixScaleSkewSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FixScaleSkewSpec,))

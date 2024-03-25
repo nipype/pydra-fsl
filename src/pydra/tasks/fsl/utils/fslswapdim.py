@@ -102,4 +102,4 @@ class FSLSwapDim(pydra.engine.ShellCommandTask):
 
     executable = "fslswapdim"
 
-    input_spec = pydra.specs.SpecInfo(name="FSLSwapDimInput", bases=(FSLSwapDimSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLSwapDimSpec,))

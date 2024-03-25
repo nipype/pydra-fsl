@@ -115,7 +115,4 @@ class FNIRTFileUtils(pydra.engine.ShellCommandTask):
 
     executable = "fnirtfileutils"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="FNIRTFileUtilsInput",
-        bases=(FNIRTFileUtilsSpec, specs.VerboseSpec),
-    )
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FNIRTFileUtilsSpec, specs.VerboseSpec))

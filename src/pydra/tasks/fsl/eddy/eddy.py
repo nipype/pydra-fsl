@@ -341,6 +341,6 @@ class Eddy(ShellCommandTask):
 
     executable = "eddy"
 
-    input_spec = SpecInfo(name="Inputs", bases=(EddySpec,))
+    input_spec = SpecInfo(name="Input", bases=(EddySpec,))
 
-    output_spec = SpecInfo(name="Outputs", bases=(EddyOutSpec,))
+    output_spec = SpecInfo(name="Output", bases=(EddyOutSpec,))

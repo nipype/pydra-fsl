@@ -56,4 +56,4 @@ class FSLInterleave(pydra.engine.ShellCommandTask):
 
     executable = "fslinterleave"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(FSLInterleaveSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLInterleaveSpec,))

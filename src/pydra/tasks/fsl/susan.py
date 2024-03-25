@@ -100,4 +100,4 @@ class SUSAN(pydra.engine.ShellCommandTask):
 
     executable = "susan"
 
-    input_spec = pydra.specs.SpecInfo(name="SUSANInput", bases=(SUSANSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(SUSANSpec,))

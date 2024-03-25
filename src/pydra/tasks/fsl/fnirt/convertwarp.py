@@ -171,7 +171,4 @@ class ConvertWarp(pydra.engine.ShellCommandTask):
 
     executable = "convertwarp"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="ConvertWarpInput",
-        bases=(ConvertWarpSpec, specs.VerboseSpec),
-    )
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(ConvertWarpSpec, specs.VerboseSpec))

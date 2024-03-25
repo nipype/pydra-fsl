@@ -55,4 +55,4 @@ class SigLoss(pydra.engine.ShellCommandTask):
 
     executable = "sigloss"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(SigLossSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(SigLossSpec,))

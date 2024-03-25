@@ -86,4 +86,4 @@ class FSLSelectVols(pydra.engine.ShellCommandTask):
 
     executable = "fslselectvols"
 
-    input_spec = pydra.specs.SpecInfo(name="Inputs", bases=(FSLSelectVolsSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLSelectVolsSpec,))

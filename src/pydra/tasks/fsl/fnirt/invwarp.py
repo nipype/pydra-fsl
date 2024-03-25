@@ -100,7 +100,4 @@ class InvWarp(pydra.engine.ShellCommandTask):
 
     executable = "invwarp"
 
-    input_spec = pydra.specs.SpecInfo(
-        name="InvWarpInput",
-        bases=(InvWarpSpec, specs.VerboseSpec),
-    )
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(InvWarpSpec, specs.VerboseSpec))

@@ -237,6 +237,6 @@ class FUGUE(pydra.engine.ShellCommandTask):
 
     executable = "fugue"
 
-    input_spec = pydra.specs.SpecInfo(name="FUGUEInput", bases=(FUGUESpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FUGUESpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="FUGUEOutput", bases=(FUGUEOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(FUGUEOutSpec,))

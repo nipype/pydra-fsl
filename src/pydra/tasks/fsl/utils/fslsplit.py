@@ -82,9 +82,9 @@ class FSLSplit(pydra.engine.ShellCommandTask):
 
     executable = "fslsplit"
 
-    input_spec = pydra.specs.SpecInfo(name="FSLSplitInput", bases=(FSLSplitSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLSplitSpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="FSLSplitOutput", bases=(FSLSplitOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(FSLSplitOutSpec,))
 
 
 @attrs.define(slots=False, kw_only=True)
@@ -108,6 +108,6 @@ class FSLSliceOutSpec(FSLSplitOutSpec):
 class FSLSlice(FSLSplit):
     """Task definition for fslslice."""
 
-    input_spec = pydra.specs.SpecInfo(name="FSLSliceInput", bases=(FSLSliceSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLSliceSpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="FSLSliceOutput", bases=(FSLSliceOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Output", bases=(FSLSliceOutSpec,))

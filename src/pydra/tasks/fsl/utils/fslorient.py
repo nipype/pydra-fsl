@@ -81,6 +81,6 @@ class FSLOrient(ShellCommandTask):
 
     executable = "fslorient"
 
-    input_spec = SpecInfo(name="Inputs", bases=(FSLOrientSpec,))
+    input_spec = SpecInfo(name="Input", bases=(FSLOrientSpec,))
 
-    output_spec = SpecInfo(name="Outputs", bases=(FSLOrientOutSpec,))
+    output_spec = SpecInfo(name="Output", bases=(FSLOrientOutSpec,))

@@ -178,4 +178,4 @@ class ApplyTopup(ShellCommandTask):
 
     executable = "applytopup"
 
-    input_spec = SpecInfo(name="Inputs", bases=(ApplyTopupSpec,))
+    input_spec = SpecInfo(name="Input", bases=(ApplyTopupSpec,))

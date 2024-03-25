@@ -75,4 +75,4 @@ class FSLMerge(pydra.engine.ShellCommandTask):
 
     executable = "fslmerge"
 
-    input_spec = pydra.specs.SpecInfo(name="FSLMergeInput", bases=(FSLMergeSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLMergeSpec,))

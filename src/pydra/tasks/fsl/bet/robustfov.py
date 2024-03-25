@@ -65,4 +65,4 @@ class RobustFOV(pydra.engine.ShellCommandTask):
 
     executable = "robustfov"
 
-    input_spec = pydra.specs.SpecInfo(name="RobustFOVInput", bases=(RobustFOVSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(RobustFOVSpec,))

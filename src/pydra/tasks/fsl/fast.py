@@ -207,6 +207,6 @@ class FAST(pydra.engine.ShellCommandTask):
 
     executable = "fast"
 
-    input_spec = pydra.specs.SpecInfo(name="FASTInput", bases=(FASTSpec,))
+    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FASTSpec,))
 
-    output_spec = pydra.specs.SpecInfo(name="FASTOuput", bases=(FASTOutSpec,))
+    output_spec = pydra.specs.SpecInfo(name="Ouput", bases=(FASTOutSpec,))

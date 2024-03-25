@@ -222,6 +222,6 @@ class Topup(ShellCommandTask):
 
     executable = "topup"
 
-    input_spec = SpecInfo(name="Inputs", bases=(TopupSpec,))
+    input_spec = SpecInfo(name="Input", bases=(TopupSpec,))
 
-    output_spec = SpecInfo(name="Outputs", bases=(TopupOutSpec,))
+    output_spec = SpecInfo(name="Output", bases=(TopupOutSpec,))

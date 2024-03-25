@@ -138,7 +138,7 @@ class FLIRT(ShellCommandTask):
     executable = "flirt"
 
     input_spec = SpecInfo(
-        name="Inputs",
+        name="Input",
         bases=(
             FLIRTSpec,
             specs.SearchSpec,
@@ -174,4 +174,4 @@ class ApplyXFMSpec(BaseSpec):
 class ApplyXFM(FLIRT):
     """Task definition for ApplyXFM."""
 
-    input_spec = SpecInfo(name="Inputs", bases=(ApplyXFMSpec, specs.InterpolationSpec, specs.VerboseSpec))
+    input_spec = SpecInfo(name="Input", bases=(ApplyXFMSpec, specs.InterpolationSpec, specs.VerboseSpec))
