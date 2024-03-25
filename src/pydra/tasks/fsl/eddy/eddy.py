@@ -258,6 +258,7 @@ class EddySpec(ShellSpec):
     verbose: bool = field(metadata={"help_string": "enable verbose logging", "argstr": "--verbose"})
 
 
+@define(slots=False, kw_only=True)
 class EddyOutSpec(ShellOutSpec):
     """Output specification for eddy."""
 
