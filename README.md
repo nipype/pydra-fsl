@@ -26,6 +26,7 @@ for FMRI, MRI and DTI brain imaging data.
 - bet
     - bet
     - robustfov
+- fast
 - flirt
     - convert_xfm
     - flirt
