@@ -182,7 +182,8 @@ class FNIRTSpec(pydra.specs.ShellSpec):
         },
     )
 
-    warp_lambda: float = attrs.field(
+    warp_lambda: ty.Iterable[float] = attrs.field(
+        default=(300, 75, 30, 30),
         metadata={
             "help_string": "weight of warpfield regularisation",
             "argstr": "--lambda",
@@ -221,7 +222,7 @@ class FNIRTSpec(pydra.specs.ShellSpec):
         },
     )
 
-    bias_resolution: ty.Tuple[int, int, int] = attrs.field(
+    bias_resolution: ty.Tuple[float, float, float] = attrs.field(
         default=(50, 50, 50),
         metadata={
             "help_string": "resolution for bias field modelling (in millimeters)",
