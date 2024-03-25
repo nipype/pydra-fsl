@@ -11,6 +11,7 @@ from .eddy import Eddy
 from .fast import FAST
 from .flirt import FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM
 from .fnirt import FNIRT, ApplyWarp, ConvertWarp, InvWarp
+from .fugue import FUGUE
 from .susan import SUSAN
 from .utils import (
     FSLROI,
