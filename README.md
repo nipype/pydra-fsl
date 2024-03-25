@@ -35,6 +35,7 @@ for FMRI, MRI and DTI brain imaging data.
 - fnirt
     - fnirt
 - utils
+    - fslmaths
     - fslmerge
     - fslreorient2std
     - fslroi
