@@ -37,7 +37,7 @@ for FMRI, MRI and DTI brain imaging data.
     - convert_xfm
     - invert_xfm
 - fnirt
-    - fnirt
+- susan
 - utils
     - fslmaths
     - fslmerge
