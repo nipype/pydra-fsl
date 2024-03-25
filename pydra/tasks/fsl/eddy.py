@@ -211,22 +211,6 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
-    ol_pos: bool = attrs.field(
-        metadata={
-            "help_string": "consider both positive and negative outliers",
-            "argstr": "--ol_pos",
-            "requires": {"replace_outliers"},
-        }
-    )
-
-    ol_sqr: bool = attrs.field(
-        metadata={
-            "help_string": "consider outliers among sum-of-square differences",
-            "argstr": "--ol_sqr",
-            "requires": {"replace_outliers"},
-        }
-    )
-
     multiband_factor: int = attrs.field(
         metadata={
             "help_string": "multiband factor",
