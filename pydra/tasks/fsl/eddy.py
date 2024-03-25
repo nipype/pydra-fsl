@@ -420,6 +420,13 @@ class EddyOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
+    verbose: bool = attrs.field(
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        }
+    )
+
 
 class Eddy(pydra.engine.ShellCommandTask):
     """Task definition for eddy."""

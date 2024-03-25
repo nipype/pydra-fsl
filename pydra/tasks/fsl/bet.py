@@ -101,6 +101,13 @@ class BETSpec:
         }
     )
 
+    verbose: bool = attrs.field(
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        }
+    )
+
 
 @attrs.define(slots=False, kw_only=True)
 class BETOutSpec(pydra.specs.ShellOutSpec):

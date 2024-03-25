@@ -112,6 +112,13 @@ class FASTSpec(pydra.specs.ShellSpec):
         }
     )
 
+    verbose: bool = attrs.field(
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        }
+    )
+
 
 class FASTOutSpec(pydra.specs.ShellOutSpec):
     """Ouput specifications for FAST."""

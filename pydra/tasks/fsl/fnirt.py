@@ -37,6 +37,13 @@ class FNIRTSpec(pydra.specs.ShellSpec):
         metadata={"help_string": "input image", "argstr": "--in"}
     )
 
+    verbose: bool = attrs.field(
+        metadata={
+            "help_string": "enable verbose logging",
+            "argstr": "-v",
+        }
+    )
+
 
 class FNIRT(pydra.engine.ShellCommandTask):
     """Task definition for FNIRT."""
