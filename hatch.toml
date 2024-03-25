@@ -11,7 +11,7 @@ cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=pydra 
 no-cov = "cov --no-cov {args}"
 
 [[envs.test.matrix]]
-python = ["37", "38", "39", "310", "311"]
+python = ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
 [envs.lint]
 detached = true
