@@ -194,9 +194,9 @@ class EddySpec(pydra.specs.ShellSpec):
         metadata={"help_string": "replace outliers", "argstr": "--repol"}
     )
 
-    outlier_num_std: int = attrs.field(
+    outlier_num_stdevs: int = attrs.field(
         metadata={
-            "help_string": "number of std off to qualify as outlier",
+            "help_string": "number of times off the standard deviation to qualify as outlier",
             "argstr": "--ol_nstd",
             "requires": {"replace_outliers"},
         }
