@@ -1,0 +1,97 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.model.MultipleRegressDesign' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Generate multiple regression design
+#
+#     .. note::
+#       FSL does not demean columns for higher level analysis.
+#
+#     Please see `FSL documentation
+#     <http://www.fmrib.ox.ac.uk/fsl/feat5/detail.html#higher>`_
+#     for more details on model specification for higher level analysis.
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import MultipleRegressDesign
+#     >>> model = MultipleRegressDesign()
+#     >>> model.inputs.contrasts = [['group mean', 'T',['reg1'],[1]]]
+#     >>> model.inputs.regressors = dict(reg1=[1, 1, 1], reg2=[2.,-4, 3])
+#     >>> model.run() # doctest: +SKIP
+#
+#
+task_name: MultipleRegressDesign
+nipype_name: MultipleRegressDesign
+nipype_module: nipype.interfaces.fsl.model
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    design_con: generic/file
+    # type=file: design t-contrast file
+    design_fts: generic/file
+    # type=file: design f-contrast file
+    design_grp: generic/file
+    # type=file: design group file
+    design_mat: generic/file
+    # type=file: design matrix file
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    contrasts:
+    # type=list|default=[]: List of contrasts with each contrast being a list of the form - [('name', 'stat', [condition list], [weight list])]. if session list is None or not provided, all sessions are used. For F contrasts, the condition list should contain previously defined T-contrasts without any weight list.
+    regressors:
+    # type=dict|default={}: dictionary containing named lists of regressors
+    groups:
+    # type=list|default=[]: list of group identifiers (defaults to single group)
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests: []

@@ -1,0 +1,97 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.maths.IsotropicSmooth' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use fslmaths to spatially smooth an image with a gaussian kernel.
+task_name: IsotropicSmooth
+nipype_name: IsotropicSmooth
+nipype_module: nipype.interfaces.fsl.maths
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_file: generic/file
+    # type=file|default=<undefined>: image to operate on
+    out_file: Path
+    # type=file: image written after calculations
+    # type=file|default=<undefined>: image to write
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: generic/file
+    # type=file: image written after calculations
+    # type=file|default=<undefined>: image to write
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+    out_file: out_file
+    # type=file: image written after calculations
+    # type=file|default=<undefined>: image to write
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    fwhm:
+    # type=float|default=0.0: fwhm of smoothing kernel [mm]
+    sigma:
+    # type=float|default=0.0: sigma of smoothing kernel [mm]
+    in_file:
+    # type=file|default=<undefined>: image to operate on
+    out_file:
+    # type=file: image written after calculations
+    # type=file|default=<undefined>: image to write
+    internal_datatype:
+    # type=enum|default='float'|allowed['char','double','float','input','int','short']: datatype to use for calculations (default is float)
+    output_datatype:
+    # type=enum|default='float'|allowed['char','double','float','input','int','short']: datatype to use for output (default uses input type)
+    nan2zeros:
+    # type=bool|default=False: change NaNs to zeros before doing anything
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests: []

@@ -1,0 +1,206 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.dti.DTIFit' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL  dtifit command for fitting a diffusion tensor model at each
+#     voxel
+#
+#     Example
+#     -------
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> dti = fsl.DTIFit()
+#     >>> dti.inputs.dwi = 'diffusion.nii'
+#     >>> dti.inputs.bvecs = 'bvecs'
+#     >>> dti.inputs.bvals = 'bvals'
+#     >>> dti.inputs.base_name = 'TP'
+#     >>> dti.inputs.mask = 'mask.nii'
+#     >>> dti.cmdline
+#     'dtifit -k diffusion.nii -o TP -m mask.nii -r bvecs -b bvals'
+#
+#
+task_name: DTIFit
+nipype_name: DTIFit
+nipype_module: nipype.interfaces.fsl.dti
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    bvals: medimage/bval
+    # type=file|default=<undefined>: b values file
+    bvecs: medimage/bvec
+    # type=file|default=<undefined>: b vectors file
+    cni: generic/file
+    # type=file|default=<undefined>: input counfound regressors
+    dwi: medimage/nifti1
+    # type=file|default=<undefined>: diffusion weighted image data file
+    gradnonlin: generic/file
+    # type=file|default=<undefined>: gradient non linearities
+    mask: medimage/nifti1
+    # type=file|default=<undefined>: bet binary mask file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    FA: generic/file
+    # type=file: path/name of file with the fractional anisotropy
+    L1: generic/file
+    # type=file: path/name of file with the 1st eigenvalue
+    L2: generic/file
+    # type=file: path/name of file with the 2nd eigenvalue
+    L3: generic/file
+    # type=file: path/name of file with the 3rd eigenvalue
+    MD: generic/file
+    # type=file: path/name of file with the mean diffusivity
+    MO: generic/file
+    # type=file: path/name of file with the mode of anisotropy
+    S0: generic/file
+    # type=file: path/name of file with the raw T2 signal with no diffusion weighting
+    V1: generic/file
+    # type=file: path/name of file with the 1st eigenvector
+    V2: generic/file
+    # type=file: path/name of file with the 2nd eigenvector
+    V3: generic/file
+    # type=file: path/name of file with the 3rd eigenvector
+    sse: generic/file
+    # type=file: path/name of file with the summed squared error
+    # type=bool|default=False: output sum of squared errors
+    tensor: generic/file
+    # type=file: path/name of file with the 4D tensor volume
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    dwi:
+    # type=file|default=<undefined>: diffusion weighted image data file
+    base_name:
+    # type=str|default='dtifit_': base_name that all output files will start with
+    mask:
+    # type=file|default=<undefined>: bet binary mask file
+    bvecs:
+    # type=file|default=<undefined>: b vectors file
+    bvals:
+    # type=file|default=<undefined>: b values file
+    min_z:
+    # type=int|default=0: min z
+    max_z:
+    # type=int|default=0: max z
+    min_y:
+    # type=int|default=0: min y
+    max_y:
+    # type=int|default=0: max y
+    min_x:
+    # type=int|default=0: min x
+    max_x:
+    # type=int|default=0: max x
+    save_tensor:
+    # type=bool|default=False: save the elements of the tensor
+    sse:
+    # type=file: path/name of file with the summed squared error
+    # type=bool|default=False: output sum of squared errors
+    cni:
+    # type=file|default=<undefined>: input counfound regressors
+    little_bit:
+    # type=bool|default=False: only process small area of brain
+    gradnonlin:
+    # type=file|default=<undefined>: gradient non linearities
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    dwi:
+    # type=file|default=<undefined>: diffusion weighted image data file
+    bvecs:
+    # type=file|default=<undefined>: b vectors file
+    bvals:
+    # type=file|default=<undefined>: b values file
+    base_name: '"TP"'
+    # type=str|default='dtifit_': base_name that all output files will start with
+    mask:
+    # type=file|default=<undefined>: bet binary mask file
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: dtifit -k diffusion.nii -o TP -m mask.nii -r bvecs -b bvals
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    dwi: '"diffusion.nii"'
+    # type=file|default=<undefined>: diffusion weighted image data file
+    bvecs: '"bvecs"'
+    # type=file|default=<undefined>: b vectors file
+    bvals: '"bvals"'
+    # type=file|default=<undefined>: b values file
+    base_name: '"TP"'
+    # type=str|default='dtifit_': base_name that all output files will start with
+    mask: '"mask.nii"'
+    # type=file|default=<undefined>: bet binary mask file
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -1,0 +1,95 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.utils.AvScale' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL avscale command to extract info from mat file output of FLIRT
+#
+#     Examples
+#     --------
+#
+#     >>> avscale = AvScale()
+#     >>> avscale.inputs.mat_file = 'flirt.mat'
+#     >>> res = avscale.run()  # doctest: +SKIP
+#
+#
+#
+task_name: AvScale
+nipype_name: AvScale
+nipype_module: nipype.interfaces.fsl.utils
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    mat_file: generic/file
+    # type=file|default=<undefined>: mat file to read
+    ref_file: generic/file
+    # type=file|default=<undefined>: reference file to get center of rotation
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+    average_scaling: average_scaling_callable
+    # type=float: Average Scaling
+    determinant: determinant_callable
+    # type=float: Determinant
+    left_right_orientation_preserved: left_right_orientation_preserved_callable
+    # type=bool: True if LR orientation preserved
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    all_param:
+    # type=bool|default=False:
+    mat_file:
+    # type=file|default=<undefined>: mat file to read
+    ref_file:
+    # type=file|default=<undefined>: reference file to get center of rotation
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests: []

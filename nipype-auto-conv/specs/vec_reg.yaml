@@ -1,0 +1,176 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.dti.VecReg' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL vecreg for registering vector data
+#     For complete details, see the FDT Documentation
+#     <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_vecreg.html>
+#
+#     Example
+#     -------
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> vreg = fsl.VecReg(in_file='diffusion.nii',                  affine_mat='trans.mat',                  ref_vol='mni.nii',                  out_file='diffusion_vreg.nii')
+#     >>> vreg.cmdline
+#     'vecreg -t trans.mat -i diffusion.nii -o diffusion_vreg.nii -r mni.nii'
+#
+#
+task_name: VecReg
+nipype_name: VecReg
+nipype_module: nipype.interfaces.fsl.dti
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    affine_mat: datascience/text-matrix
+    # type=file|default=<undefined>: filename for affine transformation matrix
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: filename for input vector or tensor field
+    mask: generic/file
+    # type=file|default=<undefined>: brain mask in input space
+    out_file: Path
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+    ref_mask: generic/file
+    # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
+    ref_vol: medimage/nifti1
+    # type=file|default=<undefined>: filename for reference (target) volume
+    rotation_mat: generic/file
+    # type=file|default=<undefined>: filename for secondary affine matrix if set, this will be used for the rotation of the vector/tensor field
+    rotation_warp: generic/file
+    # type=file|default=<undefined>: filename for secondary warp field if set, this will be used for the rotation of the vector/tensor field
+    warp_field: generic/file
+    # type=file|default=<undefined>: filename for 4D warp field for nonlinear registration
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: medimage/nifti1
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+    out_file: '"diffusion_vreg.nii"'
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: filename for input vector or tensor field
+    out_file:
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+    ref_vol:
+    # type=file|default=<undefined>: filename for reference (target) volume
+    affine_mat:
+    # type=file|default=<undefined>: filename for affine transformation matrix
+    warp_field:
+    # type=file|default=<undefined>: filename for 4D warp field for nonlinear registration
+    rotation_mat:
+    # type=file|default=<undefined>: filename for secondary affine matrix if set, this will be used for the rotation of the vector/tensor field
+    rotation_warp:
+    # type=file|default=<undefined>: filename for secondary warp field if set, this will be used for the rotation of the vector/tensor field
+    interpolation:
+    # type=enum|default='nearestneighbour'|allowed['nearestneighbour','sinc','spline','trilinear']: interpolation method : nearestneighbour, trilinear (default), sinc or spline
+    mask:
+    # type=file|default=<undefined>: brain mask in input space
+    ref_mask:
+    # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: filename for input vector or tensor field
+    affine_mat:
+    # type=file|default=<undefined>: filename for affine transformation matrix
+    ref_vol:
+    # type=file|default=<undefined>: filename for reference (target) volume
+    out_file: '"diffusion_vreg.nii"'
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: vecreg -t trans.mat -i diffusion.nii -o diffusion_vreg.nii -r mni.nii
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"diffusion.nii"'
+    # type=file|default=<undefined>: filename for input vector or tensor field
+    affine_mat: '"trans.mat"'
+    # type=file|default=<undefined>: filename for affine transformation matrix
+    ref_vol: '"mni.nii"'
+    # type=file|default=<undefined>: filename for reference (target) volume
+    out_file: '"diffusion_vreg.nii"'
+    # type=file: path/name of filename for the registered vector or tensor field
+    # type=file|default=<undefined>: filename for output registered vector or tensor field
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

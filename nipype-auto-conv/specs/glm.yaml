@@ -1,0 +1,227 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.model.GLM' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     FSL GLM:
+#
+#     Example
+#     -------
+#     >>> import nipype.interfaces.fsl as fsl
+#     >>> glm = fsl.GLM(in_file='functional.nii', design='maps.nii', output_type='NIFTI')
+#     >>> glm.cmdline
+#     'fsl_glm -i functional.nii -d maps.nii -o functional_glm.nii'
+#
+#
+task_name: GLM
+nipype_name: GLM
+nipype_module: nipype.interfaces.fsl.model
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    contrasts: generic/file
+    # type=file|default=<undefined>: matrix of t-statics contrasts
+    design: medimage/nifti1
+    # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: input file name (text matrix or 3D/4D image file)
+    mask: generic/file
+    # type=file|default=<undefined>: mask image file name if input is image
+    out_cope: Path
+    # type=outputmultiobject: output file name for COPEs (either as text file or image)
+    # type=file|default=<undefined>: output file name for COPE (either as txt or image
+    out_data_name: Path
+    # type=file|default=<undefined>: output file name for pre-processed data
+    out_f_name: Path
+    # type=file|default=<undefined>: output file name for F-value of full model fit
+    out_file: Path
+    # type=file: file name of GLM parameters (if generated)
+    # type=file|default=<undefined>: filename for GLM parameter estimates (GLM betas)
+    out_p_name: Path
+    # type=file|default=<undefined>: output file name for p-values of Z-stats (either as text file or image)
+    out_pf_name: Path
+    # type=file|default=<undefined>: output file name for p-value for full model fit
+    out_res_name: Path
+    # type=file|default=<undefined>: output file name for residuals
+    out_sigsq_name: Path
+    # type=file|default=<undefined>: output file name for residual noise variance sigma-square
+    out_t_name: Path
+    # type=file|default=<undefined>: output file name for t-stats (either as txt or image
+    out_varcb_name: Path
+    # type=file|default=<undefined>: output file name for variance of COPEs
+    out_vnscales_name: Path
+    # type=file|default=<undefined>: output file name for scaling factors for variance normalisation
+    out_z_name: Path
+    # type=file|default=<undefined>: output file name for Z-stats (either as txt or image
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_cope: generic/file+list-of
+    # type=outputmultiobject: output file name for COPEs (either as text file or image)
+    # type=file|default=<undefined>: output file name for COPE (either as txt or image
+    out_data: generic/file+list-of
+    # type=outputmultiobject: output file for preprocessed data
+    out_f: generic/file+list-of
+    # type=outputmultiobject: output file name for F-value of full model fit
+    out_file: generic/file
+    # type=file: file name of GLM parameters (if generated)
+    # type=file|default=<undefined>: filename for GLM parameter estimates (GLM betas)
+    out_p: generic/file+list-of
+    # type=outputmultiobject: output file name for p-values of Z-stats (either as text file or image)
+    out_pf: generic/file+list-of
+    # type=outputmultiobject: output file name for p-value for full model fit
+    out_res: generic/file+list-of
+    # type=outputmultiobject: output file name for residuals
+    out_sigsq: generic/file+list-of
+    # type=outputmultiobject: output file name for residual noise variance sigma-square
+    out_t: generic/file+list-of
+    # type=outputmultiobject: output file name for t-stats (either as text file or image)
+    out_varcb: generic/file+list-of
+    # type=outputmultiobject: output file name for variance of COPEs
+    out_vnscales: generic/file+list-of
+    # type=outputmultiobject: output file name for scaling factors for variance normalisation
+    out_z: generic/file+list-of
+    # type=outputmultiobject: output file name for COPEs (either as text file or image)
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file name (text matrix or 3D/4D image file)
+    out_file:
+    # type=file: file name of GLM parameters (if generated)
+    # type=file|default=<undefined>: filename for GLM parameter estimates (GLM betas)
+    design:
+    # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
+    contrasts:
+    # type=file|default=<undefined>: matrix of t-statics contrasts
+    mask:
+    # type=file|default=<undefined>: mask image file name if input is image
+    dof:
+    # type=int|default=0: set degrees of freedom explicitly
+    des_norm:
+    # type=bool|default=False: switch on normalization of the design matrix columns to unit std deviation
+    dat_norm:
+    # type=bool|default=False: switch on normalization of the data time series to unit std deviation
+    var_norm:
+    # type=bool|default=False: perform MELODIC variance-normalisation on data
+    demean:
+    # type=bool|default=False: switch on demeaining of design and data
+    out_cope:
+    # type=outputmultiobject: output file name for COPEs (either as text file or image)
+    # type=file|default=<undefined>: output file name for COPE (either as txt or image
+    out_z_name:
+    # type=file|default=<undefined>: output file name for Z-stats (either as txt or image
+    out_t_name:
+    # type=file|default=<undefined>: output file name for t-stats (either as txt or image
+    out_p_name:
+    # type=file|default=<undefined>: output file name for p-values of Z-stats (either as text file or image)
+    out_f_name:
+    # type=file|default=<undefined>: output file name for F-value of full model fit
+    out_pf_name:
+    # type=file|default=<undefined>: output file name for p-value for full model fit
+    out_res_name:
+    # type=file|default=<undefined>: output file name for residuals
+    out_varcb_name:
+    # type=file|default=<undefined>: output file name for variance of COPEs
+    out_sigsq_name:
+    # type=file|default=<undefined>: output file name for residual noise variance sigma-square
+    out_data_name:
+    # type=file|default=<undefined>: output file name for pre-processed data
+    out_vnscales_name:
+    # type=file|default=<undefined>: output file name for scaling factors for variance normalisation
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input file name (text matrix or 3D/4D image file)
+    design:
+    # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
+    output_type: '"NIFTI"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports: &id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  - module: nipype.interfaces.fsl as fsl
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: fsl_glm -i functional.nii -d maps.nii -o functional_glm.nii
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"functional.nii"'
+    # type=file|default=<undefined>: input file name (text matrix or 3D/4D image file)
+    design: '"maps.nii"'
+    # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
+    output_type: '"NIFTI"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports: *id001
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

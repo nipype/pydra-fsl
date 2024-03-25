@@ -1,0 +1,116 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.preprocess.FIRST' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# FSL run_first_all wrapper for segmentation of subcortical volumes
+#
+#     http://www.fmrib.ox.ac.uk/fsl/first/index.html
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces import fsl
+#     >>> first = fsl.FIRST()
+#     >>> first.inputs.in_file = 'structural.nii'
+#     >>> first.inputs.out_file = 'segmented.nii'
+#     >>> res = first.run() #doctest: +SKIP
+#
+#
+task_name: FIRST
+nipype_name: FIRST
+nipype_module: nipype.interfaces.fsl.preprocess
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    affine_file: generic/file
+    # type=file|default=<undefined>: Affine matrix to use (e.g. img2std.mat) (does not re-run registration)
+    in_file: generic/file
+    # type=file|default=<undefined>: input data file
+    out_file: Path
+    # type=file|default='segmented': output data file
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    bvars: generic/file+list-of
+    # type=outputmultiobject: bvars for each subcortical region
+    original_segmentations: generic/file
+    # type=file: 3D image file containing the segmented regions as integer values. Uses CMA labelling
+    segmentation_file: generic/file
+    # type=file: 4D image file containing a single volume per segmented region
+    vtk_surfaces: generic/file+list-of
+    # type=outputmultiobject: VTK format meshes for each subcortical region
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: input data file
+    out_file:
+    # type=file|default='segmented': output data file
+    verbose:
+    # type=bool|default=False: Use verbose logging.
+    brain_extracted:
+    # type=bool|default=False: Input structural image is already brain-extracted
+    no_cleanup:
+    # type=bool|default=False: Input structural image is already brain-extracted
+    method:
+    # type=enum|default='auto'|allowed['auto','fast','none']: Method must be one of auto, fast, none, or it can be entered using the 'method_as_numerical_threshold' input
+    method_as_numerical_threshold:
+    # type=float|default=0.0: Specify a numerical threshold value or use the 'method' input to choose auto, fast, or none
+    list_of_specific_structures:
+    # type=list|default=[]: Runs only on the specified structures (e.g. L_Hipp, R_HippL_Accu, R_Accu, L_Amyg, R_AmygL_Caud, R_Caud, L_Pall, R_PallL_Puta, R_Puta, L_Thal, R_Thal, BrStem
+    affine_file:
+    # type=file|default=<undefined>: Affine matrix to use (e.g. img2std.mat) (does not re-run registration)
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests: []

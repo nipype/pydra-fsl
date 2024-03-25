@@ -1,0 +1,13 @@
+Pydra-FSL
+Copyright 2024 Pydra Development Team
+
+Portions of this software were developed by the ARAMIS Lab for the Clinica project.
+Initial code for the FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, FixScaleSkew, Img2ImgCoord,
+Img2StdCoord, InvertXFM, Std2ImgCoord, FNIRT, ApplyWarp, ConvertWarp, FNIRTFileUtils,
+InvWarp FUGUE, Prelude, PrepareFieldmap, SigLoss SUSAN FFT, ROI, ChFileType, Info,
+Interleave, Merge, Orient, Reorient2Std, SelectVols, Slice, SmoothFill, Split, SwapDim,
+tasks were copied from <https://github.com/aramis-lab/clinica-pydra-fsl>.
+
+The basis for the remaining task interfaces defined in this package were semi-automatically
+converted from Nipype interfaces (https://github.com/nipy/nipype) using the Nipype2Pydra
+tool (https://github.com/nipype/nipype2pydra).

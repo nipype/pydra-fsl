@@ -1,0 +1,160 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.utils.InvWarp' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     Use FSL Invwarp to invert a FNIRT warp
+#
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import InvWarp
+#     >>> invwarp = InvWarp()
+#     >>> invwarp.inputs.warp = "struct2mni.nii"
+#     >>> invwarp.inputs.reference = "anatomical.nii"
+#     >>> invwarp.inputs.output_type = "NIFTI_GZ"
+#     >>> invwarp.cmdline
+#     'invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii'
+#     >>> res = invwarp.run() # doctest: +SKIP
+#
+#
+#
+task_name: InvWarp
+nipype_name: InvWarp
+nipype_module: nipype.interfaces.fsl.utils
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    inverse_warp: Path
+    # type=file: Name of output file, containing warps that are the "reverse" of those in --warp.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the "reverse" of those in --warp. This will be a field-file (rather than a file of spline coefficients), and it will have any affine component included as part of the displacements.
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    warp: medimage/nifti1
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    inverse_warp: generic/file
+    # type=file: Name of output file, containing warps that are the "reverse" of those in --warp.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the "reverse" of those in --warp. This will be a field-file (rather than a file of spline coefficients), and it will have any affine component included as part of the displacements.
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    warp:
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    inverse_warp:
+    # type=file: Name of output file, containing warps that are the "reverse" of those in --warp.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the "reverse" of those in --warp. This will be a field-file (rather than a file of spline coefficients), and it will have any affine component included as part of the displacements.
+    absolute:
+    # type=bool|default=False: If set it indicates that the warps in --warp should be interpreted as absolute, provided that it is not created by fnirt (which always uses relative warps). If set it also indicates that the output --out should be absolute.
+    relative:
+    # type=bool|default=False: If set it indicates that the warps in --warp should be interpreted as relative. I.e. the values in --warp are displacements from the coordinates in the --ref space. If set it also indicates that the output --out should be relative.
+    niter:
+    # type=int|default=0: Determines how many iterations of the gradient-descent search that should be run.
+    regularise:
+    # type=float|default=0.0: Regularization strength (default=1.0).
+    noconstraint:
+    # type=bool|default=False: Do not apply Jacobian constraint
+    jacobian_min:
+    # type=float|default=0.0: Minimum acceptable Jacobian value for constraint (default 0.01)
+    jacobian_max:
+    # type=float|default=0.0: Maximum acceptable Jacobian value for constraint (default 100.0)
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    warp:
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: invwarp --out=struct2mni_inverse.nii.gz --ref=anatomical.nii --warp=struct2mni.nii
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    warp: '"struct2mni.nii"'
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference: '"anatomical.nii"'
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -1,0 +1,378 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.epi.Eddy' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     Interface for FSL eddy, a tool for estimating and correcting eddy
+#     currents induced distortions. `User guide
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy/UsersGuide>`__ and
+#     `more info regarding acqp file
+#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/eddy/Faq#How_do_I_know_what_to_put_into_my_--acqp_file.3F>`_.
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import Eddy
+#
+#     Running eddy on a CPU using OpenMP:
+#     >>> eddy = Eddy()
+#     >>> eddy.inputs.in_file = 'epi.nii'
+#     >>> eddy.inputs.in_mask  = 'epi_mask.nii'
+#     >>> eddy.inputs.in_index = 'epi_index.txt'
+#     >>> eddy.inputs.in_acqp  = 'epi_acqp.txt'
+#     >>> eddy.inputs.in_bvec  = 'bvecs.scheme'
+#     >>> eddy.inputs.in_bval  = 'bvals.scheme'
+#     >>> eddy.cmdline  # doctest: +ELLIPSIS
+#     'eddy_openmp --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --slm=none'
+#
+#     Running eddy on an Nvidia GPU using cuda:
+#     >>> eddy.inputs.use_cuda = True
+#     >>> eddy.cmdline # doctest: +ELLIPSIS
+#     'eddy_cuda --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --slm=none'
+#
+#     Running eddy with slice-to-volume motion correction:
+#     >>> eddy.inputs.mporder = 6
+#     >>> eddy.inputs.slice2vol_niter = 5
+#     >>> eddy.inputs.slice2vol_lambda = 1
+#     >>> eddy.inputs.slice2vol_interp = 'trilinear'
+#     >>> eddy.inputs.slice_order = 'epi_slspec.txt'
+#     >>> eddy.cmdline  # doctest: +ELLIPSIS
+#     'eddy_cuda --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --mporder=6 --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --s2v_interp=trilinear --s2v_lambda=1 --s2v_niter=5 --slspec=epi_slspec.txt --slm=none'
+#     >>> res = eddy.run()     # doctest: +SKIP
+#
+#
+task_name: Eddy
+nipype_name: Eddy
+nipype_module: nipype.interfaces.fsl.epi
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: File containing all the images to estimate distortions for
+    in_mask: generic/file
+    # type=file|default=<undefined>: Mask to indicate brain
+    in_index: text/text-file
+    # type=file|default=<undefined>: File containing indices for all volumes in --imain into --acqp and --topup
+    in_acqp: generic/file
+    # type=file|default=<undefined>: File containing acquisition parameters
+    in_bvec: medimage/bvec
+    # type=file|default=<undefined>: File containing the b-vectors for all volumes in --imain
+    in_bval: medimage/bval
+    # type=file|default=<undefined>: File containing the b-values for all volumes in --imain
+    session: generic/file
+    # type=file|default=<undefined>: File containing session indices for all volumes in --imain
+    in_topup_fieldcoef: generic/file
+    # type=file|default=<undefined>: Topup results file containing the field coefficients
+    in_topup_movpar: generic/file
+    # type=file|default=<undefined>: Topup results file containing the movement parameters (movpar.txt)
+    field: generic/file
+    # type=file|default=<undefined>: Non-topup derived fieldmap scaled in Hz
+    field_mat: generic/file
+    # type=file|default=<undefined>: Matrix specifying the relative positions of the fieldmap, --field, and the first volume of the input file, --imain
+    json: generic/file
+    # type=file|default='': Name of .json text file with information about slice timing
+    slice_order: text/text-file
+    # type=file|default='': Name of text file completely specifying slice/group acquisition
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+    # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+    # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+    # from the nipype interface, but you may want to be more specific, particularly
+    # for file types, where specifying the format also specifies the file that will be
+    # passed to the field in the automatically generated unittests.
+    out_cnr_maps: generic/file
+    # type=file: path/name of file with the cnr_maps
+    out_corrected: generic/file
+    # type=file: 4D image file containing all the corrected volumes
+    out_movement_over_time: generic/file
+    # type=file: Text file containing translations (mm) and rotations (radians) for each excitation
+    out_movement_rms: generic/file
+    # type=file: Summary of the 'total movement' in each volume
+    out_outlier_free: generic/file
+    # type=file: 4D image file not corrected for susceptibility or eddy-current distortions or subject movement but with outlier slices replaced
+    out_outlier_map: generic/file
+    # type=file: Matrix where rows represent volumes and columns represent slices. "0" indicates that scan-slice is not an outlier and "1" indicates that it is
+    out_outlier_n_sqr_stdev_map: generic/file
+    # type=file: Matrix where rows represent volumes and columns represent slices. Values indicate number of standard deivations off the square root of the mean squared difference between observation and prediction is
+    out_outlier_n_stdev_map: generic/file
+    # type=file: Matrix where rows represent volumes and columns represent slices. Values indicate number of standard deviations off the mean difference between observation and prediction is
+    out_outlier_report: generic/file
+    # type=file: Text file with a plain language report on what outlier slices eddy has found
+    out_parameter: generic/file
+    # type=file: Text file with parameters defining the field and movement for each scan
+    out_residuals: generic/file
+    # type=file: path/name of file with the residuals
+    out_restricted_movement_rms: generic/file
+    # type=file: Summary of the 'total movement' in each volume disregarding translation in the PE direction
+    out_rotated_bvecs: generic/file
+    # type=file: File containing rotated b-values for all volumes
+    out_shell_alignment_parameters: generic/file
+    # type=file: Text file containing rigid body movement parameters between the different shells as estimated by a post-hoc mutual information based registration
+    out_shell_pe_translation_parameters: generic/file
+    # type=file: Text file containing translation along the PE-direction between the different shells as estimated by a post-hoc mutual information based registration
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      in_file:
+      # type=file|default=<undefined>: File containing all the images to estimate distortions for
+      in_mask:
+      # type=file|default=<undefined>: Mask to indicate brain
+      in_index:
+      # type=file|default=<undefined>: File containing indices for all volumes in --imain into --acqp and --topup
+      in_acqp:
+      # type=file|default=<undefined>: File containing acquisition parameters
+      in_bvec:
+      # type=file|default=<undefined>: File containing the b-vectors for all volumes in --imain
+      in_bval:
+      # type=file|default=<undefined>: File containing the b-values for all volumes in --imain
+      out_base:
+      # type=str|default='eddy_corrected': Basename for output image
+      session:
+      # type=file|default=<undefined>: File containing session indices for all volumes in --imain
+      in_topup_fieldcoef:
+      # type=file|default=<undefined>: Topup results file containing the field coefficients
+      in_topup_movpar:
+      # type=file|default=<undefined>: Topup results file containing the movement parameters (movpar.txt)
+      field:
+      # type=file|default=<undefined>: Non-topup derived fieldmap scaled in Hz
+      field_mat:
+      # type=file|default=<undefined>: Matrix specifying the relative positions of the fieldmap, --field, and the first volume of the input file, --imain
+      flm:
+      # type=enum|default='quadratic'|allowed['cubic','linear','quadratic']: First level EC model
+      slm:
+      # type=enum|default='none'|allowed['linear','none','quadratic']: Second level EC model
+      fep:
+      # type=bool|default=False: Fill empty planes in x- or y-directions
+      initrand:
+      # type=bool|default=False: Resets rand for when selecting voxels
+      interp:
+      # type=enum|default='spline'|allowed['spline','trilinear']: Interpolation model for estimation step
+      nvoxhp:
+      # type=int|default=1000: # of voxels used to estimate the hyperparameters
+      fudge_factor:
+      # type=float|default=10.0: Fudge factor for hyperparameter error variance
+      dont_sep_offs_move:
+      # type=bool|default=False: Do NOT attempt to separate field offset from subject movement
+      dont_peas:
+      # type=bool|default=False: Do NOT perform a post-eddy alignment of shells
+      fwhm:
+      # type=float|default=0.0: FWHM for conditioning filter when estimating the parameters
+      niter:
+      # type=int|default=5: Number of iterations
+      method:
+      # type=enum|default='jac'|allowed['jac','lsr']: Final resampling method (jacobian/least squares)
+      repol:
+      # type=bool|default=False: Detect and replace outlier slices
+      outlier_nstd:
+      # type=int|default=0: Number of std off to qualify as outlier
+      outlier_nvox:
+      # type=int|default=0: Min # of voxels in a slice for inclusion in outlier detection
+      outlier_type:
+      # type=enum|default='sw'|allowed['both','gw','sw']: Type of outliers, slicewise (sw), groupwise (gw) or both (both)
+      outlier_pos:
+      # type=bool|default=False: Consider both positive and negative outliers if set
+      outlier_sqr:
+      # type=bool|default=False: Consider outliers among sums-of-squared differences if set
+      multiband_factor:
+      # type=int|default=0: Multi-band factor
+      multiband_offset:
+      # type=enum|default=0|allowed[-1,0,1]: Multi-band offset (-1 if bottom slice removed, 1 if top slice removed
+      mporder:
+      # type=int|default=0: Order of slice-to-vol movement model
+      slice2vol_niter:
+      # type=int|default=0: Number of iterations for slice-to-vol
+      slice2vol_lambda:
+      # type=int|default=0: Regularisation weight for slice-to-vol movement (reasonable range 1-10)
+      slice2vol_interp:
+      # type=enum|default='trilinear'|allowed['spline','trilinear']: Slice-to-vol interpolation model for estimation step
+      slice_order:
+      # type=file|default='': Name of text file completely specifying slice/group acquisition
+      json:
+      # type=file|default='': Name of .json text file with information about slice timing
+      estimate_move_by_susceptibility:
+      # type=bool|default=False: Estimate how susceptibility field changes with subject movement
+      mbs_niter:
+      # type=int|default=0: Number of iterations for MBS estimation
+      mbs_lambda:
+      # type=int|default=0: Weighting of regularisation for MBS estimation
+      mbs_ksp:
+      # type=int|default=0: Knot-spacing for MBS field estimation
+      num_threads:
+      # type=int|default=1: Number of openmp threads to use
+      is_shelled:
+      # type=bool|default=False: Override internal check to ensure that date are acquired on a set of b-value shells
+      use_cuda:
+      # type=bool|default=False: Run eddy using cuda gpu
+      cnr_maps:
+      # type=bool|default=False: Output CNR-Maps
+      residuals:
+      # type=bool|default=False: Output Residuals
+      output_type:
+      # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+      args:
+      # type=str|default='': Additional parameters to the command
+      environ:
+      # type=dict|default={}: Environment variables
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      in_file:
+      # type=file|default=<undefined>: File containing all the images to estimate distortions for
+      in_index:
+      # type=file|default=<undefined>: File containing indices for all volumes in --imain into --acqp and --topup
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      use_cuda: "True"
+      # type=bool|default=False: Run eddy using cuda gpu
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+  - inputs:
+      # dict[str, str] - values to provide to inputs fields in the task initialisation
+      # (if not specified, will try to choose a sensible value)
+      mporder: "6"
+      # type=int|default=0: Order of slice-to-vol movement model
+      slice2vol_niter: "5"
+      # type=int|default=0: Number of iterations for slice-to-vol
+      slice2vol_lambda: "1"
+      # type=int|default=0: Regularisation weight for slice-to-vol movement (reasonable range 1-10)
+      slice2vol_interp: '"trilinear"'
+      # type=enum|default='trilinear'|allowed['spline','trilinear']: Slice-to-vol interpolation model for estimation step
+      slice_order:
+      # type=file|default='': Name of text file completely specifying slice/group acquisition
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    expected_outputs:
+    # dict[str, str] - expected values for selected outputs, noting that tests will typically
+    # be terminated before they complete for time-saving reasons, and therefore
+    # these values will be ignored, when running in CI
+    timeout: 10
+    # int - the value to set for the timeout in the generated test,
+    # after which the test will be considered to have been initialised
+    # successfully. Set to 0 to disable the timeout (warning, this could
+    # lead to the unittests taking a very long time to complete)
+    xfail: true
+    # bool - whether the unittest is expected to fail or not. Set to false
+    # when you are satisfied with the edits you have made to this file
+doctests:
+  - cmdline: eddy_openmp --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --slm=none
+    # str - the expected cmdline output
+    inputs:
+      # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+      # If the field is of file-format type and the value is None, then the
+      # '.mock()' method of the corresponding class is used instead.
+      in_file: '"epi.nii"'
+      # type=file|default=<undefined>: File containing all the images to estimate distortions for
+      in_index: '"epi_index.txt"'
+      # type=file|default=<undefined>: File containing indices for all volumes in --imain into --acqp and --topup
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    directive:
+    # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
+  - cmdline: eddy_cuda --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --slm=none
+    # str - the expected cmdline output
+    inputs:
+      # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+      # If the field is of file-format type and the value is None, then the
+      # '.mock()' method of the corresponding class is used instead.
+      use_cuda: "True"
+      # type=bool|default=False: Run eddy using cuda gpu
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    directive:
+    # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
+  - cmdline: eddy_cuda --flm=quadratic --ff=10.0 --acqp=epi_acqp.txt --bvals=bvals.scheme --bvecs=bvecs.scheme --imain=epi.nii --index=epi_index.txt --mask=epi_mask.nii --interp=spline --resamp=jac --mporder=6 --niter=5 --nvoxhp=1000 --out=.../eddy_corrected --s2v_interp=trilinear --s2v_lambda=1 --s2v_niter=5 --slspec=epi_slspec.txt --slm=none
+    # str - the expected cmdline output
+    inputs:
+      # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+      # If the field is of file-format type and the value is None, then the
+      # '.mock()' method of the corresponding class is used instead.
+      mporder: "6"
+      # type=int|default=0: Order of slice-to-vol movement model
+      slice2vol_niter: "5"
+      # type=int|default=0: Number of iterations for slice-to-vol
+      slice2vol_lambda: "1"
+      # type=int|default=0: Regularisation weight for slice-to-vol movement (reasonable range 1-10)
+      slice2vol_interp: '"trilinear"'
+      # type=enum|default='trilinear'|allowed['spline','trilinear']: Slice-to-vol interpolation model for estimation step
+      slice_order: '"epi_slspec.txt"'
+      # type=file|default='': Name of text file completely specifying slice/group acquisition
+    imports:
+    # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+    # consisting of 'module', 'name', and optionally 'alias' keys
+    directive:
+    # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -1,0 +1,175 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.utils.WarpUtils' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL `fnirtfileutils <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/fnirt/warp_utils.html>`_
+#     to convert field->coefficients, coefficients->field, coefficients->other_coefficients etc
+#
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import WarpUtils
+#     >>> warputils = WarpUtils()
+#     >>> warputils.inputs.in_file = "warpfield.nii"
+#     >>> warputils.inputs.reference = "T1.nii"
+#     >>> warputils.inputs.out_format = 'spline'
+#     >>> warputils.inputs.warp_resolution = (10,10,10)
+#     >>> warputils.inputs.output_type = "NIFTI_GZ"
+#     >>> warputils.cmdline # doctest: +ELLIPSIS
+#     'fnirtfileutils --in=warpfield.nii --outformat=spline --ref=T1.nii --warpres=10.0000,10.0000,10.0000 --out=warpfield_coeffs.nii.gz'
+#     >>> res = invwarp.run() # doctest: +SKIP
+#
+#
+#
+task_name: WarpUtils
+nipype_name: WarpUtils
+nipype_module: nipype.interfaces.fsl.utils
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    out_file: Path
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file. The format of the output depends on what other parameters are set. The default format is a (4D) field-file. If the --outformat is set to spline the format will be a (4D) file of spline coefficients.
+    out_jacobian: Path
+    # type=file: Name of output file, containing the map of the determinant of the Jacobian
+    # type=file|default=<undefined>: Specifies that a (3D) file of Jacobian determinants corresponding to --in should be produced and written to filename.
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: generic/file
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file. The format of the output depends on what other parameters are set. The default format is a (4D) field-file. If the --outformat is set to spline the format will be a (4D) file of spline coefficients.
+    out_jacobian: generic/file
+    # type=file: Name of output file, containing the map of the determinant of the Jacobian
+    # type=file|default=<undefined>: Specifies that a (3D) file of Jacobian determinants corresponding to --in should be produced and written to filename.
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    out_format:
+    # type=enum|default='spline'|allowed['field','spline']: Specifies the output format. If set to field (default) the output will be a (4D) field-file. If set to spline the format will be a (4D) file of spline coefficients.
+    warp_resolution:
+    # type=tuple|default=(0.0, 0.0, 0.0): Specifies the resolution/knot-spacing of the splines pertaining to the coefficients in the --out file. This parameter is only relevant if --outformat is set to spline. It should be noted that if the --in file has a higher resolution, the resulting coefficients will pertain to the closest (in a least-squares sense) file in the space of fields with the --warpres resolution. It should also be noted that the resolution will always be an integer multiple of the voxel size.
+    knot_space:
+    # type=tuple|default=(0, 0, 0): Alternative (to --warpres) specification of the resolution of the output spline-field.
+    out_file:
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file. The format of the output depends on what other parameters are set. The default format is a (4D) field-file. If the --outformat is set to spline the format will be a (4D) file of spline coefficients.
+    write_jacobian:
+    # type=bool|default=False: Switch on --jac flag with automatically generated filename
+    out_jacobian:
+    # type=file: Name of output file, containing the map of the determinant of the Jacobian
+    # type=file|default=<undefined>: Specifies that a (3D) file of Jacobian determinants corresponding to --in should be produced and written to filename.
+    with_affine:
+    # type=bool|default=False: Specifies that the affine transform (i.e. that which was specified for the --aff parameter in fnirt) should be included as displacements in the --out file. That can be useful for interfacing with software that cannot decode FSL/fnirt coefficient-files (where the affine transform is stored separately from the displacements).
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    out_format: '"spline"'
+    # type=enum|default='spline'|allowed['field','spline']: Specifies the output format. If set to field (default) the output will be a (4D) field-file. If set to spline the format will be a (4D) file of spline coefficients.
+    warp_resolution: (10,10,10)
+    # type=tuple|default=(0.0, 0.0, 0.0): Specifies the resolution/knot-spacing of the splines pertaining to the coefficients in the --out file. This parameter is only relevant if --outformat is set to spline. It should be noted that if the --in file has a higher resolution, the resulting coefficients will pertain to the closest (in a least-squares sense) file in the space of fields with the --warpres resolution. It should also be noted that the resolution will always be an integer multiple of the voxel size.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: fnirtfileutils --in=warpfield.nii --outformat=spline --ref=T1.nii --warpres=10.0000,10.0000,10.0000 --out=warpfield_coeffs.nii.gz
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"warpfield.nii"'
+    # type=file|default=<undefined>: Name of file containing warp-coefficients/fields. This would typically be the output from the --cout switch of fnirt (but can also use fields, like the output from --fout).
+    reference: '"T1.nii"'
+    # type=file|default=<undefined>: Name of a file in target space. Note that the target space is now different from the target space that was used to create the --warp file. It would typically be the file that was specified with the --in argument when running fnirt.
+    out_format: '"spline"'
+    # type=enum|default='spline'|allowed['field','spline']: Specifies the output format. If set to field (default) the output will be a (4D) field-file. If set to spline the format will be a (4D) file of spline coefficients.
+    warp_resolution: (10,10,10)
+    # type=tuple|default=(0.0, 0.0, 0.0): Specifies the resolution/knot-spacing of the splines pertaining to the coefficients in the --out file. This parameter is only relevant if --outformat is set to spline. It should be noted that if the --in file has a higher resolution, the resulting coefficients will pertain to the closest (in a least-squares sense) file in the space of fields with the --warpres resolution. It should also be noted that the resolution will always be an integer multiple of the voxel size.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

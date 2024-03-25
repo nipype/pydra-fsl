@@ -1,0 +1,157 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.utils.MotionOutliers' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+#
+#     Use FSL fsl_motion_outliers`http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSLMotionOutliers`_ to find outliers in timeseries (4d) data.
+#     Examples
+#     --------
+#     >>> from nipype.interfaces.fsl import MotionOutliers
+#     >>> mo = MotionOutliers()
+#     >>> mo.inputs.in_file = "epi.nii"
+#     >>> mo.cmdline # doctest: +ELLIPSIS
+#     'fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt'
+#     >>> res = mo.run() # doctest: +SKIP
+#
+task_name: MotionOutliers
+nipype_name: MotionOutliers
+nipype_module: nipype.interfaces.fsl.utils
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    in_file: medimage/nifti1
+    # type=file|default=<undefined>: unfiltered 4D image
+    mask: generic/file
+    # type=file|default=<undefined>: mask image for calculating metric
+    out_file: Path
+    # type=file:
+    # type=file|default=<undefined>: output outlier file name
+    out_metric_plot: Path
+    # type=file:
+    # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
+    out_metric_values: Path
+    # type=file:
+    # type=file|default=<undefined>: output metric values (DVARS etc.) file name
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: generic/file
+    # type=file:
+    # type=file|default=<undefined>: output outlier file name
+    out_metric_plot: generic/file
+    # type=file:
+    # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
+    out_metric_values: generic/file
+    # type=file:
+    # type=file|default=<undefined>: output metric values (DVARS etc.) file name
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: unfiltered 4D image
+    out_file:
+    # type=file:
+    # type=file|default=<undefined>: output outlier file name
+    mask:
+    # type=file|default=<undefined>: mask image for calculating metric
+    metric:
+    # type=enum|default='refrms'|allowed['dvars','fd','fdrms','refmse','refrms']: metrics: refrms - RMS intensity difference to reference volume as metric [default metric], refmse - Mean Square Error version of refrms (used in original version of fsl_motion_outliers), dvars - DVARS, fd - frame displacement, fdrms - FD with RMS matrix calculation
+    threshold:
+    # type=float|default=0.0: specify absolute threshold value (otherwise use box-plot cutoff = P75 + 1.5*IQR)
+    no_motion_correction:
+    # type=bool|default=False: do not run motion correction (assumed already done)
+    dummy:
+    # type=int|default=0: number of dummy scans to delete (before running anything and creating EVs)
+    out_metric_values:
+    # type=file:
+    # type=file|default=<undefined>: output metric values (DVARS etc.) file name
+    out_metric_plot:
+    # type=file:
+    # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    in_file:
+    # type=file|default=<undefined>: unfiltered 4D image
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    in_file: '"epi.nii"'
+    # type=file|default=<undefined>: unfiltered 4D image
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

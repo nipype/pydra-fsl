@@ -1,0 +1,187 @@
+# This file is used to manually specify the semi-automatic conversion of
+# 'nipype.interfaces.fsl.utils.ConvertWarp' from Nipype to Pydra.
+#
+# Please fill-in/edit the fields below where appropriate
+#
+# Docs
+# ----
+# Use FSL `convertwarp <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/fnirt/warp_utils.html>`_
+#     for combining multiple transforms into one.
+#
+#
+#     Examples
+#     --------
+#
+#     >>> from nipype.interfaces.fsl import ConvertWarp
+#     >>> warputils = ConvertWarp()
+#     >>> warputils.inputs.warp1 = "warpfield.nii"
+#     >>> warputils.inputs.reference = "T1.nii"
+#     >>> warputils.inputs.relwarp = True
+#     >>> warputils.inputs.output_type = "NIFTI_GZ"
+#     >>> warputils.cmdline # doctest: +ELLIPSIS
+#     'convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz'
+#     >>> res = warputils.run() # doctest: +SKIP
+#
+#
+#
+task_name: ConvertWarp
+nipype_name: ConvertWarp
+nipype_module: nipype.interfaces.fsl.utils
+inputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    midmat: generic/file
+    # type=file|default=<undefined>: Name of file containing mid-warp-affine transform
+    out_file: Path
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
+    postmat: generic/file
+    # type=file|default=<undefined>: Name of file containing an affine transform (applied last). It could e.g. be an affine transform that maps the MNI152-space into a better approximation to the Talairach-space (if indeed there is one).
+    premat: generic/file
+    # type=file|default=<undefined>: filename for pre-transform (affine matrix)
+    reference: medimage/nifti1
+    # type=file|default=<undefined>: Name of a file in target space of the full transform.
+    shift_in_file: generic/file
+    # type=file|default=<undefined>: Name of file containing a "shiftmap", a non-linear transform with displacements only in one direction (applied first, before premat). This would typically be a fieldmap that has been pre-processed using fugue that maps a subjects functional (EPI) data onto an undistorted space (i.e. a space that corresponds to his/her true anatomy).
+    warp1: medimage/nifti1
+    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
+    warp2: generic/file
+    # type=file|default=<undefined>: Name of file containing secondary warp-fields/coefficients (after warp1/midmat but before postmat). This could e.g. be a fnirt-transform from the average of a group of subjects to some standard space (e.g. MNI152).
+  callable_defaults:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set as the `default` method of input fields
+  metadata:
+  # dict[str, dict[str, any]] - additional metadata to set on any of the input fields (e.g. out_file: position: 1)
+outputs:
+  omit:
+  # list[str] - fields to omit from the Pydra interface
+  rename:
+  # dict[str, str] - fields to rename in the Pydra interface
+  types:
+  # dict[str, type] - override inferred types (use "mime-like" string for file-format types,
+  # e.g. 'medimage/nifti-gz'). For most fields the type will be correctly inferred
+  # from the nipype interface, but you may want to be more specific, particularly
+  # for file types, where specifying the format also specifies the file that will be
+  # passed to the field in the automatically generated unittests.
+    out_file: generic/file
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
+  callables:
+  # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
+  # to set to the `callable` attribute of output fields
+  templates:
+  # dict[str, str] - `output_file_template` values to be provided to output fields
+  requirements:
+  # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
+tests:
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space of the full transform.
+    out_file:
+    # type=file: Name of output file, containing the warp as field or coefficients.
+    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
+    premat:
+    # type=file|default=<undefined>: filename for pre-transform (affine matrix)
+    warp1:
+    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
+    midmat:
+    # type=file|default=<undefined>: Name of file containing mid-warp-affine transform
+    warp2:
+    # type=file|default=<undefined>: Name of file containing secondary warp-fields/coefficients (after warp1/midmat but before postmat). This could e.g. be a fnirt-transform from the average of a group of subjects to some standard space (e.g. MNI152).
+    postmat:
+    # type=file|default=<undefined>: Name of file containing an affine transform (applied last). It could e.g. be an affine transform that maps the MNI152-space into a better approximation to the Talairach-space (if indeed there is one).
+    shift_in_file:
+    # type=file|default=<undefined>: Name of file containing a "shiftmap", a non-linear transform with displacements only in one direction (applied first, before premat). This would typically be a fieldmap that has been pre-processed using fugue that maps a subjects functional (EPI) data onto an undistorted space (i.e. a space that corresponds to his/her true anatomy).
+    shift_direction:
+    # type=enum|default='y-'|allowed['x','x-','y','y-','z','z-']: Indicates the direction that the distortions from --shiftmap goes. It depends on the direction and polarity of the phase-encoding in the EPI sequence.
+    cons_jacobian:
+    # type=bool|default=False: Constrain the Jacobian of the warpfield to lie within specified min/max limits.
+    jacobian_min:
+    # type=float|default=0.0: Minimum acceptable Jacobian value for constraint (default 0.01)
+    jacobian_max:
+    # type=float|default=0.0: Maximum acceptable Jacobian value for constraint (default 100.0)
+    abswarp:
+    # type=bool|default=False: If set it indicates that the warps in --warp1 and --warp2 should be interpreted as absolute. I.e. the values in --warp1/2 are the coordinates in the next space, rather than displacements. This flag is ignored if --warp1/2 was created by fnirt, which always creates relative displacements.
+    relwarp:
+    # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
+    out_abswarp:
+    # type=bool|default=False: If set it indicates that the warps in --out should be absolute, i.e. the values in --out are displacements from the coordinates in --ref.
+    out_relwarp:
+    # type=bool|default=False: If set it indicates that the warps in --out should be relative, i.e. the values in --out are displacements from the coordinates in --ref.
+    output_type:
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    args:
+    # type=str|default='': Additional parameters to the command
+    environ:
+    # type=dict|default={}: Environment variables
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+- inputs:
+  # dict[str, str] - values to provide to inputs fields in the task initialisation
+  # (if not specified, will try to choose a sensible value)
+    warp1:
+    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
+    reference:
+    # type=file|default=<undefined>: Name of a file in target space of the full transform.
+    relwarp: 'True'
+    # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  expected_outputs:
+  # dict[str, str] - expected values for selected outputs, noting that tests will typically
+  # be terminated before they complete for time-saving reasons, and therefore
+  # these values will be ignored, when running in CI
+  timeout: 10
+  # int - the value to set for the timeout in the generated test,
+  # after which the test will be considered to have been initialised
+  # successfully. Set to 0 to disable the timeout (warning, this could
+  # lead to the unittests taking a very long time to complete)
+  xfail: true
+  # bool - whether the unittest is expected to fail or not. Set to false
+  # when you are satisfied with the edits you have made to this file
+doctests:
+- cmdline: convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz
+  # str - the expected cmdline output
+  inputs:
+  # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
+  # If the field is of file-format type and the value is None, then the
+  # '.mock()' method of the corresponding class is used instead.
+    warp1: '"warpfield.nii"'
+    # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
+    reference: '"T1.nii"'
+    # type=file|default=<undefined>: Name of a file in target space of the full transform.
+    relwarp: 'True'
+    # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
+    output_type: '"NIFTI_GZ"'
+    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+  imports:
+  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # consisting of 'module', 'name', and optionally 'alias' keys
+  directive:
+  # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
