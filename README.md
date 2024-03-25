@@ -3,6 +3,7 @@
 [![PyPI - Version][pypi-version]][pypi-project]
 [![PyPI - Python Version][pypi-pyversions]][pypi-project]
 [![PyPI - Downloads][pypi-downloads]][pypi-project]
+![][status-docs]
 ![][status-test]
 
 ----
@@ -78,6 +79,8 @@ This project is distributed under the terms of the [Apache License, Version 2.0]
 [pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-fsl.svg
 
 [pypi-downloads]: https://static.pepy.tech/badge/pydra-fsl
+
+[status-docs]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/docs.yaml/badge.svg
 
 [status-test]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/test.yaml/badge.svg
 
