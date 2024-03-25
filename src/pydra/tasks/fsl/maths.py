@@ -18,9 +18,13 @@ Multiply input image with a binary mask:
 >>> task = Mul(input_image="input.nii", other_image="mask.nii", output_image="output.nii")
 >>> task.cmdline
 'fslmaths input.nii -mul mask.nii output.nii'
+
+>>> task = Threshold(input_image="input.nii", threshold=0.3, output_image="output.nii")
+>>> task.cmdline
+'fslmaths input.nii -thr 0.3 output.nii'
 """
 
-__all__ = ["Maths", "MathsSpec", "Mul"]
+__all__ = ["Maths", "MathsSpec", "Mul", "Threshold"]
 
 from os import PathLike
 
@@ -78,6 +82,21 @@ class Mul(Maths):
     """Task definition for fslmaths' mul."""
 
     input_spec = SpecInfo(name="Input", bases=(MulSpec,))
+
+
+@define(kw_only=True)
+class ThresholdSpec(MathsSpec):
+    """Specifications for fslmaths' threshold."""
+
+    threshold: float = field(
+        metadata={"help_string": "value for thresholding the image", "mandatory": True, "argstr": "-thr"}
+    )
+
+
+class Threshold(Maths):
+    """Task definition for fslmaths' threshold."""
+
+    input_spec = SpecInfo(name="Input", bases=(ThresholdSpec,))
 
 
 # TODO: Drop compatibility alias for 0.x
