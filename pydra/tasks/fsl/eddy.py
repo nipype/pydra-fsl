@@ -95,6 +95,13 @@ class EddySpec(pydra.specs.ShellSpec):
         }
     )
 
+    no_peas: bool = attrs.field(
+        metadata={
+            "help_string": "do not perform post-Eddy alignment of shells",
+            "argstr": "--dont_peas",
+        }
+    )
+
     # Parameters specifying names of output-files.
     output_basename: str = attrs.field(
         default="eddy",
