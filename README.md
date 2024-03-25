@@ -14,6 +14,21 @@ construction, manipulation, and distributed execution.
 [FSL][fsl] is a comprehensive library of analysis tools
 for FMRI, MRI and DTI brain imaging data.
 
+## Available interfaces
+
+- bet
+    - bet
+    - robustfov
+- flirt
+    - convert_xfm
+    - flirt
+- fnirt
+    - fnirt
+- utils
+    - fslmerge
+    - fslreorient2std
+    - fslroi
+
 ## Installation
 
 ```console
@@ -45,9 +60,15 @@ hatch run lint:fix
 `pydra-tasks-fsl` is distributed under the terms of the [Apache License 2.0][license] license.
 
 [pypi-project]: https://pypi.org/project/pydra-tasks-fsl
+
 [pypi-version]: https://img.shields.io/pypi/v/pydra-tasks-fsl.svg
+
 [pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-tasks-fsl.svg
+
 [pydra]: https://pydra.readthedocs.io/
+
 [fsl]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSL
+
 [hatch]: https://hatch.pypa.io/
+
 [license]: https://spdx.org/licenses/Apache-2.0.html
