@@ -170,9 +170,9 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
     if os.path.exists(out_shell_alignment_parameters):
         outputs["out_shell_alignment_parameters"] = out_shell_alignment_parameters
     if os.path.exists(out_shell_pe_translation_parameters):
-        outputs[
-            "out_shell_pe_translation_parameters"
-        ] = out_shell_pe_translation_parameters
+        outputs["out_shell_pe_translation_parameters"] = (
+            out_shell_pe_translation_parameters
+        )
     if os.path.exists(out_outlier_map):
         outputs["out_outlier_map"] = out_outlier_map
     if os.path.exists(out_outlier_n_stdev_map):
