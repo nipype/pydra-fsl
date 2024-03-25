@@ -13,8 +13,9 @@ Register two images together:
 ...     reference_image="template.nii",
 ...     input_image="input.nii",
 ... )
->>> task.cmdline
-'fnirt --ref template.nii --in input.nii'
+>>> task.cmdline  # doctest: +ELLIPSIS
+'fnirt --ref template.nii --in input.nii --cout .../input_fnirt_coeff \
+--iout .../input_fnirt.nii --fout .../input_fnirt_field.nii'
 """
 
 __all__ = ["FNIRT"]
