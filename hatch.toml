@@ -8,7 +8,7 @@ dependencies = [
   "pytest-cov",
 ]
 [envs.default.scripts]
-cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=pydra --cov=tests {args}"
+cov = "pytest --cov-report=term-missing --cov-config=pyproject.toml --cov=pydra {args}"
 no-cov = "cov --no-cov {args}"
 
 [[envs.test.matrix]]
