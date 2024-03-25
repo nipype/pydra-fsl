@@ -30,7 +30,7 @@ for FMRI, MRI and DTI brain imaging data.
 | bet      | BET, RobustFOV                                                                                                                                                      |
 | eddy     | Eddy                                                                                                                                                                |
 | fast     | FAST                                                                                                                                                                |
-| flirt    | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                                                         |
+| flirt    | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, FixScaleSkew, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                                           |
 | fnirt    | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                                                                              |
 | fugue    | FUGUE, FSLPrepareFieldmap, Prelude, SigLoss                                                                                                                         |
 | fslmaths | (**experimental**) FSLMaths, Mul                                                                                                                                    |
