@@ -32,7 +32,7 @@ for FMRI, MRI and DTI brain imaging data.
 | fast   | FAST                                                                                                                                                     |
 | flirt  | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                                              |
 | fnirt  | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                                                                   |
-| fugue  | FUGUE, Prelude, SigLoss                                                                                                                                  |
+| fugue  | FUGUE, FSLPrepareFieldmap, Prelude, SigLoss                                                                                                              |
 | susan  | SUSAN                                                                                                                                                    |
 | utils  | fslmaths, FSLFFT, FSLROI, FSLChFileType, FSLInfo, FSLInterleave, FSLMerge, FSLReorient2Std, FSLSelectVols, FSLSlice, FSLSmoothFill, FSLSplit, FSLSwapDim |
 
