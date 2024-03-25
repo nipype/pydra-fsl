@@ -67,7 +67,10 @@ class FLIRTSpec(pydra.specs.ShellSpec):
     )
 
     input_transformation: os.PathLike = attrs.field(
-        metadata={"help_string": "input transformation as 4x4 matrix", "argstr": "-init"}
+        metadata={
+            "help_string": "input transformation as 4x4 matrix",
+            "argstr": "-init",
+        }
     )
 
     output_transformation: os.PathLike = attrs.field(
