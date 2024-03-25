@@ -22,18 +22,6 @@ Register two images together:
 'flirt -in invol -ref refvol -out outvol -omat invol2refvol.mat -cost mutualinfo \
 -interp trilinear -dof 6'
 
-Apply a saved transformation to another image:
-
->>> task = FLIRT(
-...     input_image="newvol",
-...     reference_image="refvol",
-...     input_matrix="invol2refvol.mat",
-...     apply_transformation=True,
-... )
->>> task.cmdline
-'flirt -in newvol -ref refvol -out ...newvol_flirt -init invol2refvol.mat \
--omat ...newvol_flirt.mat -cost corratio -interp trilinear -applyxfm'
-
 Perform a single slice registration:
 
 >>> task = FLIRT(
@@ -146,14 +134,6 @@ class FLIRTSpec(pydra.specs.ShellSpec):
             "argstr": "-dof",
             "allowed_values": {3, 6, 7, 9, 12},
             "xor": {"use_2d_registration"},
-        }
-    )
-
-    apply_transformation: bool = attrs.field(
-        metadata={
-            "help_string": "apply transformation without optimization",
-            "argstr": "-applyxfm",
-            "requires": {"input_matrix"},
         }
     )
 
