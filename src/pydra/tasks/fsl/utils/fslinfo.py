@@ -93,7 +93,7 @@ class FSLInfoOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    pixedim4: float = attrs.field(
+    pixdim4: float = attrs.field(
         metadata={
             "help_string": "pixel spacing in 4th dimension",
             "callable": lambda stdout: float(re.search(r"pixdim4\s*(.*)", stdout).group(1)),
