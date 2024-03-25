@@ -117,6 +117,14 @@ class BaseSpec(pydra.specs.ShellSpec):
 class FLIRTSpec(BaseSpec):
     """Specifications for FLIRT."""
 
+    input_weights: os.PathLike = attrs.field(
+        metadata={"help_string": "voxel-wise weighting for input image", "argstr": "-inweight"}
+    )
+
+    reference_weights: os.PathLike = attrs.field(
+        metadata={"help_string": "voxel-wise weighting for reference image", "argstr": "-refweight"}
+    )
+
     input_matrix: os.PathLike = attrs.field(
         metadata={
             "help_string": "input transformation matrix",
