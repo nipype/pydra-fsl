@@ -26,38 +26,28 @@ Apply mask to input image:
 
 __all__ = ["FSLMaths", "Mul"]
 
-import os
+from os import PathLike
 
-import attrs
+from attrs import define, field
+from pydra.engine.specs import ShellSpec, SpecInfo
+from pydra.engine.task import ShellCommandTask
 
-import pydra
 
-
-@attrs.define(slots=False, kw_only=True)
-class FSLMathsSpec(pydra.specs.ShellSpec):
+@define(slots=False, kw_only=True)
+class FSLMathsSpec(ShellSpec):
     """Specifications for fslmaths."""
 
-    _ALLOWED_DATATYPES = {"char", "short", "int", "float", "double", "input"}
+    _datatypes = {"char", "short", "int", "float", "double", "input"}
 
-    datatype: str = attrs.field(
-        metadata={
-            "help_string": "datatype used for internal computation",
-            "argstr": "-dt",
-            "position": 1,
-            "allowed_values": _ALLOWED_DATATYPES,
-        }
+    internal_datatype: str = field(
+        metadata={"help_string": "internal datatype", "argstr": "-dt", "position": 1, "allowed_values": _datatypes}
     )
 
-    input_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input image",
-            "mandatory": True,
-            "argstr": "",
-            "position": 2,
-        }
+    input_image: PathLike = field(
+        metadata={"help_string": "input image", "mandatory": True, "argstr": "", "position": 2}
     )
 
-    output_image: str = attrs.field(
+    output_image: str = field(
         metadata={
             "help_string": "output image",
             "argstr": "",
@@ -66,38 +56,30 @@ class FSLMathsSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_datatype: str = attrs.field(
+    output_datatype: str = field(
         default="float",
-        metadata={
-            "help_string": "datatype used for output serialization",
-            "argstr": "-odt",
-            "position": -1,
-            "allowed_values": _ALLOWED_DATATYPES,
-        },
+        metadata={"help_string": "output datatype", "argstr": "-odt", "position": -1, "allowed_values": _datatypes},
     )
 
 
-class FSLMaths(pydra.engine.ShellCommandTask):
+class FSLMaths(ShellCommandTask):
     """Task definition for fslmaths."""
 
     executable = "fslmaths"
 
-    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLMathsSpec,))
+    input_spec = SpecInfo(name="Inputs", bases=(FSLMathsSpec,))
 
 
-@attrs.define(slots=False, kw_only=True)
-class MulSpec(pydra.specs.ShellSpec):
+@define(kw_only=True)
+class MulSpec(FSLMathsSpec):
     """Specifications for fslmaths' mul."""
 
-    other_image: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "multiply input with other image",
-            "argstr": "-mul",
-        }
+    other_image: PathLike = field(
+        metadata={"help_string": "multiply input with other image", "mandatory": True, "argstr": "-mul"}
     )
 
 
 class Mul(FSLMaths):
     """Task definition for fslmaths' mul."""
 
-    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLMathsSpec, MulSpec))
+    input_spec = SpecInfo(name="Inputs", bases=(MulSpec,))
