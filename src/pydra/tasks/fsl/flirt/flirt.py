@@ -40,7 +40,7 @@ Apply a transformation:
 ...     input_image="invol.nii",
 ...     output_image="outvol.nii",
 ...     reference_image="refvol.nii",
-...     input_matrix="affine.mat",
+...     initial_matrix="affine.mat",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
 'flirt -in invol.nii -ref refvol.nii -out outvol.nii -init affine.mat -applyxfm ...'
@@ -51,7 +51,7 @@ Apply a trasnformation and force isotropic resampling to 1 mm:
 ...     input_image="invol.nii",
 ...     output_image="outvol.nii",
 ...     reference_image="refvol.nii",
-...     input_matrix="affine.mat",
+...     initial_matrix="affine.mat",
 ...     isotropic_resolution=1,
 ...     padding_size=5,
 ... )
@@ -103,7 +103,7 @@ class FLIRTSpec(BaseSpec):
         metadata={"help_string": "voxel-wise weighting for reference image", "argstr": "-refweight"}
     )
 
-    input_matrix: PathLike = field(metadata={"help_string": "input transformation matrix", "argstr": "-init"})
+    initial_matrix: PathLike = field(metadata={"help_string": "initial transformation matrix", "argstr": "-init"})
 
     output_matrix: str = field(
         metadata={
@@ -154,8 +154,8 @@ class FLIRT(ShellCommandTask):
 class ApplyXFMSpec(BaseSpec):
     """Specifications for ApplyXFM."""
 
-    input_matrix: PathLike = field(
-        metadata={"help_string": "input transformation matrix", "mandatory": True, "argstr": "-init"}
+    initial_matrix: PathLike = field(
+        metadata={"help_string": "initial transformation matrix", "mandatory": True, "argstr": "-init"}
     )
 
     isotropic_resolution: float = field(
