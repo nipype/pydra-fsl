@@ -26,17 +26,17 @@ for FMRI, MRI and DTI brain imaging data.
 
 ## Available tasks
 
-| Module   | Tasks                                                                                                                                                     |
-|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| bet      | BET, RobustFOV                                                                                                                                            |
-| eddy     | Eddy, ApplyTopup, Topup                                                                                                                                   |
-| fast     | FAST                                                                                                                                                      |
-| flirt    | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, FixScaleSkew, Img2ImgCoord, Img2StdCoord, Std2ImgCoord                                                 |
-| fnirt    | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                                                                    |
-| fugue    | FUGUE, FSLPrepareFieldmap, Prelude, SigLoss                                                                                                               |
-| fslmaths | (**experimental**) FSLMaths, Mul                                                                                                                          |
-| susan    | SUSAN                                                                                                                                                     |
-| utils    | FSLFFT, FSLROI, FSLChFileType, FSLInfo, FSLInterleave, FSLMerge, FSLOrient, FSLReorient2Std, FSLSelectVols, FSLSlice, FSLSmoothFill, FSLSplit, FSLSwapDim |
+| Module   | Tasks                                                                                                              |
+|----------|--------------------------------------------------------------------------------------------------------------------|
+| bet      | BET, RobustFOV                                                                                                     |
+| eddy     | Eddy, ApplyTopup, Topup                                                                                            |
+| fast     | FAST                                                                                                               |
+| flirt    | FLIRT, ApplyXFM, ConcatXFM, ConvertXFM, InvertXFM, FixScaleSkew, Img2ImgCoord, Img2StdCoord, Std2ImgCoord          |
+| fnirt    | FNIRT, FNIRTFileUtils, ApplyWarp, ConvertWarp, InvWarp                                                             |
+| fugue    | FUGUE, FSLPrepareFieldmap, Prelude, SigLoss                                                                        |
+| fslmaths | (**experimental**) FSLMaths, Mul                                                                                   |
+| susan    | SUSAN                                                                                                              |
+| utils    | ChFileType, FFT, Info, Interleave, Merge, Orient, Reorient2Std, ROI, SelectVols, Slice, SmoothFill, Split, SwapDim |
 
 ## Installation
 

@@ -36,17 +36,32 @@ from .fnirt import FNIRT, ApplyWarp, ConvertWarp, FNIRTFileUtils, InvWarp
 from .fugue import FUGUE, FSLPrepareFieldmap, Prelude, SigLoss
 from .susan import SUSAN
 from .utils import (
-    FSLFFT,
-    FSLROI,
-    FSLChFileType,
-    FSLInfo,
-    FSLInterleave,
-    FSLMerge,
-    FSLOrient,
-    FSLReorient2Std,
-    FSLSelectVols,
-    FSLSlice,
-    FSLSmoothFill,
-    FSLSplit,
-    FSLSwapDim,
+    FFT,
+    ROI,
+    ChFileType,
+    Info,
+    Interleave,
+    Merge,
+    Orient,
+    Reorient2Std,
+    SelectVols,
+    Slice,
+    SmoothFill,
+    Split,
+    SwapDim,
 )
+
+# TODO: Drop compatibility aliases when 0.x is released.
+FSLFFT = FFT
+FSLROI = ROI
+FSLChFileType = ChFileType
+FSLInfo = Info
+FSLInterleave = Interleave
+FSLMerge = Merge
+FSLOrient = Orient
+FSLReorient2Std = Reorient2Std
+FSLSelectVols = SelectVols
+FSLSlice = Slice
+FSLSmoothFill = SmoothFill
+FSLSplit = Split
+FSLSwapDim = SwapDim

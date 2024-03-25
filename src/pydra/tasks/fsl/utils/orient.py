@@ -1,6 +1,6 @@
 """
-FSLOrient
-=========
+Orient
+======
 
 Change the orientation of an image.
 
@@ -12,38 +12,38 @@ Examples
 
 Change orientation to radiological:
 
->>> task = FSLOrient(input_image=input_file.name, force_radiological=True)
+>>> task = Orient(input_image=input_file.name, force_radiological=True)
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslorient -forceradiological ...input.nii'
 
 Change orientation to neurological:
 
->>> task = FSLOrient(input_image=input_file.name, force_neurological=True)
+>>> task = Orient(input_image=input_file.name, force_neurological=True)
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslorient -forceneurological ...input.nii'
 
 Swap between radiological and neurological:
 
->>> task = FSLOrient(input_image=input_file.name, swap_orientation=True)
+>>> task = Orient(input_image=input_file.name, swap_orientation=True)
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslorient -swaporient ...input.nii'
 
 Delete orientation:
 
->>> task = FSLOrient(input_image=input_file.name, delete_orientation=True)
+>>> task = Orient(input_image=input_file.name, delete_orientation=True)
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslorient -deleteorient ...input.nii'
 """
 
-__all__ = ["FSLOrient"]
+__all__ = ["Orient"]
 
 from attrs import define, field
-from pydra.engine import ShellCommandTask
 from pydra.engine.specs import File, ShellOutSpec, ShellSpec, SpecInfo
+from pydra.engine.task import ShellCommandTask
 
 
-@define(slots=False, kw_only=True)
-class FSLOrientSpec(ShellSpec):
+@define(kw_only=True)
+class OrientSpec(ShellSpec):
     """Specifications for fslorient."""
 
     _xor = {"delete_orientation", "force_radiological", "force_neurological", "swap_orientation"}
@@ -69,18 +69,18 @@ class FSLOrientSpec(ShellSpec):
     )
 
 
-@define(slots=False, kw_only=True)
-class FSLOrientOutSpec(ShellOutSpec):
+@define(kw_only=True)
+class OrientOutSpec(ShellOutSpec):
     """Output specifications for fslorient."""
 
     output_image: File = field(metadata={"help_string": "output image", "output_file_template": "{input_image}"})
 
 
-class FSLOrient(ShellCommandTask):
+class Orient(ShellCommandTask):
     """Task definition for fslorient."""
 
     executable = "fslorient"
 
-    input_spec = SpecInfo(name="Input", bases=(FSLOrientSpec,))
+    input_spec = SpecInfo(name="Input", bases=(OrientSpec,))
 
-    output_spec = SpecInfo(name="Output", bases=(FSLOrientOutSpec,))
+    output_spec = SpecInfo(name="Output", bases=(OrientOutSpec,))

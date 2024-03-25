@@ -1,6 +1,6 @@
 """
-FSLReorient2Std
-===============
+Reorient2Std
+============
 
 Change orientation of the image to match the one used
 for standard template images (MNI152).
@@ -8,25 +8,25 @@ for standard template images (MNI152).
 Examples
 --------
 
->>> task = FSLReorient2Std(input_image="image.nii")
+>>> task = Reorient2Std(input_image="image.nii")
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslreorient2std -m ...image_r2std.mat image.nii ...image_r2std.nii'
 """
 
-__all__ = ["FSLReorient2Std"]
+__all__ = ["Reorient2Std"]
 
-import os
+from os import PathLike
 
-import attrs
+from attrs import define, field
+from pydra.engine.specs import ShellSpec, SpecInfo
+from pydra.engine.task import ShellCommandTask
 
-import pydra
 
-
-@attrs.define(slots=False, kw_only=True)
-class FSLReorient2StdSpec(pydra.specs.ShellSpec):
+@define(kw_only=True)
+class Reorient2StdSpec(ShellSpec):
     """Specifications for fslreorient2std."""
 
-    input_image: os.PathLike = attrs.field(
+    input_image: PathLike = field(
         metadata={
             "help_string": "input image",
             "mandatory": True,
@@ -35,7 +35,7 @@ class FSLReorient2StdSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_image: str = attrs.field(
+    output_image: str = field(
         metadata={
             "help_string": "output reoriented image",
             "argstr": "",
@@ -44,7 +44,7 @@ class FSLReorient2StdSpec(pydra.specs.ShellSpec):
         }
     )
 
-    output_matrix: str = attrs.field(
+    output_matrix: str = field(
         metadata={
             "help_string": "output transformation matrix",
             "argstr": "-m",
@@ -54,9 +54,9 @@ class FSLReorient2StdSpec(pydra.specs.ShellSpec):
     )
 
 
-class FSLReorient2Std(pydra.engine.ShellCommandTask):
+class Reorient2Std(ShellCommandTask):
     """Task definition for fslreorient2std."""
 
     executable = "fslreorient2std"
 
-    input_spec = pydra.specs.SpecInfo(name="Input", bases=(FSLReorient2StdSpec,))
+    input_spec = SpecInfo(name="Input", bases=(Reorient2StdSpec,))

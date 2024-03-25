@@ -1,15 +1,15 @@
 """
-FSLROI
-======
+ROI (Region-Of-Interest)
+========================
 
-Manual cropping to a region-of-interest (ROI) for structural brain images.
+Manual cropping to a region-of-interest for structural brain images.
 
 Examples
 --------
 
 Extract a 16-voxel cube starting at position (10, 20, 30):
 
->>> task = FSLROI(
+>>> task = ROI(
 ...     input_image="image.nii",
 ...     x_min=10,
 ...     x_size=16,
@@ -23,12 +23,12 @@ Extract a 16-voxel cube starting at position (10, 20, 30):
 
 Extract a temporal window starting at 5 onwards:
 
->>> task = FSLROI(input_image="input.nii", output_image="output.nii", t_min=5)
+>>> task = ROI(input_image="input.nii", output_image="output.nii", t_min=5)
 >>> task.cmdline
 'fslroi input.nii output.nii 5 -1'
 """
 
-__all__ = ["FSLROI"]
+__all__ = ["ROI"]
 
 from os import PathLike
 
@@ -38,7 +38,7 @@ from pydra.engine.task import ShellCommandTask
 
 
 @define(kw_only=True)
-class FSLROISpec(ShellSpec):
+class ROISpec(ShellSpec):
     """Specifications for fslroi."""
 
     _requires = {"x_min", "y_min", "z_min"}
@@ -78,9 +78,9 @@ class FSLROISpec(ShellSpec):
     t_size: int = field(default=-1, metadata={"help_string": "size of ROI in t (-1 for maximum)", "argstr": ""})
 
 
-class FSLROI(ShellCommandTask):
+class ROI(ShellCommandTask):
     """Task definition for fslroi."""
 
     executable = "fslroi"
 
-    input_spec = SpecInfo(name="Input", bases=(FSLROISpec,))
+    input_spec = SpecInfo(name="Input", bases=(ROISpec,))

@@ -2,29 +2,29 @@
 Utils
 =====
 
-.. automodule:: pydra.tasks.fsl.utils.fslchfiletype
-.. automodule:: pydra.tasks.fsl.utils.fslfft
-.. automodule:: pydra.tasks.fsl.utils.fslinfo
-.. automodule:: pydra.tasks.fsl.utils.fslinterleave
-.. automodule:: pydra.tasks.fsl.utils.fslmerge
-.. automodule:: pydra.tasks.fsl.utils.fslorient
-.. automodule:: pydra.tasks.fsl.utils.fslreorient2std
-.. automodule:: pydra.tasks.fsl.utils.fslroi
-.. automodule:: pydra.tasks.fsl.utils.fslselectvols
-.. automodule:: pydra.tasks.fsl.utils.fslsmoothfill
-.. automodule:: pydra.tasks.fsl.utils.fslsplit
-.. automodule:: pydra.tasks.fsl.utils.fslswapdim
+.. automodule:: pydra.tasks.fsl.utils.chfiletype
+.. automodule:: pydra.tasks.fsl.utils.fft
+.. automodule:: pydra.tasks.fsl.utils.info
+.. automodule:: pydra.tasks.fsl.utils.interleave
+.. automodule:: pydra.tasks.fsl.utils.merge
+.. automodule:: pydra.tasks.fsl.utils.orient
+.. automodule:: pydra.tasks.fsl.utils.reorient2std
+.. automodule:: pydra.tasks.fsl.utils.roi
+.. automodule:: pydra.tasks.fsl.utils.selectvols
+.. automodule:: pydra.tasks.fsl.utils.smoothfill
+.. automodule:: pydra.tasks.fsl.utils.split
+.. automodule:: pydra.tasks.fsl.utils.swapdim
 """
 
-from .fslchfiletype import FSLChFileType
-from .fslfft import FSLFFT
-from .fslinfo import FSLInfo
-from .fslinterleave import FSLInterleave
-from .fslmerge import FSLMerge
-from .fslorient import FSLOrient
-from .fslreorient2std import FSLReorient2Std
-from .fslroi import FSLROI
-from .fslselectvols import FSLSelectVols
-from .fslsmoothfill import FSLSmoothFill
-from .fslsplit import FSLSlice, FSLSplit
-from .fslswapdim import FSLSwapDim
+from .chfiletype import ChFileType
+from .fft import FFT
+from .info import Info
+from .interleave import Interleave
+from .merge import Merge
+from .orient import Orient
+from .reorient2std import Reorient2Std
+from .roi import ROI
+from .selectvols import SelectVols
+from .smoothfill import SmoothFill
+from .split import Slice, Split
+from .swapdim import SwapDim
