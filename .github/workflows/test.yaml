@@ -7,7 +7,7 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
-permission:
+permissions:
   content: read
 
 jobs:
