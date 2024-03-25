@@ -36,22 +36,22 @@ class BETSpec:
         }
     )
 
-    generate_brain_surface_outline: bool = attrs.field(
-        metadata={"help_string": "generate brain surface outline", "argstr": "-o"}
+    save_brain_surface_outline: bool = attrs.field(
+        metadata={"help_string": "save brain surface outline", "argstr": "-o"}
     )
 
-    generate_brain_mask: bool = attrs.field(
-        metadata={"help_string": "generate binary brain mask", "argstr": "-m"}
+    save_brain_mask: bool = attrs.field(
+        metadata={"help_string": "save binary brain mask", "argstr": "-m"}
     )
 
-    generate_skull_image: bool = attrs.field(
-        metadata={"help_string": "generate approximate skull image", "argstr": "-s"}
+    save_skull_image: bool = attrs.field(
+        metadata={"help_string": "save approximate skull image", "argstr": "-s"}
     )
 
-    no_segmented_brain_image: bool = attrs.field(
+    save_brain_surface_mesh: bool = attrs.field(
         metadata={
-            "help_string": "do not generate the segmented brain image",
-            "argstr": "-n",
+            "help_string": "save brain surface as mesh in .vtk format",
+            "argstr": "-e",
         }
     )
 
@@ -101,10 +101,41 @@ class BETSpec:
         }
     )
 
-    generate_brain_surface_mesh: bool = attrs.field(
+
+@attrs.define(slots=False, kw_only=True)
+class BETOutSpec(pydra.specs.ShellOutSpec):
+    """Output specifications for BET."""
+
+    brain_surface_outline: str = attrs.field(
         metadata={
-            "help_string": "generate brain surface as mesh in .vtk format",
-            "argstr": "-e",
+            "help_string": "brain surface outline",
+            "output_file_template": "{output_image}_overlay",
+            "requires": {"save_brain_surface_outline"},
+        }
+    )
+
+    brain_mask: str = attrs.field(
+        metadata={
+            "help_string": "brain mask",
+            "output_file_template": "{output_image}_mask",
+            "requires": {"save_brain_mask"},
+        }
+    )
+
+    skull_image: str = attrs.field(
+        metadata={
+            "help_string": "skull image",
+            "output_file_template": "{output_image}_skull",
+            "requires": {"save_skull_image"},
+        }
+    )
+
+    brain_surface_mesh: str = attrs.field(
+        metadata={
+            "help_string": "brain surface mesh",
+            "output_file_template": "{output_image}_mesh.vtk",
+            "keep_extension": False,
+            "requires": {"save_brain_surface_mesh"},
         }
     )
 
@@ -113,5 +144,7 @@ class BET:
     """Task definition for BET."""
 
     input_spec = pydra.specs.SpecInfo(name="BETInput", bases=(BETSpec,))
+
+    output_spec = pydra.specs.SpecInfo(name="BETOutput", bases=(BETOutSpec,))
 
     executable = "bet"
