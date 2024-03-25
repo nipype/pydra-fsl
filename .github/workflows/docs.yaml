@@ -1,0 +1,58 @@
+name: docs
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - name: Install Hatch
+        run: pipx install hatch
+      - name: Build documentation
+        run: hatch run docs:build
+      - name: Upload documentation
+        uses: actions/upload-artifact@v3
+        with:
+          name: docs
+          path: 'docs/_build/html'
+          retention-days: 1
+
+  deploy:
+    needs: build
+    if: contains('refs/heads/main', github.ref)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download documentation
+        uses: actions/download-artifact@v3
+        with:
+          name: docs
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: '.'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
