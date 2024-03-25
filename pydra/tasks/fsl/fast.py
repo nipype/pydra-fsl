@@ -124,6 +124,7 @@ class FASTSpec(pydra.specs.ShellSpec):
     )
 
 
+@attrs.define(slots=False, kw_only=True)       
 class FASTOutSpec(pydra.specs.ShellOutSpec):
     """Ouput specifications for FAST."""
 
