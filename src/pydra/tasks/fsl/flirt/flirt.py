@@ -1,8 +1,8 @@
 """
-FMRIB's Linear Image Registration Tool (FLIRT)
-==============================================
+FLIRT
+=====
 
-FLIRT  is a robust and accurate tool
+FLIRT (FMRIB's Linear Image Registration Tool) is a robust and accurate tool
 for affine registration of intra- and inter-modal brain images.
 
 Examples

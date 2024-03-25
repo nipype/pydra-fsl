@@ -1,8 +1,8 @@
 """
-FSL Non-linear Image Registration Tool (FNIRT)
-==============================================
+FNIRT
+=====
 
-FNIRT performs non-linear registration of brain images.
+FNIRT (FSL Non-linear Image Registration Tool) performs non-linear registration of brain images.
 
 Examples
 --------

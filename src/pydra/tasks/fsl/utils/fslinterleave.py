@@ -6,11 +6,13 @@ Examples
 --------
 
 Interleave images:
+
 >>> task = FSLInterleave(input_image="in1.nii", other_image="in2.nii")
 >>> task.cmdline  # doctest: +ELLIPSIS
 'fslinterleave in1.nii in2.nii .../in1_interleaved.nii'
 
 Interleave in reverse order:
+
 >>> task = FSLInterleave(
 ...     input_image="in1.nii",
 ...     other_image="in2.nii",

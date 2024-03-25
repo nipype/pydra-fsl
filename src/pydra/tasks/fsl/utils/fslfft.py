@@ -5,12 +5,14 @@ FSLFFT
 Examples
 --------
 
-Compute the forward FFT: 
+Compute the forward FFT:
+
 >>> task = FSLFFT(input_image="input.nii")
 >>> task.cmdline
 'fslfft input.nii .../input_fslfft.nii'
 
 Compute the inverse FFT:
+
 >>> task = FSLFFT(
 ...     input_image="input.nii",
 ...     output_image="output.nii",

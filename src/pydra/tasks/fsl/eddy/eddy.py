@@ -1,5 +1,5 @@
 """
-eddy
+Eddy
 ====
 
 Correct for artifacts induced by Eddy currents and subject motion.

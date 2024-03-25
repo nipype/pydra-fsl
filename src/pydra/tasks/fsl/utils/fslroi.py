@@ -8,6 +8,7 @@ Examples
 --------
 
 Extract a 16-voxel cube starting at position (10, 20, 30):
+
 >>> task = FSLROI(
 ...    input_image="image.nii",
 ...    min_x=10,
@@ -21,6 +22,7 @@ Extract a 16-voxel cube starting at position (10, 20, 30):
 'fslroi image.nii ...image_roi.nii 10 16 20 16 30 16'
 
 Extract a temporal window starting at 5 onwards:
+
 >>> task = FSLROI(
 ...     input_image="input.nii",
 ...     output_image="output.nii",

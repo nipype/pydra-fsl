@@ -2,6 +2,8 @@
 fslmaths
 ========
 
+Mathematical manipulation of images.
+
 Examples
 --------
 

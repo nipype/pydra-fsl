@@ -1,9 +1,8 @@
 """
-FMRIB's Automated Segmentation Tool (FAST)
-==========================================
+FAST
+====
 
-FAST performs automatic segmentation of 3D images of the brain
-using hidden Markov random field model and the expectation-maximization algorithm.
+Automatic segmentation of 3D images of the brain.
 """
 
 __all__ = ["FAST"]
