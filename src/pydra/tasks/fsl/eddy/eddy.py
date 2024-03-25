@@ -66,7 +66,7 @@ class EddySpec(ShellSpec):
 
     bval_file: PathLike = field(metadata={"help_string": "diffusion weighting", "mandatory": True, "argstr": "--bvals"})
 
-    fieldmap_image: PathLike = field(metadata={"help_string": "fieldmap image", "mandatory": True, "argstr": "--field"})
+    fieldmap_image: PathLike = field(metadata={"help_string": "fieldmap image", "argstr": "--field"})
 
     fieldmap_matrix: PathLike = field(
         metadata={
