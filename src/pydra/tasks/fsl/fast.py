@@ -28,12 +28,13 @@ class FASTSpec(pydra.specs.ShellSpec):
         }
     )
 
-    image_type: int = attrs.field(
-        default=1,
+    image_type: str = attrs.field(
+        default="T1",
         metadata={
-            "help_string": "type of input image(s) (1: T1, 2: T2, 3: PD)",
+            "help_string": "type of input image (T1, T2 or PD)",
             "argstr": "-t",
-            "allowed_values": {1, 2, 3},
+            "allowed_values": {"T1", "T2", "PD"},
+            "formatter": lambda image_type: "-t {:d}".format({"T1": 1, "T2": 2, "PD": 3}.get(image_type)),
         },
     )
 
