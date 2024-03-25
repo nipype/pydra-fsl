@@ -70,7 +70,7 @@ hatch run lint:fix
 
 ## License
 
-`pydra-tasks-fsl` is distributed under the terms of the [Apache License, Version 2.0][license].
+`pydra-fsl` is distributed under the terms of the [Apache License, Version 2.0][license].
 
 [pypi-project]: https://pypi.org/project/pydra-fsl
 
