@@ -19,8 +19,8 @@ Register two images together:
 ...     degrees_of_freedom=6,
 ... )
 >>> task.cmdline
-'flirt -in invol -ref refvol -out outvol -omat invol2refvol.mat -cost mutualinfo \
--interp trilinear -dof 6'
+'flirt -in invol -ref refvol -omat invol2refvol.mat -out outvol \
+-dof 6 -cost mutualinfo -bins 256 -interp trilinear'
 
 Perform a single slice registration:
 
@@ -31,11 +31,10 @@ Perform a single slice registration:
 ...     output_matrix="i2r.mat",
 ...     interpolation="nearestneighbour",
 ...     use_2d_registration=True,
-...     verbose=True,
 ... )
 >>> task.cmdline
-'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -cost corratio \
--interp nearestneighbour -2D -v'
+'flirt -in inslice -ref refslice -omat i2r.mat -out outslice -2D \
+-cost corratio -bins 256 -interp nearestneighbour'
 """
 
 __all__ = ["FLIRT"]
@@ -46,17 +45,43 @@ import attrs
 
 import pydra
 
+from . import specs
+
 
 @attrs.define(slots=False, kw_only=True)
 class FLIRTSpec(pydra.specs.ShellSpec):
     """Specifications for FLIRT."""
 
     input_image: os.PathLike = attrs.field(
-        metadata={"help_string": "input volume", "argstr": "-in"}
+        metadata={
+            "help_string": "input image",
+            "mandatory": True,
+            "argstr": "-in",
+        }
     )
 
     reference_image: os.PathLike = attrs.field(
-        metadata={"help_string": "reference volume", "argstr": "-ref"}
+        metadata={
+            "help_string": "reference image",
+            "mandatory": True,
+            "argstr": "-ref",
+        }
+    )
+
+    input_matrix: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "input transformation matrix",
+            "argstr": "-init",
+        }
+    )
+
+    output_matrix: str = attrs.field(
+        metadata={
+            "help_string": "output transformation matrix",
+            "argstr": "-omat",
+            "output_file_template": "{input_image}_flirt.mat",
+            "keep_extension": False,
+        }
     )
 
     output_image: str = attrs.field(
@@ -79,53 +104,6 @@ class FLIRTSpec(pydra.specs.ShellSpec):
                 "double",
             },
         }
-    )
-
-    input_matrix: os.PathLike = attrs.field(
-        metadata={
-            "help_string": "input transformation as 4x4 matrix",
-            "argstr": "-init",
-        }
-    )
-
-    output_matrix: str = attrs.field(
-        metadata={
-            "help_string": "output transformation as 4x4 matrix",
-            "argstr": "-omat",
-            "output_file_template": "{input_image}_flirt.mat",
-            "keep_extension": False,
-        }
-    )
-
-    cost_function: str = attrs.field(
-        default="corratio",
-        metadata={
-            "help_string": "cost function",
-            "argstr": "-cost",
-            "allowed_values": {
-                "mutualinfo",
-                "corratio",
-                "normcorr",
-                "normmi",
-                "leastsq",
-                "labeldiff",
-                "bbr",
-            },
-        },
-    )
-
-    interpolation: str = attrs.field(
-        default="trilinear",
-        metadata={
-            "help_string": "interpolation method",
-            "argstr": "-interp",
-            "allowed_values": {
-                "trilinear",
-                "nearestneighbour",
-                "sinc",
-                "spline",
-            },
-        },
     )
 
     degrees_of_freedom: int = attrs.field(
@@ -158,4 +136,7 @@ class FLIRT(pydra.engine.ShellCommandTask):
 
     executable = "flirt"
 
-    input_spec = pydra.specs.SpecInfo(name="FLIRTInput", bases=(FLIRTSpec,))
+    input_spec = pydra.specs.SpecInfo(
+        name="FLIRTInput",
+        bases=(FLIRTSpec, specs.CostFunctionSpec, specs.InterpolationSpec),
+    )

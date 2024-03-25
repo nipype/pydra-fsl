@@ -23,7 +23,7 @@ Examples
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
 'flirt -in input.nii -ref reference.nii -init affine.mat -out .../input_axfm.nii \
--applyisoxfm 1 -interp trilinear -paddingsize 5'
+-applyisoxfm 1 -paddingsize 5 -interp trilinear'
 
 """
 
@@ -35,6 +35,7 @@ import attrs
 
 import pydra
 
+from . import specs
 from .flirt import FLIRT
 
 
@@ -100,20 +101,6 @@ class ApplyXFMSpec(pydra.specs.ShellSpec):
         },
     )
 
-    interpolation: str = attrs.field(
-        default="trilinear",
-        metadata={
-            "help_string": "interpolation method",
-            "argstr": "-interp",
-            "allowed_values": {
-                "trilinear",
-                "nearestneighbour",
-                "spline",
-                "sinc",
-            },
-        },
-    )
-
     padding_size: float = attrs.field(
         metadata={
             "help_string": "padding size in voxels",
@@ -125,4 +112,7 @@ class ApplyXFMSpec(pydra.specs.ShellSpec):
 class ApplyXFM(FLIRT):
     """Task definition for ApplyXFM."""
 
-    input_spec = pydra.specs.SpecInfo(name="ApplyXFMInput", bases=(ApplyXFMSpec,))
+    input_spec = pydra.specs.SpecInfo(
+        name="ApplyXFMInput",
+        bases=(ApplyXFMSpec, specs.InterpolationSpec),
+    )
