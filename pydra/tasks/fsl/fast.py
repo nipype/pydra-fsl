@@ -9,7 +9,6 @@ using hidden Markov random field model and the expectation-maximization algorith
 __all__ = ["FAST"]
 
 import os
-import typing as ty
 
 import attrs
 
@@ -124,35 +123,35 @@ class FASTSpec(pydra.specs.ShellSpec):
     )
 
 
+def get_segmentation_image(output_basename):
+    return f"{output_basename}_seg"
+
+
+def get_segmentation_masks(output_basename, num_classes):
+    return [f"{output_basename}_seg_{i}" for i in range(num_classes)]
+
+
+def get_probability_maps(output_basename, num_classes):
+    return [f"{output_basename}_prob_{i}" for i in range(num_classes)]
+
+
+def get_partial_volume_maps(output_basename, num_classes):
+    return [f"{output_basename}_pve_{i}" for i in range(num_classes)]
+
+
+def get_bias_field_image(output_basename):
+    return f"{output_basename}_bias"
+
+
+def get_bias_corrected_image(output_basename):
+    return f"{output_basename}_restore"
+
+
 @attrs.define(slots=False, kw_only=True)
 class FASTOutSpec(pydra.specs.ShellOutSpec):
     """Ouput specifications for FAST."""
 
-    @staticmethod
-    def get_segmentation_image(output_basename: str) -> str:
-        return f"{output_basename}_seg"
-
-    @staticmethod
-    def get_segmentation_masks(output_basename: str, num_classes: int) -> ty.List[str]:
-        return [f"{output_basename}_seg_{i}" for i in range(num_classes)]
-
-    @staticmethod
-    def get_probability_maps(output_basename: str, num_classes: int) -> ty.List[str]:
-        return [f"{output_basename}_prob_{i}" for i in range(num_classes)]
-
-    @staticmethod
-    def get_partial_volume_maps(output_basename: str, num_classes: int) -> ty.List[str]:
-        return [f"{output_basename}_pve_{i}" for i in range(num_classes)]
-
-    @staticmethod
-    def get_bias_field_image(output_basename: str) -> str:
-        return f"{output_basename}_bias"
-
-    @staticmethod
-    def get_bias_corrected_image(output_basename: str) -> str:
-        return f"{output_basename}_restore"
-
-    segmentation_image: str = attrs.field(
+    segmentation_image: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "segmentation image with each voxel assigned a class",
             "mandatory": True,
@@ -160,7 +159,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    segmentation_masks: ty.List[str] = attrs.field(
+    segmentation_masks: pydra.specs.MultiOutputFile = attrs.field(
         metadata={
             "help_string": (
                 "one segmentation mask per class, each voxel is assigned a value of "
@@ -171,7 +170,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    probability_maps: ty.List[str] = attrs.field(
+    probability_maps: pydra.specs.MultiOutputFile = attrs.field(
         metadata={
             "help_string": "posterior probablity mapping for each class",
             "requires": ["save_probability_maps"],
@@ -179,7 +178,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    partial_volume_maps: ty.List[str] = attrs.field(
+    partial_volume_maps: pydra.specs.MultiOutputFile = attrs.field(
         metadata={
             "help_string": "partial volume mapping for each class",
             "requires": [("no_partial_volume_estimation", False)],
@@ -187,7 +186,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    bias_field_image: str = attrs.field(
+    bias_field_image: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "estimated bias field",
             "requires": ["save_bias_field_image"],
@@ -195,7 +194,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    bias_corrected_image: str = attrs.field(
+    bias_corrected_image: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "restored input image after bias field correction",
             "requires": ["save_bias_corrected_image"],
