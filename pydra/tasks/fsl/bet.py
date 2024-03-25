@@ -7,6 +7,8 @@ It can also estimate the inner and outer skull surfaces, and outer scalp surface
 when provided with good quality T1 and T2 input images.
 """
 
+__all__ = ["BET"]
+
 import os
 import typing as ty
 
@@ -14,9 +16,8 @@ import attrs
 
 import pydra
 
-__all__ = ["BET"]
 
-
+@attrs.define(slots=False, kw_only=True)
 class BETSpec:
     """Specifications for BET."""
 
@@ -147,11 +148,11 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
     )
 
 
-class BET:
+class BET(pydra.engine.ShellCommandTask):
     """Task definition for BET."""
+
+    executable = "bet"
 
     input_spec = pydra.specs.SpecInfo(name="BETInput", bases=(BETSpec,))
 
     output_spec = pydra.specs.SpecInfo(name="BETOutput", bases=(BETOutSpec,))
-
-    executable = "bet"
