@@ -45,7 +45,6 @@ class ConvertXFMSpec(pydra.specs.ShellSpec):
             "help_string": "output matrix in 4x4 ASCII format",
             "argstr": "-omat",
             "output_file_template": "{input_matrix}_cxfm",
-            "requires": {"input_matrix"},
         }
     )
 
