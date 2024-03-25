@@ -21,7 +21,7 @@ class EddySpec(pydra.specs.ShellSpec):
     # Parameters that specify input files.
     input_image: os.PathLike = attrs.field(
         metadata={
-            "help_string": ("input image as a 4D volume of all images acquired in the diffusion protocol"),
+            "help_string": "input image as a 4D volume of all images acquired in the diffusion protocol",
             "mandatory": True,
             "argstr": "--imain",
         }
@@ -131,7 +131,7 @@ class EddySpec(pydra.specs.ShellSpec):
     fwhm: float = attrs.field(
         default=0,
         metadata={
-            "help_string": ("filter width used for pre-conditionning data prior to estimating distortions"),
+            "help_string": "filter width used for pre-conditioning data prior to estimating distortions",
             "argstr": "--fwhm",
         },
     )

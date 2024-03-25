@@ -2,7 +2,7 @@
 FMRIB's Automated Segmentation Tool (FAST)
 ==========================================
 
-FAST performs automtic segmentation of 3D images of the brain
+FAST performs automatic segmentation of 3D images of the brain
 using hidden Markov random field model and the expectation-maximization algorithm.
 """
 
@@ -172,7 +172,7 @@ class FASTOutSpec(pydra.specs.ShellOutSpec):
 
     probability_maps: pydra.specs.MultiOutputFile = attrs.field(
         metadata={
-            "help_string": "posterior probablity mapping for each class",
+            "help_string": "posterior probability mapping for each class",
             "requires": ["save_probability_maps"],
             "callable": get_probability_maps,
         }

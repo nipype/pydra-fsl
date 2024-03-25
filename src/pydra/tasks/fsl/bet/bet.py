@@ -74,14 +74,14 @@ class BETSpec(pydra.specs.ShellSpec):
 
     head_radius: float = attrs.field(
         metadata={
-            "help_string": ("Head radius (in millimeters)." " Initial surface sphere is set to half of this value."),
+            "help_string": "Head radius (in millimeters)." " Initial surface sphere is set to half of this value.",
             "argstr": "-r",
         }
     )
 
     center_of_gravity: ty.Tuple[int, int, int] = attrs.field(
         metadata={
-            "help_string": ("centre-of-gravity (in voxel coordinates) of initial mesh surface"),
+            "help_string": "centre-of-gravity (in voxel coordinates) of initial mesh surface",
             "argstr": "-c",
         }
     )

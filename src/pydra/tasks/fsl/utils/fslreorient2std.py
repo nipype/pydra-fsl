@@ -24,7 +24,7 @@ import pydra
 
 @attrs.define(slots=False, kw_only=True)
 class FSLReorient2StdSpec(pydra.specs.ShellSpec):
-    """Specificiations for fslreorient2std."""
+    """Specifications for fslreorient2std."""
 
     input_image: os.PathLike = attrs.field(
         metadata={
