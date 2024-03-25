@@ -342,9 +342,89 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
 
+class EddyOutSpec(pydra.specs.ShellOutSpec):
+    """Output specification for eddy."""
+
+    corrected_image: str = attrs.field(
+        metadata={
+            "help_string": "input image corrected for distortions",
+            "output_file_template": "{output_basename}.nii.gz",
+        }
+    )
+
+    parameter_file: str = attrs.field(
+        metadata={
+            "help_string": "registration parameters for movement and EC",
+            "output_file_template": "{output_basename}.eddy_parameters",
+        }
+    )
+
+    rotated_bvec_file: str = attrs.field(
+        metadata={
+            "help_string": "rotated b-vecs",
+            "output_file_template": "{output_basename}.eddy_rotated_bvecs",
+        }
+    )
+
+    movement_rms_matrix: str = attrs.field(
+        metadata={
+            "help_string": "movement induced RMS",
+            "output_file_template": "{output_basename}.eddy_movement_rms",
+        }
+    )
+
+    restricted_movement_rms_matrix: str = attrs.field(
+        metadata={
+            "help_string": "movement induced RMS without translation in the PE direction",
+            "output_file_template": "{output_basename}.eddy_restricted_movement_rms",
+        }
+    )
+
+    displacement_fields_image: str = attrs.field(
+        metadata={
+            "help_string": "displacement fields in millimeters",
+            "output_file_template": "{output_basename}.eddy_displacement_fields",
+        }
+    )
+
+    outlier_free_image: str = attrs.field(
+        metadata={
+            "help_string": "input image with outliers replaced by predictions",
+            "output_file_template": "{output_basename}.eddy_outlier_free_data",
+            "requires": {"replace_outliers"},
+        }
+    )
+
+    movement_over_time_file: str = attrs.field(
+        metadata={
+            "help_string": "movement parameters per time-point (slice or group)",
+            "output_file_template": "{output_basename}.eddy_movement_over_time",
+            "requires": {"movement_prediction_order"},
+        }
+    )
+
+    cnr_maps_image: str = attrs.field(
+        metadata={
+            "help_string": "path to optional CNR maps image",
+            "output_file_template": "{output_basename}.eddy_cnr_maps",
+            "requires": {"write_cnr_maps"},
+        }
+    )
+
+    residuals_image: str = attrs.field(
+        metadata={
+            "help_string": "path to optional residuals image",
+            "output_file_template": "{output_basename}.eddy_residuals",
+            "requires": {"write_residuals"},
+        }
+    )
+
+
 class Eddy(pydra.engine.ShellCommandTask):
     """Task definition for eddy."""
 
     input_spec = pydra.specs.SpecInfo(name="EddyInput", bases=(EddySpec,))
+
+    output_spec = pydra.specs.SpecInfo(name="EddyOutput", bases=(EddyOutSpec,))
 
     executable = "eddy"
