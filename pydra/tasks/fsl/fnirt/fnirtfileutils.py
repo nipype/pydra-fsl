@@ -8,10 +8,9 @@ Examples
 >>> task = FNIRTFileUtils(
 ...     input_image="input.nii",
 ...     reference_image="reference.nii",
-...     output_image="output.nii",
 ... )
 >>> task.cmdline  # doctest: +ELLIPSIS
-'fnirtfileutils --in input.nii --ref reference.nii --out output.nii \
+'fnirtfileutils --in input.nii --ref reference.nii --out ...input_field.nii \
 --outformat field ...'
 
 >>> task = FNIRTFileUtils(
@@ -58,7 +57,7 @@ class FNIRTFileUtilsSpec(pydra.specs.ShellSpec):
         metadata={
             "help_string": "output field or coefficient image",
             "argstr": "--out",
-            "output_file_template": "{input_image}_warp",
+            "output_file_template": "{input_image}_{output_format}",
         }
     )
 
@@ -89,7 +88,7 @@ class FNIRTFileUtilsSpec(pydra.specs.ShellSpec):
 
     output_jacobian_image: str = attrs.field(
         metadata={
-            "help_string": "output jacobian determinant map",
+            "help_string": "output Jacobian determinant map",
             "argstr": "--jac",
             "output_file_template": "{input_image}_jac",
         }
@@ -97,7 +96,7 @@ class FNIRTFileUtilsSpec(pydra.specs.ShellSpec):
 
     output_jacobian_matrix: str = attrs.field(
         metadata={
-            "help_string": "output jacobian matrix map",
+            "help_string": "output Jacobian matrix map",
             "argstr": "--matjac",
             "output_file_template": "{input_image}_matjac",
         }
