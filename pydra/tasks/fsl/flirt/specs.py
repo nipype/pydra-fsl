@@ -2,6 +2,7 @@
 
 __all__ = ["CostFunctionSpec", "InterpolationSpec"]
 
+import os
 import typing as ty
 
 import attrs
@@ -92,4 +93,21 @@ class SearchSpec(pydra.specs.ShellSpec):
                 "" if no_search else f"-searchrz {field[0]} {field[1]}"
             ),
         },
+    )
+
+
+@attrs.define(slots=False, kw_only=True)
+class WeightingSpec(pydra.specs.ShellSpec):
+    reference_weighting_image: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "weights for reference image",
+            "argstr": "-refweight",
+        }
+    )
+
+    input_weighting_image: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "weights for input image",
+            "argstr": "-inweight",
+        }
     )

@@ -145,5 +145,6 @@ class FLIRT(pydra.engine.ShellCommandTask):
             specs.SearchSpec,
             specs.CostFunctionSpec,
             specs.InterpolationSpec,
+            specs.WeightingSpec,
         ),
     )
