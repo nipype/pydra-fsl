@@ -131,6 +131,7 @@ class EddySpec(pydra.specs.ShellSpec):
     )
 
     fwhm: float = attrs.field(
+        default=0,
         metadata={
             "help_string": (
                 "filter width used for pre-conditionning data prior to estimating distortions"
