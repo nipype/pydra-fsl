@@ -1,6 +1,11 @@
 """Common specifications for FLIRT."""
 
-__all__ = ["CostFunctionSpec", "InterpolationSpec"]
+__all__ = [
+    "CostFunctionSpec",
+    "InterpolationSpec",
+    "SearchSpec",
+    "WeightingSpec",
+]
 
 import os
 import typing as ty
