@@ -114,7 +114,7 @@ class BETSpec(pydra.specs.ShellSpec):
 class BETOutSpec(pydra.specs.ShellOutSpec):
     """Output specifications for BET."""
 
-    brain_surface_outline: str = attrs.field(
+    brain_surface_outline: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "brain surface outline",
             "output_file_template": "{output_image}_overlay",
@@ -122,7 +122,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    brain_mask: str = attrs.field(
+    brain_mask: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "brain mask",
             "output_file_template": "{output_image}_mask",
@@ -130,7 +130,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    skull_image: str = attrs.field(
+    skull_image: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "skull image",
             "output_file_template": "{output_image}_skull",
@@ -138,7 +138,7 @@ class BETOutSpec(pydra.specs.ShellOutSpec):
         }
     )
 
-    brain_surface_mesh: str = attrs.field(
+    brain_surface_mesh: pydra.specs.File = attrs.field(
         metadata={
             "help_string": "brain surface mesh",
             "output_file_template": "{output_image}_mesh.vtk",
