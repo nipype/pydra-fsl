@@ -38,7 +38,7 @@ Perform a single slice registration:
 ...     reference_image="refslice",
 ...     output_image="outslice",
 ...     output_matrix="i2r.mat",
-...     use_2d_rigid_body_transformation=True,
+...     use_2d_registration=True,
 ... )
 >>> task.cmdline
 'flirt -in inslice -ref refslice -out outslice -omat i2r.mat -2D'
@@ -90,9 +90,10 @@ class FLIRTSpec(pydra.specs.ShellSpec):
 
     degrees_of_freedom: int = attrs.field(
         metadata={
-            "help_string": "degrees of freedom (default: 12)",
+            "help_string": "degrees of freedom for the registration model",
             "argstr": "-dof",
             "allowed_values": {3, 6, 7, 9, 12},
+            "xor": {"use_2d_registration"},
         }
     )
 
@@ -104,10 +105,11 @@ class FLIRTSpec(pydra.specs.ShellSpec):
         }
     )
 
-    use_2d_rigid_body_transformation: bool = attrs.field(
+    use_2d_registration: bool = attrs.field(
         metadata={
-            "help_string": "use rigid body transformation in 2D (ignores DOF)",
+            "help_string": "use rigid-body registration model in 2D",
             "argstr": "-2D",
+            "xor": {"degrees_of_freedom"},
         }
     )
 
