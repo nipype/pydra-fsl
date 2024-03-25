@@ -63,6 +63,20 @@ class FNIRTSpec(pydra.specs.ShellSpec):
         }
     )
 
+    reference_mask: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "mask in reference space",
+            "argstr": "--applyrefmask --refmask",
+        }
+    )
+
+    input_mask: os.PathLike = attrs.field(
+        metadata={
+            "help_string": "mask in input image space",
+            "argstr": "--applyinmask --inmask",
+        }
+    )
+
     verbose: bool = attrs.field(
         metadata={
             "help_string": "enable verbose logging",
