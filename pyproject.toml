@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "pydra-fsl"
 description = "Pydra tasks package for fsl"
-readme = "README.rst"
+readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
   "pydra >=0.22",
@@ -49,6 +49,7 @@ doc = [
   "sphinxcontrib-apidoc ~=0.3.0",
   "sphinxcontrib-napoleon",
   "sphinxcontrib-versioning",
+  "pydata-sphinx-theme >=0.13",
 ]
 test = [
   "nipype2pydra",
