@@ -20,6 +20,11 @@ env:
   FSL_VERSION: 6.0.7.9
   FSL_HOME:  ${{ github.workspace }}/fsl-install
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
 
   nipype-conv:
