@@ -48,15 +48,6 @@ A separate installation of FSL is required to use this package.
 Please review the FSL [installation instructions][fsl-install]
 and [licensing details][fsl-license].
 
-## Installation
-
-```console
-pip install pydra-fsl
-```
-
-A separate installation of FreeSurfer is required to use this package.
-Please review the following [instructions][fsl-install]
-and [licensing details][fsl-license].
 
 ## Automatic Conversion
 
@@ -177,8 +168,6 @@ generate sample data for them, should be defined in `related-packages/fileformat
 and `related-packages/fileformats-extras`, respectively.
 
 
-
-
 ## License
 
 This project is distributed under the terms of the [Apache License, Version 2.0][license].
@@ -202,8 +191,6 @@ This project is distributed under the terms of the [Apache License, Version 2.0]
 [fsl-install]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FslInstallation
 
 [fsl-license]: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/Licence
-
-[hatch]: https://hatch.pypa.io/
 
 [license]: https://spdx.org/licenses/Apache-2.0.html
 

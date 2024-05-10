@@ -3,21 +3,15 @@
 # For the full list of built-in configuration values, see the documentation:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
-import sys
-from pathlib import Path
-
-from sphinx_pyproject import SphinxConfig
-
-config = SphinxConfig(globalns=globals())
-sys.path.insert(0, str(Path.cwd().parent / "src"))
+from pydra.tasks.fsl import __version__  # noqa
 
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = config.name
+project = "pydra-fsl"
 author = "Pydra Development Team"
 copyright = f"2022-2023, {author}"
-release = config.version
+release = __version__
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
