@@ -1,0 +1,8 @@
+# name of the package to generate, e.g. pydra.tasks.mriqc
+name: pydra.tasks.fsl
+# name of the nipype package to generate from (e.g. mriqc)
+nipype_name: nipype.interfaces.fsl
+# The name of the global struct/dict that contains workflow inputs that are to be converted to inputs of the function along with the type of the struct, either "dict" or "class"
+config_params: null
+# Mappings between nipype packages and their pydra equivalents. Regular expressions are supported
+import_translations: null
