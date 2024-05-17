@@ -8,9 +8,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   release:
     types: [published]
   repository_dispatch:
