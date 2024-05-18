@@ -8,9 +8,9 @@ name: CI/CD
 
 on:
   push:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   pull_request:
-    branches: [ master, develop ]
+    branches: [ main, develop ]
   release:
     types: [published]
   repository_dispatch:
@@ -336,7 +336,7 @@ jobs:
     - name: Generate post-release tag based on Nipype and Nipype2Pydra versions
       id: post_release_tag
       run: |
-        POST=$(python -c "from pydra.tasks.fsl.auto._version import *; print(post_release)")
+        POST=$(python -c "from pydra.tasks.fsl.auto._post_release import *; print(post_release)")
         echo "TAG=${{ steps.latest_tag.outputs.TAG }}post${POST}" >> $GITHUB_OUTPUT
 
     - name: Add auto directory to git repo
