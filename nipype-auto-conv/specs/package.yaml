@@ -6,3 +6,6 @@ nipype_name: nipype.interfaces.fsl
 config_params: null
 # Mappings between nipype packages and their pydra equivalents. Regular expressions are supported
 import_translations: null
+find_replace:
+  - ["if not out_dir:", "if not output_dir:"]
+  - ["if runtime is None:", "if False:"]
