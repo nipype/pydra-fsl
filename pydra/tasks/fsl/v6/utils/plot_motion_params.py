@@ -87,17 +87,17 @@ class PlotMotionParams(shell.Task["PlotMotionParams.Outputs"]):
 
     executable = "fsl_tsplot"
     in_file: ty.Any = shell.arg(
-        help="file with motion parameters", position=1, formatter="in_file_formatter"
+        help="file with motion parameters", position=1, formatter=in_file_formatter
     )
     in_source: ty.Any = shell.arg(
         help="which program generated the motion parameter file - fsl, spm"
     )
     plot_type: ty.Any = shell.arg(
         help="which motion type to plot - rotations, translations, displacement",
-        formatter="plot_type_formatter",
+        formatter=plot_type_formatter,
     )
     plot_size: ty.Any = shell.arg(
-        help="plot image height and width", formatter="plot_size_formatter"
+        help="plot image height and width", formatter=plot_size_formatter
     )
 
     class Outputs(shell.Outputs):

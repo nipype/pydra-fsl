@@ -57,13 +57,13 @@ class Merge(shell.Task["Merge.Outputs"]):
     in_files: list[Nifti1] = shell.arg(help="", argstr="{in_files}", position=3)
     dimension: ty.Any = shell.arg(
         help="dimension along which to merge, optionally set tr input when dimension is t",
-        formatter="dimension_formatter",
+        formatter=dimension_formatter,
         position=1,
     )
     tr: float = shell.arg(
         help="use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr",
         position=-1,
-        formatter="tr_formatter",
+        formatter=tr_formatter,
     )
 
     class Outputs(shell.Outputs):

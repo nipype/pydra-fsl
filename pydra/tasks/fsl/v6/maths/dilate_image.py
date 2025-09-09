@@ -56,7 +56,7 @@ class DilateImage(shell.Task["DilateImage.Outputs"]):
     operation: ty.Any = shell.arg(
         help="filtering operation to perform in dilation",
         position=6,
-        formatter="operation_formatter",
+        formatter=operation_formatter,
     )
     kernel_shape: ty.Any = shell.arg(
         help="kernel shape to use", argstr="-kernel {kernel_shape}", position=4

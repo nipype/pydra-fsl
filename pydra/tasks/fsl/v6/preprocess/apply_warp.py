@@ -77,7 +77,7 @@ class ApplyWarp(shell.Task["ApplyWarp.Outputs"]):
     )
     superlevel: ty.Any = shell.arg(
         help="level of intermediary supersampling, a for 'automatic' or integer level. Default = 2",
-        formatter="superlevel_formatter",
+        formatter=superlevel_formatter,
     )
     premat: File = shell.arg(
         help="filename for pre-transform (affine matrix)", argstr="--premat={premat}"
