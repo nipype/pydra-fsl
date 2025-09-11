@@ -13,6 +13,7 @@ dependencies = [
   "fileformats-datascience >=0.3.2",
   "fileformats-medimage >=0.10.5",
   "fileformats-medimage-fsl",
+  "looseversion>=1.3.0",
 ]
 license = { file = "LICENSE" }
 keywords = ["pydra", "neuroimaging", "fsl"]

@@ -73,7 +73,7 @@ class Slicer(shell.Task["Slicer.Outputs"]):
     )
     label_slices: bool = shell.arg(
         help="display slice number",
-        formatter="label_slices_formatter",
+        formatter=label_slices_formatter,
         position=4,
         default=True,
     )
@@ -98,7 +98,7 @@ class Slicer(shell.Task["Slicer.Outputs"]):
     )
     show_orientation: bool = shell.arg(
         help="label left-right orientation",
-        formatter="show_orientation_formatter",
+        formatter=show_orientation_formatter,
         position=10,
         default=True,
     )

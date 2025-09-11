@@ -90,13 +90,13 @@ class Overlay(shell.Task["Overlay.Outputs"]):
     transparency: bool = shell.arg(
         help="make overlay colors semi-transparent",
         position=1,
-        formatter="transparency_formatter",
+        formatter=transparency_formatter,
         default=True,
     )
     out_type: ty.Any = shell.arg(
         help="write output with float or int",
         position=2,
-        formatter="out_type_formatter",
+        formatter=out_type_formatter,
         default="float",
     )
     use_checkerboard: bool = shell.arg(
@@ -127,7 +127,7 @@ class Overlay(shell.Task["Overlay.Outputs"]):
     show_negative_stats: bool = shell.arg(
         help="display negative statistics in overlay",
         position=8,
-        formatter="show_negative_stats_formatter",
+        formatter=show_negative_stats_formatter,
     )
     stat_image2: File | None = shell.arg(
         help="second statistical image to overlay in color",

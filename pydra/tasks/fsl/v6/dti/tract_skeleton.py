@@ -116,7 +116,7 @@ class TractSkeleton(shell.Task["TractSkeleton.Outputs"]):
     project_data: bool = shell.arg(
         help="project data onto skeleton",
         requires=["threshold", "distance_map", "data_file"],
-        formatter="project_data_formatter",
+        formatter=project_data_formatter,
     )
     threshold: float = shell.arg(help="skeleton threshold value")
     distance_map: File = shell.arg(help="distance map image")
@@ -135,7 +135,7 @@ class TractSkeleton(shell.Task["TractSkeleton.Outputs"]):
     )
     projected_data: Path = shell.arg(help="input data projected onto skeleton")
     skeleton_file: ty.Any = shell.arg(
-        help="write out skeleton image", formatter="skeleton_file_formatter"
+        help="write out skeleton image", formatter=skeleton_file_formatter
     )
 
     class Outputs(shell.Outputs):

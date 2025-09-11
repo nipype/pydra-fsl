@@ -189,7 +189,7 @@ class TOPUP(shell.Task["TOPUP.Outputs"]):
     encoding_direction: list[ty.Any] = shell.arg(
         help="encoding direction for automatic generation of encoding_file",
         requires=["readout_times"],
-        formatter="encoding_direction_formatter",
+        formatter=encoding_direction_formatter,
     )
     readout_times: MultiInputObj = shell.arg(
         help="readout times (dwell times by # phase-encode steps minus 1)",
@@ -197,7 +197,7 @@ class TOPUP(shell.Task["TOPUP.Outputs"]):
     )
     out_base: Path = shell.arg(
         help="base-name of output files (spline coefficients (Hz) and movement parameters)",
-        formatter="out_base_formatter",
+        formatter=out_base_formatter,
     )
     out_warp_prefix: str = shell.arg(
         help="prefix for the warpfield images (in mm)",

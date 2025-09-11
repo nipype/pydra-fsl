@@ -265,7 +265,7 @@ class FAST(shell.Task["FAST.Outputs"]):
     in_files: list[Nifti1] = shell.arg(
         help="image, or multi-channel set of images, to be segmented",
         position=-1,
-        formatter="in_files_formatter",
+        formatter=in_files_formatter,
     )
     out_basename: Path = shell.arg(
         help="base name of output files", argstr="-o {out_basename}"

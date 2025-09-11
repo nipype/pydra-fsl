@@ -66,7 +66,7 @@ class Threshold(shell.Task["Threshold.Outputs"]):
 
     executable = "fslmaths"
     thresh: float = shell.arg(
-        help="threshold value", position=4, formatter="thresh_formatter"
+        help="threshold value", position=4, formatter=thresh_formatter
     )
     direction: ty.Any = shell.arg(
         help="zero-out either below or above thresh value", default="below"

@@ -58,7 +58,7 @@ class ErodeImage(shell.Task["ErodeImage.Outputs"]):
     minimum_filter: bool = shell.arg(
         help="if true, minimum filter rather than erosion by zeroing-out",
         position=6,
-        formatter="minimum_filter_formatter",
+        formatter=minimum_filter_formatter,
         default=False,
     )
     kernel_shape: ty.Any = shell.arg(

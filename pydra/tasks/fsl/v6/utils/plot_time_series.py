@@ -103,7 +103,7 @@ class PlotTimeSeries(shell.Task["PlotTimeSeries.Outputs"]):
     in_file: ty.Any = shell.arg(
         help="file or list of files with columns of timecourse information",
         position=1,
-        formatter="in_file_formatter",
+        formatter=in_file_formatter,
     )
     plot_start: int | None = shell.arg(
         help="first column from in-file to plot", argstr="--start={plot_start}"
@@ -113,17 +113,17 @@ class PlotTimeSeries(shell.Task["PlotTimeSeries.Outputs"]):
     )
     plot_range: ty.Any | None = shell.arg(
         help="first and last columns from the in-file to plot",
-        formatter="plot_range_formatter",
+        formatter=plot_range_formatter,
     )
-    title: str = shell.arg(help="plot title", formatter="title_formatter")
+    title: str = shell.arg(help="plot title", formatter=title_formatter)
     legend_file: File = shell.arg(help="legend file", argstr="--legend={legend_file}")
     labels: ty.Any = shell.arg(
-        help="label or list of labels", formatter="labels_formatter"
+        help="label or list of labels", formatter=labels_formatter
     )
     y_min: float | None = shell.arg(help="minimum y value", argstr="--ymin={y_min:.2}")
     y_max: float | None = shell.arg(help="maximum y value", argstr="--ymax={y_max:.2}")
     y_range: ty.Any | None = shell.arg(
-        help="min and max y axis values", formatter="y_range_formatter"
+        help="min and max y axis values", formatter=y_range_formatter
     )
     x_units: int = shell.arg(
         help="scaling units for x-axis (between 1 and length of in file)",
@@ -131,7 +131,7 @@ class PlotTimeSeries(shell.Task["PlotTimeSeries.Outputs"]):
         default=1,
     )
     plot_size: ty.Any = shell.arg(
-        help="plot image height and width", formatter="plot_size_formatter"
+        help="plot image height and width", formatter=plot_size_formatter
     )
     x_precision: int = shell.arg(
         help="precision of x-axis labels", argstr="--precision={x_precision}"

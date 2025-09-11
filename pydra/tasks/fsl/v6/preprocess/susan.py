@@ -102,7 +102,7 @@ class SUSAN(shell.Task["SUSAN.Outputs"]):
     fwhm: float = shell.arg(
         help="fwhm of smoothing, in mm, gets converted using sqrt(8*log(2))",
         position=3,
-        formatter="fwhm_formatter",
+        formatter=fwhm_formatter,
     )
     dimension: ty.Any = shell.arg(
         help="within-plane (2) or fully 3D (3)",
@@ -119,7 +119,7 @@ class SUSAN(shell.Task["SUSAN.Outputs"]):
     usans: list[ty.Any] = shell.arg(
         help="determines whether the smoothing area (USAN) is to be found from secondary images (0, 1 or 2). A negative value for any brightness threshold will auto-set the threshold at 10% of the robust range",
         position=6,
-        formatter="usans_formatter",
+        formatter=usans_formatter,
         default=[],
     )
     out_file: Path = shell.arg(

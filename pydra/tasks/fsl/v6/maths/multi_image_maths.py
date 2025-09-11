@@ -63,7 +63,7 @@ class MultiImageMaths(shell.Task["MultiImageMaths.Outputs"]):
     op_string: ty.Any = shell.arg(
         help="python formatted string of operations to perform",
         position=4,
-        formatter="op_string_formatter",
+        formatter=op_string_formatter,
     )
     operand_files: list[Nifti1] = shell.arg(
         help="list of file names to plug into op string"

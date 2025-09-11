@@ -232,11 +232,11 @@ class ProbTrackX(shell.Task["ProbTrackX.Outputs"]):
     )
     seed: ty.Any = shell.arg(
         help="seed volume(s), or voxel(s) or freesurfer label file",
-        formatter="seed_formatter",
+        formatter=seed_formatter,
     )
     target_masks: list[Nifti1] = shell.arg(
         help="list of target masks - required for seeds_to_targets classification",
-        formatter="target_masks_formatter",
+        formatter=target_masks_formatter,
     )
     waypoints: File = shell.arg(
         help="waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks",

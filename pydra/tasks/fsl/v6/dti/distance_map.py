@@ -89,7 +89,7 @@ class DistanceMap(shell.Task["DistanceMap.Outputs"]):
     )
     invert_input: bool = shell.arg(help="invert input image", argstr="--invert")
     local_max_file: ty.Any = shell.arg(
-        help="write an image of the local maxima", formatter="local_max_file_formatter"
+        help="write an image of the local maxima", formatter=local_max_file_formatter
     )
 
     class Outputs(shell.Outputs):

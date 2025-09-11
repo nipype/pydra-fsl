@@ -75,12 +75,12 @@ class FilterRegressor(shell.Task["FilterRegressor.Outputs"]):
     filter_columns: list[int] = shell.arg(
         help="(1-based) column indices to filter out of the data",
         position=4,
-        formatter="filter_columns_formatter",
+        formatter=filter_columns_formatter,
     )
     filter_all: bool = shell.arg(
         help="use all columns in the design file in denoising",
         position=4,
-        formatter="filter_all_formatter",
+        formatter=filter_all_formatter,
     )
     mask: File = shell.arg(help="mask image file name", argstr="-m {mask}")
     var_norm: bool = shell.arg(

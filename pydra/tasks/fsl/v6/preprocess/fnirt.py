@@ -208,7 +208,7 @@ class FNIRT(shell.Task["FNIRT.Outputs"]):
     )
     out_intensitymap_file: ty.Any = shell.arg(
         help="name of files for writing information pertaining to intensity mapping",
-        formatter="out_intensitymap_file_formatter",
+        formatter=out_intensitymap_file_formatter,
     )
     config_file: ty.Any = shell.arg(
         help="Name of config file specifying command line arguments",
