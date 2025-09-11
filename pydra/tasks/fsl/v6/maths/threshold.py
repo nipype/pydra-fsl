@@ -77,22 +77,28 @@ class Threshold(shell.Task["Threshold.Outputs"]):
     use_nonzero_voxels: bool = shell.arg(
         help="use nonzero voxels to calculate robust range",
         requires=["use_robust_range"],
+        default=False,
     )
     in_file: File = shell.arg(
         help="image to operate on", argstr="{in_file}", position=2
     )
-    internal_datatype: ty.Any = shell.arg(
+    internal_datatype: str | None = shell.arg(
         help="datatype to use for calculations (default is float)",
         argstr="-dt {internal_datatype}",
         position=1,
+        default=None,
     )
-    output_datatype: ty.Any = shell.arg(
+    output_datatype: str | None = shell.arg(
         help="datatype to use for output (default uses input type)",
         argstr="-odt {output_datatype}",
         position=-1,
+        default=None,
     )
     nan2zeros: bool = shell.arg(
-        help="change NaNs to zeros before doing anything", argstr="-nan", position=3
+        help="change NaNs to zeros before doing anything",
+        argstr="-nan",
+        position=3,
+        default=False,
     )
 
     class Outputs(shell.Outputs):
