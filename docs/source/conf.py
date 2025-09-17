@@ -8,7 +8,7 @@ from pydra.tasks.fsl import __version__  # noqa
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = "pydra-fsl"
+project = "pydra-tasks-fsl"
 author = "Pydra Development Team"
 copyright = f"2022-2023, {author}"
 release = __version__

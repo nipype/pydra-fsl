@@ -55,7 +55,7 @@ test = [
 ]
 
 [project.urls]
-repository = "https://github.com/nipype/pydra-fsl"
+repository = "https://github.com/nipype/pydra-tasks-fsl"
 
 [tool.hatch.version]
 source = "vcs"
