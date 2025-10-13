@@ -2,7 +2,7 @@ import attrs
 from fileformats.datascience import TextMatrix
 from fileformats.generic import Directory, File
 from fileformats.medimage import NiftiGz
-from fileformats.medimage_fsl import Con
+from fileformats.vendor.fsl.medimage import Con
 from glob import glob
 import logging
 from pydra.tasks.fsl.v6.nipype_ports.utils.misc import human_order_sorted
@@ -165,7 +165,7 @@ class FLAMEO(shell.Task["FLAMEO.Outputs"]):
     >>> from fileformats.datascience import TextMatrix
     >>> from fileformats.generic import Directory, File
     >>> from fileformats.medimage import NiftiGz
-    >>> from fileformats.medimage_fsl import Con
+    >>> from fileformats.vendor.fsl.medimage import Con
     >>> from pydra.tasks.fsl.v6.model.flameo import FLAMEO
 
     >>> task = FLAMEO()

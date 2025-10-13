@@ -3,7 +3,7 @@ from pathlib import Path
 import typing as ty
 from random import Random
 from fileformats.core import FileSet, SampleFileGenerator
-from fileformats.medimage_fsl import (
+from fileformats.vendor.fsl.medimage import (
     Con,
 )
 

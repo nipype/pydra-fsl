@@ -53,7 +53,7 @@ inputs:
     # type=directory|default='stats':
     mask_file: generic/file
     # type=file|default=<undefined>: mask file
-    t_con_file: fileformats.medimage_fsl.Con
+    t_con_file: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: ascii matrix specifying t-contrasts
     var_cope_file: generic/file
     # type=file|default=<undefined>: varcope weightings data file

@@ -54,13 +54,13 @@ inputs:
     # type=file|default=<undefined>: file name of mask for thresholding
     mix: generic/file
     # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
-    s_con: fileformats.medimage_fsl.Con
+    s_con: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
     s_des: generic/file
     # type=file|default=<undefined>: design matrix across subject-domain
     smode: generic/file
     # type=file|default=<undefined>: matrix of session modes for report generation
-    t_con: fileformats.medimage_fsl.Con
+    t_con: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t-contrast matrix across time-domain
     t_des: generic/file
     # type=file|default=<undefined>: design matrix across time-domain
