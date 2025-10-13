@@ -39,7 +39,7 @@ inputs:
     # type=file|default=<undefined>: 4D input file
     mask: medimage/nifti1
     # type=file|default=<undefined>: mask image
-    tcon: fileformats.medimage_fsl.Con
+    tcon: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t contrasts file
     x_block_labels: generic/file
     # type=file|default=<undefined>: exchangeability block labels file

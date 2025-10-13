@@ -3,13 +3,13 @@ requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
 [project]
-name = "fileformats-medimage-fsl-extras"
+name = "fileformats-vendor-fsl-extras"
 description = "Extensions to add functionality to tool-specific *fileformats* classes"
 readme = "README.rst"
 requires-python = ">=3.8"
 dependencies = [
     "fileformats",
-    "fileformats-medimage-fsl",
+    "fileformats-vendor-fsl",
     "pydra >= 0.23.0a"
 ]
 license = {file = "LICENSE"}
@@ -58,21 +58,21 @@ converters = [
 ]
 
 [project.urls]
-repository = "https://github.com/nipype/pydra-fsl"
+repository = "https://github.com/nipype/pydra-tasks-fsl"
 
 [tool.hatch.version]
 source = "vcs"
 raw-options = { root = "../.." }
 
 [tool.hatch.build.hooks.vcs]
-version-file = "fileformats/extras/medimage_fsl/_version.py"
+version-file = "fileformats/extras/vendor/fsl/_version.py"
 
 [tool.hatch.build.targets.wheel]
 packages = ["fileformats"]
 
 [tool.black]
 target-version = ['py38']
-exclude = "fileformats/extras/medimage_fsl/_version.py"
+exclude = "fileformats/extras/vendor/fsl/_version.py"
 
 [tool.codespell]
 ignore-words = ".codespell-ignorewords"

@@ -13,7 +13,7 @@ Quick Installation
 
 This extension can be installed for Python 3 using *pip*::
 
-    $ pip3 install fileformats-medimage-fsl
+    $ pip3 install fileformats-vendor-fsl
 
 This will install the format extensions and dependent base packages.
 

@@ -1,7 +1,7 @@
 from fileformats.datascience import TextMatrix
 from fileformats.generic import Directory, File
 from fileformats.medimage import NiftiGz
-from fileformats.medimage_fsl import Con
+from fileformats.vendor.fsl.medimage import Con
 import logging
 from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.model.flameo import FLAMEO
