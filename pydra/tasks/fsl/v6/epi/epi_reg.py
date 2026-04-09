@@ -197,31 +197,35 @@ class EpiReg(shell.Task["EpiReg.Outputs"]):
         position=-1,
         default="epi2struct",
     )
-    fmap: Nifti1 = shell.arg(help="fieldmap image (in rad/s)", argstr="--fmap={fmap}")
-    fmapmag: File = shell.arg(
-        help="fieldmap magnitude image - wholehead", argstr="--fmapmag={fmapmag}"
+    fmap: Nifti1 | None = shell.arg(help="fieldmap image (in rad/s)", argstr="--fmap={fmap}", default=None)
+    fmapmag: File | None = shell.arg(
+        help="fieldmap magnitude image - wholehead", argstr="--fmapmag={fmapmag}", default=None
     )
-    fmapmagbrain: Nifti1 = shell.arg(
+    fmapmagbrain: Nifti1 | None = shell.arg(
         help="fieldmap magnitude image - brain extracted",
         argstr="--fmapmagbrain={fmapmagbrain}",
+        default=None,
     )
-    wmseg: File = shell.arg(
+    wmseg: File | None = shell.arg(
         help="white matter segmentation of T1 image, has to be named                  like the t1brain and end on _wmseg",
         argstr="--wmseg={wmseg}",
+        default=None,
     )
-    echospacing: float = shell.arg(
+    echospacing: float | None = shell.arg(
         help="Effective EPI echo spacing                                 (sometimes called dwell time) - in seconds",
         argstr="--echospacing={echospacing}",
+        default=None,
     )
     pedir: ty.Any = shell.arg(
-        help="phase encoding direction, dir = x/y/z/-x/-y/-z", argstr="--pedir={pedir}"
+        help="phase encoding direction, dir = x/y/z/-x/-y/-z", argstr="--pedir={pedir}", default=None
     )
-    weight_image: File = shell.arg(
-        help="weighting image (in T1 space)", argstr="--weight={weight_image}"
+    weight_image: File | None = shell.arg(
+        help="weighting image (in T1 space)", argstr="--weight={weight_image}", default=None
     )
     no_fmapreg: bool = shell.arg(
         help="do not perform registration of fmap to T1                         (use if fmap already registered)",
         argstr="--nofmapreg",
+        default=False,
     )
     no_clean: bool = shell.arg(
         help="do not clean up intermediate files", argstr="--noclean", default=True
