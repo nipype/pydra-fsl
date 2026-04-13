@@ -10,149 +10,128 @@ import typing as ty
 logger = logging.getLogger(__name__)
 
 
-def _list_outputs(inputs=None, stdout=None, stderr=None, output_dir=None):
-    inputs = attrs.asdict(inputs)
+def _list_outputs(inputs=None, stdout=None, stderr=None, cache_dir=None):
+    # inputs is a plain dict in pydra 1.0a9
+    if not isinstance(inputs, dict):
+        inputs = attrs.asdict(inputs)
 
     outputs = {}
-    outputs["out_file"] = os.path.join(os.getcwd(), inputs["out_base"] + ".nii.gz")
-    if not ((inputs["no_fmapreg"] is not attrs.NOTHING) and inputs["no_fmapreg"]) and (
-        inputs["fmap"] is not attrs.NOTHING
-    ):
-        outputs["out_1vol"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_1vol.nii.gz"
-        )
-        outputs["fmap2str_mat"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmap2str.mat"
-        )
-        outputs["fmap2epi_mat"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmaprads2epi.mat"
-        )
-        outputs["fmap_epi"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmaprads2epi.nii.gz"
-        )
-        outputs["fmap_str"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmaprads2str.nii.gz"
-        )
-        outputs["fmapmag_str"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmap2str.nii.gz"
-        )
-        outputs["shiftmap"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fieldmaprads2epi_shift.nii.gz"
-        )
-        outputs["fullwarp"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_warp.nii.gz"
-        )
-        outputs["epi2str_inv"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_inv.mat"
-        )
-    if inputs["wmseg"] is attrs.NOTHING:
-        outputs["wmedge"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fast_wmedge.nii.gz"
-        )
-        outputs["wmseg"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fast_wmseg.nii.gz"
-        )
-        outputs["seg"] = os.path.join(
-            os.getcwd(), inputs["out_base"] + "_fast_seg.nii.gz"
-        )
-    outputs["epi2str_mat"] = os.path.join(os.getcwd(), inputs["out_base"] + ".mat")
+    out_base = inputs.get("out_base", "epi2struct")
+    outputs["out_file"] = os.path.join(str(cache_dir), out_base + ".nii.gz")
+    fmap = inputs.get("fmap")
+    no_fmapreg = inputs.get("no_fmapreg", False)
+    if not no_fmapreg and fmap is not None:
+        outputs["out_1vol"] = os.path.join(str(cache_dir), out_base + "_1vol.nii.gz")
+        outputs["fmap2str_mat"] = os.path.join(str(cache_dir), out_base + "_fieldmap2str.mat")
+        outputs["fmap2epi_mat"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi.mat")
+        outputs["fmap_epi"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi.nii.gz")
+        outputs["fmap_str"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2str.nii.gz")
+        outputs["fmapmag_str"] = os.path.join(str(cache_dir), out_base + "_fieldmap2str.nii.gz")
+        outputs["shiftmap"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi_shift.nii.gz")
+        outputs["fullwarp"] = os.path.join(str(cache_dir), out_base + "_warp.nii.gz")
+        outputs["epi2str_inv"] = os.path.join(str(cache_dir), out_base + "_inv.mat")
+    if inputs.get("wmseg") is None:
+        outputs["wmedge"] = os.path.join(str(cache_dir), out_base + "_fast_wmedge.nii.gz")
+        outputs["wmseg"] = os.path.join(str(cache_dir), out_base + "_fast_wmseg.nii.gz")
+        outputs["seg"] = os.path.join(str(cache_dir), out_base + "_fast_seg.nii.gz")
+    outputs["epi2str_mat"] = os.path.join(str(cache_dir), out_base + ".mat")
     return outputs
 
 
-def out_file_callable(output_dir, inputs, stdout, stderr):
+def out_file_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("out_file")
 
 
-def out_1vol_callable(output_dir, inputs, stdout, stderr):
+def out_1vol_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("out_1vol")
 
 
-def fmap2str_mat_callable(output_dir, inputs, stdout, stderr):
+def fmap2str_mat_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fmap2str_mat")
 
 
-def fmap2epi_mat_callable(output_dir, inputs, stdout, stderr):
+def fmap2epi_mat_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fmap2epi_mat")
 
 
-def fmap_epi_callable(output_dir, inputs, stdout, stderr):
+def fmap_epi_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fmap_epi")
 
 
-def fmap_str_callable(output_dir, inputs, stdout, stderr):
+def fmap_str_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fmap_str")
 
 
-def fmapmag_str_callable(output_dir, inputs, stdout, stderr):
+def fmapmag_str_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fmapmag_str")
 
 
-def epi2str_inv_callable(output_dir, inputs, stdout, stderr):
+def epi2str_inv_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("epi2str_inv")
 
 
-def epi2str_mat_callable(output_dir, inputs, stdout, stderr):
+def epi2str_mat_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("epi2str_mat")
 
 
-def shiftmap_callable(output_dir, inputs, stdout, stderr):
+def shiftmap_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("shiftmap")
 
 
-def fullwarp_callable(output_dir, inputs, stdout, stderr):
+def fullwarp_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("fullwarp")
 
 
-def wmseg_callable(output_dir, inputs, stdout, stderr):
+def wmseg_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("wmseg")
 
 
-def seg_callable(output_dir, inputs, stdout, stderr):
+def seg_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("seg")
 
 
-def wmedge_callable(output_dir, inputs, stdout, stderr):
+def wmedge_callable(cache_dir, inputs, stdout, stderr):
     outputs = _list_outputs(
-        output_dir=output_dir, inputs=inputs, stdout=stdout, stderr=stderr
+        cache_dir=cache_dir, inputs=inputs, stdout=stdout, stderr=stderr
     )
     return outputs.get("wmedge")
 
@@ -184,11 +163,11 @@ class EpiReg(shell.Task["EpiReg.Outputs"]):
     """
 
     executable = "epi_reg"
-    epi: Nifti1 = shell.arg(help="EPI image", argstr="--epi={epi}", position=-4)
+    epi: File = shell.arg(help="EPI image", argstr="--epi={epi}", position=-4)
     t1_head: File = shell.arg(
         help="wholehead T1 image", argstr="--t1={t1_head}", position=-3
     )
-    t1_brain: Nifti1 = shell.arg(
+    t1_brain: File = shell.arg(
         help="brain extracted T1 image", argstr="--t1brain={t1_brain}", position=-2
     )
     out_base: ty.Any = shell.arg(
