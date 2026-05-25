@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.dti.find_the_biggest import FindTheBiggest
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

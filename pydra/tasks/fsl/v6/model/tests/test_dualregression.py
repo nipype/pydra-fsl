@@ -5,7 +5,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.model.dual_regression import DualRegression
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

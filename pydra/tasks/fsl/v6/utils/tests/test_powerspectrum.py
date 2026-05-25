@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.utils.power_spectrum import PowerSpectrum
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

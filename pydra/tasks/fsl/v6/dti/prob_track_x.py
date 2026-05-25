@@ -8,7 +8,6 @@ import os
 from pydra.compose import shell
 import typing as ty
 
-
 logger = logging.getLogger(__name__)
 
 

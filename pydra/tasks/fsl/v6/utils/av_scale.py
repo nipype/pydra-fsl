@@ -3,7 +3,6 @@ from fileformats.generic import File
 import logging
 from pydra.compose import shell
 
-
 logger = logging.getLogger(__name__)
 
 

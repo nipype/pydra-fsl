@@ -10,7 +10,6 @@ from pydra.utils.typing import MultiOutputType
 from string import Template
 import typing as ty
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -83,7 +82,7 @@ class Level1Design(python.Task["Level1Design.Outputs"]):
                 basis_key,
             )
             nim = load(func_files[i])
-            (_, _, _, timepoints) = nim.shape
+            _, _, _, timepoints = nim.shape
             fsf_txt = fsf_header.substitute(
                 run_num=i,
                 interscan_interval=interscan_interval,

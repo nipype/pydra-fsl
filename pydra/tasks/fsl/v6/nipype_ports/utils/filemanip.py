@@ -3,7 +3,6 @@ import logging
 import os.path as op
 import simplejson as json
 
-
 logger = logging.getLogger(__name__)
 
 

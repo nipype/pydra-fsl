@@ -9,7 +9,6 @@ from pathlib import Path
 from pydra.compose import shell
 import tempfile
 
-
 logger = logging.getLogger(__name__)
 
 
