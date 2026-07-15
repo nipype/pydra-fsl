@@ -3,8 +3,6 @@ from fileformats.generic import File
 import logging
 from pydra.tasks.fsl.v6.nipype_ports.utils.filemanip import fname_presuffix
 import os
-from pathlib import Path
-from pathlib import Path
 from pydra.compose import shell
 import typing as ty
 
@@ -34,8 +32,20 @@ def _format_arg(name, value, inputs, argstr):
     return argstr.format(**inputs)
 
 
-def thresh_formatter(field, inputs):
-    return _format_arg("thresh", field, inputs, argstr="{thresh}")
+def thresh_formatter(thresh, inputs):
+    if thresh is None:
+        return ""
+    arg = "-"
+    if inputs.get("direction") == "above":
+        arg += "u"
+    arg += "thr"
+    if inputs.get("use_robust_range"):
+        if inputs.get("use_nonzero_voxels"):
+            arg += "P"
+        else:
+            arg += "p"
+    arg += " %.10f" % thresh
+    return arg
 
 
 def _gen_filename(name, inputs):
@@ -66,16 +76,17 @@ class Threshold(shell.Task["Threshold.Outputs"]):
 
     executable = "fslmaths"
     thresh: float | None = shell.arg(
-        help="threshold value", position=4, formatter="thresh_formatter", default=None
+        help="threshold value", position=4, formatter=thresh_formatter, default=None
     )
     direction: ty.Any | None = shell.arg(
-        help="zero-out either below or above thresh value", default="below"
+        help="zero-out either below or above thresh value", argstr=None, default="below"
     )
     use_robust_range: bool | None = shell.arg(
-        help="interpret thresh as percentage (0-100) of robust range"
+        help="interpret thresh as percentage (0-100) of robust range", argstr=None, default=None
     )
     use_nonzero_voxels: bool | None = shell.arg(
         help="use nonzero voxels to calculate robust range",
+        argstr=None,
         requires=["use_robust_range"],
         default=None,
     )
@@ -102,11 +113,12 @@ class Threshold(shell.Task["Threshold.Outputs"]):
     )
 
     class Outputs(shell.Outputs):
-        out_file: Path = shell.outarg(
+        out_file: File | bool = shell.outarg(
             help="image to write",
             argstr="{out_file}",
             position=-2,
-            path_template="out_file",
+            path_template="{in_file}",
+            default=True,
         )
 
 
