@@ -312,7 +312,7 @@ class Eddy(shell.Task["Eddy.Outputs"]):
     )
     out_base: str = shell.arg(
         help="Basename for output image",
-        formatter="out_base_formatter",
+        formatter=out_base_formatter,
         default="eddy_corrected",
     )
     session: File = shell.arg(
@@ -322,14 +322,14 @@ class Eddy(shell.Task["Eddy.Outputs"]):
     in_topup_fieldcoef: File | None = shell.arg(
         help="Topup results file containing the field coefficients",
         requires=["in_topup_movpar"],
-        formatter="in_topup_fieldcoef_formatter",
+        formatter=in_topup_fieldcoef_formatter,
     )
     in_topup_movpar: File | None = shell.arg(
         help="Topup results file containing the movement parameters (movpar.txt)",
         requires=["in_topup_fieldcoef"],
     )
     field: File = shell.arg(
-        help="Non-topup derived fieldmap scaled in Hz", formatter="field_formatter"
+        help="Non-topup derived fieldmap scaled in Hz", formatter=field_formatter
     )
     field_mat: File = shell.arg(
         help="Matrix specifying the relative positions of the fieldmap, --field, and the first volume of the input file, --imain",

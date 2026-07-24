@@ -15,7 +15,7 @@ try:
     from ._version import __version__
 except ImportError:
     raise RuntimeError(
-        "pydra-fsl has not been properly installed, please run "
+        "pydra-tasks-fsl has not been properly installed, please run "
         f"`pip install -e {str(pkg_path)}` to install a development version"
     )
 

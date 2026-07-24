@@ -2,7 +2,7 @@ import attrs
 from fileformats.datascience import TextMatrix
 from fileformats.generic import File
 from fileformats.medimage import Nifti1
-from fileformats.medimage_fsl import Con
+from fileformats.vendor.fsl.medimage import Con
 from glob import glob
 import logging
 from pydra.tasks.fsl.v6.nipype_ports.utils.filemanip import fname_presuffix
@@ -141,7 +141,7 @@ class Randomise(shell.Task["Randomise.Outputs"]):
     >>> from fileformats.datascience import TextMatrix
     >>> from fileformats.generic import File
     >>> from fileformats.medimage import Nifti1
-    >>> from fileformats.medimage_fsl import Con
+    >>> from fileformats.vendor.fsl.medimage import Con
     >>> from pydra.tasks.fsl.v6.model.randomise import Randomise
 
     >>> task = Randomise()

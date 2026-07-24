@@ -56,7 +56,7 @@ class IsotropicSmooth(shell.Task["IsotropicSmooth.Outputs"]):
 
     executable = "fslmaths"
     fwhm: float | None = shell.arg(
-        help="fwhm of smoothing kernel [mm]", position=4, formatter="fwhm_formatter"
+        help="fwhm of smoothing kernel [mm]", position=4, formatter=fwhm_formatter
     )
     sigma: float | None = shell.arg(
         help="sigma of smoothing kernel [mm]", argstr="-s {sigma:.5}", position=4

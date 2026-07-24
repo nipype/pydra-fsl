@@ -106,7 +106,7 @@ class ICA_AROMA(shell.Task["ICA_AROMA.Outputs"]):
         help="volume to be denoised", argstr="-i {in_file}"
     )
     out_dir: ty.Any | None = shell.arg(
-        help="output directory", formatter="out_dir_formatter", default="out"
+        help="output directory", formatter=out_dir_formatter, default="out"
     )
     mask: NiftiGz | None = shell.arg(help="path/name volume mask", argstr="-m {mask}")
     dim: int = shell.arg(

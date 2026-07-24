@@ -1,5 +1,5 @@
 import pytest
-from fileformats.medimage_fsl import (
+from fileformats.vendor.fsl.medimage import (
     Con,
 )
 

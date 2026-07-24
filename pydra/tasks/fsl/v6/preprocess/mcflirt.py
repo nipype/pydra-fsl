@@ -238,7 +238,7 @@ class MCFLIRT(shell.Task["MCFLIRT.Outputs"]):
     init: File = shell.arg(help="initial transformation matrix", argstr="-init {init}")
     interpolation: ty.Any = shell.arg(
         help="interpolation method for transformation",
-        formatter="interpolation_formatter",
+        formatter=interpolation_formatter,
     )
     use_gradient: bool = shell.arg(help="run search on gradient images", argstr="-gdt")
     use_contour: bool = shell.arg(help="run search on contour images", argstr="-edge")

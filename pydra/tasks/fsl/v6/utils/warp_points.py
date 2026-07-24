@@ -104,5 +104,5 @@ class WarpPoints(shell.Task["WarpPoints.Outputs"]):
         out_file: Path = shell.outarg(
             help="output file name",
             path_template="{in_coords}_warped",
-            formatter="out_file_formatter",
+            formatter=out_file_formatter,
         )

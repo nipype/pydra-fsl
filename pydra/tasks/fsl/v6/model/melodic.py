@@ -1,6 +1,6 @@
 import attrs
 from fileformats.generic import Directory, File
-from fileformats.medimage_fsl import Con
+from fileformats.vendor.fsl.medimage import Con
 import logging
 import os
 from pydra.compose import shell
@@ -52,7 +52,7 @@ class MELODIC(shell.Task["MELODIC.Outputs"]):
     -------
 
     >>> from fileformats.generic import Directory, File
-    >>> from fileformats.medimage_fsl import Con
+    >>> from fileformats.vendor.fsl.medimage import Con
     >>> from pydra.tasks.fsl.v6.model.melodic import MELODIC
 
     >>> task = MELODIC()

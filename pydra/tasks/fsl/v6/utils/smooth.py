@@ -65,7 +65,7 @@ class Smooth(shell.Task["Smooth.Outputs"]):
     )
     fwhm: float | None = shell.arg(
         help="gaussian kernel fwhm, will be converted to sigma in mm (not voxels)",
-        formatter="fwhm_formatter",
+        formatter=fwhm_formatter,
         position=2,
     )
 

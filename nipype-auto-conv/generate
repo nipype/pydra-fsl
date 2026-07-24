@@ -1,3 +1,51 @@
 #!/usr/bin/env bash
+set -e
+
 conv_dir=$(dirname $0)
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+AUTO_CONV_SUFFIX="-auto-conv"
+REBASED_SUFFIX="-rebased-on-auto-conv"
+
+if ! git diff-index --quiet HEAD --; then
+    echo "Current branch '$CURRENT_BRANCH' has uncommitted changes. Please commit or stash them before proceeding."
+    exit 1
+fi
+
+echo "Automatically converting Nipype tasks to Pydra tasks..."
+
+echo "Create '$CURRENT_BRANCH$REBASED_SUFFIX' and '$CURRENT_BRANCH$AUTO_CONV_SUFFIX' branches if not present and switch to $CURRENT_BRANCH$AUTO_CONV_SUFFIX"
+echo "NB: $CURRENT_BRANCH$AUTO_CONV_SUFFIX will contain the conversion specs from '$CURRENT_BRANCH' and the auto-converted tasks,"
+echo "wherease '$CURRENT_BRANCH$REBASED_SUFFIX' will be the changes in the current branch rebased on that"
+if [ "$CURRENT_BRANCH" == "*$REBASED_SUFFIX"]; then
+    BASE_BRANCH=${CURRENT_BRANCH%"$REBASED_SUFFIX"}$AUTO_CONV_SUFFIX
+    REBASE_BRANCH=$CURRENT_BRANCH
+    git checkout $BASE_BRANCH
+    git reset --hard $CURRENT_BRANCH
+else
+    REBASE_BRANCH=${CURRENT_BRANCH}$REBASED_SUFFIX
+    BASE_BRANCH=${CURRENT_BRANCH}$AUTO_CONV_SUFFIX
+    git checkout -b $REBASE_BRANCH
+    git checkout -b $BASE_BRANCH
+fi
+
+echo "Apply nipype-auto-conv spec changes between current branch and the main auto-conv branch to the rebase branch..."
+git fetch origin auto-conv
+git reset origin/auto-conv
+git add $conv_dir/specs
+git commit -m "Update auto-conv specs with latest changes from '$CURRENT_BRANCH'" || echo true
+# Ignore any other changes outside the nipype-auto-conv/specs directory
+git reset --hard HEAD
+
+echo "Running nipype2pydra conversion..."
 nipype2pydra convert $conv_dir/specs $conv_dir/..
+
+echo "Committing converted tasks to ${CURRENT_BRANCH}$AUTO_CONV_SUFFIX..."
+git add pydra/tasks/fsl
+git commit -m "Auto-converted Nipype tasks to Pydra tasks" || echo true
+
+echo "Rebasing '$REBASE_BRANCH' to apply changes..."
+git checkout $REBASE_BRANCH
+git rebase $BASE_BRANCH
+
+echo "Successfully converted Nipype tasks to Pydra tasks and rebased manual edits over the top of them in '$REBASE_BRANCH'

@@ -101,10 +101,10 @@ class ImageStats(shell.Task["ImageStats.Outputs"]):
     op_string: str = shell.arg(
         help="string defining the operation, options are applied in order, e.g. -M -l 10 -M will report the non-zero mean, apply a threshold and then report the new nonzero mean",
         position=4,
-        formatter="op_string_formatter",
+        formatter=op_string_formatter,
     )
     mask_file: File = shell.arg(
-        help="mask file used for option -k %s", formatter="mask_file_formatter"
+        help="mask file used for option -k %s", formatter=mask_file_formatter
     )
     index_mask_file: File = shell.arg(
         help="generate separate n submasks from indexMask, for indexvalues 1..n where n is the maximum index value in indexMask, and generate statistics for each submask",

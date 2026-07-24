@@ -135,11 +135,11 @@ jobs:
     - name: Install task package
       run: |
         pip install "./related-packages/fileformats[test]" "./related-packages/fileformats-extras[test]"
-        python -c "import fileformats.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+        python -c "import fileformats.vendor.fsl.medimage as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
     - name: Test fileformats with pytest
       run: >-
-        pytest ./related-packages -sv --cov fileformats.medimage_fsl
-        --cov fileformats.extras.medimage_fsl --cov-report xml
+        pytest ./related-packages -sv --cov fileformats.vendor.fsl.medimage
+        --cov fileformats.extras.medimage_fsl --cov-report xml 
 
   deploy-fileformats:
     needs: [build, test, fileformats-test]

@@ -87,7 +87,7 @@ class ExtractROI(shell.Task["ExtractROI.Outputs"]):
     t_size: int | None = shell.arg(help="", argstr="{t_size}", position=10)
     crop_list: list[ty.Any] = shell.arg(
         help="list of two tuples specifying crop options",
-        formatter="crop_list_formatter",
+        formatter=crop_list_formatter,
         position=3,
     )
 

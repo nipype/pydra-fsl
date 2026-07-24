@@ -61,7 +61,7 @@ test = [
   "fileformats-extras",
   "fileformats-datascience-extras",
   "fileformats-medimage-extras",
-  "fileformats-medimage-fsl-extras",
+  "fileformats-vendor-fsl-extras",
 ]
 
 [tool.hatch.build]

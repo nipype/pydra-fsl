@@ -290,7 +290,7 @@ class BET(shell.Task["BET.Outputs"]):
 
     executable = "bet"
     in_file: Nifti1 = shell.arg(
-        help="input file to skull strip", formatter="in_file_formatter", position=1
+        help="input file to skull strip", formatter=in_file_formatter, position=1
     )
     outline: bool = shell.arg(help="create surface outline image", argstr="-o")
     mask: bool = shell.arg(help="create binary mask image", argstr="-m")

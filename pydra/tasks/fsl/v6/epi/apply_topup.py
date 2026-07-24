@@ -82,7 +82,7 @@ class ApplyTOPUP(shell.Task["ApplyTOPUP.Outputs"]):
     in_topup_fieldcoef: NiftiGz | None = shell.arg(
         help="topup file containing the field coefficients",
         requires=["in_topup_movpar"],
-        formatter="in_topup_fieldcoef_formatter",
+        formatter=in_topup_fieldcoef_formatter,
     )
     in_topup_movpar: File | None = shell.arg(
         help="topup movpar.txt file", requires=["in_topup_fieldcoef"]
