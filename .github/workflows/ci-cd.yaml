@@ -81,7 +81,7 @@ jobs:
         python -m venv .venv
         source .venv/bin/activate
         python -m pip install --upgrade pip setuptools wheel
-        pip install --upgrade -r neurodesk/requirements.txt
+        sed 's/==.*//' neurodesk/requirements.txt | pip install -r /dev/stdin
         bash build.sh --cli
         echo "APPTAINER_BINDPATH=`pwd -P`" >> $GITHUB_ENV
 
