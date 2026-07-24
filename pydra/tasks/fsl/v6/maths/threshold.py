@@ -82,7 +82,9 @@ class Threshold(shell.Task["Threshold.Outputs"]):
         help="zero-out either below or above thresh value", argstr=None, default="below"
     )
     use_robust_range: bool | None = shell.arg(
-        help="interpret thresh as percentage (0-100) of robust range", argstr=None, default=None
+        help="interpret thresh as percentage (0-100) of robust range",
+        argstr=None,
+        default=None,
     )
     use_nonzero_voxels: bool | None = shell.arg(
         help="use nonzero voxels to calculate robust range",

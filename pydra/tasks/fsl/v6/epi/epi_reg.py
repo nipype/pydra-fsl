@@ -22,16 +22,30 @@ def _list_outputs(inputs=None, stdout=None, stderr=None, cache_dir=None):
     no_fmapreg = inputs.get("no_fmapreg", False)
     if not no_fmapreg and fmap is not None:
         outputs["out_1vol"] = os.path.join(str(cache_dir), out_base + "_1vol.nii.gz")
-        outputs["fmap2str_mat"] = os.path.join(str(cache_dir), out_base + "_fieldmap2str.mat")
-        outputs["fmap2epi_mat"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi.mat")
-        outputs["fmap_epi"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi.nii.gz")
-        outputs["fmap_str"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2str.nii.gz")
-        outputs["fmapmag_str"] = os.path.join(str(cache_dir), out_base + "_fieldmap2str.nii.gz")
-        outputs["shiftmap"] = os.path.join(str(cache_dir), out_base + "_fieldmaprads2epi_shift.nii.gz")
+        outputs["fmap2str_mat"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmap2str.mat"
+        )
+        outputs["fmap2epi_mat"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmaprads2epi.mat"
+        )
+        outputs["fmap_epi"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmaprads2epi.nii.gz"
+        )
+        outputs["fmap_str"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmaprads2str.nii.gz"
+        )
+        outputs["fmapmag_str"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmap2str.nii.gz"
+        )
+        outputs["shiftmap"] = os.path.join(
+            str(cache_dir), out_base + "_fieldmaprads2epi_shift.nii.gz"
+        )
         outputs["fullwarp"] = os.path.join(str(cache_dir), out_base + "_warp.nii.gz")
         outputs["epi2str_inv"] = os.path.join(str(cache_dir), out_base + "_inv.mat")
     if inputs.get("wmseg") is None:
-        outputs["wmedge"] = os.path.join(str(cache_dir), out_base + "_fast_wmedge.nii.gz")
+        outputs["wmedge"] = os.path.join(
+            str(cache_dir), out_base + "_fast_wmedge.nii.gz"
+        )
         outputs["wmseg"] = os.path.join(str(cache_dir), out_base + "_fast_wmseg.nii.gz")
         outputs["seg"] = os.path.join(str(cache_dir), out_base + "_fast_seg.nii.gz")
     outputs["epi2str_mat"] = os.path.join(str(cache_dir), out_base + ".mat")
@@ -176,9 +190,13 @@ class EpiReg(shell.Task["EpiReg.Outputs"]):
         position=-1,
         default="epi2struct",
     )
-    fmap: Nifti1 | None = shell.arg(help="fieldmap image (in rad/s)", argstr="--fmap={fmap}", default=None)
+    fmap: Nifti1 | None = shell.arg(
+        help="fieldmap image (in rad/s)", argstr="--fmap={fmap}", default=None
+    )
     fmapmag: File | None = shell.arg(
-        help="fieldmap magnitude image - wholehead", argstr="--fmapmag={fmapmag}", default=None
+        help="fieldmap magnitude image - wholehead",
+        argstr="--fmapmag={fmapmag}",
+        default=None,
     )
     fmapmagbrain: Nifti1 | None = shell.arg(
         help="fieldmap magnitude image - brain extracted",
@@ -196,10 +214,14 @@ class EpiReg(shell.Task["EpiReg.Outputs"]):
         default=None,
     )
     pedir: ty.Any = shell.arg(
-        help="phase encoding direction, dir = x/y/z/-x/-y/-z", argstr="--pedir={pedir}", default=None
+        help="phase encoding direction, dir = x/y/z/-x/-y/-z",
+        argstr="--pedir={pedir}",
+        default=None,
     )
     weight_image: File | None = shell.arg(
-        help="weighting image (in T1 space)", argstr="--weight={weight_image}", default=None
+        help="weighting image (in T1 space)",
+        argstr="--weight={weight_image}",
+        default=None,
     )
     no_fmapreg: bool = shell.arg(
         help="do not perform registration of fmap to T1                         (use if fmap already registered)",
