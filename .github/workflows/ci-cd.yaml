@@ -139,7 +139,7 @@ jobs:
     - name: Test fileformats with pytest
       run: >-
         pytest ./related-packages -sv --cov fileformats.medimage_fsl
-        --cov fileformats.extras.medimage_fsl --cov-report xml .
+        --cov fileformats.extras.medimage_fsl --cov-report xml
 
   deploy-fileformats:
     needs: [build, test, fileformats-test]
