@@ -78,7 +78,10 @@ jobs:
       run: |
         git clone https://github.com/NeuroDesk/neurocommand.git
         pushd neurocommand
-        pip3 install -r neurodesk/requirements.txt --user
+        python -m venv .venv
+        source .venv/bin/activate
+        python -m pip install --upgrade pip setuptools wheel
+        pip install --upgrade -r neurodesk/requirements.txt
         bash build.sh --cli
         echo "APPTAINER_BINDPATH=`pwd -P`" >> $GITHUB_ENV
 
@@ -88,6 +91,7 @@ jobs:
 
         ./local/fetch_containers.sh ${{ env.SCIGET_NAME }} ${{ env.SCIGET_VERSION }} $SCIGET_BUILDVERSION
         echo "SCIGET_BUILDVERSION=$SCIGET_BUILDVERSION" >> $GITHUB_ENV
+        deactivate
         popd
 
     - name: Set up Python ${{ matrix.python-version }}
