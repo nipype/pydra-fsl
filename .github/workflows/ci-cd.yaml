@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.11', '3.13']
+        python-version: ['3.11', '3.14']
       fail-fast: false
 
     steps:
@@ -78,7 +78,10 @@ jobs:
       run: |
         git clone https://github.com/NeuroDesk/neurocommand.git
         pushd neurocommand
-        pip3 install -r neurodesk/requirements.txt --user
+        python -m venv .venv
+        source .venv/bin/activate
+        python -m pip install --upgrade pip setuptools wheel
+        sed 's/==.*//' neurodesk/requirements.txt | pip install -r /dev/stdin
         bash build.sh --cli
         echo "APPTAINER_BINDPATH=`pwd -P`" >> $GITHUB_ENV
 
@@ -88,12 +91,15 @@ jobs:
 
         ./local/fetch_containers.sh ${{ env.SCIGET_NAME }} ${{ env.SCIGET_VERSION }} $SCIGET_BUILDVERSION
         echo "SCIGET_BUILDVERSION=$SCIGET_BUILDVERSION" >> $GITHUB_ENV
+        deactivate
         popd
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Upgrade pip, setuptools and wheel
+      run: python -m pip install --upgrade pip setuptools wheel
     - name: Install the latest version of uv
       uses: astral-sh/setup-uv@v6
     - name: Install tox
@@ -113,7 +119,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.11', '3.13']
+        python-version: ['3.11', '3.14']
     steps:
     - uses: actions/checkout@v3
     - name: Revert version to most recent tag on upstream update
@@ -133,7 +139,7 @@ jobs:
     - name: Test fileformats with pytest
       run: >-
         pytest ./related-packages -sv --cov fileformats.vendor.fsl.medimage
-        --cov fileformats.extras.medimage_fsl --cov-report xml .
+        --cov fileformats.extras.medimage_fsl --cov-report xml
 
   deploy-fileformats:
     needs: [build, test, fileformats-test]
