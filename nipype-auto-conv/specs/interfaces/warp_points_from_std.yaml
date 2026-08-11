@@ -6,24 +6,24 @@
 # Docs
 # ----
 #
-#     Use FSL `std2imgcoord <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/flirt/overview.html>`_
-#     to transform point sets to standard space coordinates. Accepts plain text coordinates
-#     files.
+# Use FSL `std2imgcoord <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/flirt/overview.html>`_
+# to transform point sets to standard space coordinates. Accepts plain text coordinates
+# files.
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import WarpPointsFromStd
-#     >>> warppoints = WarpPointsFromStd()
-#     >>> warppoints.inputs.in_coords = 'surf.txt'
-#     >>> warppoints.inputs.img_file = 'T1.nii'
-#     >>> warppoints.inputs.std_file = 'mni.nii'
-#     >>> warppoints.inputs.warp_file = 'warpfield.nii'
-#     >>> warppoints.inputs.coord_mm = True
-#     >>> warppoints.cmdline # doctest: +ELLIPSIS
-#     'std2imgcoord -mm -img T1.nii -std mni.nii -warp warpfield.nii surf.txt'
-#     >>> res = warppoints.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import WarpPointsFromStd
+# >>> warppoints = WarpPointsFromStd()
+# >>> warppoints.inputs.in_coords = 'surf.txt'
+# >>> warppoints.inputs.img_file = 'T1.nii'
+# >>> warppoints.inputs.std_file = 'mni.nii'
+# >>> warppoints.inputs.warp_file = 'warpfield.nii'
+# >>> warppoints.inputs.coord_mm = True
+# >>> warppoints.cmdline # doctest: +ELLIPSIS
+# 'std2imgcoord -mm -img T1.nii -std mni.nii -warp warpfield.nii surf.txt'
+# >>> res = warppoints.run() # doctest: +SKIP
 #
 #
 #
@@ -41,13 +41,13 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    img_file: medimage/nifti1
+    img_file: generic/file
     # type=file|default=<undefined>: filename of a destination image
     in_coords: text/text-file
     # type=file|default=<undefined>: filename of file containing coordinates
     std_file: medimage/nifti1
     # type=file|default=<undefined>: filename of the image in standard space
-    warp_file: medimage/nifti1
+    warp_file: generic/file
     # type=file|default=<undefined>: filename of warpfield (e.g. intermediate2dest_warp.nii.gz)
     xfm_file: generic/file
     # type=file|default=<undefined>: filename of affine transform (e.g. source2dest.mat)
@@ -73,7 +73,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -99,7 +99,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -118,16 +118,12 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_coords:
     # type=file|default=<undefined>: filename of file containing coordinates
-    img_file:
-    # type=file|default=<undefined>: filename of a destination image
     std_file:
     # type=file|default=<undefined>: filename of the image in standard space
-    warp_file:
-    # type=file|default=<undefined>: filename of warpfield (e.g. intermediate2dest_warp.nii.gz)
     coord_mm: 'True'
     # type=bool|default=False: all coordinates in mm
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -150,16 +146,12 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_coords: '"surf.txt"'
     # type=file|default=<undefined>: filename of file containing coordinates
-    img_file: '"T1.nii"'
-    # type=file|default=<undefined>: filename of a destination image
     std_file: '"mni.nii"'
     # type=file|default=<undefined>: filename of the image in standard space
-    warp_file: '"warpfield.nii"'
-    # type=file|default=<undefined>: filename of warpfield (e.g. intermediate2dest_warp.nii.gz)
     coord_mm: 'True'
     # type=bool|default=False: all coordinates in mm
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -7,32 +7,32 @@
 # ----
 # FSL FNIRT wrapper for non-linear registration
 #
-#     For complete details, see the `FNIRT Documentation.
-#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT>`_
+# For complete details, see the `FNIRT Documentation.
+# <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT>`_
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces import fsl
-#     >>> from nipype.testing import example_data
-#     >>> fnt = fsl.FNIRT(affine_file=example_data('trans.mat'))
-#     >>> res = fnt.run(ref_file=example_data('mni.nii', in_file=example_data('structural.nii')) #doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces import fsl
+# >>> from nipype.testing import example_data
+# >>> fnt = fsl.FNIRT(affine_file=example_data('trans.mat'))
+# >>> res = fnt.run(ref_file=example_data('mni.nii', in_file=example_data('structural.nii')) #doctest: +SKIP
 #
-#     T1 -> Mni153
+# T1 -> Mni153
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> fnirt_mprage = fsl.FNIRT()
-#     >>> fnirt_mprage.inputs.in_fwhm = [8, 4, 2, 2]
-#     >>> fnirt_mprage.inputs.subsampling_scheme = [4, 2, 1, 1]
+# >>> from nipype.interfaces import fsl
+# >>> fnirt_mprage = fsl.FNIRT()
+# >>> fnirt_mprage.inputs.in_fwhm = [8, 4, 2, 2]
+# >>> fnirt_mprage.inputs.subsampling_scheme = [4, 2, 1, 1]
 #
-#     Specify the resolution of the warps
+# Specify the resolution of the warps
 #
-#     >>> fnirt_mprage.inputs.warp_resolution = (6, 6, 6)
-#     >>> res = fnirt_mprage.run(in_file='structural.nii', ref_file='mni.nii', warped_file='warped.nii', fieldcoeff_file='fieldcoeff.nii')#doctest: +SKIP
+# >>> fnirt_mprage.inputs.warp_resolution = (6, 6, 6)
+# >>> res = fnirt_mprage.run(in_file='structural.nii', ref_file='mni.nii', warped_file='warped.nii', fieldcoeff_file='fieldcoeff.nii')#doctest: +SKIP
 #
-#     We can check the command line and confirm that it's what we expect.
+# We can check the command line and confirm that it's what we expect.
 #
-#     >>> fnirt_mprage.cmdline  #doctest: +SKIP
-#     'fnirt --cout=fieldcoeff.nii --in=structural.nii --infwhm=8,4,2,2 --ref=mni.nii --subsamp=4,2,1,1 --warpres=6,6,6 --iout=warped.nii'
+# >>> fnirt_mprage.cmdline  #doctest: +SKIP
+# 'fnirt --cout=fieldcoeff.nii --in=structural.nii --infwhm=8,4,2,2 --ref=mni.nii --subsamp=4,2,1,1 --warpres=6,6,6 --iout=warped.nii'
 #
 #
 task_name: FNIRT
@@ -59,16 +59,10 @@ inputs:
     # type=file|default=<undefined>: name of file with mask in input image space
     inwarp_file: generic/file
     # type=file|default=<undefined>: name of file containing initial non-linear warps
-    log_file: Path
-    # type=file: Name of log-file
-    # type=file|default=<undefined>: Name of log-file
     ref_file: generic/file
     # type=file|default=<undefined>: name of reference image
     refmask_file: generic/file
     # type=file|default=<undefined>: name of file with mask in reference space
-    warped_file: Path
-    # type=file: warped image
-    # type=file|default=<undefined>: name of output image
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -110,7 +104,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     log_file: log_file
     # type=file: Name of log-file
     # type=file|default=<undefined>: Name of log-file
@@ -213,13 +207,13 @@ tests:
     hessian_precision:
     # type=enum|default='double'|allowed['double','float']: Precision for representing Hessian, double or float. Default double
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -238,12 +232,10 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_fwhm: '[8, 4, 2, 2]'
     # type=list|default=[]: FWHM (in mm) of gaussian smoothing kernel for input volume, default [6, 4, 2, 2]
-    subsampling_scheme: '[4, 2, 1, 1]'
-    # type=list|default=[]: sub-sampling scheme, list, default [4, 2, 1, 1]
     warp_resolution: (6, 6, 6)
     # type=tuple|default=(0, 0, 0): (approximate) resolution (in mm) of warp basis in x-, y- and z-direction, default 10, 10, 10
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: example_data
@@ -269,10 +261,10 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_fwhm: '[8, 4, 2, 2]'
     # type=list|default=[]: FWHM (in mm) of gaussian smoothing kernel for input volume, default [6, 4, 2, 2]
-    subsampling_scheme: '[4, 2, 1, 1]    Specify the resolution of the warps    >>> fnirt_mprage.inputs.warp_resolution = (6, 6, 6)'
-    # type=list|default=[]: sub-sampling scheme, list, default [4, 2, 1, 1]
+    warp_resolution: (6, 6, 6)
+    # type=tuple|default=(0, 0, 0): (approximate) resolution (in mm) of warp basis in x-, y- and z-direction, default 10, 10, 10
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

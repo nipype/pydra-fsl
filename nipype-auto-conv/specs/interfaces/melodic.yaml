@@ -6,27 +6,27 @@
 # Docs
 # ----
 # Multivariate Exploratory Linear Optimised Decomposition into Independent
-#     Components
+# Components
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> melodic_setup = MELODIC()
-#     >>> melodic_setup.inputs.approach = 'tica'
-#     >>> melodic_setup.inputs.in_files = ['functional.nii', 'functional2.nii', 'functional3.nii']
-#     >>> melodic_setup.inputs.no_bet = True
-#     >>> melodic_setup.inputs.bg_threshold = 10
-#     >>> melodic_setup.inputs.tr_sec = 1.5
-#     >>> melodic_setup.inputs.mm_thresh = 0.5
-#     >>> melodic_setup.inputs.out_stats = True
-#     >>> melodic_setup.inputs.t_des = 'timeDesign.mat'
-#     >>> melodic_setup.inputs.t_con = 'timeDesign.con'
-#     >>> melodic_setup.inputs.s_des = 'subjectDesign.mat'
-#     >>> melodic_setup.inputs.s_con = 'subjectDesign.con'
-#     >>> melodic_setup.inputs.out_dir = 'groupICA.out'
-#     >>> melodic_setup.cmdline
-#     'melodic -i functional.nii,functional2.nii,functional3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000'
-#     >>> melodic_setup.run() # doctest: +SKIP
+# >>> melodic_setup = MELODIC()
+# >>> melodic_setup.inputs.approach = 'tica'
+# >>> melodic_setup.inputs.in_files = ['functional.nii', 'functional2.nii', 'functional3.nii']
+# >>> melodic_setup.inputs.no_bet = True
+# >>> melodic_setup.inputs.bg_threshold = 10
+# >>> melodic_setup.inputs.tr_sec = 1.5
+# >>> melodic_setup.inputs.mm_thresh = 0.5
+# >>> melodic_setup.inputs.out_stats = True
+# >>> melodic_setup.inputs.t_des = 'timeDesign.mat'
+# >>> melodic_setup.inputs.t_con = 'timeDesign.con'
+# >>> melodic_setup.inputs.s_des = 'subjectDesign.mat'
+# >>> melodic_setup.inputs.s_con = 'subjectDesign.con'
+# >>> melodic_setup.inputs.out_dir = 'groupICA.out'
+# >>> melodic_setup.cmdline
+# 'melodic -i functional.nii,functional2.nii,functional3.nii -a tica --bgthreshold=10.000000 --mmthresh=0.500000 --nobet -o groupICA.out --Ostats --Scon=subjectDesign.con --Sdes=subjectDesign.mat --Tcon=timeDesign.con --Tdes=timeDesign.mat --tr=1.500000'
+# >>> melodic_setup.run() # doctest: +SKIP
 #
 #
 #
@@ -48,24 +48,21 @@ inputs:
     # type=file|default=<undefined>: filename of the IC components file for mixture modelling
     bg_image: generic/file
     # type=file|default=<undefined>: specify background image for report (default: mean image)
-    in_files: medimage/nifti1+list-of
+    in_files: generic/file+list-of
     # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     mask: generic/file
     # type=file|default=<undefined>: file name of mask for thresholding
     mix: generic/file
     # type=file|default=<undefined>: mixing matrix for mixture modelling / filtering
-    out_dir: Path
-    # type=directory:
-    # type=directory|default=<undefined>: output directory name
-    s_con: medimage-fsl/con
+    s_con: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
-    s_des: datascience/text-matrix
+    s_des: generic/file
     # type=file|default=<undefined>: design matrix across subject-domain
     smode: generic/file
     # type=file|default=<undefined>: matrix of session modes for report generation
-    t_con: medimage-fsl/con
+    t_con: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t-contrast matrix across time-domain
-    t_des: datascience/text-matrix
+    t_des: generic/file
     # type=file|default=<undefined>: design matrix across time-domain
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -83,12 +80,17 @@ outputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
+    out_dir: generic/directory
+    # type=directory:
+    # type=directory|default=<undefined>: output directory name
+    report_dir: generic/directory
+    # type=directory:
   callables:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
-    out_dir: '"groupICA.out"'
+  # dict[str, str] - `path_template` values to be provided to output fields
+    out_dir: out_dir
     # type=directory:
     # type=directory|default=<undefined>: output directory name
   requirements:
@@ -195,13 +197,13 @@ tests:
     remove_deriv:
     # type=bool|default=False: removes every second entry in paradigm file (EV derivatives)
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -220,31 +222,18 @@ tests:
   # (if not specified, will try to choose a sensible value)
     approach: '"tica"'
     # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
-    in_files:
-    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     no_bet: 'True'
     # type=bool|default=False: switch off BET
-    bg_threshold: '10'
-    # type=float|default=0.0: brain/non-brain threshold used to mask non-brain voxels, as a percentage (only if --nobet selected)
     tr_sec: '1.5'
     # type=float|default=0.0: TR in seconds
-    mm_thresh: '0.5'
-    # type=float|default=0.0: threshold for Mixture Model based inference
     out_stats: 'True'
     # type=bool|default=False: output thresholded maps and probability maps
-    t_des:
-    # type=file|default=<undefined>: design matrix across time-domain
     t_con:
     # type=file|default=<undefined>: t-contrast matrix across time-domain
-    s_des:
-    # type=file|default=<undefined>: design matrix across subject-domain
     s_con:
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
-    out_dir: '"groupICA.out"'
-    # type=directory:
-    # type=directory|default=<undefined>: output directory name
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -267,31 +256,18 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     approach: '"tica"'
     # type=str|default='': approach for decomposition, 2D: defl, symm (default), 3D: tica (default), concat
-    in_files: '["functional.nii", "functional2.nii", "functional3.nii"]'
-    # type=inputmultiobject|default=[]: input file names (either single file name or a list)
     no_bet: 'True'
     # type=bool|default=False: switch off BET
-    bg_threshold: '10'
-    # type=float|default=0.0: brain/non-brain threshold used to mask non-brain voxels, as a percentage (only if --nobet selected)
     tr_sec: '1.5'
     # type=float|default=0.0: TR in seconds
-    mm_thresh: '0.5'
-    # type=float|default=0.0: threshold for Mixture Model based inference
     out_stats: 'True'
     # type=bool|default=False: output thresholded maps and probability maps
-    t_des: '"timeDesign.mat"'
-    # type=file|default=<undefined>: design matrix across time-domain
     t_con: '"timeDesign.con"'
     # type=file|default=<undefined>: t-contrast matrix across time-domain
-    s_des: '"subjectDesign.mat"'
-    # type=file|default=<undefined>: design matrix across subject-domain
     s_con: '"subjectDesign.con"'
     # type=file|default=<undefined>: t-contrast matrix across subject-domain
-    out_dir: '"groupICA.out"'
-    # type=directory:
-    # type=directory|default=<undefined>: output directory name
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

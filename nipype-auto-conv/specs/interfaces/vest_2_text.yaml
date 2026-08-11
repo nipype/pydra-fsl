@@ -6,17 +6,17 @@
 # Docs
 # ----
 #
-#     Use FSL Vest2Text`https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/GLM(2f)CreatingDesignMatricesByHand.html`_
-#     to convert your design.mat design.con and design.fts files into plain text.
+# Use FSL Vest2Text`https://web.mit.edu/fsl_v5.0.10/fsl/doc/wiki/GLM(2f)CreatingDesignMatricesByHand.html`_
+# to convert your design.mat design.con and design.fts files into plain text.
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces.fsl import Vest2Text
-#     >>> v2t = Vest2Text()
-#     >>> v2t.inputs.in_file = "design.mat"
-#     >>> v2t.cmdline
-#     'Vest2Text design.mat design.txt'
-#     >>> res = v2t.run() # doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces.fsl import Vest2Text
+# >>> v2t = Vest2Text()
+# >>> v2t.inputs.in_file = "design.mat"
+# >>> v2t.cmdline
+# 'Vest2Text design.mat design.txt'
+# >>> res = v2t.run() # doctest: +SKIP
 #
 task_name: Vest2Text
 nipype_name: Vest2Text
@@ -34,9 +34,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: datascience/text-matrix
     # type=file|default=<undefined>: matrix data stored in the format used by FSL tools
-    out_file: Path
-    # type=file: plain text representation of FSL matrix
-    # type=file|default='design.txt': file name to store text output from matrix
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -60,7 +57,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -73,13 +70,13 @@ tests:
     # type=file: plain text representation of FSL matrix
     # type=file|default='design.txt': file name to store text output from matrix
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -99,7 +96,7 @@ tests:
     in_file:
     # type=file|default=<undefined>: matrix data stored in the format used by FSL tools
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -114,7 +111,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: Vest2Text design.mat design.txt
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -123,7 +120,7 @@ doctests:
     in_file: '"design.mat"'
     # type=file|default=<undefined>: matrix data stored in the format used by FSL tools
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

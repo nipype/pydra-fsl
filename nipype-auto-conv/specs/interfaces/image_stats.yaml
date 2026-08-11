@@ -6,18 +6,18 @@
 # Docs
 # ----
 # Use FSL fslstats command to calculate stats from images
-#     `FSL info
-#     <http://www.fmrib.ox.ac.uk/fslcourse/lectures/practicals/intro/index.htm#fslutils>`_
+# `FSL info
+# <http://www.fmrib.ox.ac.uk/fslcourse/lectures/practicals/intro/index.htm#fslutils>`_
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import ImageStats
-#     >>> from nipype.testing import funcfile
-#     >>> stats = ImageStats(in_file=funcfile, op_string= '-M')
-#     >>> stats.cmdline == 'fslstats %s -M'%funcfile
-#     True
+# >>> from nipype.interfaces.fsl import ImageStats
+# >>> from nipype.testing import funcfile
+# >>> stats = ImageStats(in_file=funcfile, op_string= '-M')
+# >>> stats.cmdline == 'fslstats %s -M'%funcfile
+# True
 #
 #
 #
@@ -63,7 +63,7 @@ outputs:
     out_stat: out_stat_callable
     # type=any: stats output
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -81,13 +81,13 @@ tests:
     index_mask_file:
     # type=file|default=<undefined>: generate separate n submasks from indexMask, for indexvalues 1..n where n is the maximum index value in indexMask, and generate statistics for each submask
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -109,7 +109,7 @@ tests:
     op_string: '"-M"'
     # type=str|default='': string defining the operation, options are applied in order, e.g. -M -l 10 -M will report the non-zero mean, apply a threshold and then report the new nonzero mean
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: funcfile
@@ -138,7 +138,7 @@ doctests:
     op_string: '"-M"'
     # type=str|default='': string defining the operation, options are applied in order, e.g. -M -l 10 -M will report the non-zero mean, apply a threshold and then report the new nonzero mean
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

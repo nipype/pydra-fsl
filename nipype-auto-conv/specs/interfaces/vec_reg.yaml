@@ -6,16 +6,16 @@
 # Docs
 # ----
 # Use FSL vecreg for registering vector data
-#     For complete details, see the FDT Documentation
-#     <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_vecreg.html>
+# For complete details, see the FDT Documentation
+# <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_vecreg.html>
 #
-#     Example
-#     -------
+# Example
+# -------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> vreg = fsl.VecReg(in_file='diffusion.nii',                  affine_mat='trans.mat',                  ref_vol='mni.nii',                  out_file='diffusion_vreg.nii')
-#     >>> vreg.cmdline
-#     'vecreg -t trans.mat -i diffusion.nii -o diffusion_vreg.nii -r mni.nii'
+# >>> from nipype.interfaces import fsl
+# >>> vreg = fsl.VecReg(in_file='diffusion.nii',                  affine_mat='trans.mat',                  ref_vol='mni.nii',                  out_file='diffusion_vreg.nii')
+# >>> vreg.cmdline
+# 'vecreg -t trans.mat -i diffusion.nii -o diffusion_vreg.nii -r mni.nii'
 #
 #
 task_name: VecReg
@@ -38,9 +38,6 @@ inputs:
     # type=file|default=<undefined>: filename for input vector or tensor field
     mask: generic/file
     # type=file|default=<undefined>: brain mask in input space
-    out_file: Path
-    # type=file: path/name of filename for the registered vector or tensor field
-    # type=file|default=<undefined>: filename for output registered vector or tensor field
     ref_mask: generic/file
     # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
     ref_vol: medimage/nifti1
@@ -74,7 +71,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: '"diffusion_vreg.nii"'
     # type=file: path/name of filename for the registered vector or tensor field
     # type=file|default=<undefined>: filename for output registered vector or tensor field
@@ -106,13 +103,13 @@ tests:
     ref_mask:
     # type=file|default=<undefined>: brain mask in output space (useful for speed up of nonlinear reg)
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -139,7 +136,7 @@ tests:
     # type=file: path/name of filename for the registered vector or tensor field
     # type=file|default=<undefined>: filename for output registered vector or tensor field
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -170,7 +167,7 @@ doctests:
     # type=file: path/name of filename for the registered vector or tensor field
     # type=file|default=<undefined>: filename for output registered vector or tensor field
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

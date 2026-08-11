@@ -7,10 +7,10 @@
 # ----
 # FSL prelude wrapper for phase unwrapping
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     Please insert examples for use of this command
+# Please insert examples for use of this command
 #
 #
 task_name: PRELUDE
@@ -41,9 +41,6 @@ inputs:
     # type=file|default=<undefined>: saving the raw phase output
     savemask_file: generic/file
     # type=file|default=<undefined>: saving the mask volume
-    unwrapped_phase_file: Path
-    # type=file: unwrapped phase file
-    # type=file|default=<undefined>: file containing unwrapepd phase
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -67,7 +64,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     unwrapped_phase_file: unwrapped_phase_file
     # type=file: unwrapped phase file
     # type=file|default=<undefined>: file containing unwrapepd phase
@@ -111,13 +108,13 @@ tests:
     removeramps:
     # type=bool|default=False: remove phase ramps during unwrapping
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

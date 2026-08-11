@@ -6,20 +6,20 @@
 # Docs
 # ----
 # Use FSL's overlay command to combine background and statistical images
-#         into one volume
+#     into one volume
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> combine = fsl.Overlay()
-#     >>> combine.inputs.background_image = 'mean_func.nii.gz'
-#     >>> combine.inputs.auto_thresh_bg = True
-#     >>> combine.inputs.stat_image = 'zstat1.nii.gz'
-#     >>> combine.inputs.stat_thresh = (3.5, 10)
-#     >>> combine.inputs.show_negative_stats = True
-#     >>> res = combine.run() #doctest: +SKIP
+# >>> from nipype.interfaces import fsl
+# >>> combine = fsl.Overlay()
+# >>> combine.inputs.background_image = 'mean_func.nii.gz'
+# >>> combine.inputs.auto_thresh_bg = True
+# >>> combine.inputs.stat_image = 'zstat1.nii.gz'
+# >>> combine.inputs.stat_thresh = (3.5, 10)
+# >>> combine.inputs.show_negative_stats = True
+# >>> res = combine.run() #doctest: +SKIP
 #
 #
 #
@@ -39,9 +39,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     background_image: generic/file
     # type=file|default=<undefined>: image to use as background
-    out_file: Path
-    # type=file: combined image volume
-    # type=file|default=<undefined>: combined image volume
     stat_image: generic/file
     # type=file|default=<undefined>: statistical image to overlay in color
     stat_image2: generic/file
@@ -69,7 +66,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: combined image volume
     # type=file|default=<undefined>: combined image volume
@@ -107,13 +104,13 @@ tests:
     # type=file: combined image volume
     # type=file|default=<undefined>: combined image volume
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

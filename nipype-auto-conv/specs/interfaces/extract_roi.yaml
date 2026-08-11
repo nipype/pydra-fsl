@@ -6,26 +6,26 @@
 # Docs
 # ----
 # Uses FSL Fslroi command to extract region of interest (ROI)
-#     from an image.
+# from an image.
 #
-#     You can a) take a 3D ROI from a 3D data set (or if it is 4D, the
-#     same ROI is taken from each time point and a new 4D data set is
-#     created), b) extract just some time points from a 4D data set, or
-#     c) control time and space limits to the ROI.  Note that the
-#     arguments are minimum index and size (not maximum index).  So to
-#     extract voxels 10 to 12 inclusive you would specify 10 and 3 (not
-#     10 and 12).
+# You can a) take a 3D ROI from a 3D data set (or if it is 4D, the
+# same ROI is taken from each time point and a new 4D data set is
+# created), b) extract just some time points from a 4D data set, or
+# c) control time and space limits to the ROI.  Note that the
+# arguments are minimum index and size (not maximum index).  So to
+# extract voxels 10 to 12 inclusive you would specify 10 and 3 (not
+# 10 and 12).
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import ExtractROI
-#     >>> from nipype.testing import anatfile
-#     >>> fslroi = ExtractROI(in_file=anatfile, roi_file='bar.nii', t_min=0,
-#     ...                     t_size=1)
-#     >>> fslroi.cmdline == 'fslroi %s bar.nii 0 1' % anatfile
-#     True
+# >>> from nipype.interfaces.fsl import ExtractROI
+# >>> from nipype.testing import anatfile
+# >>> fslroi = ExtractROI(in_file=anatfile, roi_file='bar.nii', t_min=0,
+# ...                     t_size=1)
+# >>> fslroi.cmdline == 'fslroi %s bar.nii 0 1' % anatfile
+# True
 #
 #
 #
@@ -45,9 +45,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
     # type=file|default=<undefined>: input file
-    roi_file: Path
-    # type=file:
-    # type=file|default=<undefined>: output file
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -71,7 +68,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     roi_file: '"bar.nii"'
     # type=file:
     # type=file|default=<undefined>: output file
@@ -105,13 +102,13 @@ tests:
     crop_list:
     # type=list|default=[]: list of two tuples specifying crop options
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -138,7 +135,7 @@ tests:
     t_size: '1'
     # type=int|default=0:
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: anatfile
@@ -172,7 +169,7 @@ doctests:
     t_size: '1'
     # type=int|default=0:
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

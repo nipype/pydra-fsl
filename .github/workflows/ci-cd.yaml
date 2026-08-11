@@ -7,117 +7,53 @@
 name: CI/CD
 
 on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main, develop ]
   release:
     types: [published]
-  repository_dispatch:
-    types: [create-post-release]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-env:
-  FSL_VERSION: 6.0.7.9
-  FSL_HOME:  ${{ github.workspace }}/fsl-install
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+env: # Define environment variables
+  SCIGET_NAME: fsl
+  SCIGET_VERSION: 6.0.7.18
+  FORCE_COLOR: true
+
 jobs:
 
-  nipype-conv:
+  build:
+    name: Build & verify package
     runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      id-token: write
     steps:
-
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Revert version to most recent version tag on upstream update
-      if: github.event_name == 'repository_dispatch'
-      run: git checkout $(git tag -l | grep 'v.*' | tail -n 1 | awk -F post '{print $1}')
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-
-    - name: Install build dependencies
-      run: python -m pip install --upgrade pip
-
-    - name: Install requirements
-      run: python -m pip install ./related-packages/fileformats -r ./nipype-auto-conv/requirements.txt
-
-    - name: Run automatic Nipype > Pydra conversion
-      run: ./nipype-auto-conv/generate
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: converted-nipype
-        path: pydra/tasks/fsl/auto
-
-  devcheck:
-    needs: [nipype-conv]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ['3.8', '3.11']  # Check oldest and newest versions
-        pip-flags: ['', '--editable']
-        pydra:
-        - 'pydra'
-        - '--editable git+https://github.com/nipype/pydra.git#egg=pydra'
-
-    steps:
-
-    - name: Checkout
-      uses: actions/checkout@v4
-
-    - name: Revert version to most recent version tag on upstream update
-      if: github.event_name == 'repository_dispatch'
-      run: git checkout $(git tag -l | grep 'v.*' | tail -n 1 | awk -F post '{print $1}')
-
-    - name: Download tasks converted from Nipype
-      uses: actions/download-artifact@v4
-      with:
-        name: converted-nipype
-        path: pydra/tasks/fsl/auto
-
-    - name: Strip auto package from gitignore so it is included in package
-      run: |
-        sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
-        sed -i '/^_version.py/d' .gitignore
-
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: ${{ matrix.python-version }}
-
-    - name: Install build dependencies
-      run: |
-        python -m pip install --upgrade pip
-
-    - name: Install Pydra
-      run: |
-        pushd $HOME
-        pip install ${{ matrix.pydra }}
-        popd
-        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-
-    - name: Install task package
-      run: |
-        pip install ${{ matrix.pip-flags }} "./related-packages/fileformats[dev]"
-        pip install ${{ matrix.pip-flags }} "related-packages/fileformats-extras[dev]"
-        pip install ${{ matrix.pip-flags }} ".[dev]"
-        python -c "import pydra.tasks.fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-        python -c "import fileformats.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-        python -c "import fileformats.extras.medimage_fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: hynek/build-and-inspect-python-package@v2
+        with:
+          attest-build-provenance-github: ${{ github.event_name != 'pull_request' }}
 
   test:
-    needs: [nipype-conv]
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.8', '3.11']
+        python-version: ['3.11', '3.14']
+      fail-fast: false
+
     steps:
 
     - name: Removed unnecessary tools to free space
@@ -128,83 +64,85 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    - name: Install Minconda
-      uses: conda-incubator/setup-miniconda@v3
-      with:
-        auto-activate-base: true
-        activate-environment: ""
+    - name: Revert version to most recent version tag on Nipype or Nipype2Pydra update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | grep 'v.*' | tail -n 1 | awk -F post '{print $1}')
 
-    - name: Install fsl Packages
-      run: >-
-        conda install -c conda-forge -c https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/public/
-        ciftilib cli11 elc fsl-add_module fsl-armawrap fsl-asl_mfree fsl-avwutils fsl-base
-        fsl-basil fsl-basisfield fsl-baycest fsl-bet2 fsl-bianca fsl-biancadata fsl-bint
-        fsl-cluster fsl-copain fsl-cprob fsl-cudimot fsl-data_atlases
-        fsl-data_atlases_xtract fsl-data_first_models_317_bin fsl-data_first_models_336_bin fsl-data_linearmni
-        fsl-data_omm fsl-data_possum fsl-data_standard fsl-deface fsl-discreteopt fsl-dpm fsl-dwssfp
-        fsl-easyfeat fsl-eddy fsl-eddy_qc fsl-fabber_core fsl-fabber_models_asl fsl-fabber_models_cest
-        fsl-fabber_models_dce fsl-fabber_models_dsc fsl-fabber_models_dualecho fsl-fabber_models_dwi
-        fsl-fabber_models_pet fsl-fabber_models_qbold fsl-fabber_models_t1 fsl-fast4 fsl-fastpdlib
-        fsl-fdt fsl-feat5 fsl-film fsl-filmbabe fsl-first fsl-first_lib fsl-flameo
-        fsl-flirt fsl-fnirt fsl-fugue fsl-get_standard fsl-giftiio fsl-gps
-        fsl-gui-desktop fsl-installer fsl-lesions fsl-libgdc fsl-libmeshutils fsl-libvis fsl-load_dicom fsl-mcflirt
-        fsl-melodic fsl-meshclass fsl-misc_c fsl-misc_scripts fsl-misc_tcl fsl-miscmaths fsl-miscvis
-        fsl-mist fsl-mm fsl-msm fsl-msmreglib fsl-mvdisc fsl-nets fsl-newimage
-        fsl-newmesh fsl-newnifti fsl-newran fsl-oxford_asl fsl-possum fsl-ptx2 fsl-pyfeeds
-        fsl-pyfeeds-tests fsl-qboot fsl-randomise fsl-relax fsl-shapemodel fsl-siena fsl-slicetimer
-        fsl-sub fsl-sub-plugin-sge fsl-sub-plugin-slurm fsl-surface fsl-susan fsl-swe fsl-tbss
-        fsl-topup fsl-utils fsl-vbm fsl-verbena fsl-vtkio fsl-warpfns fsl-wire fsl-xtract fsl-xtract_data
-        fsl-znzlib fsl_mrs fsl_sub fsl_sub_plugin_sge fsl_sub_plugin_slurm
-
-    - name: Download tasks converted from Nipype
-      uses: actions/download-artifact@v4
-      with:
-        name: converted-nipype
-        path: pydra/tasks/fsl/auto
-
-    - name: Show the contents of the auto-generated tasks
-      run: tree pydra
-
-    - name: Strip auto package from gitignore so it is included in package
+    - name: Install Apptainer and Lmod
       run: |
-        sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
+        sudo add-apt-repository -y ppa:apptainer/ppa
+        sudo apt-get update
+        sudo apt-get install -y lmod apptainer
+
+    - name: Install Neurocommand
+      run: |
+        git clone https://github.com/NeuroDesk/neurocommand.git
+        pushd neurocommand
+        python -m venv .venv
+        source .venv/bin/activate
+        python -m pip install --upgrade pip setuptools wheel
+        sed 's/==.*//' neurodesk/requirements.txt | pip install -r /dev/stdin
+        bash build.sh --cli
+        echo "APPTAINER_BINDPATH=`pwd -P`" >> $GITHUB_ENV
+
+        source /etc/profile.d/lmod.sh
+        ./containers.sh "${{ env.SCIGET_NAME }}" | grep -E "^\s*\|\s*${{ env.SCIGET_NAME }}\s*\|\s*${{ env.SCIGET_VERSION }}\s*\|" | awk -F '|' '{gsub(/ /,"",$4); print $4}'
+        SCIGET_BUILDVERSION=$(./containers.sh "${{ env.SCIGET_NAME }}" | grep -E "^\s*\|\s*${{ env.SCIGET_NAME }}\s*\|\s*${{ env.SCIGET_VERSION }}\s*\|" | awk -F '|' '{gsub(/ /,"",$4); print $4}')
+
+        ./local/fetch_containers.sh ${{ env.SCIGET_NAME }} ${{ env.SCIGET_VERSION }} $SCIGET_BUILDVERSION
+        echo "SCIGET_BUILDVERSION=$SCIGET_BUILDVERSION" >> $GITHUB_ENV
+        deactivate
+        popd
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Upgrade pip, setuptools and wheel
+      run: python -m pip install --upgrade pip setuptools wheel
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v6
+    - name: Install tox
+      run: |
+        uv tool install tox --with=tox-uv --with=tox-gh-actions
+    - name: Show tox config
+      run: tox c
+    - name: Run tox
+      run: tox -v --exit-and-dump-after 1200
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
 
+  fileformats-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.14']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Revert version to most recent tag on upstream update
+      if: github.event_name == 'repository_dispatch'
+      run: git checkout $(git tag -l | tail -n 1 | awk -F post '{print $1}')
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
     - name: Install build dependencies
       run: |
         python -m pip install --upgrade pip
-
     - name: Install task package
       run: |
-        pip install "./related-packages/fileformats" "./related-packages/fileformats-extras" ".[test]"
-        python -c "import pydra.tasks.fsl as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-        python -c "import pydra as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
-
-    - name: Test with pytest
+        pip install "./related-packages/fileformats[test]" "./related-packages/fileformats-extras[test]"
+        python -c "import fileformats.vendor.fsl.medimage as m; print(f'{m.__name__} {m.__version__} @ {m.__file__}')"
+    - name: Test fileformats with pytest
       run: >-
-        pytest -sv
-        ./pydra/tasks/fsl
-        ./related-packages/fileformats
-        ./related-packages/fileformats-extras
-        --cov pydra.tasks.fsl
-        --cov fileformats.medimage_fsl
-        --cov fileformats.extras.medimage_fsl
-        --cov-report xml
-
-    - name: Upload to CodeCov
-      uses: codecov/codecov-action@v4
-      if: ${{ always() }}
-      with:
-        files: coverage.xml
-        name: pydra-fsl
-
+        pytest ./related-packages -sv --cov fileformats.vendor.fsl.medimage
+        --cov fileformats.extras.medimage_fsl --cov-report xml
 
   deploy-fileformats:
-    needs: [devcheck, test]
+    needs: [build, test, fileformats-test]
     runs-on: ubuntu-latest
     steps:
 
@@ -216,7 +154,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.x'
 
     - name: Install build tools
       run: python -m pip install build twine
@@ -229,7 +167,7 @@ jobs:
 
     - name: Check for PyPI token on tag
       id: deployable
-      if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
+      if: github.event_name == 'release'
       env:
         PYPI_API_TOKEN: "${{ secrets.PYPI_FILEFORMATS_API_TOKEN }}"
       run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
@@ -255,7 +193,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.11'
+        python-version: '3.x'
 
     - name: Install build tools
       run: python -m pip install build twine
@@ -268,7 +206,7 @@ jobs:
 
     - name: Check for PyPI token on tag
       id: deployable
-      if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
+      if: github.event_name == 'release'
       env:
         PYPI_API_TOKEN: "${{ secrets.PYPI_FILEFORMATS_EXTRAS_API_TOKEN }}"
       run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
@@ -282,183 +220,20 @@ jobs:
         packages-dir: ./related-packages/fileformats-extras/dist
 
   deploy:
-    needs: [nipype-conv, test, deploy-fileformats, deploy-fileformats-extras]
+    needs: [build, test, deploy-fileformats, deploy-fileformats-extras]
     runs-on: ubuntu-latest
+    permissions:
+      attestations: write
+      id-token: write
     steps:
-
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      with:
-        submodules: recursive
-        fetch-depth: 0
-
-    - name: Set up Git user
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-
-    - name: Get latest version tag
-      id: latest_tag
-      run: |
-        git fetch --tags
-        echo "TAG=$(git tag -l | grep 'v.*' | tail -n 1 | awk -F post '{print $1}')" >> $GITHUB_OUTPUT
-
-    - name: Revert to latest tag
-      if: github.event_name == 'repository_dispatch'
-      run: git checkout ${{ steps.latest_tag.outputs.TAG }}
-
-    - name: Download tasks converted from Nipype
+    - name: Download dist
       uses: actions/download-artifact@v4
       with:
-        name: converted-nipype
-        path: pydra/tasks/fsl/auto
-
-    - name: Show the contents of the auto-generated tasks
-      run: tree pydra
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11'
-
-    - name: Install build tools
-      run: python -m pip install build twine
-
-    - name: Strip auto package from gitignore so it is included in package
-      run: |
-        sed -i '/\/pydra\/tasks\/fsl\/auto/d' .gitignore
-        cat .gitignore
-
-    - name: Install task package to calculate post-release tag
-      run: |
-        pip install "./related-packages/fileformats" "./related-packages/fileformats-extras" ".[test]"
-
-    - name: Generate post-release tag based on Nipype and Nipype2Pydra versions
-      id: post_release_tag
-      run: |
-        POST=$(python -c "from pydra.tasks.fsl.auto._version import *; print(post_release)")
-        echo "TAG=${{ steps.latest_tag.outputs.TAG }}post${POST}" >> $GITHUB_OUTPUT
-
-    - name: Add auto directory to git repo
-      if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-      run: |
-        git add pydra/tasks/fsl/auto
-        git commit -am"added auto-generated version to make new tag for package version"
-        git status
-
-    - name: Overwrite the tag of release event with latest commit (i.e. including the auto directory)
-      if: github.event_name == 'release'
-      run: |
-        git tag -d ${{ steps.latest_tag.outputs.TAG }};
-        git tag ${{ steps.latest_tag.outputs.TAG }};
-
-    - name: Tag repo with the post-release
-      if: github.event_name == 'repository_dispatch'
-      run: git tag ${{ steps.post_release_tag.outputs.TAG }}
-
-    - name: Build source and wheel distributions
-      run: python -m build .
-
-    - name: Check distributions
-      run: twine check dist/*
-
-    - uses: actions/upload-artifact@v4
-      with:
-        name: distributions
-        path: dist/
-
-    - name: Check for PyPI token on tag
-      id: deployable
-      if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-      env:
-        PYPI_API_TOKEN: "${{ secrets.PYPI_API_TOKEN }}"
-      run: if [ -n "$PYPI_API_TOKEN" ]; then echo "DEPLOY=true" >> $GITHUB_OUTPUT; fi
-
+        name: Packages
+        path: dist
     - name: Upload to PyPI
-      if: steps.deployable.outputs.DEPLOY
+      if: github.event_name == 'release'
       uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
-
-    - name: Create post-release release for releases triggered by nipype2pydra dispatches
-      if: steps.deployable.outputs.DEPLOY && github.event_name == 'repository_dispatch'
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
-        tag_name: ${{ steps.post_release_tag.outputs.TAG }}
-        release_name: Release ${{ steps.post_release_tag.outputs.TAG }}
-        draft: false
-        prerelease: false
-
-  # docs:
-  #   needs: deploy
-  #   environment:
-  #     name: github-pages
-  #     url: ${{ steps.deployment.outputs.page_url }}
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: actions/setup-python@v5
-  #       with:
-  #         python-version: '3.x'
-
-  #     - name: Download tasks converted from Nipype
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: converted-nipype
-  #         path: pydra/tasks/freesurfer/auto
-
-  #     - name: Install dependencies
-  #       run: python -m pip install related-packages/fileformats .[doc]
-
-  #     - name: Build docs
-  #       run: |
-  #         pushd docs
-  #         make html
-  #         popd
-
-  #     - name: Upload artifact
-  #       uses: actions/upload-pages-artifact@v3
-  #       with:
-  #         path: 'docs/build/html'
-
-  #     - name: Setup GitHub Pages
-  #       if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-  #       uses: actions/configure-pages@v4
-
-  #     - name: Deploy to GitHub Pages
-  #       if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-  #       id: deployment
-  #       uses: actions/deploy-pages@v4
-
-
-  # report_progress:
-  #   needs: [deploy]
-  #   runs-on: ubuntu-latest
-  #   steps:
-
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
-
-  #     - name: Generate progress report
-  #       id: generate-report
-  #       run: |
-  #         tools/report_progress.py outputs/progress-report.json
-  #         echo "progress_report=$(cat outputs/progress-report.json)" >> $GITHUB_OUTPUT
-
-  #     - name: Report progress to Nipype2Pydra repo
-  #       if: github.event_name == 'release' || github.event_name == 'repository_dispatch'
-  #       run: >-
-  #         curl -XPOST -u "${{ env.REPORT_PROGRESS_PAT }}" -H "Accept: application/vnd.github.everest-preview+json"
-  #         "https://api.github.com/repos/nipype/pydra-fsl/dispatches"
-  #         -d '{
-  #           "event_type": "progress-report",
-  #           "client_payload": ${{ steps.generate-report.output.progress_report }}
-  #         }'
-  #       env:
-  #         PAT: ${{ env.REPORT_PROGRESS_PAT }}
 
 
 # Deploy on tags if PYPI_API_TOKEN is defined in the repository secrets.

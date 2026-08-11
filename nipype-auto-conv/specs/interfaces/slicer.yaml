@@ -8,16 +8,16 @@
 # Use FSL's slicer command to output a png image from a volume.
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> from nipype.testing import example_data
-#     >>> slice = fsl.Slicer()
-#     >>> slice.inputs.in_file = example_data('functional.nii')
-#     >>> slice.inputs.all_axial = True
-#     >>> slice.inputs.image_width = 750
-#     >>> res = slice.run() #doctest: +SKIP
+# >>> from nipype.interfaces import fsl
+# >>> from nipype.testing import example_data
+# >>> slice = fsl.Slicer()
+# >>> slice.inputs.in_file = example_data('functional.nii')
+# >>> slice.inputs.all_axial = True
+# >>> slice.inputs.image_width = 750
+# >>> res = slice.run() #doctest: +SKIP
 #
 #
 #
@@ -41,9 +41,6 @@ inputs:
     # type=file|default=<undefined>: volume to display edge overlay for (useful for checking registration
     in_file: generic/file
     # type=file|default=<undefined>: input volume
-    out_file: Path
-    # type=file: picture to write
-    # type=file|default=<undefined>: picture to write
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -67,7 +64,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: picture to write
     # type=file|default=<undefined>: picture to write
@@ -113,13 +110,13 @@ tests:
     scaling:
     # type=float|default=0.0: image scale
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

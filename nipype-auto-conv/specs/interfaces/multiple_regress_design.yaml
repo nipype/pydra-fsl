@@ -7,21 +7,21 @@
 # ----
 # Generate multiple regression design
 #
-#     .. note::
-#       FSL does not demean columns for higher level analysis.
+# .. note::
+#   FSL does not demean columns for higher level analysis.
 #
-#     Please see `FSL documentation
-#     <http://www.fmrib.ox.ac.uk/fsl/feat5/detail.html#higher>`_
-#     for more details on model specification for higher level analysis.
+# Please see `FSL documentation
+# <http://www.fmrib.ox.ac.uk/fsl/feat5/detail.html#higher>`_
+# for more details on model specification for higher level analysis.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import MultipleRegressDesign
-#     >>> model = MultipleRegressDesign()
-#     >>> model.inputs.contrasts = [['group mean', 'T',['reg1'],[1]]]
-#     >>> model.inputs.regressors = dict(reg1=[1, 1, 1], reg2=[2.,-4, 3])
-#     >>> model.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import MultipleRegressDesign
+# >>> model = MultipleRegressDesign()
+# >>> model.inputs.contrasts = [['group mean', 'T',['reg1'],[1]]]
+# >>> model.inputs.regressors = dict(reg1=[1, 1, 1], reg2=[2.,-4, 3])
+# >>> model.run() # doctest: +SKIP
 #
 #
 task_name: MultipleRegressDesign
@@ -66,7 +66,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -80,7 +80,7 @@ tests:
     groups:
     # type=list|default=[]: list of group identifiers (defaults to single group)
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

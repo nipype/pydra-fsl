@@ -6,24 +6,24 @@
 # Docs
 # ----
 #
-#     Interface for the fsl_prepare_fieldmap script (FSL 5.0)
+# Interface for the fsl_prepare_fieldmap script (FSL 5.0)
 #
-#     Prepares a fieldmap suitable for FEAT from SIEMENS data - saves output in
-#     rad/s format (e.g. ```fsl_prepare_fieldmap SIEMENS
-#     images_3_gre_field_mapping images_4_gre_field_mapping fmap_rads 2.65```).
+# Prepares a fieldmap suitable for FEAT from SIEMENS data - saves output in
+# rad/s format (e.g. ```fsl_prepare_fieldmap SIEMENS
+# images_3_gre_field_mapping images_4_gre_field_mapping fmap_rads 2.65```).
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import PrepareFieldmap
-#     >>> prepare = PrepareFieldmap()
-#     >>> prepare.inputs.in_phase = "phase.nii"
-#     >>> prepare.inputs.in_magnitude = "magnitude.nii"
-#     >>> prepare.inputs.output_type = "NIFTI_GZ"
-#     >>> prepare.cmdline # doctest: +ELLIPSIS
-#     'fsl_prepare_fieldmap SIEMENS phase.nii magnitude.nii .../phase_fslprepared.nii.gz 2.460000'
-#     >>> res = prepare.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import PrepareFieldmap
+# >>> prepare = PrepareFieldmap()
+# >>> prepare.inputs.in_phase = "phase.nii"
+# >>> prepare.inputs.in_magnitude = "magnitude.nii"
+# >>> prepare.inputs.output_type = "NIFTI_GZ"
+# >>> prepare.cmdline # doctest: +ELLIPSIS
+# 'fsl_prepare_fieldmap SIEMENS phase.nii magnitude.nii .../phase_fslprepared.nii.gz 2.460000'
+# >>> res = prepare.run() # doctest: +SKIP
 #
 #
 #
@@ -41,13 +41,10 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_magnitude: medimage/nifti1
+    in_magnitude: generic/file
     # type=file|default=<undefined>: Magnitude difference map, brain extracted
     in_phase: medimage/nifti1
     # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
-    out_fieldmap: Path
-    # type=file: output name for prepared fieldmap
-    # type=file|default=<undefined>: output name for prepared fieldmap
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -71,7 +68,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -92,13 +89,13 @@ tests:
     # type=file: output name for prepared fieldmap
     # type=file|default=<undefined>: output name for prepared fieldmap
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -117,12 +114,10 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_phase:
     # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
-    in_magnitude:
-    # type=file|default=<undefined>: Magnitude difference map, brain extracted
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -145,12 +140,10 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_phase: '"phase.nii"'
     # type=file|default=<undefined>: Phase difference map, in SIEMENS format range from 0-4096 or 0-8192)
-    in_magnitude: '"magnitude.nii"'
-    # type=file|default=<undefined>: Magnitude difference map, brain extracted
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

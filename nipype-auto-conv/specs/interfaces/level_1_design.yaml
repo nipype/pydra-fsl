@@ -7,14 +7,14 @@
 # ----
 # Generate FEAT specific files
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> level1design = Level1Design()
-#     >>> level1design.inputs.interscan_interval = 2.5
-#     >>> level1design.inputs.bases = {'dgamma':{'derivs': False}}
-#     >>> level1design.inputs.session_info = 'session_info.npz'
-#     >>> level1design.run() # doctest: +SKIP
+# >>> level1design = Level1Design()
+# >>> level1design.inputs.interscan_interval = 2.5
+# >>> level1design.inputs.bases = {'dgamma':{'derivs': False}}
+# >>> level1design.inputs.session_info = 'session_info.npz'
+# >>> level1design.run() # doctest: +SKIP
 #
 #
 task_name: Level1Design
@@ -53,7 +53,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -73,7 +73,7 @@ tests:
     contrasts:
     # type=list|default=[]: List of contrasts with each contrast being a list of the form - [('name', 'stat', [condition list], [weight list], [session list])]. if session list is None or not provided, all sessions are used. For F contrasts, the condition list should contain previously defined T-contrasts.
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

@@ -6,21 +6,21 @@
 # Docs
 # ----
 # Use FSL `convertwarp <http://fsl.fmrib.ox.ac.uk/fsl/fsl-4.1.9/fnirt/warp_utils.html>`_
-#     for combining multiple transforms into one.
+# for combining multiple transforms into one.
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import ConvertWarp
-#     >>> warputils = ConvertWarp()
-#     >>> warputils.inputs.warp1 = "warpfield.nii"
-#     >>> warputils.inputs.reference = "T1.nii"
-#     >>> warputils.inputs.relwarp = True
-#     >>> warputils.inputs.output_type = "NIFTI_GZ"
-#     >>> warputils.cmdline # doctest: +ELLIPSIS
-#     'convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz'
-#     >>> res = warputils.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import ConvertWarp
+# >>> warputils = ConvertWarp()
+# >>> warputils.inputs.warp1 = "warpfield.nii"
+# >>> warputils.inputs.reference = "T1.nii"
+# >>> warputils.inputs.relwarp = True
+# >>> warputils.inputs.output_type = "NIFTI_GZ"
+# >>> warputils.cmdline # doctest: +ELLIPSIS
+# 'convertwarp --ref=T1.nii --rel --warp1=warpfield.nii --out=T1_concatwarp.nii.gz'
+# >>> res = warputils.run() # doctest: +SKIP
 #
 #
 #
@@ -40,14 +40,11 @@ inputs:
   # passed to the field in the automatically generated unittests.
     midmat: generic/file
     # type=file|default=<undefined>: Name of file containing mid-warp-affine transform
-    out_file: Path
-    # type=file: Name of output file, containing the warp as field or coefficients.
-    # type=file|default=<undefined>: Name of output file, containing warps that are the combination of all those given as arguments. The format of this will be a field-file (rather than spline coefficients) with any affine components included.
     postmat: generic/file
     # type=file|default=<undefined>: Name of file containing an affine transform (applied last). It could e.g. be an affine transform that maps the MNI152-space into a better approximation to the Talairach-space (if indeed there is one).
     premat: generic/file
     # type=file|default=<undefined>: filename for pre-transform (affine matrix)
-    reference: medimage/nifti1
+    reference: generic/file
     # type=file|default=<undefined>: Name of a file in target space of the full transform.
     shift_in_file: generic/file
     # type=file|default=<undefined>: Name of file containing a "shiftmap", a non-linear transform with displacements only in one direction (applied first, before premat). This would typically be a fieldmap that has been pre-processed using fugue that maps a subjects functional (EPI) data onto an undistorted space (i.e. a space that corresponds to his/her true anatomy).
@@ -78,7 +75,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -119,13 +116,13 @@ tests:
     out_relwarp:
     # type=bool|default=False: If set it indicates that the warps in --out should be relative, i.e. the values in --out are displacements from the coordinates in --ref.
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -144,14 +141,10 @@ tests:
   # (if not specified, will try to choose a sensible value)
     warp1:
     # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
-    reference:
-    # type=file|default=<undefined>: Name of a file in target space of the full transform.
     relwarp: 'True'
     # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
-    output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -174,14 +167,10 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     warp1: '"warpfield.nii"'
     # type=file|default=<undefined>: Name of file containing initial warp-fields/coefficients (follows premat). This could e.g. be a fnirt-transform from a subjects structural scan to an average of a group of subjects.
-    reference: '"T1.nii"'
-    # type=file|default=<undefined>: Name of a file in target space of the full transform.
     relwarp: 'True'
     # type=bool|default=False: If set it indicates that the warps in --warp1/2 should be interpreted as relative. I.e. the values in --warp1/2 are displacements from the coordinates in the next space.
-    output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

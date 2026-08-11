@@ -7,13 +7,13 @@
 # ----
 # Estimates signal loss from a field map (in rad/s)
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> sigloss = SigLoss()
-#     >>> sigloss.inputs.in_file = "phase.nii"
-#     >>> sigloss.inputs.echo_time = 0.03
-#     >>> res = sigloss.run() # doctest: +SKIP
+# >>> sigloss = SigLoss()
+# >>> sigloss.inputs.in_file = "phase.nii"
+# >>> sigloss.inputs.echo_time = 0.03
+# >>> res = sigloss.run() # doctest: +SKIP
 #
 #
 #
@@ -35,9 +35,6 @@ inputs:
     # type=file|default=<undefined>: b0 fieldmap file
     mask_file: generic/file
     # type=file|default=<undefined>: brain mask file
-    out_file: Path
-    # type=file: signal loss estimate file
-    # type=file|default=<undefined>: output signal loss estimate file
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -61,7 +58,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: signal loss estimate file
     # type=file|default=<undefined>: output signal loss estimate file
@@ -83,13 +80,13 @@ tests:
     slice_direction:
     # type=enum|default='x'|allowed['x','y','z']: slicing direction
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

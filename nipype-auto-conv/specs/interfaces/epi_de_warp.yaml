@@ -6,24 +6,24 @@
 # Docs
 # ----
 #
-#     Wraps the unwarping script `epidewarp.fsl
-#     <http://surfer.nmr.mgh.harvard.edu/fswiki/epidewarp.fsl>`_.
+# Wraps the unwarping script `epidewarp.fsl
+# <http://surfer.nmr.mgh.harvard.edu/fswiki/epidewarp.fsl>`_.
 #
-#     .. warning:: deprecated in FSL, please use
-#       :func:`niflow.nipype1.workflows.dmri.preprocess.epi.sdc_fmb` instead.
+# .. warning:: deprecated in FSL, please use
+#   :func:`niflow.nipype1.workflows.dmri.preprocess.epi.sdc_fmb` instead.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import EPIDeWarp
-#     >>> dewarp = EPIDeWarp()
-#     >>> dewarp.inputs.epi_file = "functional.nii"
-#     >>> dewarp.inputs.mag_file = "magnitude.nii"
-#     >>> dewarp.inputs.dph_file = "phase.nii"
-#     >>> dewarp.inputs.output_type = "NIFTI_GZ"
-#     >>> dewarp.cmdline # doctest: +ELLIPSIS
-#     'epidewarp.fsl --mag magnitude.nii --dph phase.nii --epi functional.nii --esp 0.58 --exfdw .../exfdw.nii.gz --nocleanup --sigma 2 --tediff 2.46 --tmpdir .../temp --vsm .../vsm.nii.gz'
-#     >>> res = dewarp.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import EPIDeWarp
+# >>> dewarp = EPIDeWarp()
+# >>> dewarp.inputs.epi_file = "functional.nii"
+# >>> dewarp.inputs.mag_file = "magnitude.nii"
+# >>> dewarp.inputs.dph_file = "phase.nii"
+# >>> dewarp.inputs.output_type = "NIFTI_GZ"
+# >>> dewarp.cmdline # doctest: +ELLIPSIS
+# 'epidewarp.fsl --mag magnitude.nii --dph phase.nii --epi functional.nii --esp 0.58 --exfdw .../exfdw.nii.gz --nocleanup --sigma 2 --tediff 2.46 --tmpdir .../temp --vsm .../vsm.nii.gz'
+# >>> res = dewarp.run() # doctest: +SKIP
 #
 #
 #
@@ -47,7 +47,7 @@ inputs:
     # type=file|default=<undefined>: EPI volume to unwarp
     exf_file: generic/file
     # type=file|default=<undefined>: example func volume (or use epi)
-    mag_file: medimage/nifti1
+    mag_file: generic/file
     # type=file|default=<undefined>: Magnitude file
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -82,7 +82,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     exfdw: exfdw
     # type=file: dewarped functional volume example
     # type=string|default='': dewarped example func volume
@@ -120,13 +120,13 @@ tests:
     cleanup:
     # type=bool|default=False: cleanup
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -145,14 +145,10 @@ tests:
   # (if not specified, will try to choose a sensible value)
     epi_file:
     # type=file|default=<undefined>: EPI volume to unwarp
-    mag_file:
-    # type=file|default=<undefined>: Magnitude file
     dph_file:
     # type=file|default=<undefined>: Phase file assumed to be scaled from 0 to 4095
-    output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -175,14 +171,10 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     epi_file: '"functional.nii"'
     # type=file|default=<undefined>: EPI volume to unwarp
-    mag_file: '"magnitude.nii"'
-    # type=file|default=<undefined>: Magnitude file
     dph_file: '"phase.nii"'
     # type=file|default=<undefined>: Phase file assumed to be scaled from 0 to 4095
-    output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

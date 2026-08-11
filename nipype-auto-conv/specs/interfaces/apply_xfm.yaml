@@ -6,23 +6,23 @@
 # Docs
 # ----
 # Currently just a light wrapper around FLIRT,
-#     with no modifications
+# with no modifications
 #
-#     ApplyXFM is used to apply an existing transform to an image
+# ApplyXFM is used to apply an existing transform to an image
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> from nipype.testing import example_data
-#     >>> applyxfm = fsl.preprocess.ApplyXFM()
-#     >>> applyxfm.inputs.in_file = example_data('structural.nii')
-#     >>> applyxfm.inputs.in_matrix_file = example_data('trans.mat')
-#     >>> applyxfm.inputs.out_file = 'newfile.nii'
-#     >>> applyxfm.inputs.reference = example_data('mni.nii')
-#     >>> applyxfm.inputs.apply_xfm = True
-#     >>> result = applyxfm.run() # doctest: +SKIP
+# >>> import nipype.interfaces.fsl as fsl
+# >>> from nipype.testing import example_data
+# >>> applyxfm = fsl.preprocess.ApplyXFM()
+# >>> applyxfm.inputs.in_file = example_data('structural.nii')
+# >>> applyxfm.inputs.in_matrix_file = example_data('trans.mat')
+# >>> applyxfm.inputs.out_file = 'newfile.nii'
+# >>> applyxfm.inputs.reference = example_data('mni.nii')
+# >>> applyxfm.inputs.apply_xfm = True
+# >>> result = applyxfm.run() # doctest: +SKIP
 #
 #
 task_name: ApplyXFM
@@ -49,15 +49,6 @@ inputs:
     # type=file|default=<undefined>: input 4x4 affine matrix
     in_weight: generic/file
     # type=file|default=<undefined>: File for input weighting volume
-    out_file: Path
-    # type=file: path/name of registered file (if generated)
-    # type=file|default=<undefined>: registered output file
-    out_log: Path
-    # type=file: path/name of output log (if generated)
-    # type=file|default=<undefined>: output log
-    out_matrix_file: Path
-    # type=file: path/name of calculated affine transform (if generated)
-    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
     ref_weight: generic/file
     # type=file|default=<undefined>: File for reference weighting volume
     reference: generic/file
@@ -99,7 +90,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -204,13 +195,13 @@ tests:
     bbrslope:
     # type=float|default=0.0: value of bbr slope
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

@@ -6,26 +6,26 @@
 # Docs
 # ----
 # Use FSL's tbss_skeleton to skeletonise an FA image or project arbitrary
-#     values onto a skeleton.
+# values onto a skeleton.
 #
-#     There are two ways to use this interface.  To create a skeleton from an FA
-#     image, just supply the ``in_file`` and set ``skeleton_file`` to True (or
-#     specify a skeleton filename. To project values onto a skeleton, you must
-#     set ``project_data`` to True, and then also supply values for
-#     ``threshold``, ``distance_map``, and ``data_file``. The
-#     ``search_mask_file`` and ``use_cingulum_mask`` inputs are also used in data
-#     projection, but ``use_cingulum_mask`` is set to True by default.  This mask
-#     controls where the projection algorithm searches within a circular space
-#     around a tract, rather than in a single perpendicular direction.
+# There are two ways to use this interface.  To create a skeleton from an FA
+# image, just supply the ``in_file`` and set ``skeleton_file`` to True (or
+# specify a skeleton filename. To project values onto a skeleton, you must
+# set ``project_data`` to True, and then also supply values for
+# ``threshold``, ``distance_map``, and ``data_file``. The
+# ``search_mask_file`` and ``use_cingulum_mask`` inputs are also used in data
+# projection, but ``use_cingulum_mask`` is set to True by default.  This mask
+# controls where the projection algorithm searches within a circular space
+# around a tract, rather than in a single perpendicular direction.
 #
-#     Example
-#     -------
+# Example
+# -------
 #
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> skeletor = fsl.TractSkeleton()
-#     >>> skeletor.inputs.in_file = "all_FA.nii.gz"
-#     >>> skeletor.inputs.skeleton_file = True
-#     >>> skeletor.run() # doctest: +SKIP
+# >>> import nipype.interfaces.fsl as fsl
+# >>> skeletor = fsl.TractSkeleton()
+# >>> skeletor.inputs.in_file = "all_FA.nii.gz"
+# >>> skeletor.inputs.skeleton_file = True
+# >>> skeletor.run() # doctest: +SKIP
 #
 #
 task_name: TractSkeleton
@@ -52,9 +52,6 @@ inputs:
     # type=file|default=<undefined>: distance map image
     in_file: generic/file
     # type=file|default=<undefined>: input image (typically mean FA volume)
-    projected_data: Path
-    # type=file: input data projected onto skeleton
-    # type=file|default=<undefined>: input data projected onto skeleton
     search_mask_file: generic/file
     # type=file|default=<undefined>: mask in which to use alternate search rule
   callable_defaults:
@@ -83,7 +80,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -115,13 +112,13 @@ tests:
     # type=file: tract skeleton image
     # type=traitcompound|default=None: write out skeleton image
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

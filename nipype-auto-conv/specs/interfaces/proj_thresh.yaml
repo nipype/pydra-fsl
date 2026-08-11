@@ -6,17 +6,17 @@
 # Docs
 # ----
 # Use FSL proj_thresh for thresholding some outputs of probtrack
-#     For complete details, see the FDT Documentation
-#     <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_thresh.html>
+# For complete details, see the FDT Documentation
+# <http://www.fmrib.ox.ac.uk/fsl/fdt/fdt_thresh.html>
 #
-#     Example
-#     -------
+# Example
+# -------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> ldir = ['seeds_to_M1.nii', 'seeds_to_M2.nii']
-#     >>> pThresh = fsl.ProjThresh(in_files=ldir, threshold=3)
-#     >>> pThresh.cmdline
-#     'proj_thresh seeds_to_M1.nii seeds_to_M2.nii 3'
+# >>> from nipype.interfaces import fsl
+# >>> ldir = ['seeds_to_M1.nii', 'seeds_to_M2.nii']
+# >>> pThresh = fsl.ProjThresh(in_files=ldir, threshold=3)
+# >>> pThresh.cmdline
+# 'proj_thresh seeds_to_M1.nii seeds_to_M2.nii 3'
 #
 #
 task_name: ProjThresh
@@ -57,7 +57,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -69,13 +69,13 @@ tests:
     threshold:
     # type=int|default=0: threshold indicating minimum number of seed voxels entering this mask region
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -97,7 +97,7 @@ tests:
     threshold: '3'
     # type=int|default=0: threshold indicating minimum number of seed voxels entering this mask region
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -123,7 +123,7 @@ doctests:
     threshold: '3'
     # type=int|default=0: threshold indicating minimum number of seed voxels entering this mask region
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

@@ -6,21 +6,21 @@
 # Docs
 # ----
 #
-#     B0 inhomogeneities occur at interfaces of materials with different magnetic susceptibilities,
-#     such as tissue-air interfaces. These differences lead to distortion in the local magnetic field,
-#     as Maxwell’s equations need to be satisfied. An example of B0 inhomogneity is the first volume
-#     of the 4D volume ```$FSLDIR/data/possum/b0_ppm.nii.gz```.
+# B0 inhomogeneities occur at interfaces of materials with different magnetic susceptibilities,
+# such as tissue-air interfaces. These differences lead to distortion in the local magnetic field,
+# as Maxwell’s equations need to be satisfied. An example of B0 inhomogneity is the first volume
+# of the 4D volume ```$FSLDIR/data/possum/b0_ppm.nii.gz```.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import B0Calc
-#     >>> b0calc = B0Calc()
-#     >>> b0calc.inputs.in_file = 'tissue+air_map.nii'
-#     >>> b0calc.inputs.z_b0 = 3.0
-#     >>> b0calc.inputs.output_type = "NIFTI_GZ"
-#     >>> b0calc.cmdline
-#     'b0calc -i tissue+air_map.nii -o tissue+air_map_b0field.nii.gz --chi0=4.000000e-07 -d -9.450000e-06 --extendboundary=1.00 --b0x=0.00 --gx=0.0000 --b0y=0.00 --gy=0.0000 --b0=3.00 --gz=0.0000'
+# >>> from nipype.interfaces.fsl import B0Calc
+# >>> b0calc = B0Calc()
+# >>> b0calc.inputs.in_file = 'tissue+air_map.nii'
+# >>> b0calc.inputs.z_b0 = 3.0
+# >>> b0calc.inputs.output_type = "NIFTI_GZ"
+# >>> b0calc.cmdline
+# 'b0calc -i tissue+air_map.nii -o tissue+air_map_b0field.nii.gz --chi0=4.000000e-07 -d -9.450000e-06 --extendboundary=1.00 --b0x=0.00 --gx=0.0000 --b0y=0.00 --gy=0.0000 --b0=3.00 --gz=0.0000'
 #
 #
 task_name: B0Calc
@@ -39,9 +39,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: medimage/nifti1
     # type=file|default=<undefined>: filename of input image (usually a tissue/air segmentation)
-    out_file: Path
-    # type=file: filename of B0 output volume
-    # type=file|default=<undefined>: filename of B0 output volume
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -65,7 +62,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -102,13 +99,13 @@ tests:
     directconv:
     # type=bool|default=False: use direct (image space) convolution, not FFT
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -127,12 +124,10 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: filename of input image (usually a tissue/air segmentation)
-    z_b0: '3.0'
-    # type=float|default=1.0: Value for zeroth-order b0 field (z-component), in Tesla
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -155,12 +150,10 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_file: '"tissue+air_map.nii"'
     # type=file|default=<undefined>: filename of input image (usually a tissue/air segmentation)
-    z_b0: '3.0'
-    # type=float|default=1.0: Value for zeroth-order b0 field (z-component), in Tesla
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

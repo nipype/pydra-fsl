@@ -7,26 +7,26 @@
 # ----
 #
 #
-#     Runs FSL epi_reg script for simultaneous coregistration and fieldmap
-#     unwarping.
+# Runs FSL epi_reg script for simultaneous coregistration and fieldmap
+# unwarping.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import EpiReg
-#     >>> epireg = EpiReg()
-#     >>> epireg.inputs.epi='epi.nii'
-#     >>> epireg.inputs.t1_head='T1.nii'
-#     >>> epireg.inputs.t1_brain='T1_brain.nii'
-#     >>> epireg.inputs.out_base='epi2struct'
-#     >>> epireg.inputs.fmap='fieldmap_phase_fslprepared.nii'
-#     >>> epireg.inputs.fmapmag='fieldmap_mag.nii'
-#     >>> epireg.inputs.fmapmagbrain='fieldmap_mag_brain.nii'
-#     >>> epireg.inputs.echospacing=0.00067
-#     >>> epireg.inputs.pedir='y'
-#     >>> epireg.cmdline # doctest: +ELLIPSIS
-#     'epi_reg --echospacing=0.000670 --fmap=fieldmap_phase_fslprepared.nii --fmapmag=fieldmap_mag.nii --fmapmagbrain=fieldmap_mag_brain.nii --noclean --pedir=y --epi=epi.nii --t1=T1.nii --t1brain=T1_brain.nii --out=epi2struct'
-#     >>> epireg.run() # doctest: +SKIP
+# >>> from nipype.interfaces.fsl import EpiReg
+# >>> epireg = EpiReg()
+# >>> epireg.inputs.epi='epi.nii'
+# >>> epireg.inputs.t1_head='T1.nii'
+# >>> epireg.inputs.t1_brain='T1_brain.nii'
+# >>> epireg.inputs.out_base='epi2struct'
+# >>> epireg.inputs.fmap='fieldmap_phase_fslprepared.nii'
+# >>> epireg.inputs.fmapmag='fieldmap_mag.nii'
+# >>> epireg.inputs.fmapmagbrain='fieldmap_mag_brain.nii'
+# >>> epireg.inputs.echospacing=0.00067
+# >>> epireg.inputs.pedir='y'
+# >>> epireg.cmdline # doctest: +ELLIPSIS
+# 'epi_reg --echospacing=0.000670 --fmap=fieldmap_phase_fslprepared.nii --fmapmag=fieldmap_mag.nii --fmapmagbrain=fieldmap_mag_brain.nii --noclean --pedir=y --epi=epi.nii --t1=T1.nii --t1brain=T1_brain.nii --out=epi2struct'
+# >>> epireg.run() # doctest: +SKIP
 #
 #
 task_name: EpiReg
@@ -47,19 +47,16 @@ inputs:
     # type=file|default=<undefined>: EPI image
     fmap: medimage/nifti1
     # type=file|default=<undefined>: fieldmap image (in rad/s)
-    fmapmag: medimage/nifti1
+    fmapmag: generic/file
     # type=file|default=<undefined>: fieldmap magnitude image - wholehead
     fmapmagbrain: medimage/nifti1
     # type=file|default=<undefined>: fieldmap magnitude image - brain extracted
     t1_brain: medimage/nifti1
     # type=file|default=<undefined>: brain extracted T1 image
-    t1_head: medimage/nifti1
+    t1_head: generic/file
     # type=file|default=<undefined>: wholehead T1 image
     weight_image: generic/file
     # type=file|default=<undefined>: weighting image (in T1 space)
-    wmseg: Path
-    # type=file: white matter segmentation used in flirt bbr
-    # type=file|default=<undefined>: white matter segmentation of T1 image, has to be named                  like the t1brain and end on _wmseg
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -109,7 +106,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -144,13 +141,13 @@ tests:
     no_clean:
     # type=bool|default=True: do not clean up intermediate files
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -169,24 +166,16 @@ tests:
   # (if not specified, will try to choose a sensible value)
     epi:
     # type=file|default=<undefined>: EPI image
-    t1_head:
-    # type=file|default=<undefined>: wholehead T1 image
     t1_brain:
     # type=file|default=<undefined>: brain extracted T1 image
-    out_base: '"epi2struct"'
-    # type=string|default='epi2struct': output base name
     fmap:
     # type=file|default=<undefined>: fieldmap image (in rad/s)
-    fmapmag:
-    # type=file|default=<undefined>: fieldmap magnitude image - wholehead
     fmapmagbrain:
     # type=file|default=<undefined>: fieldmap magnitude image - brain extracted
-    echospacing: '0.00067'
-    # type=float|default=0.0: Effective EPI echo spacing                                 (sometimes called dwell time) - in seconds
     pedir: '"y"'
     # type=enum|default='x'|allowed['-x','-y','-z','x','y','z']: phase encoding direction, dir = x/y/z/-x/-y/-z
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -209,24 +198,16 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     epi: '"epi.nii"'
     # type=file|default=<undefined>: EPI image
-    t1_head: '"T1.nii"'
-    # type=file|default=<undefined>: wholehead T1 image
     t1_brain: '"T1_brain.nii"'
     # type=file|default=<undefined>: brain extracted T1 image
-    out_base: '"epi2struct"'
-    # type=string|default='epi2struct': output base name
     fmap: '"fieldmap_phase_fslprepared.nii"'
     # type=file|default=<undefined>: fieldmap image (in rad/s)
-    fmapmag: '"fieldmap_mag.nii"'
-    # type=file|default=<undefined>: fieldmap magnitude image - wholehead
     fmapmagbrain: '"fieldmap_mag_brain.nii"'
     # type=file|default=<undefined>: fieldmap magnitude image - brain extracted
-    echospacing: '0.00067'
-    # type=float|default=0.0: Effective EPI echo spacing                                 (sometimes called dwell time) - in seconds
     pedir: '"y"'
     # type=enum|default='x'|allowed['-x','-y','-z','x','y','z']: phase encoding direction, dir = x/y/z/-x/-y/-z
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

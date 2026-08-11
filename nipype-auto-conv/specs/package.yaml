@@ -2,7 +2,33 @@
 name: pydra.tasks.fsl
 # name of the nipype package to generate from (e.g. mriqc)
 nipype_name: nipype.interfaces.fsl
+# Whether the package is an interface-only package (i.e. only contains interfaces and not workflows)
+interface_only: null
 # The name of the global struct/dict that contains workflow inputs that are to be converted to inputs of the function along with the type of the struct, either "dict" or "class"
 config_params: null
+# specifications for helper functions defined within the workflow package
+functions: null
+# specifications for helper class defined within the workflow package
+classes: null
 # Mappings between nipype packages and their pydra equivalents. Regular expressions are supported
 import_translations: null
+# Generic regular expression substitutions to be run over the code after it is processed
+find_replace: null
+# Generic regular expression substitutions to be run over the code after it is processed and the imports have been prepended
+import_find_replace: null
+# Names of modules (untranslated) that shouldn't be included in the converted package
+omit_modules: null
+# Addresses of classes (untranslated) that shouldn't be included in the converted package
+omit_classes: null
+# Addresses of functions (untranslated) that shouldn't be included in the converted package
+omit_functions: null
+# Addresses of constants (untranslated) that shouldn't be included in the converted package
+omit_constants:
+- nipype.logging
+# The depth at which __init__ files should include imports from sub-modules by default
+init_depth: 3
+# The depth at which __init__ files should include imports from sub-modules by default
+auto_import_init_depth: 4
+# Packages that should be copied directly into the new package without modification
+copy_packages: null
+target_version: v6

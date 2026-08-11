@@ -6,39 +6,39 @@
 # Docs
 # ----
 #
-#     Use fslmaths to smooth the image
+# Use fslmaths to smooth the image
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     Setting the kernel width using sigma:
+# Setting the kernel width using sigma:
 #
-#     >>> sm = Smooth()
-#     >>> sm.inputs.output_type = 'NIFTI_GZ'
-#     >>> sm.inputs.in_file = 'functional2.nii'
-#     >>> sm.inputs.sigma = 8.0
-#     >>> sm.cmdline # doctest: +ELLIPSIS
-#     'fslmaths functional2.nii -kernel gauss 8.000 -fmean functional2_smooth.nii.gz'
+# >>> sm = Smooth()
+# >>> sm.inputs.output_type = 'NIFTI_GZ'
+# >>> sm.inputs.in_file = 'functional2.nii'
+# >>> sm.inputs.sigma = 8.0
+# >>> sm.cmdline # doctest: +ELLIPSIS
+# 'fslmaths functional2.nii -kernel gauss 8.000 -fmean functional2_smooth.nii.gz'
 #
-#     Setting the kernel width using fwhm:
+# Setting the kernel width using fwhm:
 #
-#     >>> sm = Smooth()
-#     >>> sm.inputs.output_type = 'NIFTI_GZ'
-#     >>> sm.inputs.in_file = 'functional2.nii'
-#     >>> sm.inputs.fwhm = 8.0
-#     >>> sm.cmdline # doctest: +ELLIPSIS
-#     'fslmaths functional2.nii -kernel gauss 3.397 -fmean functional2_smooth.nii.gz'
+# >>> sm = Smooth()
+# >>> sm.inputs.output_type = 'NIFTI_GZ'
+# >>> sm.inputs.in_file = 'functional2.nii'
+# >>> sm.inputs.fwhm = 8.0
+# >>> sm.cmdline # doctest: +ELLIPSIS
+# 'fslmaths functional2.nii -kernel gauss 3.397 -fmean functional2_smooth.nii.gz'
 #
-#     One of sigma or fwhm must be set:
+# One of sigma or fwhm must be set:
 #
-#     >>> from nipype.interfaces.fsl import Smooth
-#     >>> sm = Smooth()
-#     >>> sm.inputs.output_type = 'NIFTI_GZ'
-#     >>> sm.inputs.in_file = 'functional2.nii'
-#     >>> sm.cmdline #doctest: +ELLIPSIS
-#     Traceback (most recent call last):
-#      ...
-#     ValueError: Smooth requires a value for one of the inputs ...
+# >>> from nipype.interfaces.fsl import Smooth
+# >>> sm = Smooth()
+# >>> sm.inputs.output_type = 'NIFTI_GZ'
+# >>> sm.inputs.in_file = 'functional2.nii'
+# >>> sm.cmdline #doctest: +ELLIPSIS
+# Traceback (most recent call last):
+#  ...
+# ValueError: Smooth requires a value for one of the inputs ...
 #
 #
 task_name: Smooth
@@ -55,10 +55,7 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    in_file: medimage/nifti1
-    # type=file|default=<undefined>:
-    smoothed_file: Path
-    # type=file:
+    in_file: generic/file
     # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -83,7 +80,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -100,13 +97,13 @@ tests:
     # type=file:
     # type=file|default=<undefined>:
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -124,13 +121,11 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file:
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     sigma: '8.0'
     # type=float|default=0.0: gaussian kernel sigma in mm (not voxels)
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -148,13 +143,11 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file:
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     fwhm: '8.0'
     # type=float|default=0.0: gaussian kernel fwhm, will be converted to sigma in mm (not voxels)
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -172,11 +165,9 @@ tests:
   # dict[str, str] - values to provide to inputs fields in the task initialisation
   # (if not specified, will try to choose a sensible value)
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file:
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -198,13 +189,11 @@ doctests:
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file: '"functional2.nii"'
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     sigma: '8.0'
     # type=float|default=0.0: gaussian kernel sigma in mm (not voxels)
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
@@ -215,13 +204,11 @@ doctests:
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file: '"functional2.nii"'
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     fwhm: '8.0'
     # type=float|default=0.0: gaussian kernel fwhm, will be converted to sigma in mm (not voxels)
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS
@@ -232,11 +219,9 @@ doctests:
   # If the field is of file-format type and the value is None, then the
   # '.mock()' method of the corresponding class is used instead.
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
-    in_file: '"functional2.nii"'
-    # type=file|default=<undefined>:
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

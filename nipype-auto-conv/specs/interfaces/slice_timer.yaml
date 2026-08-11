@@ -7,14 +7,14 @@
 # ----
 # FSL slicetimer wrapper to perform slice timing correction
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces import fsl
-#     >>> from nipype.testing import example_data
-#     >>> st = fsl.SliceTimer()
-#     >>> st.inputs.in_file = example_data('functional.nii')
-#     >>> st.inputs.interleaved = True
-#     >>> result = st.run() #doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces import fsl
+# >>> from nipype.testing import example_data
+# >>> st = fsl.SliceTimer()
+# >>> st.inputs.in_file = example_data('functional.nii')
+# >>> st.inputs.interleaved = True
+# >>> result = st.run() #doctest: +SKIP
 #
 #
 task_name: SliceTimer
@@ -37,8 +37,6 @@ inputs:
     # type=file|default=<undefined>: slice timings, in fractions of TR, range 0:1 (default is 0.5 = no shift)
     in_file: generic/file
     # type=file|default=<undefined>: filename of input timeseries
-    out_file: Path
-    # type=file|default=<undefined>: filename of output timeseries
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -63,7 +61,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -89,13 +87,13 @@ tests:
     custom_order:
     # type=file|default=<undefined>: filename of single-column custom interleave order file (first slice is referred to as 1 not 0)
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

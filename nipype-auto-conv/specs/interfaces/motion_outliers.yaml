@@ -6,15 +6,15 @@
 # Docs
 # ----
 #
-#     Use FSL fsl_motion_outliers`http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSLMotionOutliers`_ to find outliers in timeseries (4d) data.
-#     Examples
-#     --------
-#     >>> from nipype.interfaces.fsl import MotionOutliers
-#     >>> mo = MotionOutliers()
-#     >>> mo.inputs.in_file = "epi.nii"
-#     >>> mo.cmdline # doctest: +ELLIPSIS
-#     'fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt'
-#     >>> res = mo.run() # doctest: +SKIP
+# Use FSL fsl_motion_outliers`http://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FSLMotionOutliers`_ to find outliers in timeseries (4d) data.
+# Examples
+# --------
+# >>> from nipype.interfaces.fsl import MotionOutliers
+# >>> mo = MotionOutliers()
+# >>> mo.inputs.in_file = "epi.nii"
+# >>> mo.cmdline # doctest: +ELLIPSIS
+# 'fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt'
+# >>> res = mo.run() # doctest: +SKIP
 #
 task_name: MotionOutliers
 nipype_name: MotionOutliers
@@ -34,15 +34,6 @@ inputs:
     # type=file|default=<undefined>: unfiltered 4D image
     mask: generic/file
     # type=file|default=<undefined>: mask image for calculating metric
-    out_file: Path
-    # type=file:
-    # type=file|default=<undefined>: output outlier file name
-    out_metric_plot: Path
-    # type=file:
-    # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
-    out_metric_values: Path
-    # type=file:
-    # type=file|default=<undefined>: output metric values (DVARS etc.) file name
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -72,7 +63,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -101,13 +92,13 @@ tests:
     # type=file:
     # type=file|default=<undefined>: output metric values plot (DVARS etc.) file name
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -127,7 +118,7 @@ tests:
     in_file:
     # type=file|default=<undefined>: unfiltered 4D image
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -142,7 +133,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: fsl_motion_outliers -i epi.nii -o epi_outliers.txt -p epi_metrics.png -s epi_metrics.txt
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -151,7 +142,7 @@ doctests:
     in_file: '"epi.nii"'
     # type=file|default=<undefined>: unfiltered 4D image
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

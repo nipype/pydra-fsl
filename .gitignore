@@ -178,6 +178,8 @@ cython_debug/
 
 # Generated files
 /pydra/tasks/fsl/_version.py
+/related-packages/fileformats/fileformats/vendor/fsl/_version.py
+/related-packages/fileformats-extras/fileformats/extras/vendor/fsl/_version.py
 /related-packages/fileformats/fileformats/medimage_fsl/_version.py
 /related-packages/fileformats-extras/fileformats/extras/medimage_fsl/_version.py
 /pydra/tasks/fsl/auto

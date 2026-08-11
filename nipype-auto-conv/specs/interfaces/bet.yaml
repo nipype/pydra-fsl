@@ -7,19 +7,19 @@
 # ----
 # FSL BET wrapper for skull stripping
 #
-#     For complete details, see the `BET Documentation.
-#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET/UserGuide>`_
+# For complete details, see the `BET Documentation.
+# <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET/UserGuide>`_
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces import fsl
-#     >>> btr = fsl.BET()
-#     >>> btr.inputs.in_file = 'structural.nii'
-#     >>> btr.inputs.frac = 0.7
-#     >>> btr.inputs.out_file = 'brain_anat.nii'
-#     >>> btr.cmdline
-#     'bet structural.nii brain_anat.nii -f 0.70'
-#     >>> res = btr.run() # doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces import fsl
+# >>> btr = fsl.BET()
+# >>> btr.inputs.in_file = 'structural.nii'
+# >>> btr.inputs.frac = 0.7
+# >>> btr.inputs.out_file = 'brain_anat.nii'
+# >>> btr.cmdline
+# 'bet structural.nii brain_anat.nii -f 0.70'
+# >>> res = btr.run() # doctest: +SKIP
 #
 #
 task_name: BET
@@ -38,9 +38,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: medimage/nifti1
     # type=file|default=<undefined>: input file to skull strip
-    out_file: Path
-    # type=file: path/name of skullstripped file (if generated)
-    # type=file|default=<undefined>: name of output skull stripped image
     t2_guided: generic/file
     # type=file|default=<undefined>: as with creating surfaces, when also feeding in non-brain-extracted T2 (includes registrations)
   callable_defaults:
@@ -88,7 +85,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: '"brain_anat.nii"'
     # type=file: path/name of skullstripped file (if generated)
     # type=file|default=<undefined>: name of output skull stripped image
@@ -138,13 +135,13 @@ tests:
     reduce_bias:
     # type=bool|default=False: bias field and neck cleanup
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -163,13 +160,11 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: input file to skull strip
-    frac: '0.7'
-    # type=float|default=0.0: fractional intensity threshold
     out_file: '"brain_anat.nii"'
     # type=file: path/name of skullstripped file (if generated)
     # type=file|default=<undefined>: name of output skull stripped image
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -184,7 +179,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: bet structural.nii brain_anat.nii -f 0.70
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -192,13 +187,11 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_file: '"structural.nii"'
     # type=file|default=<undefined>: input file to skull strip
-    frac: '0.7'
-    # type=float|default=0.0: fractional intensity threshold
     out_file: '"brain_anat.nii"'
     # type=file: path/name of skullstripped file (if generated)
     # type=file|default=<undefined>: name of output skull stripped image
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

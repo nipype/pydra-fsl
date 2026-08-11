@@ -7,14 +7,14 @@
 # ----
 # Use fslmaths to generate a max image across a given dimension.
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces.fsl.maths import MaxImage
-#     >>> maxer = MaxImage()
-#     >>> maxer.inputs.in_file = "functional.nii"  # doctest: +SKIP
-#     >>> maxer.dimension = "T"
-#     >>> maxer.cmdline  # doctest: +SKIP
-#     'fslmaths functional.nii -Tmax functional_max.nii'
+# Examples
+# --------
+# >>> from nipype.interfaces.fsl.maths import MaxImage
+# >>> maxer = MaxImage()
+# >>> maxer.inputs.in_file = "functional.nii"  # doctest: +SKIP
+# >>> maxer.dimension = "T"
+# >>> maxer.cmdline  # doctest: +SKIP
+# 'fslmaths functional.nii -Tmax functional_max.nii'
 #
 #
 task_name: MaxImage
@@ -33,9 +33,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: medimage/nifti1
     # type=file|default=<undefined>: image to operate on
-    out_file: Path
-    # type=file: image written after calculations
-    # type=file|default=<undefined>: image to write
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -59,7 +56,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: image written after calculations
     # type=file|default=<undefined>: image to write
@@ -83,13 +80,13 @@ tests:
     nan2zeros:
     # type=bool|default=False: change NaNs to zeros before doing anything
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -109,7 +106,7 @@ tests:
     in_file:
     # type=file|default=<undefined>: image to operate on
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -124,7 +121,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: fslmaths functional.nii -Tmax functional_max.nii
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -133,7 +130,7 @@ doctests:
     in_file: '"functional.nii"  # doctest: +SKIP'
     # type=file|default=<undefined>: image to operate on
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

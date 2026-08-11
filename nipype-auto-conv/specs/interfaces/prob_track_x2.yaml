@@ -7,21 +7,21 @@
 # ----
 # Use FSL  probtrackx2 for tractography on bedpostx results
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> pbx2 = fsl.ProbTrackX2()
-#     >>> pbx2.inputs.seed = 'seed_source.nii.gz'
-#     >>> pbx2.inputs.thsamples = 'merged_th1samples.nii.gz'
-#     >>> pbx2.inputs.fsamples = 'merged_f1samples.nii.gz'
-#     >>> pbx2.inputs.phsamples = 'merged_ph1samples.nii.gz'
-#     >>> pbx2.inputs.mask = 'nodif_brain_mask.nii.gz'
-#     >>> pbx2.inputs.out_dir = '.'
-#     >>> pbx2.inputs.n_samples = 3
-#     >>> pbx2.inputs.n_steps = 10
-#     >>> pbx2.cmdline
-#     'probtrackx2 --forcedir -m nodif_brain_mask.nii.gz --nsamples=3 --nsteps=10 --opd --dir=. --samples=merged --seed=seed_source.nii.gz'
+# >>> from nipype.interfaces import fsl
+# >>> pbx2 = fsl.ProbTrackX2()
+# >>> pbx2.inputs.seed = 'seed_source.nii.gz'
+# >>> pbx2.inputs.thsamples = 'merged_th1samples.nii.gz'
+# >>> pbx2.inputs.fsamples = 'merged_f1samples.nii.gz'
+# >>> pbx2.inputs.phsamples = 'merged_ph1samples.nii.gz'
+# >>> pbx2.inputs.mask = 'nodif_brain_mask.nii.gz'
+# >>> pbx2.inputs.out_dir = '.'
+# >>> pbx2.inputs.n_samples = 3
+# >>> pbx2.inputs.n_steps = 10
+# >>> pbx2.cmdline
+# 'probtrackx2 --forcedir -m nodif_brain_mask.nii.gz --nsamples=3 --nsteps=10 --opd --dir=. --samples=merged --seed=seed_source.nii.gz'
 #
 task_name: ProbTrackX2
 nipype_name: ProbTrackX2
@@ -51,9 +51,7 @@ inputs:
     # type=file|default=<undefined>: Column-space mask used for Nxn connectivity matrix
     mask: medimage/nifti-gz
     # type=file|default=<undefined>: bet binary mask file in diffusion space
-    out_dir: Path
-    # type=directory|default=<undefined>: directory to put the final volumes in
-    phsamples: medimage/nifti-gz+list-of
+    phsamples: generic/file+list-of
     # type=inputmultiobject|default=[]:
     seed_ref: generic/file
     # type=file|default=<undefined>: reference vol to define seed space in simple mode - diffusion space assumed if absent
@@ -67,7 +65,7 @@ inputs:
     # type=file|default=<undefined>: Brain mask in DTI space
     target_masks: generic/file+list-of
     # type=inputmultiobject|default=[]: list of target masks - required for seeds_to_targets classification
-    thsamples: medimage/nifti-gz+list-of
+    thsamples: generic/file+list-of
     # type=inputmultiobject|default=[]:
     waypoints: generic/file
     # type=file|default=<undefined>: waypoint mask or ascii list of waypoint masks - only keep paths going through ALL the masks
@@ -115,7 +113,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -223,13 +221,13 @@ tests:
     verbose:
     # type=enum|default=0|allowed[0,1,2]: Verbose level, [0-2]. Level 2 is required to output particle files.
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -248,22 +246,14 @@ tests:
   # (if not specified, will try to choose a sensible value)
     seed: '"seed_source.nii.gz"'
     # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
-    thsamples:
-    # type=inputmultiobject|default=[]:
     fsamples:
-    # type=inputmultiobject|default=[]:
-    phsamples:
     # type=inputmultiobject|default=[]:
     mask:
     # type=file|default=<undefined>: bet binary mask file in diffusion space
-    out_dir: '"."'
-    # type=directory|default=<undefined>: directory to put the final volumes in
     n_samples: '3'
     # type=int|default=5000: number of samples - default=5000
-    n_steps: '10'
-    # type=int|default=0: number of steps per sample - default=2000
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -286,22 +276,14 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     seed: '"seed_source.nii.gz"'
     # type=traitcompound|default=None: seed volume(s), or voxel(s) or freesurfer label file
-    thsamples: '"merged_th1samples.nii.gz"'
-    # type=inputmultiobject|default=[]:
     fsamples: '"merged_f1samples.nii.gz"'
-    # type=inputmultiobject|default=[]:
-    phsamples: '"merged_ph1samples.nii.gz"'
     # type=inputmultiobject|default=[]:
     mask: '"nodif_brain_mask.nii.gz"'
     # type=file|default=<undefined>: bet binary mask file in diffusion space
-    out_dir: '"."'
-    # type=directory|default=<undefined>: directory to put the final volumes in
     n_samples: '3'
     # type=int|default=5000: number of samples - default=5000
-    n_steps: '10'
-    # type=int|default=0: number of steps per sample - default=2000
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

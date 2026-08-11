@@ -7,16 +7,16 @@
 # ----
 # Use the FSL utility convert_xfm to modify FLIRT transformation matrices.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> invt = fsl.ConvertXFM()
-#     >>> invt.inputs.in_file = "flirt.mat"
-#     >>> invt.inputs.invert_xfm = True
-#     >>> invt.inputs.out_file = 'flirt_inv.mat'
-#     >>> invt.cmdline
-#     'convert_xfm -omat flirt_inv.mat -inverse flirt.mat'
+# >>> import nipype.interfaces.fsl as fsl
+# >>> invt = fsl.ConvertXFM()
+# >>> invt.inputs.in_file = "flirt.mat"
+# >>> invt.inputs.invert_xfm = True
+# >>> invt.inputs.out_file = 'flirt_inv.mat'
+# >>> invt.cmdline
+# 'convert_xfm -omat flirt_inv.mat -inverse flirt.mat'
 #
 #
 #
@@ -38,9 +38,6 @@ inputs:
     # type=file|default=<undefined>: input transformation matrix
     in_file2: generic/file
     # type=file|default=<undefined>: second input matrix (for use with fix_scale_skew or concat_xfm)
-    out_file: Path
-    # type=file: output transformation matrix
-    # type=file|default=<undefined>: final transformation matrix
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -64,7 +61,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: '"flirt_inv.mat"'
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
@@ -88,13 +85,13 @@ tests:
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -113,13 +110,11 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: input transformation matrix
-    invert_xfm: 'True'
-    # type=bool|default=False: invert input transformation
     out_file: '"flirt_inv.mat"'
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.interfaces.fsl as fsl
   expected_outputs:
@@ -143,13 +138,11 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_file: '"flirt.mat"'
     # type=file|default=<undefined>: input transformation matrix
-    invert_xfm: 'True'
-    # type=bool|default=False: invert input transformation
     out_file: '"flirt_inv.mat"'
     # type=file: output transformation matrix
     # type=file|default=<undefined>: final transformation matrix
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

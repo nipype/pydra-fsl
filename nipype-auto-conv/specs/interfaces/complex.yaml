@@ -7,13 +7,13 @@
 # ----
 # fslcomplex is a tool for converting complex data
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> cplx = Complex()
-#     >>> cplx.inputs.complex_in_file = "complex.nii"
-#     >>> cplx.real_polar = True
-#     >>> res = cplx.run() # doctest: +SKIP
+# >>> cplx = Complex()
+# >>> cplx.inputs.complex_in_file = "complex.nii"
+# >>> cplx.real_polar = True
+# >>> res = cplx.run() # doctest: +SKIP
 #
 #
 #
@@ -35,28 +35,13 @@ inputs:
     # type=file|default=<undefined>:
     complex_in_file2: generic/file
     # type=file|default=<undefined>:
-    complex_out_file: Path
-    # type=file:
-    # type=file|default=<undefined>:
     imaginary_in_file: generic/file
-    # type=file|default=<undefined>:
-    imaginary_out_file: Path
-    # type=file:
     # type=file|default=<undefined>:
     magnitude_in_file: generic/file
     # type=file|default=<undefined>:
-    magnitude_out_file: Path
-    # type=file:
-    # type=file|default=<undefined>:
     phase_in_file: generic/file
     # type=file|default=<undefined>:
-    phase_out_file: Path
-    # type=file:
-    # type=file|default=<undefined>:
     real_in_file: generic/file
-    # type=file|default=<undefined>:
-    real_out_file: Path
-    # type=file:
     # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -93,7 +78,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     complex_out_file: complex_out_file
     # type=file:
     # type=file|default=<undefined>:
@@ -159,13 +144,13 @@ tests:
     complex_merge:
     # type=bool|default=False:
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

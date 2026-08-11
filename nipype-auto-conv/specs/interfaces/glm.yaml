@@ -6,14 +6,14 @@
 # Docs
 # ----
 #
-#     FSL GLM:
+# FSL GLM:
 #
-#     Example
-#     -------
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> glm = fsl.GLM(in_file='functional.nii', design='maps.nii', output_type='NIFTI')
-#     >>> glm.cmdline
-#     'fsl_glm -i functional.nii -d maps.nii -o functional_glm.nii'
+# Example
+# -------
+# >>> import nipype.interfaces.fsl as fsl
+# >>> glm = fsl.GLM(in_file='functional.nii', design='maps.nii', output_type='NIFTI')
+# >>> glm.cmdline
+# 'fsl_glm -i functional.nii -d maps.nii -o functional_glm.nii'
 #
 #
 task_name: GLM
@@ -38,32 +38,6 @@ inputs:
     # type=file|default=<undefined>: input file name (text matrix or 3D/4D image file)
     mask: generic/file
     # type=file|default=<undefined>: mask image file name if input is image
-    out_cope: Path
-    # type=outputmultiobject: output file name for COPEs (either as text file or image)
-    # type=file|default=<undefined>: output file name for COPE (either as txt or image
-    out_data_name: Path
-    # type=file|default=<undefined>: output file name for pre-processed data
-    out_f_name: Path
-    # type=file|default=<undefined>: output file name for F-value of full model fit
-    out_file: Path
-    # type=file: file name of GLM parameters (if generated)
-    # type=file|default=<undefined>: filename for GLM parameter estimates (GLM betas)
-    out_p_name: Path
-    # type=file|default=<undefined>: output file name for p-values of Z-stats (either as text file or image)
-    out_pf_name: Path
-    # type=file|default=<undefined>: output file name for p-value for full model fit
-    out_res_name: Path
-    # type=file|default=<undefined>: output file name for residuals
-    out_sigsq_name: Path
-    # type=file|default=<undefined>: output file name for residual noise variance sigma-square
-    out_t_name: Path
-    # type=file|default=<undefined>: output file name for t-stats (either as txt or image
-    out_varcb_name: Path
-    # type=file|default=<undefined>: output file name for variance of COPEs
-    out_vnscales_name: Path
-    # type=file|default=<undefined>: output file name for scaling factors for variance normalisation
-    out_z_name: Path
-    # type=file|default=<undefined>: output file name for Z-stats (either as txt or image
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -110,7 +84,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -162,13 +136,13 @@ tests:
     out_vnscales_name:
     # type=file|default=<undefined>: output file name for scaling factors for variance normalisation
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -190,9 +164,9 @@ tests:
     design:
     # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
     output_type: '"NIFTI"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.interfaces.fsl as fsl
   expected_outputs:
@@ -208,7 +182,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: fsl_glm -i functional.nii -d maps.nii -o functional_glm.nii
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -219,9 +193,9 @@ doctests:
     design: '"maps.nii"'
     # type=file|default=<undefined>: file name of the GLM design matrix (text time courses for temporal regression or an image file for spatial regression)
     output_type: '"NIFTI"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

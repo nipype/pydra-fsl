@@ -6,20 +6,20 @@
 # Docs
 # ----
 # Use FSL  dtifit command for fitting a diffusion tensor model at each
-#     voxel
+# voxel
 #
-#     Example
-#     -------
+# Example
+# -------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> dti = fsl.DTIFit()
-#     >>> dti.inputs.dwi = 'diffusion.nii'
-#     >>> dti.inputs.bvecs = 'bvecs'
-#     >>> dti.inputs.bvals = 'bvals'
-#     >>> dti.inputs.base_name = 'TP'
-#     >>> dti.inputs.mask = 'mask.nii'
-#     >>> dti.cmdline
-#     'dtifit -k diffusion.nii -o TP -m mask.nii -r bvecs -b bvals'
+# >>> from nipype.interfaces import fsl
+# >>> dti = fsl.DTIFit()
+# >>> dti.inputs.dwi = 'diffusion.nii'
+# >>> dti.inputs.bvecs = 'bvecs'
+# >>> dti.inputs.bvals = 'bvals'
+# >>> dti.inputs.base_name = 'TP'
+# >>> dti.inputs.mask = 'mask.nii'
+# >>> dti.cmdline
+# 'dtifit -k diffusion.nii -o TP -m mask.nii -r bvecs -b bvals'
 #
 #
 task_name: DTIFit
@@ -38,7 +38,7 @@ inputs:
   # passed to the field in the automatically generated unittests.
     bvals: medimage/bval
     # type=file|default=<undefined>: b values file
-    bvecs: medimage/bvec
+    bvecs: generic/file
     # type=file|default=<undefined>: b vectors file
     cni: generic/file
     # type=file|default=<undefined>: input counfound regressors
@@ -93,7 +93,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -134,13 +134,13 @@ tests:
     gradnonlin:
     # type=file|default=<undefined>: gradient non linearities
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -159,16 +159,12 @@ tests:
   # (if not specified, will try to choose a sensible value)
     dwi:
     # type=file|default=<undefined>: diffusion weighted image data file
-    bvecs:
-    # type=file|default=<undefined>: b vectors file
     bvals:
     # type=file|default=<undefined>: b values file
-    base_name: '"TP"'
-    # type=str|default='dtifit_': base_name that all output files will start with
     mask:
     # type=file|default=<undefined>: bet binary mask file
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -191,16 +187,12 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     dwi: '"diffusion.nii"'
     # type=file|default=<undefined>: diffusion weighted image data file
-    bvecs: '"bvecs"'
-    # type=file|default=<undefined>: b vectors file
     bvals: '"bvals"'
     # type=file|default=<undefined>: b values file
-    base_name: '"TP"'
-    # type=str|default='dtifit_': base_name that all output files will start with
     mask: '"mask.nii"'
     # type=file|default=<undefined>: bet binary mask file
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

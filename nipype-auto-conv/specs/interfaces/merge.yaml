@@ -7,26 +7,26 @@
 # ----
 # Use fslmerge to concatenate images
 #
-#     Images can be concatenated across time, x, y, or z dimensions. Across the
-#     time (t) dimension the TR is set by default to 1 sec.
+# Images can be concatenated across time, x, y, or z dimensions. Across the
+# time (t) dimension the TR is set by default to 1 sec.
 #
-#     Note: to set the TR to a different value, specify 't' for dimension and
-#     specify the TR value in seconds for the tr input. The dimension will be
-#     automatically updated to 'tr'.
+# Note: to set the TR to a different value, specify 't' for dimension and
+# specify the TR value in seconds for the tr input. The dimension will be
+# automatically updated to 'tr'.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces.fsl import Merge
-#     >>> merger = Merge()
-#     >>> merger.inputs.in_files = ['functional2.nii', 'functional3.nii']
-#     >>> merger.inputs.dimension = 't'
-#     >>> merger.inputs.output_type = 'NIFTI_GZ'
-#     >>> merger.cmdline
-#     'fslmerge -t functional2_merged.nii.gz functional2.nii functional3.nii'
-#     >>> merger.inputs.tr = 2.25
-#     >>> merger.cmdline
-#     'fslmerge -tr functional2_merged.nii.gz functional2.nii functional3.nii 2.25'
+# >>> from nipype.interfaces.fsl import Merge
+# >>> merger = Merge()
+# >>> merger.inputs.in_files = ['functional2.nii', 'functional3.nii']
+# >>> merger.inputs.dimension = 't'
+# >>> merger.inputs.output_type = 'NIFTI_GZ'
+# >>> merger.cmdline
+# 'fslmerge -t functional2_merged.nii.gz functional2.nii functional3.nii'
+# >>> merger.inputs.tr = 2.25
+# >>> merger.cmdline
+# 'fslmerge -tr functional2_merged.nii.gz functional2.nii functional3.nii 2.25'
 #
 #
 #
@@ -46,9 +46,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_files: medimage/nifti1+list-of
     # type=list|default=[]:
-    merged_file: Path
-    # type=file:
-    # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -72,7 +69,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -89,13 +86,13 @@ tests:
     # type=file:
     # type=file|default=<undefined>:
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -114,14 +111,12 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_files:
     # type=list|default=[]:
-    dimension: '"t"'
-    # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     tr: '2.25'
     # type=float|default=0.0: use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -144,14 +139,12 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_files: '["functional2.nii", "functional3.nii"]'
     # type=list|default=[]:
-    dimension: '"t"'
-    # type=enum|default='t'|allowed['a','t','x','y','z']: dimension along which to merge, optionally set tr input when dimension is t
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     tr: '2.25'
     # type=float|default=0.0: use to specify TR in seconds (default is 1.00 sec), overrides dimension and sets it to tr
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

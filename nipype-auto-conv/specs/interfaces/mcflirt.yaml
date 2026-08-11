@@ -7,19 +7,19 @@
 # ----
 # FSL MCFLIRT wrapper for within-modality motion correction
 #
-#     For complete details, see the `MCFLIRT Documentation.
-#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/MCFLIRT>`_
+# For complete details, see the `MCFLIRT Documentation.
+# <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/MCFLIRT>`_
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces import fsl
-#     >>> mcflt = fsl.MCFLIRT()
-#     >>> mcflt.inputs.in_file = 'functional.nii'
-#     >>> mcflt.inputs.cost = 'mutualinfo'
-#     >>> mcflt.inputs.out_file = 'moco.nii'
-#     >>> mcflt.cmdline
-#     'mcflirt -in functional.nii -cost mutualinfo -out moco.nii'
-#     >>> res = mcflt.run()  # doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces import fsl
+# >>> mcflt = fsl.MCFLIRT()
+# >>> mcflt.inputs.in_file = 'functional.nii'
+# >>> mcflt.inputs.cost = 'mutualinfo'
+# >>> mcflt.inputs.out_file = 'moco.nii'
+# >>> mcflt.cmdline
+# 'mcflirt -in functional.nii -cost mutualinfo -out moco.nii'
+# >>> res = mcflt.run()  # doctest: +SKIP
 #
 #
 task_name: MCFLIRT
@@ -40,9 +40,6 @@ inputs:
     # type=file|default=<undefined>: timeseries to motion-correct
     init: generic/file
     # type=file|default=<undefined>: initial transformation matrix
-    out_file: Path
-    # type=file: motion-corrected timeseries
-    # type=file|default=<undefined>: file to write
     ref_file: generic/file
     # type=file|default=<undefined>: target image for motion correction
   callable_defaults:
@@ -80,7 +77,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: '"moco.nii"'
     # type=file: motion-corrected timeseries
     # type=file|default=<undefined>: file to write
@@ -132,13 +129,13 @@ tests:
     ref_file:
     # type=file|default=<undefined>: target image for motion correction
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -157,13 +154,11 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: timeseries to motion-correct
-    cost: '"mutualinfo"'
-    # type=enum|default='mutualinfo'|allowed['corratio','leastsquares','mutualinfo','normcorr','normmi','woods']: cost function to optimize
     out_file: '"moco.nii"'
     # type=file: motion-corrected timeseries
     # type=file|default=<undefined>: file to write
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -178,7 +173,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: mcflirt -in functional.nii -cost mutualinfo -out moco.nii
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -186,13 +181,11 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_file: '"functional.nii"'
     # type=file|default=<undefined>: timeseries to motion-correct
-    cost: '"mutualinfo"'
-    # type=enum|default='mutualinfo'|allowed['corratio','leastsquares','mutualinfo','normcorr','normmi','woods']: cost function to optimize
     out_file: '"moco.nii"'
     # type=file: motion-corrected timeseries
     # type=file|default=<undefined>: file to write
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

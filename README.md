@@ -1,4 +1,4 @@
-# pydra-fsl
+# pydra-tasks-fsl
 
 [![PyPI - Version][pypi-version]][pypi-project]
 [![PyPI - Python Version][pypi-pyversions]][pypi-project]
@@ -41,7 +41,7 @@ for FMRI, MRI and DTI brain imaging data.
 ## Installation
 
 ```console
-pip install pydra-fsl
+pip install pydra-tasks-fsl
 ```
 
 A separate installation of FSL is required to use this package.
@@ -172,17 +172,17 @@ and `related-packages/fileformats-extras`, respectively.
 
 This project is distributed under the terms of the [Apache License, Version 2.0][license].
 
-[pypi-project]: https://pypi.org/project/pydra-fsl
+[pypi-project]: https://pypi.org/project/pydra-tasks-fsl
 
-[pypi-version]: https://img.shields.io/pypi/v/pydra-fsl.svg
+[pypi-version]: https://img.shields.io/pypi/v/pydra-tasks-fsl.svg
 
-[pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-fsl.svg
+[pypi-pyversions]: https://img.shields.io/pypi/pyversions/pydra-tasks-fsl.svg
 
-[pypi-downloads]: https://static.pepy.tech/badge/pydra-fsl
+[pypi-downloads]: https://static.pepy.tech/badge/pydra-tasks-fsl
 
-[status-docs]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/docs.yaml/badge.svg
+[status-docs]: https://github.com/aramis-lab/pydra-tasks-fsl/actions/workflows/docs.yaml/badge.svg
 
-[status-test]: https://github.com/aramis-lab/pydra-fsl/actions/workflows/test.yaml/badge.svg
+[status-test]: https://github.com/aramis-lab/pydra-tasks-fsl/actions/workflows/test.yaml/badge.svg
 
 [pydra]: https://pydra.readthedocs.io/
 
@@ -196,8 +196,8 @@ This project is distributed under the terms of the [Apache License, Version 2.0]
 
 [status-docs-badge]: https://img.shields.io/badge/docs-latest-brightgreen.svg?style=flat
 
-[status-cicd-badge]: https://github.com/nipype/pydra-fsl/actions/workflows/ci-cd.yaml/badge.svg
+[status-cicd-badge]: https://github.com/nipype/pydra-tasks-fsl/actions/workflows/ci-cd.yaml/badge.svg
 
-[status-docs-link]: https://nipype.github.io/pydra-fsl/
+[status-docs-link]: https://nipype.github.io/pydra-tasks-fsl/
 
-[status-cicd-link]: https://github.com/nipype/pydra-fsl/actions/workflows/ci-cd.yaml
+[status-cicd-link]: https://github.com/nipype/pydra-tasks-fsl/actions/workflows/ci-cd.yaml

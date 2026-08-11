@@ -7,23 +7,23 @@
 # ----
 # FSL FLIRT wrapper for coregistration
 #
-#     For complete details, see the `FLIRT Documentation.
-#     <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT>`_
+# For complete details, see the `FLIRT Documentation.
+# <https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FLIRT>`_
 #
-#     To print out the command line help, use:
-#         fsl.FLIRT().inputs_help()
+# To print out the command line help, use:
+#     fsl.FLIRT().inputs_help()
 #
-#     Examples
-#     --------
-#     >>> from nipype.interfaces import fsl
-#     >>> from nipype.testing import example_data
-#     >>> flt = fsl.FLIRT(bins=640, cost_func='mutualinfo')
-#     >>> flt.inputs.in_file = 'structural.nii'
-#     >>> flt.inputs.reference = 'mni.nii'
-#     >>> flt.inputs.output_type = "NIFTI_GZ"
-#     >>> flt.cmdline # doctest: +ELLIPSIS
-#     'flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo'
-#     >>> res = flt.run() #doctest: +SKIP
+# Examples
+# --------
+# >>> from nipype.interfaces import fsl
+# >>> from nipype.testing import example_data
+# >>> flt = fsl.FLIRT(bins=640, cost_func='mutualinfo')
+# >>> flt.inputs.in_file = 'structural.nii'
+# >>> flt.inputs.reference = 'mni.nii'
+# >>> flt.inputs.output_type = "NIFTI_GZ"
+# >>> flt.cmdline # doctest: +ELLIPSIS
+# 'flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo'
+# >>> res = flt.run() #doctest: +SKIP
 #
 #
 task_name: FLIRT
@@ -50,18 +50,9 @@ inputs:
     # type=file|default=<undefined>: input 4x4 affine matrix
     in_weight: generic/file
     # type=file|default=<undefined>: File for input weighting volume
-    out_file: Path
-    # type=file: path/name of registered file (if generated)
-    # type=file|default=<undefined>: registered output file
-    out_log: Path
-    # type=file: path/name of output log (if generated)
-    # type=file|default=<undefined>: output log
-    out_matrix_file: Path
-    # type=file: path/name of calculated affine transform (if generated)
-    # type=file|default=<undefined>: output affine matrix in 4x4 asciii format
     ref_weight: generic/file
     # type=file|default=<undefined>: File for reference weighting volume
-    reference: medimage/nifti1
+    reference: generic/file
     # type=file|default=<undefined>: reference file
     schedule: generic/file
     # type=file|default=<undefined>: replaces default schedule
@@ -100,7 +91,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -205,13 +196,13 @@ tests:
     bbrslope:
     # type=float|default=0.0: value of bbr slope
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -230,16 +221,14 @@ tests:
   # (if not specified, will try to choose a sensible value)
     in_file:
     # type=file|default=<undefined>: input file
-    reference:
-    # type=file|default=<undefined>: reference file
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     bins: '640'
     # type=int|default=0: number of histogram bins
     cost_func: '"mutualinfo"'
     # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.testing
     name: example_data
@@ -257,7 +246,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: flirt -in structural.nii -ref mni.nii -out structural_flirt.nii.gz -omat structural_flirt.mat -bins 640 -searchcost mutualinfo
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -265,16 +254,14 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     in_file: '"structural.nii"'
     # type=file|default=<undefined>: input file
-    reference: '"mni.nii"'
-    # type=file|default=<undefined>: reference file
     output_type: '"NIFTI_GZ"'
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     bins: '640'
     # type=int|default=0: number of histogram bins
     cost_func: '"mutualinfo"'
     # type=enum|default='mutualinfo'|allowed['bbr','corratio','labeldiff','leastsq','mutualinfo','normcorr','normmi']: cost function
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

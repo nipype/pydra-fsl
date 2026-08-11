@@ -7,22 +7,22 @@
 # ----
 # Use FSL flameo command to perform higher level model fits
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     Initialize FLAMEO with no options, assigning them when calling run:
+# Initialize FLAMEO with no options, assigning them when calling run:
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> flameo = fsl.FLAMEO()
-#     >>> flameo.inputs.cope_file = 'cope.nii.gz'
-#     >>> flameo.inputs.var_cope_file = 'varcope.nii.gz'
-#     >>> flameo.inputs.cov_split_file = 'cov_split.mat'
-#     >>> flameo.inputs.design_file = 'design.mat'
-#     >>> flameo.inputs.t_con_file = 'design.con'
-#     >>> flameo.inputs.mask_file = 'mask.nii'
-#     >>> flameo.inputs.run_mode = 'fe'
-#     >>> flameo.cmdline
-#     'flameo --copefile=cope.nii.gz --covsplitfile=cov_split.mat --designfile=design.mat --ld=stats --maskfile=mask.nii --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope.nii.gz'
+# >>> from nipype.interfaces import fsl
+# >>> flameo = fsl.FLAMEO()
+# >>> flameo.inputs.cope_file = 'cope.nii.gz'
+# >>> flameo.inputs.var_cope_file = 'varcope.nii.gz'
+# >>> flameo.inputs.cov_split_file = 'cov_split.mat'
+# >>> flameo.inputs.design_file = 'design.mat'
+# >>> flameo.inputs.t_con_file = 'design.con'
+# >>> flameo.inputs.mask_file = 'mask.nii'
+# >>> flameo.inputs.run_mode = 'fe'
+# >>> flameo.cmdline
+# 'flameo --copefile=cope.nii.gz --covsplitfile=cov_split.mat --designfile=design.mat --ld=stats --maskfile=mask.nii --runmode=fe --tcontrastsfile=design.con --varcopefile=varcope.nii.gz'
 #
 #
 task_name: FLAMEO
@@ -43,7 +43,7 @@ inputs:
     # type=file|default=<undefined>: cope regressor data file
     cov_split_file: datascience/text-matrix
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
-    design_file: datascience/text-matrix
+    design_file: generic/file
     # type=file|default=<undefined>: design matrix file
     dof_var_cope_file: generic/file
     # type=file|default=<undefined>: dof data file for varcope data
@@ -51,11 +51,11 @@ inputs:
     # type=file|default=<undefined>: ascii matrix specifying f-contrasts
     log_dir: generic/directory
     # type=directory|default='stats':
-    mask_file: medimage/nifti1
+    mask_file: generic/file
     # type=file|default=<undefined>: mask file
-    t_con_file: medimage-fsl/con
+    t_con_file: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: ascii matrix specifying t-contrasts
-    var_cope_file: medimage/nifti-gz
+    var_cope_file: generic/file
     # type=file|default=<undefined>: varcope weightings data file
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -101,7 +101,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -145,13 +145,13 @@ tests:
     log_dir:
     # type=directory|default='stats':
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -170,20 +170,14 @@ tests:
   # (if not specified, will try to choose a sensible value)
     cope_file:
     # type=file|default=<undefined>: cope regressor data file
-    var_cope_file:
-    # type=file|default=<undefined>: varcope weightings data file
     cov_split_file:
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
-    design_file:
-    # type=file|default=<undefined>: design matrix file
     t_con_file:
     # type=file|default=<undefined>: ascii matrix specifying t-contrasts
-    mask_file:
-    # type=file|default=<undefined>: mask file
     run_mode: '"fe"'
     # type=enum|default='fe'|allowed['fe','flame1','flame12','ols']: inference to perform
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -206,20 +200,14 @@ doctests:
   # '.mock()' method of the corresponding class is used instead.
     cope_file: '"cope.nii.gz"'
     # type=file|default=<undefined>: cope regressor data file
-    var_cope_file: '"varcope.nii.gz"'
-    # type=file|default=<undefined>: varcope weightings data file
     cov_split_file: '"cov_split.mat"'
     # type=file|default=<undefined>: ascii matrix specifying the groups the covariance is split into
-    design_file: '"design.mat"'
-    # type=file|default=<undefined>: design matrix file
     t_con_file: '"design.con"'
     # type=file|default=<undefined>: ascii matrix specifying t-contrasts
-    mask_file: '"mask.nii"'
-    # type=file|default=<undefined>: mask file
     run_mode: '"fe"'
     # type=enum|default='fe'|allowed['fe','flame1','flame12','ols']: inference to perform
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

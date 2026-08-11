@@ -6,15 +6,15 @@
 # Docs
 # ----
 # FSL Randomise: feeds the 4D projected FA data into GLM
-#     modelling and thresholding
-#     in order to find voxels which correlate with your model
+# modelling and thresholding
+# in order to find voxels which correlate with your model
 #
-#     Example
-#     -------
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> rand = fsl.Randomise(in_file='allFA.nii', mask = 'mask.nii', tcon='design.con', design_mat='design.mat')
-#     >>> rand.cmdline
-#     'randomise -i allFA.nii -o "randomise" -d design.mat -t design.con -m mask.nii'
+# Example
+# -------
+# >>> import nipype.interfaces.fsl as fsl
+# >>> rand = fsl.Randomise(in_file='allFA.nii', mask = 'mask.nii', tcon='design.con', design_mat='design.mat')
+# >>> rand.cmdline
+# 'randomise -i allFA.nii -o "randomise" -d design.mat -t design.con -m mask.nii'
 #
 #
 task_name: Randomise
@@ -39,7 +39,7 @@ inputs:
     # type=file|default=<undefined>: 4D input file
     mask: medimage/nifti1
     # type=file|default=<undefined>: mask image
-    tcon: medimage-fsl/con
+    tcon: fileformats.vendor.fsl.medimage.Con
     # type=file|default=<undefined>: t contrasts file
     x_block_labels: generic/file
     # type=file|default=<undefined>: exchangeability block labels file
@@ -75,7 +75,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -137,13 +137,13 @@ tests:
     tfce_C:
     # type=float|default=0.0: TFCE connectivity (6 or 26; default=6)
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
@@ -169,7 +169,7 @@ tests:
     design_mat:
     # type=file|default=<undefined>: design matrix file
   imports: &id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   - module: nipype.interfaces.fsl as fsl
   expected_outputs:
@@ -185,7 +185,7 @@ tests:
   # bool - whether the unittest is expected to fail or not. Set to false
   # when you are satisfied with the edits you have made to this file
 doctests:
-- cmdline: randomise -i allFA.nii -o "randomise" -d design.mat -t design.con -m mask.nii
+- cmdline:
   # str - the expected cmdline output
   inputs:
   # dict[str, str] - name-value pairs for inputs to be provided to the doctest.
@@ -200,7 +200,7 @@ doctests:
     design_mat: '"design.mat"'
     # type=file|default=<undefined>: design matrix file
   imports: *id001
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   directive:
   # str - any doctest directive to place on the cmdline call, e.g. # doctest: +ELLIPSIS

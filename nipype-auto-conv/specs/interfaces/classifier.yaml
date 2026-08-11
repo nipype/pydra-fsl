@@ -6,7 +6,7 @@
 # Docs
 # ----
 #
-#     Classify ICA components using a specific training dataset (<thresh> is in the range 0-100, typically 5-20).
+# Classify ICA components using a specific training dataset (<thresh> is in the range 0-100, typically 5-20).
 #
 task_name: Classifier
 nipype_name: Classifier
@@ -22,9 +22,6 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    artifacts_list_file: Path
-    # type=file: Text file listing which ICs are artifacts; can be the output from classification or can be created manually
-    # type=file|default=<undefined>: Text file listing which ICs are artifacts; can be the output from classification or can be created manually
     mel_ica: generic/directory
     # type=directory|default=<undefined>: Melodic output directory or directories
     trained_wts_file: generic/file
@@ -52,7 +49,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -73,7 +70,7 @@ tests:
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

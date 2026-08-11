@@ -6,15 +6,15 @@
 # Docs
 # ----
 # Use FSL's distancemap to generate a map of the distance to the nearest
-#     nonzero voxel.
+# nonzero voxel.
 #
-#     Example
-#     -------
+# Example
+# -------
 #
-#     >>> import nipype.interfaces.fsl as fsl
-#     >>> mapper = fsl.DistanceMap()
-#     >>> mapper.inputs.in_file = "skeleton_mask.nii.gz"
-#     >>> mapper.run() # doctest: +SKIP
+# >>> import nipype.interfaces.fsl as fsl
+# >>> mapper = fsl.DistanceMap()
+# >>> mapper.inputs.in_file = "skeleton_mask.nii.gz"
+# >>> mapper.run() # doctest: +SKIP
 #
 #
 task_name: DistanceMap
@@ -31,9 +31,6 @@ inputs:
   # from the nipype interface, but you may want to be more specific, particularly
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
-    distance_map: Path
-    # type=file: value is distance to nearest nonzero voxels
-    # type=file|default=<undefined>: distance map to write
     in_file: generic/file
     # type=file|default=<undefined>: image to calculate distance values for
     mask_file: generic/file
@@ -64,7 +61,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     distance_map: distance_map
     # type=file: value is distance to nearest nonzero voxels
     # type=file|default=<undefined>: distance map to write
@@ -87,13 +84,13 @@ tests:
     # type=file: value is distance to nearest nonzero voxels
     # type=file|default=<undefined>: distance map to write
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

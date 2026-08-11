@@ -7,13 +7,13 @@
 # ----
 # Use FSL PowerSpectrum command for power spectrum estimation.
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> from nipype.interfaces import fsl
-#     >>> pspec = fsl.PowerSpectrum()
-#     >>> pspec.inputs.in_file = 'functional.nii'
-#     >>> res = pspec.run() # doctest: +SKIP
+# >>> from nipype.interfaces import fsl
+# >>> pspec = fsl.PowerSpectrum()
+# >>> pspec.inputs.in_file = 'functional.nii'
+# >>> res = pspec.run() # doctest: +SKIP
 #
 #
 #
@@ -33,9 +33,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
     # type=file|default=<undefined>: input 4D file to estimate the power spectrum
-    out_file: Path
-    # type=file: path/name of the output 4D power spectrum file
-    # type=file|default=<undefined>: name of output 4D file for power spectrum
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -59,7 +56,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: path/name of the output 4D power spectrum file
     # type=file|default=<undefined>: name of output 4D file for power spectrum
@@ -75,13 +72,13 @@ tests:
     # type=file: path/name of the output 4D power spectrum file
     # type=file|default=<undefined>: name of output 4D file for power spectrum
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

@@ -1,0 +1,355 @@
+import acres
+import attrs
+from fileformats.generic import File
+import logging
+from nibabel import load
+import numpy as np
+import os
+from pydra.compose import python
+from pydra.utils.typing import MultiOutputType
+from string import Template
+import typing as ty
+
+
+logger = logging.getLogger(__name__)
+
+
+@python.define
+class Level1Design(python.Task["Level1Design.Outputs"]):
+    """
+    Examples
+    -------
+
+    >>> from fileformats.generic import File
+    >>> from pydra.tasks.fsl.v6.model.level_1_design import Level1Design
+    >>> from pydra.utils.typing import MultiOutputType
+
+    """
+
+    interscan_interval: float
+    session_info: ty.Any
+    bases: ty.Any
+    orthogonalization: dict = {}
+    model_serial_correlations: bool
+    contrasts: list[ty.Any]
+
+    class Outputs(python.Outputs):
+        fsf_files: list[File]
+        ev_files: ty.Union[list, object, MultiOutputType]
+
+    @staticmethod
+    def function(
+        interscan_interval: float,
+        session_info: ty.Any,
+        bases: ty.Any,
+        orthogonalization: dict,
+        model_serial_correlations: bool,
+        contrasts: list[ty.Any],
+    ) -> tuple[list[File], ty.Union[list, object, MultiOutputType]]:
+        fsf_files = attrs.NOTHING
+        ev_files = attrs.NOTHING
+        cwd = os.getcwd()
+        fsf_header = load_template("feat_header_l1.tcl")
+        fsf_postscript = load_template("feat_nongui.tcl")
+
+        prewhiten = 0
+        if model_serial_correlations is not attrs.NOTHING:
+            prewhiten = int(model_serial_correlations)
+        basis_key = list(bases.keys())[0]
+        ev_parameters = dict(bases[basis_key])
+        session_info = _format_session_info(session_info)
+        func_files = _get_func_files(session_info)
+        n_tcon = 0
+        n_fcon = 0
+        if contrasts is not attrs.NOTHING:
+            for i, c in enumerate(contrasts):
+                if c[1] == "T":
+                    n_tcon += 1
+                elif c[1] == "F":
+                    n_fcon += 1
+
+        for i, info in enumerate(session_info):
+            do_tempfilter = 1
+            if info["hpf"] == np.inf:
+                do_tempfilter = 0
+            num_evs, cond_txt = _create_ev_files(
+                cwd,
+                info,
+                i,
+                ev_parameters,
+                orthogonalization,
+                contrasts,
+                do_tempfilter,
+                basis_key,
+            )
+            nim = load(func_files[i])
+            (_, _, _, timepoints) = nim.shape
+            fsf_txt = fsf_header.substitute(
+                run_num=i,
+                interscan_interval=interscan_interval,
+                num_vols=timepoints,
+                prewhiten=prewhiten,
+                num_evs=num_evs[0],
+                num_evs_real=num_evs[1],
+                num_tcon=n_tcon,
+                num_fcon=n_fcon,
+                high_pass_filter_cutoff=info["hpf"],
+                temphp_yn=do_tempfilter,
+                func_file=func_files[i],
+            )
+            fsf_txt += cond_txt
+            fsf_txt += fsf_postscript.substitute(overwrite=1)
+
+            with open(os.path.join(cwd, "run%d.fsf" % i), "w") as f:
+                f.write(fsf_txt)
+
+        outputs = {}
+        cwd = os.getcwd()
+        fsf_files = []
+        ev_files = []
+        basis_key = list(bases.keys())[0]
+        ev_parameters = dict(bases[basis_key])
+        for runno, runinfo in enumerate(_format_session_info(session_info)):
+            fsf_files.append(os.path.join(cwd, "run%d.fsf" % runno))
+            ev_files.insert(runno, [])
+            evname = []
+            for field in ["cond", "regress"]:
+                for i, cond in enumerate(runinfo[field]):
+                    name = cond["name"]
+                    evname.append(name)
+                    evfname = os.path.join(
+                        cwd, "ev_%s_%d_%d.txt" % (name, runno, len(evname))
+                    )
+                    if field == "cond":
+                        ev_parameters["temporalderiv"] = int(
+                            bool(ev_parameters.get("derivs", False))
+                        )
+                        if ev_parameters["temporalderiv"]:
+                            evname.append(name + "TD")
+                    ev_files[runno].append(os.path.join(cwd, evfname))
+
+        return fsf_files, ev_files
+
+
+def _create_ev_file(evfname, evinfo):
+    with open(evfname, "w") as f:
+        for i in evinfo:
+            if len(i) == 3:
+                f.write(f"{i[0]:f} {i[1]:f} {i[2]:f}\n")
+            else:
+                f.write("%f\n" % i[0])
+
+
+def _create_ev_files(
+    cwd,
+    runinfo,
+    runidx,
+    ev_parameters,
+    orthogonalization,
+    contrasts,
+    do_tempfilter,
+    basis_key,
+):
+    """Creates EV files from condition and regressor information.
+
+    Parameters:
+    -----------
+
+    runinfo : dict
+        Generated by `SpecifyModel` and contains information
+        about events and other regressors.
+    runidx  : int
+        Index to run number
+    ev_parameters : dict
+        A dictionary containing the model parameters for the
+        given design type.
+    orthogonalization : dict
+        A dictionary of dictionaries specifying orthogonal EVs.
+    contrasts : list of lists
+        Information on contrasts to be evaluated
+    """
+    conds = {}
+    evname = []
+    if basis_key == "dgamma":
+        basis_key = "hrf"
+    elif basis_key == "gamma":
+        try:
+            _ = ev_parameters["gammasigma"]
+        except KeyError:
+            ev_parameters["gammasigma"] = 3
+        try:
+            _ = ev_parameters["gammadelay"]
+        except KeyError:
+            ev_parameters["gammadelay"] = 6
+    ev_template = load_template("feat_ev_" + basis_key + ".tcl")
+    ev_none = load_template("feat_ev_none.tcl")
+    ev_ortho = load_template("feat_ev_ortho.tcl")
+    ev_txt = ""
+
+    num_evs = [0, 0]
+    for field in ["cond", "regress"]:
+        for i, cond in enumerate(runinfo[field]):
+            name = cond["name"]
+            evname.append(name)
+            evfname = os.path.join(cwd, "ev_%s_%d_%d.txt" % (name, runidx, len(evname)))
+            evinfo = []
+            num_evs[0] += 1
+            num_evs[1] += 1
+            if field == "cond":
+                for j, onset in enumerate(cond["onset"]):
+                    try:
+                        amplitudes = cond["amplitudes"]
+                        if len(amplitudes) > 1:
+                            amp = amplitudes[j]
+                        else:
+                            amp = amplitudes[0]
+                    except KeyError:
+                        amp = 1
+                    if len(cond["duration"]) > 1:
+                        evinfo.insert(j, [onset, cond["duration"][j], amp])
+                    else:
+                        evinfo.insert(j, [onset, cond["duration"][0], amp])
+                ev_parameters["cond_file"] = evfname
+                ev_parameters["ev_num"] = num_evs[0]
+                ev_parameters["ev_name"] = name
+                ev_parameters["tempfilt_yn"] = do_tempfilter
+                if "basisorth" not in ev_parameters:
+                    ev_parameters["basisorth"] = 1
+                if "basisfnum" not in ev_parameters:
+                    ev_parameters["basisfnum"] = 1
+                try:
+                    ev_parameters["fsldir"] = os.environ["FSLDIR"]
+                except KeyError:
+                    if basis_key == "flobs":
+                        raise Exception("FSL environment variables not set")
+                    else:
+                        ev_parameters["fsldir"] = "/usr/share/fsl"
+                ev_parameters["temporalderiv"] = int(
+                    bool(ev_parameters.get("derivs", False))
+                )
+                if ev_parameters["temporalderiv"]:
+                    evname.append(name + "TD")
+                    num_evs[1] += 1
+                ev_txt += ev_template.substitute(ev_parameters)
+            elif field == "regress":
+                evinfo = [[j] for j in cond["val"]]
+                ev_txt += ev_none.substitute(
+                    ev_num=num_evs[0],
+                    ev_name=name,
+                    tempfilt_yn=do_tempfilter,
+                    cond_file=evfname,
+                )
+            ev_txt += "\n"
+            conds[name] = evfname
+            _create_ev_file(evfname, evinfo)
+
+    for i in range(1, num_evs[0] + 1):
+        initial = ev_ortho.substitute(c0=i, c1=0, orthogonal=1)
+        for j in range(num_evs[0] + 1):
+            try:
+                orthogonal = int(orthogonalization[i][j])
+            except (KeyError, TypeError, ValueError, IndexError):
+                orthogonal = 0
+            if orthogonal == 1 and initial not in ev_txt:
+                ev_txt += initial + "\n"
+            ev_txt += ev_ortho.substitute(c0=i, c1=j, orthogonal=orthogonal)
+            ev_txt += "\n"
+
+    if contrasts is not attrs.NOTHING:
+        contrast_header = load_template("feat_contrast_header.tcl")
+        contrast_prolog = load_template("feat_contrast_prolog.tcl")
+        contrast_element = load_template("feat_contrast_element.tcl")
+        contrast_ftest_element = load_template("feat_contrast_ftest_element.tcl")
+        contrastmask_header = load_template("feat_contrastmask_header.tcl")
+        contrastmask_footer = load_template("feat_contrastmask_footer.tcl")
+        contrastmask_element = load_template("feat_contrastmask_element.tcl")
+
+        ev_txt += contrast_header.substitute()
+        con_names = []
+        for j, con in enumerate(contrasts):
+            con_names.append(con[0])
+        con_map = {}
+        ftest_idx = []
+        ttest_idx = []
+        for j, con in enumerate(contrasts):
+            if con[1] == "F":
+                ftest_idx.append(j)
+                for c in con[2]:
+                    if c[0] not in list(con_map.keys()):
+                        con_map[c[0]] = []
+                    con_map[c[0]].append(j)
+            else:
+                ttest_idx.append(j)
+
+        for ctype in ["real", "orig"]:
+            for j, con in enumerate(contrasts):
+                if con[1] == "F":
+                    continue
+                tidx = ttest_idx.index(j) + 1
+                ev_txt += contrast_prolog.substitute(
+                    cnum=tidx, ctype=ctype, cname=con[0]
+                )
+                count = 0
+                for c in range(1, len(evname) + 1):
+                    if evname[c - 1].endswith("TD") and ctype == "orig":
+                        continue
+                    count = count + 1
+                    if evname[c - 1] in con[2]:
+                        val = con[3][con[2].index(evname[c - 1])]
+                    else:
+                        val = 0.0
+                    ev_txt += contrast_element.substitute(
+                        cnum=tidx, element=count, ctype=ctype, val=val
+                    )
+                    ev_txt += "\n"
+
+                for fconidx in ftest_idx:
+                    fval = 0
+                    if con[0] in con_map and fconidx in con_map[con[0]]:
+                        fval = 1
+                    ev_txt += contrast_ftest_element.substitute(
+                        cnum=ftest_idx.index(fconidx) + 1,
+                        element=tidx,
+                        ctype=ctype,
+                        val=fval,
+                    )
+                    ev_txt += "\n"
+
+        ev_txt += contrastmask_header.substitute()
+        for j, _ in enumerate(contrasts):
+            for k, _ in enumerate(contrasts):
+                if j != k:
+                    ev_txt += contrastmask_element.substitute(c1=j + 1, c2=k + 1)
+        ev_txt += contrastmask_footer.substitute()
+    return num_evs, ev_txt
+
+
+def _format_session_info(session_info):
+    if isinstance(session_info, dict):
+        session_info = [session_info]
+    return session_info
+
+
+def _get_func_files(session_info):
+    """Returns functional files in the order of runs"""
+    func_files = []
+    for i, info in enumerate(session_info):
+        func_files.insert(i, info["scans"])
+    return func_files
+
+
+def load_template(name):
+    """Load a template from the model_templates directory
+
+    Parameters
+    ----------
+    name : str
+        The name of the file to load
+
+    Returns
+    -------
+    template : string.Template
+
+    """
+    loader = acres.Loader("nipype.interfaces.fsl")
+    return Template(loader.readable("model_templates", name).read_text())

@@ -6,15 +6,15 @@
 # Docs
 # ----
 # fslreorient2std is a tool for reorienting the image to match the
-#     approximate orientation of the standard template images (MNI152).
+# approximate orientation of the standard template images (MNI152).
 #
 #
-#     Examples
-#     --------
+# Examples
+# --------
 #
-#     >>> reorient = Reorient2Std()
-#     >>> reorient.inputs.in_file = "functional.nii"
-#     >>> res = reorient.run() # doctest: +SKIP
+# >>> reorient = Reorient2Std()
+# >>> reorient.inputs.in_file = "functional.nii"
+# >>> res = reorient.run() # doctest: +SKIP
 #
 #
 #
@@ -33,9 +33,6 @@ inputs:
   # for file types, where specifying the format also specifies the file that will be
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
-    # type=file|default=<undefined>:
-    out_file: Path
-    # type=file:
     # type=file|default=<undefined>:
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
@@ -60,7 +57,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file:
     # type=file|default=<undefined>:
@@ -76,13 +73,13 @@ tests:
     # type=file:
     # type=file|default=<undefined>:
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

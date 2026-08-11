@@ -6,8 +6,8 @@
 # Docs
 # ----
 # Use fslmeants for printing the average timeseries (intensities) to
-#     the screen (or saves to a file). The average is taken over all voxels
-#     in the mask (or all voxels in the image if no mask is specified)
+# the screen (or saves to a file). The average is taken over all voxels
+# in the mask (or all voxels in the image if no mask is specified)
 #
 #
 task_name: ImageMeants
@@ -28,9 +28,6 @@ inputs:
     # type=file|default=<undefined>: input file for computing the average timeseries
     mask: generic/file
     # type=file|default=<undefined>: input 3D mask
-    out_file: Path
-    # type=file: path/name of output text matrix
-    # type=file|default=<undefined>: name of output text matrix
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -54,7 +51,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
     out_file: out_file
     # type=file: path/name of output text matrix
     # type=file|default=<undefined>: name of output text matrix
@@ -86,13 +83,13 @@ tests:
     transpose:
     # type=bool|default=False: output results in transpose format (one row per voxel/mean)
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically

@@ -7,8 +7,8 @@
 # ----
 # Automatically crops an image removing lower head and neck.
 #
-#     Interface is stable 5.0.0 to 5.0.9, but default brainsize changed from
-#     150mm to 170mm.
+# Interface is stable 5.0.0 to 5.0.9, but default brainsize changed from
+# 150mm to 170mm.
 #
 task_name: RobustFOV
 nipype_name: RobustFOV
@@ -26,12 +26,6 @@ inputs:
   # passed to the field in the automatically generated unittests.
     in_file: generic/file
     # type=file|default=<undefined>: input filename
-    out_roi: Path
-    # type=file: ROI volume output name
-    # type=file|default=<undefined>: ROI volume output name
-    out_transform: Path
-    # type=file: Transformation matrix in_file to out_roi output name
-    # type=file|default=<undefined>: Transformation matrix in_file to out_roi output name
   callable_defaults:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set as the `default` method of input fields
@@ -58,7 +52,7 @@ outputs:
   # dict[str, str] - names of methods/callable classes defined in the adjacent `*_callables.py`
   # to set to the `callable` attribute of output fields
   templates:
-  # dict[str, str] - `output_file_template` values to be provided to output fields
+  # dict[str, str] - `path_template` values to be provided to output fields
   requirements:
   # dict[str, list[str]] - input fields that are required to be provided for the output field to be present
 tests:
@@ -76,13 +70,13 @@ tests:
     # type=file: Transformation matrix in_file to out_roi output name
     # type=file|default=<undefined>: Transformation matrix in_file to out_roi output name
     output_type:
-    # type=enum|default='NIFTI'|allowed['NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
+    # type=enum|default='NIFTI'|allowed['GIFTI','NIFTI','NIFTI_GZ','NIFTI_PAIR','NIFTI_PAIR_GZ']: FSL output type
     args:
     # type=str|default='': Additional parameters to the command
     environ:
     # type=dict|default={}: Environment variables
   imports:
-  # list[nipype2pydra.task.base.importstatement] - list import statements required by the test, with each list item
+  # list[nipype2pydra.statements.imports.explicitimport] - list import statements required by the test, with each list item
   # consisting of 'module', 'name', and optionally 'alias' keys
   expected_outputs:
   # dict[str, str] - expected values for selected outputs, noting that tests will typically
