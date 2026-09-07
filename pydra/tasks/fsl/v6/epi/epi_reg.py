@@ -176,11 +176,11 @@ class EpiReg(shell.Task["EpiReg.Outputs"]):
     """
 
     executable = "epi_reg"
-    epi: Nifti = shell.arg(help="EPI image", argstr="--epi={epi}", position=-4)
-    t1_head: Nifti = shell.arg(
+    epi: NiftiGz = shell.arg(help="EPI image", argstr="--epi={epi}", position=-4)
+    t1_head: NiftiGz = shell.arg(
         help="wholehead T1 image", argstr="--t1={t1_head}", position=-3
     )
-    t1_brain: Nifti = shell.arg(
+    t1_brain: NiftiGz = shell.arg(
         help="brain extracted T1 image", argstr="--t1brain={t1_brain}", position=-2
     )
     out_base: ty.Any = shell.arg(
