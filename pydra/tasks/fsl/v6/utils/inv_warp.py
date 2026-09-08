@@ -5,7 +5,6 @@ from pathlib import Path
 from pathlib import Path
 from pydra.compose import shell
 
-
 logger = logging.getLogger(__name__)
 
 

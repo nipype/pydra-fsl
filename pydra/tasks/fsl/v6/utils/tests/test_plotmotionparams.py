@@ -3,7 +3,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.utils.plot_motion_params import PlotMotionParams
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

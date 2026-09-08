@@ -4,7 +4,6 @@ from pydra.tasks.fsl.v6.nipype_ports.utils.filemanip import fname_presuffix
 from pydra.compose import shell
 import typing as ty
 
-
 logger = logging.getLogger(__name__)
 
 

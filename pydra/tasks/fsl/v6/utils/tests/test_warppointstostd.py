@@ -6,7 +6,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.utils.warp_points_to_std import WarpPointsToStd
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.utils.robust_fov import RobustFOV
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -6,7 +6,6 @@ import logging
 import os.path as op
 from pydra.compose import shell
 
-
 logger = logging.getLogger(__name__)
 
 

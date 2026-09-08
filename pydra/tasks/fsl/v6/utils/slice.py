@@ -8,7 +8,6 @@ from pydra.tasks.fsl.v6.nipype_ports.utils.filemanip import fname_presuffix
 import os
 from pydra.compose import shell
 
-
 logger = logging.getLogger(__name__)
 
 
