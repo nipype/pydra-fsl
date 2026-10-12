@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.dti.x_fibres_5 import XFibres5
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

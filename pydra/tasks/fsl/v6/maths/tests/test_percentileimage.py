@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.maths.percentile_image import PercentileImage
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

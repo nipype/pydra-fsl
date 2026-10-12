@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.utils.reorient_2_std import Reorient2Std
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

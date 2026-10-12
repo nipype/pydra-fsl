@@ -6,7 +6,6 @@ from pathlib import Path
 from pydra.compose import shell
 import typing as ty
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -6,7 +6,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.dti.prob_track_x import ProbTrackX
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

@@ -3,7 +3,6 @@
 import os
 import pytest
 
-
 if os.getenv("_PYTEST_RAISE", "0") != "0":
 
     @pytest.hookimpl(tryfirst=True)

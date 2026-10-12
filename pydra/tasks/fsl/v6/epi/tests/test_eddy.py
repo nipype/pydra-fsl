@@ -6,7 +6,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.epi.eddy import Eddy
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 
