@@ -6,7 +6,6 @@ import click
 from looseversion import LooseVersion
 from pydra.engine.core import TaskBase
 
-
 PKG_DIR = Path(__file__).parent.parent
 TASKS_DIR = PKG_DIR / "pydra" / "tasks" / "ants"
 VERSION_GRANULARITY = (

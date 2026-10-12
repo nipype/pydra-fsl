@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.model.filmgls import FILMGLS
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

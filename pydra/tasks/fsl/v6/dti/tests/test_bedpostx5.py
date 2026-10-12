@@ -5,7 +5,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.dti.bedpostx5 import BEDPOSTX5
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 

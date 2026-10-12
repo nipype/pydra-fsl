@@ -4,7 +4,6 @@ from nipype2pydra.testing import PassAfterTimeoutWorker
 from pydra.tasks.fsl.v6.possum.b0_calc import B0Calc
 import pytest
 
-
 logger = logging.getLogger(__name__)
 
 
